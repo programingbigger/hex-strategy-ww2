@@ -48,15 +48,26 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
 export const INITIAL_UNIT_POSITIONS: Record<Team, Array<Coordinate & { type: UnitType }>> = {
     Blue: [
         { x: -5, y: 0, type: 'Tank' },
+        { x: -6, y: 0, type: 'Tank' },
+        { x: -7, y: 0, type: 'Tank' },
         { x: -6, y: 1, type: 'Infantry' },
         { x: -6, y: -1, type: 'Infantry' },
-        { x: -7, y: 0, type: 'ArmoredCar' },
+        { x: -6, y: -2, type: 'Infantry' },
+        { x: -6, y: 2, type: 'Infantry' },
+        { x: -7, y: 1, type: 'ArmoredCar' },
+        { x: -7, y: 2, type: 'ArmoredCar' },
+        { x: -7, y: -1, type: 'ArmoredCar' },
     ],
     Red: [
         { x: 5, y: 0, type: 'Tank' },
+        { x: 5, y: 1, type: 'Tank' },
+        { x: 5, y: 2, type: 'Tank' },
         { x: 6, y: -1, type: 'Infantry' },
         { x: 6, y: 1, type: 'Infantry' },
+        { x: 6, y: 0, type: 'Infantry' },
         { x: 7, y: 0, type: 'ArmoredCar' },
+        { x: 7, y: -1, type: 'ArmoredCar' },
+        { x: 7, y: 1, type: 'ArmoredCar' },
     ],
 };
 

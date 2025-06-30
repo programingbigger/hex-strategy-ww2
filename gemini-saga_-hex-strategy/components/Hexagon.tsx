@@ -17,10 +17,10 @@ interface HexagonProps {
 const TERRAIN_COLORS: Record<TerrainType, string> = {
   Plains: '#86B049',
   Forest: '#1A5D1A',
-  Mountain: '#6F6F6F',
+  Mountain: '#A0522D', // Sienna
   River: '#4A90E2',
-  Road: '#A47449',
-  Bridge: '#8B572A',
+  Road: '#C0C0C0',     // Silver
+  Bridge: '#808080',    // Gray
 };
 
 export const Hexagon: React.FC<HexagonProps> = ({
