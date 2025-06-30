@@ -1,6 +1,0 @@
-{
-  "name": "Gemini Saga: Hex Strategy",
-  "description": "A turn-based tactical simulation game where two teams, Blue and Red, battle on a hex-grid map. A key feature is the 'Battle Report' function, which uses Google's Gemini AI to generate narrative descriptions of combat outcomes.",
-  "requestFramePermissions": [],
-  "prompt": ""
-}
