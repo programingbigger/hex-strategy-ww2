@@ -4,7 +4,7 @@ import { Header } from './components/Header';
 import { InfoPanel } from './components/InfoPanel';
 import { BattleReportModal } from './components/BattleReportModal';
 import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
-import { generateBattleReport } from './services/geminiService';
+import { generateBattleReport } from './services/battleReport.ts';
 import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
 import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState } from './types';
 
