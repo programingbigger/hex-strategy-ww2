@@ -67,11 +67,22 @@ const App: React.FC = () => {
 
     const attackableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.attacked) return [];
-        const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
-        return neighbors.filter(coord =>
+
+        const attackRangeMin = selectedUnit.attackRange.min;
+        const attackRangeMax = selectedUnit.attackRange.max;
+
+        const potentialTargets: Coordinate[] = [];
+        for (const [key, tile] of boardLayout.entries()) {
+            const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
+            if (distance >= attackRangeMin && distance <= attackRangeMax) {
+                potentialTargets.push(tile);
+            }
+        }
+
+        return potentialTargets.filter(coord =>
             units.some(u => u.x === coord.x && u.y === coord.y && u.team !== selectedUnit.team)
         );
-    }, [selectedUnit, units]);
+    }, [selectedUnit, units, boardLayout]);
 
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
@@ -106,7 +117,12 @@ const App: React.FC = () => {
         const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
 
         const attackPower = attacker.attack + attackerTerrainStats.attackBonus;
-        const defensePower = defender.defense + defenderTerrainStats.defenseBonus;
+        let defensePower = defender.defense + defenderTerrainStats.defenseBonus;
+
+        // Indirect fire: Artillery ignores terrain defense bonus
+        if (attacker.type === 'Artillery') {
+            defensePower = defender.defense; // Only base defense
+        }
 
         const damage = Math.max(1, attackPower - defensePower);
 
@@ -136,7 +152,7 @@ const App: React.FC = () => {
 
         // Counter-attack logic
         const currentDefender = updatedUnits.find(u => u.id === defender.id);
-        if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack) {
+        if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && currentDefender.type !== 'Artillery') {
             const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
             const counterDefenderTile = boardLayout.get(coordToString(attacker));
 

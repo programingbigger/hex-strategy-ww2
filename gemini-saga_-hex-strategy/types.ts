@@ -18,6 +18,7 @@ export interface Unit {
   attack: number;
   defense: number;
   movement: number;
+  attackRange: { min: number; max: number };
   x: number;
   y: number;
   moved: boolean;
