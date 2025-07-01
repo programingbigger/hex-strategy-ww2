@@ -7,9 +7,9 @@ export const MAP_MAX_R = 6;
 export const HEX_SIZE = 48;
 
 export const UNIT_STATS: Record<UnitType, UnitStats> = {
-  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3 },
-  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4 },
-  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6 },
+  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3, canCounterAttack: true },
+  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4, canCounterAttack: true },
+  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6, canCounterAttack: true },
 };
 
 export const TERRAIN_STATS: Record<string, TerrainStats> = {

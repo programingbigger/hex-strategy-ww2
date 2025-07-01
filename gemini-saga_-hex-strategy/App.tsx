@@ -121,7 +121,7 @@ const App: React.FC = () => {
             report: reportText,
         });
         
-        const newUnits = units.map(u => {
+        let updatedUnits = units.map(u => {
             if (u.id === defender.id) {
                 return { ...u, hp: Math.max(0, u.hp - damage) };
             }
@@ -129,11 +129,47 @@ const App: React.FC = () => {
                 return { ...u, attacked: true, moved: true };
             }
             return u;
-        }).filter(u => u.hp > 0);
+        });
+
+        // Filter out destroyed units after initial attack
+        updatedUnits = updatedUnits.filter(u => u.hp > 0);
+
+        // Counter-attack logic
+        const currentDefender = updatedUnits.find(u => u.id === defender.id);
+        if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack) {
+            const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
+            const counterDefenderTile = boardLayout.get(coordToString(attacker));
+
+            if (counterAttackerTile && counterDefenderTile) {
+                const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
+                const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
+
+                const counterAttackPower = currentDefender.attack + counterAttackerTerrainStats.attackBonus;
+                const counterDefensePower = attacker.defense + counterDefenderTerrainStats.defenseBonus;
+
+                const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
+
+                const counterReportText = await generateBattleReport(currentDefender, attacker, counterDefenderTile.terrain, counterDamage);
+
+                setBattleReport(prevReport => ({
+                    attacker: prevReport!.attacker,
+                    defender: prevReport!.defender,
+                    damage: prevReport!.damage,
+                    report: prevReport!.report + `\n\n**Counter-attack!**\n` + counterReportText,
+                }));
+
+                updatedUnits = updatedUnits.map(u => {
+                    if (u.id === attacker.id) {
+                        return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+                    }
+                    return u;
+                }).filter(u => u.hp > 0); // Filter again after counter-attack
+            }
+        }
         
-        setUnits(newUnits);
+        setUnits(updatedUnits);
         setSelectedUnitId(null);
-        checkWinCondition(newUnits);
+        checkWinCondition(updatedUnits);
 
     }, [boardLayout, units, checkWinCondition]);
 

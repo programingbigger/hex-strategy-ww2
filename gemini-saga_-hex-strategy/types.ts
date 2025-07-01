@@ -22,6 +22,7 @@ export interface Unit {
   y: number;
   moved: boolean;
   attacked: boolean;
+  canCounterAttack: boolean;
 }
 
 export interface Tile {
