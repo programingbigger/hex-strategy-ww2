@@ -44,6 +44,11 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
     attackBonus: 0,
     movementCost: { default: 1 },
   },
+  City: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: { default: 1 },
+  },
 };
 
 export const INITIAL_UNIT_POSITIONS: Record<Team, Array<Coordinate & { type: UnitType }>> = {

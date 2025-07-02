@@ -19,8 +19,9 @@ const TERRAIN_COLORS: Record<TerrainType, string> = {
   Forest: '#1A5D1A',
   Mountain: '#A0522D', // Sienna
   River: '#4A90E2',
-  Road: '#C0C0C0',     // Silver
+  Road: '#c0c0c0',     // Silver
   Bridge: '#808080',    // Gray
+  City: '#ffffff',      // Light Gray
 };
 
 export const Hexagon: React.FC<HexagonProps> = ({

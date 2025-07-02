@@ -1,7 +1,7 @@
 
 export type Team = 'Blue' | 'Red';
 export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar';
-export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge';
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City';
 export type GameState = 'playing' | 'gameOver';
 
 export interface Coordinate {

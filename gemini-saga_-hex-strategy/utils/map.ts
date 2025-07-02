@@ -46,13 +46,40 @@ export function generateBoardLayout(): BoardLayout {
         }
     }
 
-    // 2. Generate River
+    // 2. Place Cities
+    const cityCandidates = Array.from(layout.values()).filter(t => t.terrain === 'Plains');
+    const cities: Coordinate[] = [];
+    const numberOfCities = Math.floor(Math.random() * 3) + 2; // 2 to 4 cities
+    for (let i = 0; i < numberOfCities && cityCandidates.length > 0; i++) {
+        let placed = false;
+        let attempts = 0;
+        while(!placed && attempts < 100) {
+            const candidateIndex = Math.floor(Math.random() * cityCandidates.length);
+            const candidateTile = cityCandidates[candidateIndex];
+            
+            // Check distance from other cities
+            const isFarEnough = cities.every(city => getDistance(city, candidateTile) > 3);
+
+            if (isFarEnough) {
+                candidateTile.terrain = 'City';
+                cities.push(candidateTile);
+                cityCandidates.splice(candidateIndex, 1); // Remove from candidates
+                placed = true;
+            }
+            attempts++;
+        }
+    }
+
+    // 3. Generate River
     let riverY = Math.floor(Math.random() * (MAP_MAX_R - MAP_MIN_R + 1)) + MAP_MIN_R;
     let riverX = MAP_MIN_Q;
     while(riverX <= MAP_MAX_Q) {
         const coord = {x: riverX, y: riverY};
         if(layout.has(coordToString(coord))) {
-            layout.get(coordToString(coord))!.terrain = 'River';
+            const tile = layout.get(coordToString(coord))!;
+            if (tile.terrain === 'Plains') { // Don't overwrite cities with rivers
+                tile.terrain = 'River';
+            }
         }
         riverX++;
         if (Math.random() > 0.6) {
@@ -61,14 +88,17 @@ export function generateBoardLayout(): BoardLayout {
         }
     }
     
-    // 3. Place Mountain Ranges
+    // 4. Place Mountain Ranges
     for (let i = 0; i < 3; i++) {
         let mx = Math.floor(Math.random() * (MAP_MAX_Q - MAP_MIN_Q + 1)) + MAP_MIN_Q;
         let my = Math.floor(Math.random() * (MAP_MAX_R - MAP_MIN_R + 1)) + MAP_MIN_R;
         for (let j = 0; j < 5 + Math.random() * 5; j++) {
             const coord = { x: mx, y: my };
-            if (layout.has(coordToString(coord)) && layout.get(coordToString(coord))!.terrain !== 'River') {
-                layout.get(coordToString(coord))!.terrain = 'Mountain';
+            if (layout.has(coordToString(coord))) {
+                const tile = layout.get(coordToString(coord))!;
+                if (tile.terrain !== 'River' && tile.terrain !== 'City') {
+                    tile.terrain = 'Mountain';
+                }
             }
             const neighbors = getNeighbors(coord).filter(n => layout.has(coordToString(n)));
             if (neighbors.length > 0) {
@@ -79,7 +109,7 @@ export function generateBoardLayout(): BoardLayout {
         }
     }
 
-    // 4. Place Forest Clusters
+    // 5. Place Forest Clusters
     for (let i = 0; i < 6; i++) {
         let fx = Math.floor(Math.random() * (MAP_MAX_Q - MAP_MIN_Q + 1)) + MAP_MIN_Q;
         let fy = Math.floor(Math.random() * (MAP_MAX_R - MAP_MIN_R + 1)) + MAP_MIN_R;
@@ -97,7 +127,7 @@ export function generateBoardLayout(): BoardLayout {
         }
     }
     
-    // 5. Build Roads and Bridges
+    // 6. Build Roads and Bridges
     const riverTiles = Array.from(layout.values()).filter(t => t.terrain === 'River');
     if(riverTiles.length > 0) {
         // Build 2 bridges
@@ -131,7 +161,7 @@ export function generateBoardLayout(): BoardLayout {
     }
 
 
-    // 6. Ensure initial positions are clear
+    // 7. Ensure initial positions are clear
     Object.values(INITIAL_UNIT_POSITIONS).flat().forEach(pos => {
         const key = coordToString(pos);
         if (layout.has(key)) {
