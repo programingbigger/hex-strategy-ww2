@@ -22,7 +22,7 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
   Forest: {
     defenseBonus: 2,
     attackBonus: 0,
-    movementCost: { Infantry: 1, Tank: 3, ArmoredCar: 2, Artillery: 3, default: 2 },
+    movementCost: { Infantry: 1, Tank: 2, ArmoredCar: 2, Artillery: 2, default: 2 },
   },
   Mountain: {
     defenseBonus: 3,

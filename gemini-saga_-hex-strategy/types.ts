@@ -30,6 +30,7 @@ export interface Tile {
   x: number;
   y: number;
   terrain: TerrainType;
+  zocByTeam?: Team; // Optional, indicates which team's ZOC this tile is in
 }
 
 export type BoardLayout = Map<string, Tile>;

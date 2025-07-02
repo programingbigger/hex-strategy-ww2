@@ -62,7 +62,7 @@ const App: React.FC = () => {
 
     const reachableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.moved) return [];
-        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units);
+        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units, activeTeam);
     }, [selectedUnit, boardLayout, units]);
 
     const attackableTiles = useMemo(() => {

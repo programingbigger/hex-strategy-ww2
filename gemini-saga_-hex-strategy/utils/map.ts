@@ -145,7 +145,7 @@ export function generateBoardLayout(): BoardLayout {
     return layout;
 }
 
-export function calculateReachableTiles(start: Coordinate, movement: number, board: BoardLayout, units: Unit[]): Coordinate[] {
+export function calculateReachableTiles(start: Coordinate, movement: number, board: BoardLayout, units: Unit[], currentTeam: Team): Coordinate[] {
     const startNodeKey = coordToString(start);
     const costs: Map<string, number> = new Map([[startNodeKey, 0]]);
     const frontier: Array<{ key: string; cost: number }> = [{ key: startNodeKey, cost: 0 }];
@@ -153,6 +153,20 @@ export function calculateReachableTiles(start: Coordinate, movement: number, boa
     
     const unitAtStart = units.find(u => u.x === start.x && u.y === start.y);
     if (!unitAtStart) return [];
+
+    // Calculate ZOC for enemy units
+    const zocTiles: Map<string, Team> = new Map();
+    units.forEach(unit => {
+        if (unit.team !== currentTeam) { // Enemy unit
+            const neighbors = getNeighbors({ x: unit.x, y: unit.y });
+            neighbors.forEach(neighborCoord => {
+                const neighborKey = coordToString(neighborCoord);
+                if (board.has(neighborKey)) {
+                    zocTiles.set(neighborKey, unit.team);
+                }
+            });
+        }
+    });
 
     while (frontier.length > 0) {
         frontier.sort((a, b) => a.cost - b.cost);
@@ -175,16 +189,27 @@ export function calculateReachableTiles(start: Coordinate, movement: number, boa
             if (unitOnTile) continue;
 
             const terrainStats = TERRAIN_STATS[tile.terrain];
-            const moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
+            let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
 
             if (moveCost === Infinity) continue;
+
+            // ZOC logic
+            const isZocHex = zocTiles.has(neighborKey) && zocTiles.get(neighborKey) !== currentTeam;
+            if (isZocHex) {
+                moveCost += 2; // Movement cost to enter a ZOC hex is terrain cost + 2
+            }
 
             const newCost = currentNode.cost + moveCost;
 
             if (newCost <= movement) {
                 if (!costs.has(neighborKey) || newCost < costs.get(neighborKey)!) {
                     costs.set(neighborKey, newCost);
-                    frontier.push({ key: neighborKey, cost: newCost });
+                    // If entering a ZOC hex, stop movement (do not add to frontier for further exploration)
+                    if (!isZocHex) {
+                        frontier.push({ key: neighborKey, cost: newCost });
+                    } else {
+                        reachable.push(neighborCoord); // Add to reachable, but don't explore further
+                    }
                 }
             }
         }
