@@ -49,6 +49,11 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
     attackBonus: 1,
     movementCost: { default: 1 },
   },
+  Mud: {
+    defenseBonus: -1,
+    attackBonus: 0,
+    movementCost: { Infantry: 2, Tank: 4, ArmoredCar: 3, default: 3 },
+  },
 };
 
 export const INITIAL_UNIT_POSITIONS: Record<Team, Array<Coordinate & { type: UnitType }>> = {

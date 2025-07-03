@@ -1,1 +1,91 @@
-現在のブランチから別れた開発用ブランチ（feature）を作成し、リモートリポジトリにpushするgitのコマンドを書いて
+以下のステップ2を実装してください。
+
+### ステップ2：天候による地形の変化
+
+次に、特定の天候が続くことで地形が変化する効果を実装します。
+
+```markdown
+Now, let's implement a feature where the terrain changes based on the weather conditions over several turns. For example, continuous rain turns Plains into Mud.
+
+**1. Add New Terrain Type:**
+In `types.ts`, add 'Mud' to the `TerrainType`.
+
+```typescript:types.ts
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'Mud';
+2. Define New Terrain Stats:
+In constants.ts, add the stats for the 'Mud' terrain. It should be difficult to move through. Also, add a color for 'Mud' in components/Hexagon.tsx.
+コード スニペット
+
+
+
+// Add to TERRAIN_STATS
+  Mud: {
+    defenseBonus: -1,
+    attackBonus: 0,
+    movementCost: { Infantry: 2, Tank: 4, ArmoredCar: 3, default: 3 },
+  },
+コード スニペット
+
+
+
+// Add to TERRAIN_COLORS
+const TERRAIN_COLORS: Record<TerrainType, string> = {
+  // ... other terrains
+  Mud: '#A1662F',
+};
+3. Track Weather Duration:
+In App.tsx, add a state to track how many consecutive turns the current weather has lasted.
+コード スニペット
+
+
+
+const [weatherDuration, setWeatherDuration] = useState(0);
+4. Implement Terrain Change Logic:
+In App.tsx, update the weather change logic within handleEndTurn.
+If the weather changes, reset the duration to 1.
+If the weather stays the same, increment the duration.
+Based on the weather and its duration, update the boardLayout. For this implementation, let's say 3 consecutive turns of 'Rain' or 'HeavyRain' changes 'Plains' to 'Mud'. When the weather becomes 'Sunny', 'Mud' should revert to 'Plains'.
+コード スニペット
+
+
+
+// In handleEndTurn, replace the simple weather change logic with this:
+if (nextTeam === 'Blue') {
+    setTurn(t => t + 1);
+
+    const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain'];
+    const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+    setWeather(nextWeather);
+
+    let newDuration = weatherDuration;
+    if (nextWeather === weather) {
+        newDuration++;
+    } else {
+        newDuration = 1;
+    }
+    setWeatherDuration(newDuration);
+
+    // Terrain Change Logic
+    const newBoardLayout = new Map(boardLayout);
+    let changed = false;
+
+    if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
+        newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Plains') {
+                newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
+                changed = true;
+            }
+        });
+    } else if (nextWeather === 'Sunny') {
+         newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Mud') {
+                newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
+                changed = true;
+            }
+        });
+    }
+    
+    if (changed) {
+      setBoardLayout(newBoardLayout);
+    }
+}

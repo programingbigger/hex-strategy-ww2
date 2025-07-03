@@ -20,6 +20,7 @@ const App: React.FC = () => {
     const [isLoadingAI, setIsLoadingAI] = useState<boolean>(false);
     const [winner, setWinner] = useState<Team | null>(null);
     const [weather, setWeather] = useState<WeatherType>('Sunny');
+    const [weatherDuration, setWeatherDuration] = useState(0);
 
     const initializeGame = useCallback(() => {
         const newBoardLayout = generateBoardLayout();
@@ -89,13 +90,46 @@ const App: React.FC = () => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
 
-        if (nextTeam === 'Blue') {
-            setTurn(t => t + 1);
-            // Add weather change logic
-            const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain', 'Storm'];
-            const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
-            setWeather(nextWeather);
-        }
+        // In handleEndTurn, replace the simple weather change logic with this:
+if (nextTeam === 'Blue') {
+    setTurn(t => t + 1);
+
+    const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain'];
+    const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+    setWeather(nextWeather);
+
+    let newDuration = weatherDuration;
+    if (nextWeather === weather) {
+        newDuration++;
+    } else {
+        newDuration = 1;
+    }
+    setWeatherDuration(newDuration);
+
+    // Terrain Change Logic
+    const newBoardLayout = new Map(boardLayout);
+    let changed = false;
+
+    if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
+        newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Plains') {
+                newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
+                changed = true;
+            }
+        });
+    } else if (nextWeather === 'Sunny') {
+         newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Mud') {
+                newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
+                changed = true;
+            }
+        });
+    }
+    
+    if (changed) {
+      setBoardLayout(newBoardLayout);
+    }
+}
 
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
