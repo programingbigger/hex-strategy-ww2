@@ -6,7 +6,7 @@ import { BattleReportModal } from './components/BattleReportModal';
 import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
 import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
-import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState } from './types';
+import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType } from './types';
 
 const App: React.FC = () => {
     const [gameState, setGameState] = useState<GameState>('playing');
@@ -19,6 +19,7 @@ const App: React.FC = () => {
     const [battleReport, setBattleReport] = useState<BattleReport | null>(null);
     const [isLoadingAI, setIsLoadingAI] = useState<boolean>(false);
     const [winner, setWinner] = useState<Team | null>(null);
+    const [weather, setWeather] = useState<WeatherType>('Sunny');
 
     const initializeGame = useCallback(() => {
         const newBoardLayout = generateBoardLayout();
@@ -87,9 +88,15 @@ const App: React.FC = () => {
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
+
         if (nextTeam === 'Blue') {
             setTurn(t => t + 1);
+            // Add weather change logic
+            const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain', 'Storm'];
+            const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+            setWeather(nextWeather);
         }
+
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
     }, [activeTeam, units]);
@@ -256,6 +263,7 @@ const App: React.FC = () => {
                 onEndTurn={handleEndTurn}
                 selectedUnit={selectedUnit}
                 hoveredHexCoord={hoveredHex}
+                weather={weather}
             />
             <div className="flex-grow flex overflow-hidden relative">
                 <GameBoard
@@ -267,6 +275,7 @@ const App: React.FC = () => {
                     reachableTiles={reachableTiles}
                     attackableTiles={attackableTiles}
                     activeTeam={activeTeam}
+                    weather={weather}
                 />
                 <InfoPanel
                     hoveredHex={hoveredHex ? boardLayout.get(coordToString(hoveredHex)) : null}

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { Team, Unit, Coordinate } from '../types';
+import type { Team, Unit, Coordinate, WeatherType } from '../types';
 import { UNIT_STATS, TEAM_COLORS } from '../constants';
 
 interface HeaderProps {
@@ -10,6 +10,7 @@ interface HeaderProps {
   onEndTurn: () => void;
   selectedUnit: Unit | null;
   hoveredHexCoord: Coordinate | null;
+  weather: WeatherType;
 }
 
 const TeamInfo: React.FC<{ team: Team; units: Unit[]; isActive: boolean }> = ({ team, units, isActive }) => {
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   onEndTurn,
   selectedUnit,
   hoveredHexCoord,
+  weather,
 }) => {
   return (
     <header className="bg-gray-800 text-white p-2 shadow-md z-10 flex justify-between items-center border-b border-gray-700">
@@ -37,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
         <TeamInfo team="Blue" units={units} isActive={activeTeam === 'Blue'} />
         <div className="text-center">
             <h1 className="text-2xl font-bold tracking-wider">Turn {turn}</h1>
-            <p className="text-sm text-gray-400">{activeTeam}'s Turn</p>
+            <p className="text-sm text-gray-400">Weather: {weather}</p> {/* Weather Display */}
         </div>
         <TeamInfo team="Red" units={units} isActive={activeTeam === 'Red'} />
       </div>

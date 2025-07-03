@@ -1,5 +1,6 @@
 
 export type Team = 'Blue' | 'Red';
+export type WeatherType = 'Sunny' | 'Rain' | 'HeavyRain' | 'Storm';
 export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar';
 export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City';
 export type GameState = 'playing' | 'gameOver';
