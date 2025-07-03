@@ -89,51 +89,46 @@ const App: React.FC = () => {
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
-
-        // In handleEndTurn, replace the simple weather change logic with this:
-if (nextTeam === 'Blue') {
-    setTurn(t => t + 1);
-
-    const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain'];
-    const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
-    setWeather(nextWeather);
-
-    let newDuration = weatherDuration;
-    if (nextWeather === weather) {
-        newDuration++;
-    } else {
-        newDuration = 1;
-    }
-    setWeatherDuration(newDuration);
-
-    // Terrain Change Logic
-    const newBoardLayout = new Map(boardLayout);
-    let changed = false;
-
-    if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
-        newBoardLayout.forEach((tile, key) => {
-            if (tile.terrain === 'Plains') {
-                newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
-                changed = true;
+        if (nextTeam === 'Blue') {
+            setTurn(t => t + 1);
+            // Weather update logic
+            const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain'];
+            const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+            let newDuration = weatherDuration;
+            if (nextWeather === 'Rain') {
+                newDuration++; // nextWeatherが'Rain'なら+1
+            } else if (nextWeather === 'HeavyRain') {
+                newDuration += 2; // nextWeatherが'HeavyRain'なら+2
+            } else {
+                newDuration = 0; // 'Sunny'など、その他の天気の場合はリセット
             }
-        });
-    } else if (nextWeather === 'Sunny') {
-         newBoardLayout.forEach((tile, key) => {
-            if (tile.terrain === 'Mud') {
-                newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
-                changed = true;
+            setWeather(nextWeather);
+            setWeatherDuration(newDuration);
+            // Terrain change logic
+            const newBoardLayout = new Map(boardLayout);
+            let changed = false;
+            if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
+                newBoardLayout.forEach((tile, key) => {
+                    if (tile.terrain === 'Plains') {
+                        newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
+                        changed = true;
+                    }
+                });
+            } else if (nextWeather === 'Sunny') {
+                newBoardLayout.forEach((tile, key) => {
+                    if (tile.terrain === 'Mud') {
+                        newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
+                        changed = true;
+                    }
+                });
             }
-        });
-    }
-    
-    if (changed) {
-      setBoardLayout(newBoardLayout);
-    }
-}
-
+            if (changed) {
+                setBoardLayout(newBoardLayout);
+            }
+        }
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
-    }, [activeTeam, units]);
+    }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
     const checkWinCondition = useCallback((currentUnits: Unit[]) => {
         const blueUnits = currentUnits.filter(u => u.team === 'Blue');

@@ -10,7 +10,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
   Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
   Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
   ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
-  Artillery: { maxHp: 12, attack: 8, defense: 3, movement: 2, canCounterAttack: false, attackRange: { min: 2, max: 5 } },
+  Artillery: { maxHp: 12, attack: 8, defense: 3, movement: 1, canCounterAttack: false, attackRange: { min: 2, max: 5 } },
 };
 
 export const TERRAIN_STATS: Record<string, TerrainStats> = {
@@ -22,7 +22,7 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
   Forest: {
     defenseBonus: 2,
     attackBonus: 0,
-    movementCost: { Infantry: 1, Tank: 2, ArmoredCar: 2, Artillery: 2, default: 2 },
+    movementCost: { Infantry: 1, Tank: 2, ArmoredCar: 2, Artillery: 1, default: 2 },
   },
   Mountain: {
     defenseBonus: 3,
@@ -52,7 +52,7 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
   Mud: {
     defenseBonus: -1,
     attackBonus: 0,
-    movementCost: { Infantry: 2, Tank: 4, ArmoredCar: 3, default: 3 },
+    movementCost: { Infantry: 2, Tank: 3, ArmoredCar: 4, default: 1},
   },
 };
 
