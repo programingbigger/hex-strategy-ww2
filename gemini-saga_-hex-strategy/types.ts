@@ -1,9 +1,10 @@
 
 export type Team = 'Blue' | 'Red';
 export type WeatherType = 'Sunny' | 'Rain' | 'HeavyRain' | 'Storm';
-export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar';
+export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiTank';
 export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud';
 export type GameState = 'playing' | 'gameOver';
+export type UnitClass = 'vehicle' | 'infantry';
 
 export interface Coordinate {
   x: number;
@@ -17,7 +18,9 @@ export interface Unit {
   hp: number;
   maxHp: number;
   attack: number;
+  attackVs?: { [key in UnitClass]?: number }; // Optional: Special attack values
   defense: number;
+  defenseVs?: { [key in UnitClass]?: number }; // Optional: Special defense values
   movement: number;
   attackRange: { min: number; max: number };
   x: number;
@@ -25,6 +28,7 @@ export interface Unit {
   moved: boolean;
   attacked: boolean;
   canCounterAttack: boolean;
+  unitClass: UnitClass;
 }
 
 export interface Tile {
@@ -39,8 +43,13 @@ export type BoardLayout = Map<string, Tile>;
 export interface UnitStats {
   maxHp: number;
   attack: number;
+  attackVs?: { [key in UnitClass]?: number };
   defense: number;
+  defenseVs?: { [key in UnitClass]?: number };
   movement: number;
+  attackRange: { min: number; max: number };
+  canCounterAttack: boolean;
+  unitClass: UnitClass;
 }
 
 export interface TerrainStats {
