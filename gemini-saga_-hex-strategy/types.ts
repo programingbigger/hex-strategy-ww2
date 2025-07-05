@@ -57,3 +57,10 @@ export interface BattleReport {
   damage: number;
   report: string;
 }
+
+export interface GameStateSnapshot {
+    units: Unit[];
+    turn: number;
+    activeTeam: Team;
+    selectedUnitId: string | null;
+}

@@ -6,7 +6,7 @@ import { BattleReportModal } from './components/BattleReportModal';
 import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
 import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
-import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType } from './types';
+import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType, GameStateSnapshot } from './types';
 
 const App: React.FC = () => {
     const [gameState, setGameState] = useState<GameState>('playing');
@@ -21,6 +21,17 @@ const App: React.FC = () => {
     const [winner, setWinner] = useState<Team | null>(null);
     const [weather, setWeather] = useState<WeatherType>('Sunny');
     const [weatherDuration, setWeatherDuration] = useState(0);
+    const [history, setHistory] = useState<GameStateSnapshot[]>([]);
+
+    const saveStateToHistory = useCallback(() => {
+        const snapshot: GameStateSnapshot = {
+            units: JSON.parse(JSON.stringify(units)), // Deep copy
+            turn,
+            activeTeam,
+            selectedUnitId,
+        };
+        setHistory(prevHistory => [...prevHistory, snapshot]);
+    }, [units, turn, activeTeam, selectedUnitId]);
 
     const initializeGame = useCallback(() => {
         const newBoardLayout = generateBoardLayout();
@@ -54,6 +65,7 @@ const App: React.FC = () => {
         setIsLoadingAI(false);
         setGameState('playing');
         setWinner(null);
+        setHistory([]);
     }, []);
 
     useEffect(() => {
@@ -240,12 +252,14 @@ const App: React.FC = () => {
 
             const isAttackable = attackableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isAttackable && unitOnHex && unitOnHex.team !== selectedUnit.team) {
+                saveStateToHistory();
                 handleAttack(selectedUnit, unitOnHex);
                 return;
             }
 
             const isReachable = reachableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isReachable && !unitOnHex) {
+                saveStateToHistory();
                 // Move unit
                 setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true } : u));
                 // Don't deselect, allow for attack or wait
@@ -267,18 +281,17 @@ const App: React.FC = () => {
         if (!selectedUnit) return;
 
         if (action === 'wait') {
+            saveStateToHistory();
             setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
             setSelectedUnitId(null);
         } else if (action === 'undo') {
-            // This logic requires storing previous position. For simplicity, we can revert to original position this turn.
-            // A more robust implementation would store pre-move state.
-            // For now, let's assume undo is only possible before an attack.
-            const originalUnitState = units.find(u => u.id === selectedUnit.id);
-            if(originalUnitState) {
-                // This is a simplified undo. It just deselects the unit if it moved.
-                // A better approach would be to store the unit's state before moving.
-                // For this implementation, we will just deselect to keep it simple.
-                 setSelectedUnitId(null);
+            if (history.length > 0) {
+                const lastState = history[history.length - 1];
+                setUnits(lastState.units);
+                setTurn(lastState.turn);
+                setActiveTeam(lastState.activeTeam);
+                setSelectedUnitId(lastState.selectedUnitId);
+                setHistory(prevHistory => prevHistory.slice(0, -1));
             }
         }
     };
