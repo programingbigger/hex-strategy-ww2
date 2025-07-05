@@ -7,9 +7,10 @@ export const MAP_MAX_R = 6;
 export const HEX_SIZE = 48;
 
 export const UNIT_STATS: Record<UnitType, UnitStats> = {
-  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3 },
-  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4 },
-  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6 },
+  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
+  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
+  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6, canCounterAttack: true, attackRange: { min: 1, max: 1 } },
+  Artillery: { maxHp: 12, attack: 8, defense: 3, movement: 1, canCounterAttack: false, attackRange: { min: 2, max: 5 } },
 };
 
 export const TERRAIN_STATS: Record<string, TerrainStats> = {
@@ -21,17 +22,17 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
   Forest: {
     defenseBonus: 2,
     attackBonus: 0,
-    movementCost: { Infantry: 1, Tank: 3, ArmoredCar: 2, default: 2 },
+    movementCost: { Infantry: 1, Tank: 2, ArmoredCar: 2, Artillery: 1, default: 2 },
   },
   Mountain: {
     defenseBonus: 3,
     attackBonus: 2,
-    movementCost: { Infantry: 2, default: Infinity },
+    movementCost: { Infantry: 2, Artillery: Infinity, default: Infinity },
   },
   River: {
     defenseBonus: -2,
     attackBonus: -1,
-    movementCost: { Infantry: 2, default: Infinity },
+    movementCost: { Infantry: 2, Artillery: Infinity, default: Infinity },
   },
   Road: {
     defenseBonus: -1,
@@ -42,6 +43,16 @@ export const TERRAIN_STATS: Record<string, TerrainStats> = {
     defenseBonus: -1,
     attackBonus: 0,
     movementCost: { default: 1 },
+  },
+  City: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: { default: 1 },
+  },
+  Mud: {
+    defenseBonus: -1,
+    attackBonus: 0,
+    movementCost: { Infantry: 2, Tank: 3, ArmoredCar: 4, default: 1},
   },
 };
 
@@ -57,6 +68,7 @@ export const INITIAL_UNIT_POSITIONS: Record<Team, Array<Coordinate & { type: Uni
         { x: -7, y: 1, type: 'ArmoredCar' },
         { x: -7, y: 2, type: 'ArmoredCar' },
         { x: -7, y: -1, type: 'ArmoredCar' },
+        { x: -8, y: 0, type: 'Artillery' },
     ],
     Red: [
         { x: 5, y: 0, type: 'Tank' },
@@ -68,6 +80,7 @@ export const INITIAL_UNIT_POSITIONS: Record<Team, Array<Coordinate & { type: Uni
         { x: 7, y: 0, type: 'ArmoredCar' },
         { x: 7, y: -1, type: 'ArmoredCar' },
         { x: 7, y: 1, type: 'ArmoredCar' },
+        { x: 8, y: 0, type: 'Artillery' },
     ],
 };
 

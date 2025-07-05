@@ -1,7 +1,8 @@
 
 export type Team = 'Blue' | 'Red';
+export type WeatherType = 'Sunny' | 'Rain' | 'HeavyRain' | 'Storm';
 export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar';
-export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge';
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud';
 export type GameState = 'playing' | 'gameOver';
 
 export interface Coordinate {
@@ -18,16 +19,19 @@ export interface Unit {
   attack: number;
   defense: number;
   movement: number;
+  attackRange: { min: number; max: number };
   x: number;
   y: number;
   moved: boolean;
   attacked: boolean;
+  canCounterAttack: boolean;
 }
 
 export interface Tile {
   x: number;
   y: number;
   terrain: TerrainType;
+  zocByTeam?: Team; // Optional, indicates which team's ZOC this tile is in
 }
 
 export type BoardLayout = Map<string, Tile>;
@@ -52,4 +56,11 @@ export interface BattleReport {
   defender: Unit;
   damage: number;
   report: string;
+}
+
+export interface GameStateSnapshot {
+    units: Unit[];
+    turn: number;
+    activeTeam: Team;
+    selectedUnitId: string | null;
 }

@@ -3,7 +3,7 @@ import { Hexagon } from './Hexagon';
 import { UnitIcon } from './Icons';
 import { axialToPixel, coordToString } from '../utils/map';
 import { HEX_SIZE, TEAM_COLORS } from '../constants';
-import type { BoardLayout, Unit, Coordinate, Team } from '../types';
+import type { BoardLayout, Unit, Coordinate, Team, WeatherType } from '../types';
 
 interface GameBoardProps {
   boardLayout: BoardLayout;
@@ -14,6 +14,7 @@ interface GameBoardProps {
   reachableTiles: Coordinate[];
   attackableTiles: Coordinate[];
   activeTeam: Team;
+  weather: WeatherType;
 }
 
 export const GameBoard: React.FC<GameBoardProps> = ({
@@ -24,6 +25,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   selectedUnit,
   reachableTiles,
   attackableTiles,
+  weather,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewBox, setViewBox] = useState({ x: 0, y: 0, width: 1, height: 1 });
@@ -200,6 +202,38 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           })}
         </g>
       </svg>
+      {['Rain', 'HeavyRain', 'Storm'].includes(weather) && (
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-blue-900 opacity-20"></div>
+          {/* A simple rain effect using CSS */}
+          <style>{`
+            .rain-drop {
+              position: absolute;
+              bottom: 100%;
+              width: 2px;
+              height: 80px;
+              background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4));
+              animation: fall 0.5s linear infinite;
+            }
+            @keyframes fall {
+              to {
+                transform: translateY(100vh);
+              }
+            }
+          `}</style>
+          {Array.from({ length: 100 }).map((_, i) => (
+            <div
+              key={i}
+              className="rain-drop"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 2}s`,
+                animationDuration: `${0.5 + Math.random() * 0.3}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

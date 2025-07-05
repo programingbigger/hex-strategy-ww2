@@ -6,7 +6,7 @@ import { BattleReportModal } from './components/BattleReportModal';
 import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
 import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
-import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState } from './types';
+import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType, GameStateSnapshot } from './types';
 
 const App: React.FC = () => {
     const [gameState, setGameState] = useState<GameState>('playing');
@@ -19,6 +19,19 @@ const App: React.FC = () => {
     const [battleReport, setBattleReport] = useState<BattleReport | null>(null);
     const [isLoadingAI, setIsLoadingAI] = useState<boolean>(false);
     const [winner, setWinner] = useState<Team | null>(null);
+    const [weather, setWeather] = useState<WeatherType>('Sunny');
+    const [weatherDuration, setWeatherDuration] = useState(0);
+    const [history, setHistory] = useState<GameStateSnapshot[]>([]);
+
+    const saveStateToHistory = useCallback(() => {
+        const snapshot: GameStateSnapshot = {
+            units: JSON.parse(JSON.stringify(units)), // Deep copy
+            turn,
+            activeTeam,
+            selectedUnitId,
+        };
+        setHistory(prevHistory => [...prevHistory, snapshot]);
+    }, [units, turn, activeTeam, selectedUnitId]);
 
     const initializeGame = useCallback(() => {
         const newBoardLayout = generateBoardLayout();
@@ -52,6 +65,7 @@ const App: React.FC = () => {
         setIsLoadingAI(false);
         setGameState('playing');
         setWinner(null);
+        setHistory([]);
     }, []);
 
     useEffect(() => {
@@ -62,26 +76,71 @@ const App: React.FC = () => {
 
     const reachableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.moved) return [];
-        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units);
+        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units, activeTeam);
     }, [selectedUnit, boardLayout, units]);
 
     const attackableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.attacked) return [];
-        const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
-        return neighbors.filter(coord =>
+
+        const attackRangeMin = selectedUnit.attackRange.min;
+        const attackRangeMax = selectedUnit.attackRange.max;
+
+        const potentialTargets: Coordinate[] = [];
+        for (const [key, tile] of boardLayout.entries()) {
+            const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
+            if (distance >= attackRangeMin && distance <= attackRangeMax) {
+                potentialTargets.push(tile);
+            }
+        }
+
+        return potentialTargets.filter(coord =>
             units.some(u => u.x === coord.x && u.y === coord.y && u.team !== selectedUnit.team)
         );
-    }, [selectedUnit, units]);
+    }, [selectedUnit, units, boardLayout]);
 
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
         if (nextTeam === 'Blue') {
             setTurn(t => t + 1);
+            // Weather update logic
+            const weathers: WeatherType[] = ['Sunny', 'Rain', 'HeavyRain'];
+            const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+            let newDuration = weatherDuration;
+            if (nextWeather === 'Rain') {
+                newDuration++; // nextWeatherが'Rain'なら+1
+            } else if (nextWeather === 'HeavyRain') {
+                newDuration += 2; // nextWeatherが'HeavyRain'なら+2
+            } else {
+                newDuration = 0; // 'Sunny'など、その他の天気の場合はリセット
+            }
+            setWeather(nextWeather);
+            setWeatherDuration(newDuration);
+            // Terrain change logic
+            const newBoardLayout = new Map(boardLayout);
+            let changed = false;
+            if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
+                newBoardLayout.forEach((tile, key) => {
+                    if (tile.terrain === 'Plains') {
+                        newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
+                        changed = true;
+                    }
+                });
+            } else if (nextWeather === 'Sunny') {
+                newBoardLayout.forEach((tile, key) => {
+                    if (tile.terrain === 'Mud') {
+                        newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
+                        changed = true;
+                    }
+                });
+            }
+            if (changed) {
+                setBoardLayout(newBoardLayout);
+            }
         }
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
-    }, [activeTeam, units]);
+    }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
     const checkWinCondition = useCallback((currentUnits: Unit[]) => {
         const blueUnits = currentUnits.filter(u => u.team === 'Blue');
@@ -106,7 +165,12 @@ const App: React.FC = () => {
         const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
 
         const attackPower = attacker.attack + attackerTerrainStats.attackBonus;
-        const defensePower = defender.defense + defenderTerrainStats.defenseBonus;
+        let defensePower = defender.defense + defenderTerrainStats.defenseBonus;
+
+        // Indirect fire: Artillery ignores terrain defense bonus
+        if (attacker.type === 'Artillery') {
+            defensePower = defender.defense; // Only base defense
+        }
 
         const damage = Math.max(1, attackPower - defensePower);
 
@@ -121,7 +185,7 @@ const App: React.FC = () => {
             report: reportText,
         });
         
-        const newUnits = units.map(u => {
+        let updatedUnits = units.map(u => {
             if (u.id === defender.id) {
                 return { ...u, hp: Math.max(0, u.hp - damage) };
             }
@@ -129,11 +193,47 @@ const App: React.FC = () => {
                 return { ...u, attacked: true, moved: true };
             }
             return u;
-        }).filter(u => u.hp > 0);
+        });
+
+        // Filter out destroyed units after initial attack
+        updatedUnits = updatedUnits.filter(u => u.hp > 0);
+
+        // Counter-attack logic
+        const currentDefender = updatedUnits.find(u => u.id === defender.id);
+        if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && currentDefender.type !== 'Artillery') {
+            const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
+            const counterDefenderTile = boardLayout.get(coordToString(attacker));
+
+            if (counterAttackerTile && counterDefenderTile) {
+                const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
+                const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
+
+                const counterAttackPower = currentDefender.attack + counterAttackerTerrainStats.attackBonus;
+                const counterDefensePower = attacker.defense + counterDefenderTerrainStats.defenseBonus;
+
+                const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
+
+                const counterReportText = await generateBattleReport(currentDefender, attacker, counterDefenderTile.terrain, counterDamage);
+
+                setBattleReport(prevReport => ({
+                    attacker: prevReport!.attacker,
+                    defender: prevReport!.defender,
+                    damage: prevReport!.damage,
+                    report: prevReport!.report + `\n\n**Counter-attack!**\n` + counterReportText,
+                }));
+
+                updatedUnits = updatedUnits.map(u => {
+                    if (u.id === attacker.id) {
+                        return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+                    }
+                    return u;
+                }).filter(u => u.hp > 0); // Filter again after counter-attack
+            }
+        }
         
-        setUnits(newUnits);
+        setUnits(updatedUnits);
         setSelectedUnitId(null);
-        checkWinCondition(newUnits);
+        checkWinCondition(updatedUnits);
 
     }, [boardLayout, units, checkWinCondition]);
 
@@ -152,12 +252,14 @@ const App: React.FC = () => {
 
             const isAttackable = attackableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isAttackable && unitOnHex && unitOnHex.team !== selectedUnit.team) {
+                saveStateToHistory();
                 handleAttack(selectedUnit, unitOnHex);
                 return;
             }
 
             const isReachable = reachableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isReachable && !unitOnHex) {
+                saveStateToHistory();
                 // Move unit
                 setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true } : u));
                 // Don't deselect, allow for attack or wait
@@ -179,18 +281,17 @@ const App: React.FC = () => {
         if (!selectedUnit) return;
 
         if (action === 'wait') {
+            saveStateToHistory();
             setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
             setSelectedUnitId(null);
         } else if (action === 'undo') {
-            // This logic requires storing previous position. For simplicity, we can revert to original position this turn.
-            // A more robust implementation would store pre-move state.
-            // For now, let's assume undo is only possible before an attack.
-            const originalUnitState = units.find(u => u.id === selectedUnit.id);
-            if(originalUnitState) {
-                // This is a simplified undo. It just deselects the unit if it moved.
-                // A better approach would be to store the unit's state before moving.
-                // For this implementation, we will just deselect to keep it simple.
-                 setSelectedUnitId(null);
+            if (history.length > 0) {
+                const lastState = history[history.length - 1];
+                setUnits(lastState.units);
+                setTurn(lastState.turn);
+                setActiveTeam(lastState.activeTeam);
+                setSelectedUnitId(lastState.selectedUnitId);
+                setHistory(prevHistory => prevHistory.slice(0, -1));
             }
         }
     };
@@ -204,6 +305,7 @@ const App: React.FC = () => {
                 onEndTurn={handleEndTurn}
                 selectedUnit={selectedUnit}
                 hoveredHexCoord={hoveredHex}
+                weather={weather}
             />
             <div className="flex-grow flex overflow-hidden relative">
                 <GameBoard
@@ -215,6 +317,7 @@ const App: React.FC = () => {
                     reachableTiles={reachableTiles}
                     attackableTiles={attackableTiles}
                     activeTeam={activeTeam}
+                    weather={weather}
                 />
                 <InfoPanel
                     hoveredHex={hoveredHex ? boardLayout.get(coordToString(hoveredHex)) : null}
