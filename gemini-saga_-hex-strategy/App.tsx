@@ -164,12 +164,12 @@ const App: React.FC = () => {
         const attackerTerrainStats = TERRAIN_STATS[attackerTile.terrain];
         const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
 
-        const attackPower = attacker.attack + attackerTerrainStats.attackBonus;
-        let defensePower = defender.defense + defenderTerrainStats.defenseBonus;
+        const attackPower = (attacker.attackVs?.[defender.unitClass] ?? attacker.attack) + attackerTerrainStats.attackBonus;
+        let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
 
         // Indirect fire: Artillery ignores terrain defense bonus
         if (attacker.type === 'Artillery') {
-            defensePower = defender.defense; // Only base defense
+            defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense); // Ignores terrain, but not special defense
         }
 
         const damage = Math.max(1, attackPower - defensePower);
@@ -208,8 +208,8 @@ const App: React.FC = () => {
                 const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
                 const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
 
-                const counterAttackPower = currentDefender.attack + counterAttackerTerrainStats.attackBonus;
-                const counterDefensePower = attacker.defense + counterDefenderTerrainStats.defenseBonus;
+                const counterAttackPower = (currentDefender.attackVs?.[attacker.unitClass] ?? currentDefender.attack) + counterAttackerTerrainStats.attackBonus;
+                const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
 
                 const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
 
