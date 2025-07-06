@@ -74,6 +74,11 @@ const App: React.FC = () => {
 
     const selectedUnit = useMemo(() => units.find(u => u.id === selectedUnitId), [units, selectedUnitId]);
 
+    const selectedUnitTile = useMemo(() => {
+        if (!selectedUnit) return null;
+        return boardLayout.get(coordToString(selectedUnit)) ?? null;
+    }, [selectedUnit, boardLayout]);
+
     const reachableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.moved) return [];
         return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units, activeTeam);
@@ -310,13 +315,26 @@ const App: React.FC = () => {
         }
     }, [gameState, isLoadingAI, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack]);
 
-    const handleAction = (action: 'wait' | 'undo') => {
+    const handleAction = (action: 'wait' | 'undo' | 'capture') => {
         if (!selectedUnit) return;
 
         if (action === 'wait') {
             saveStateToHistory();
             setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
             setSelectedUnitId(null);
+        } else if (action === 'capture') {
+            if (selectedUnit.type === 'Infantry' && selectedUnitTile?.terrain === 'City') {
+                saveStateToHistory();
+                const newBoardLayout = new Map(boardLayout);
+                const tileKey = coordToString(selectedUnit);
+                const currentTile = newBoardLayout.get(tileKey);
+                if (currentTile) {
+                    newBoardLayout.set(tileKey, { ...currentTile, capturingProcess: { by: selectedUnit.id, team: selectedUnit.team, turnsLeft: 2 } });
+                    setBoardLayout(newBoardLayout);
+                }
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
+                setSelectedUnitId(null);
+            }
         } else if (action === 'undo') {
             if (history.length > 0) {
                 const lastState = history[history.length - 1];
@@ -359,6 +377,7 @@ const App: React.FC = () => {
                     winner={winner}
                     onRestart={initializeGame}
                     selectedUnit={selectedUnit}
+                    selectedUnitTile={selectedUnitTile}
                     onAction={handleAction}
                 />
             </div>

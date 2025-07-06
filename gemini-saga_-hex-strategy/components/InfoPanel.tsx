@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { TERRAIN_STATS, UNIT_STATS } from '../constants';
 import type { Tile, Unit, GameState, Team, UnitType } from '../types';
@@ -10,7 +9,8 @@ interface InfoPanelProps {
   winner: Team | null;
   onRestart: () => void;
   selectedUnit: Unit | null;
-  onAction: (action: 'wait' | 'undo') => void;
+  selectedUnitTile: Tile | null;
+  onAction: (action: 'wait' | 'undo' | 'capture') => void;
 }
 
 const TerrainInfo: React.FC<{ tile: Tile }> = ({ tile }) => {
@@ -46,11 +46,21 @@ const UnitInfo: React.FC<{ unit: Unit }> = ({ unit }) => {
   );
 };
 
-const ActionPanel: React.FC<{ unit: Unit, onAction: (action: 'wait' | 'undo') => void }> = ({ unit, onAction }) => {
+const ActionPanel: React.FC<{ unit: Unit, tile: Tile | null, onAction: (action: 'wait' | 'undo' | 'capture') => void }> = ({ unit, tile, onAction }) => {
+  const canCapture = unit.type === 'Infantry' && tile?.terrain === 'City' && tile.owner !== unit.team;
+
   return (
     <div className="mt-4">
       <h3 className="text-xl font-bold mb-2 text-green-400">Actions</h3>
       <div className="flex flex-col gap-2">
+        {canCapture && (
+            <button
+                onClick={() => onAction('capture')}
+                className="bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+                Capture
+            </button>
+        )}
          <button 
           onClick={() => onAction('wait')}
           disabled={unit.attacked || !unit.moved}
@@ -70,7 +80,7 @@ const ActionPanel: React.FC<{ unit: Unit, onAction: (action: 'wait' | 'undo') =>
   )
 }
 
-export const InfoPanel: React.FC<InfoPanelProps> = ({ hoveredHex, hoveredUnit, gameState, winner, onRestart, selectedUnit, onAction }) => {
+export const InfoPanel: React.FC<InfoPanelProps> = ({ hoveredHex, hoveredUnit, gameState, winner, onRestart, selectedUnit, selectedUnitTile, onAction }) => {
   if (gameState === 'gameOver') {
     return (
       <div className="w-64 bg-gray-800 p-4 flex-shrink-0 flex flex-col items-center justify-center border-l-2 border-gray-700">
@@ -92,7 +102,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ hoveredHex, hoveredUnit, g
         <div>
           <h2 className="text-2xl font-bold border-b pb-2 border-gray-600">Selected Unit</h2>
           <UnitInfo unit={selectedUnit} />
-          {selectedUnit.moved && !selectedUnit.attacked && <ActionPanel unit={selectedUnit} onAction={onAction} />}
+          {selectedUnit.moved && !selectedUnit.attacked && <ActionPanel unit={selectedUnit} tile={selectedUnitTile} onAction={onAction} />}
         </div>
       ) : (
         <div>
