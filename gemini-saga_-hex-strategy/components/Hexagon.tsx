@@ -1,12 +1,13 @@
 
 import React from 'react';
-import type { Coordinate, TerrainType } from '../types';
+import type { Coordinate, TerrainType, Team } from '../types';
 import { axialToPixel } from '../utils/map';
 
 interface HexagonProps {
   coord: Coordinate;
   size: number;
   terrain: TerrainType;
+  owner?: Team | null;
   onClick: () => void;
   onMouseEnter: () => void;
   isReachable: boolean;
@@ -21,14 +22,20 @@ const TERRAIN_COLORS: Record<TerrainType, string> = {
   River: '#4A90E2',
   Road: '#c0c0c0',     // Silver
   Bridge: '#808080',    // Gray
-  City: '#ffffff',      // Light Gray
+  City: '#FFFFFF',      // Light Gray
   Mud: '#A1662F',
+};
+
+const TEAM_COLORS: Record<Team, string> = {
+    Blue: '#3333CC', // 3333CCに変更
+    Red: '#D0021B',
 };
 
 export const Hexagon: React.FC<HexagonProps> = ({
   coord,
   size,
   terrain,
+  owner,
   onClick,
   onMouseEnter,
   isReachable,
@@ -44,7 +51,7 @@ export const Hexagon: React.FC<HexagonProps> = ({
     return `${pointX},${pointY}`;
   }).join(' ');
 
-  const fillColor = TERRAIN_COLORS[terrain] || '#cccccc';
+  const fillColor = terrain === 'City' && owner ? TEAM_COLORS[owner] : TERRAIN_COLORS[terrain] || '#cccccc';
 
   return (
     <g onClick={onClick} onMouseEnter={onMouseEnter} className="cursor-pointer">

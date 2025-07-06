@@ -101,6 +101,39 @@ const App: React.FC = () => {
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
+
+        const newBoardLayout = new Map(boardLayout);
+
+        // City capture logic
+        newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'City') {
+                const unitOnTile = units.find(u => u.x === tile.x && u.y === tile.y);
+
+                if (unitOnTile && unitOnTile.type === 'Infantry') {
+                    if (tile.owner !== unitOnTile.team) {
+                        if (tile.capturingProcess && tile.capturingProcess.team === unitOnTile.team) {
+                            // Continue capturing
+                            const turnsLeft = tile.capturingProcess.turnsLeft - 1;
+                            if (turnsLeft === 0) {
+                                newBoardLayout.set(key, { ...tile, owner: unitOnTile.team, capturingProcess: null });
+                            } else {
+                                newBoardLayout.set(key, { ...tile, capturingProcess: { ...tile.capturingProcess, turnsLeft } });
+                            }
+                        } else {
+                            // Start new capture
+                            newBoardLayout.set(key, { ...tile, capturingProcess: { by: unitOnTile.id, team: unitOnTile.team, turnsLeft: 2 } });
+                        }
+                    } else {
+                        // City is already owned by the unit's team, so no capture process needed.
+                        newBoardLayout.set(key, { ...tile, capturingProcess: null });
+                    }
+                } else {
+                    // No infantry on the tile, or a non-infantry unit is on it, so reset capture process.
+                    newBoardLayout.set(key, { ...tile, capturingProcess: null });
+                }
+            }
+        });
+
         if (nextTeam === 'Blue') {
             setTurn(t => t + 1);
             // Weather update logic
@@ -117,7 +150,6 @@ const App: React.FC = () => {
             setWeather(nextWeather);
             setWeatherDuration(newDuration);
             // Terrain change logic
-            const newBoardLayout = new Map(boardLayout);
             let changed = false;
             if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
                 newBoardLayout.forEach((tile, key) => {
@@ -138,6 +170,7 @@ const App: React.FC = () => {
                 setBoardLayout(newBoardLayout);
             }
         }
+        setBoardLayout(newBoardLayout);
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
     }, [activeTeam, units, weather, weatherDuration, boardLayout]);
