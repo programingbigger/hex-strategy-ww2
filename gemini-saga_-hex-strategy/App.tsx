@@ -5,7 +5,7 @@ import { InfoPanel } from './components/InfoPanel';
 import { BattleReportModal } from './components/BattleReportModal';
 import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
-import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
+import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS, CITY_HP, CITY_HEAL_RATE, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP } from './constants';
 import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType, GameStateSnapshot } from './types';
 
 const App: React.FC = () => {
@@ -109,33 +109,11 @@ const App: React.FC = () => {
 
         const newBoardLayout = new Map(boardLayout);
 
-        // City capture logic
+        // City HP recovery logic
         newBoardLayout.forEach((tile, key) => {
-            if (tile.terrain === 'City') {
-                const unitOnTile = units.find(u => u.x === tile.x && u.y === tile.y);
-
-                if (unitOnTile && unitOnTile.type === 'Infantry') {
-                    if (tile.owner !== unitOnTile.team) {
-                        if (tile.capturingProcess && tile.capturingProcess.team === unitOnTile.team) {
-                            // Continue capturing
-                            const turnsLeft = tile.capturingProcess.turnsLeft - 1;
-                            if (turnsLeft === 0) {
-                                newBoardLayout.set(key, { ...tile, owner: unitOnTile.team, capturingProcess: null });
-                            } else {
-                                newBoardLayout.set(key, { ...tile, capturingProcess: { ...tile.capturingProcess, turnsLeft } });
-                            }
-                        } else {
-                            // Start new capture
-                            newBoardLayout.set(key, { ...tile, capturingProcess: { by: unitOnTile.id, team: unitOnTile.team, turnsLeft: 2 } });
-                        }
-                    } else {
-                        // City is already owned by the unit's team, so no capture process needed.
-                        newBoardLayout.set(key, { ...tile, capturingProcess: null });
-                    }
-                } else {
-                    // No infantry on the tile, or a non-infantry unit is on it, so reset capture process.
-                    newBoardLayout.set(key, { ...tile, capturingProcess: null });
-                }
+            if (tile.terrain === 'City' && tile.owner !== activeTeam) {
+                const newHp = Math.min(tile.maxHp || CITY_HP, (tile.hp || 0) + CITY_HEAL_RATE);
+                newBoardLayout.set(key, { ...tile, hp: newHp });
             }
         });
 
@@ -178,18 +156,36 @@ const App: React.FC = () => {
         setBoardLayout(newBoardLayout);
         setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
         setSelectedUnitId(null);
+        checkWinCondition(units, newBoardLayout);
     }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
-    const checkWinCondition = useCallback((currentUnits: Unit[]) => {
+    const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
         const blueUnits = currentUnits.filter(u => u.team === 'Blue');
         const redUnits = currentUnits.filter(u => u.team === 'Red');
 
         if (redUnits.length === 0) {
             setGameState('gameOver');
             setWinner('Blue');
-        } else if (blueUnits.length === 0) {
+            return;
+        }
+        if (blueUnits.length === 0) {
             setGameState('gameOver');
             setWinner('Red');
+            return;
+        }
+
+        const cities = Array.from(currentBoard.values()).filter(t => t.terrain === 'City');
+        const blueCities = cities.filter(c => c.owner === 'Blue').length;
+        const redCities = cities.filter(c => c.owner === 'Red').length;
+
+        if (cities.length > 0) {
+            if (blueCities === cities.length) {
+                setGameState('gameOver');
+                setWinner('Blue');
+            } else if (redCities === cities.length) {
+                setGameState('gameOver');
+                setWinner('Red');
+            }
         }
     }, []);
     
@@ -271,7 +267,7 @@ const App: React.FC = () => {
         
         setUnits(updatedUnits);
         setSelectedUnitId(null);
-        checkWinCondition(updatedUnits);
+        checkWinCondition(updatedUnits, boardLayout);
 
     }, [boardLayout, units, checkWinCondition]);
 
@@ -328,8 +324,17 @@ const App: React.FC = () => {
                 const newBoardLayout = new Map(boardLayout);
                 const tileKey = coordToString(selectedUnit);
                 const currentTile = newBoardLayout.get(tileKey);
-                if (currentTile) {
-                    newBoardLayout.set(tileKey, { ...currentTile, capturingProcess: { by: selectedUnit.id, team: selectedUnit.team, turnsLeft: 2 } });
+
+                if (currentTile && currentTile.hp && currentTile.hp > 0) {
+                    const damageRange = selectedUnit.hp > selectedUnit.maxHp / 2 ? CAPTURE_DAMAGE_HIGH_HP : CAPTURE_DAMAGE_LOW_HP;
+                    const damage = Math.floor(Math.random() * (damageRange.max - damageRange.min + 1)) + damageRange.min;
+                    const newHp = Math.max(0, currentTile.hp - damage);
+
+                    if (newHp === 0) {
+                        newBoardLayout.set(tileKey, { ...currentTile, hp: 4, owner: selectedUnit.team });
+                    } else {
+                        newBoardLayout.set(tileKey, { ...currentTile, hp: newHp });
+                    }
                     setBoardLayout(newBoardLayout);
                 }
                 setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));

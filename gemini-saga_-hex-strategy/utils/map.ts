@@ -1,5 +1,5 @@
 import type { Coordinate, BoardLayout, Tile, Unit, TerrainType } from '../types';
-import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R } from '../constants';
+import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R, CITY_HP } from '../constants';
 
 export const coordToString = (coord: Coordinate): string => `${coord.x},${coord.y}`;
 export const stringToCoord = (key: string): Coordinate => {
@@ -62,6 +62,8 @@ export function generateBoardLayout(): BoardLayout {
 
             if (isFarEnough) {
                 candidateTile.terrain = 'City';
+                candidateTile.hp = CITY_HP;
+                candidateTile.maxHp = CITY_HP;
                 cities.push(candidateTile);
                 cityCandidates.splice(candidateIndex, 1); // Remove from candidates
                 placed = true;

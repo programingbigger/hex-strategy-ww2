@@ -37,11 +37,8 @@ export interface Tile {
   terrain: TerrainType;
   zocByTeam?: Team; // Optional, indicates which team's ZOC this tile is in
   owner?: Team | null; // Optional: Indicates the team that owns the city
-  capturingProcess?: {
-    by: Unit['id'];
-    team: Team;
-    turnsLeft: number;
-  } | null;
+  hp?: number;
+  maxHp?: number;
 }
 
 export type BoardLayout = Map<string, Tile>;

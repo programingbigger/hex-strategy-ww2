@@ -100,3 +100,8 @@ export const TEAM_COLORS: Record<Team, { primary: string; secondary: string; hex
     Blue: { primary: 'bg-blue-600', secondary: 'border-blue-400', hex: '#2563eb', glow: 'url(#glow-blue)' },
     Red: { primary: 'bg-red-600', secondary: 'border-red-400', hex: '#dc2626', glow: 'url(#glow-red)' },
 };
+
+export const CITY_HP = 10;
+export const CITY_HEAL_RATE = 2;
+export const CAPTURE_DAMAGE_HIGH_HP = { min: 5, max: 7 };
+export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 4 };

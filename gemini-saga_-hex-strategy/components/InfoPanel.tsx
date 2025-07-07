@@ -18,6 +18,9 @@ const TerrainInfo: React.FC<{ tile: Tile }> = ({ tile }) => {
   return (
     <div>
       <h3 className="text-xl font-bold mb-2 text-yellow-300">{tile.terrain}</h3>
+      {tile.terrain === 'City' && tile.hp !== undefined && (
+        <p>HP: <span className="font-mono">{tile.hp} / {tile.maxHp}</span></p>
+      )}
       <p>Defense Bonus: <span className="font-mono">{stats.defenseBonus > 0 ? `+${stats.defenseBonus}` : stats.defenseBonus}</span></p>
       <p>Attack Bonus: <span className="font-mono">{stats.attackBonus > 0 ? `+${stats.attackBonus}` : stats.attackBonus}</span></p>
       <div className="mt-2 pt-2 border-t border-gray-600">
@@ -70,8 +73,7 @@ const ActionPanel: React.FC<{ unit: Unit, tile: Tile | null, onAction: (action: 
         </button>
         <button 
           onClick={() => onAction('undo')}
-          disabled={unit.attacked || !unit.moved}
-          className="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors"
+          className="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded transition-colors"
         >
           Undo Move
         </button>
