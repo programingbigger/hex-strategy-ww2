@@ -313,7 +313,7 @@ const App: React.FC = () => {
 
     const handleAction = (action: 'wait' | 'undo' | 'capture') => {
         if (!selectedUnit) return;
-
+    
         if (action === 'wait') {
             saveStateToHistory();
             setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
@@ -324,12 +324,12 @@ const App: React.FC = () => {
                 const newBoardLayout = new Map(boardLayout);
                 const tileKey = coordToString(selectedUnit);
                 const currentTile = newBoardLayout.get(tileKey);
-
+    
                 if (currentTile && currentTile.hp && currentTile.hp > 0) {
                     const damageRange = selectedUnit.hp > selectedUnit.maxHp / 2 ? CAPTURE_DAMAGE_HIGH_HP : CAPTURE_DAMAGE_LOW_HP;
                     const damage = Math.floor(Math.random() * (damageRange.max - damageRange.min + 1)) + damageRange.min;
                     const newHp = Math.max(0, currentTile.hp - damage);
-
+    
                     if (newHp === 0) {
                         newBoardLayout.set(tileKey, { ...currentTile, hp: 4, owner: selectedUnit.team });
                     } else {
@@ -337,7 +337,8 @@ const App: React.FC = () => {
                     }
                     setBoardLayout(newBoardLayout);
                 }
-                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, attacked: true } : u));
+                // 修正箇所：占領後にユニットが行動済みになるように moved: true を追加
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
                 setSelectedUnitId(null);
             }
         } else if (action === 'undo') {
