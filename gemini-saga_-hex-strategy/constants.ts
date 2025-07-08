@@ -102,6 +102,6 @@ export const TEAM_COLORS: Record<Team, { primary: string; secondary: string; hex
 };
 
 export const CITY_HP = 10;
-export const CITY_HEAL_RATE = 2;
-export const CAPTURE_DAMAGE_HIGH_HP = { min: 5, max: 7 };
-export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 4 };
+export const CITY_HEAL_RATE = 1;
+export const CAPTURE_DAMAGE_HIGH_HP = { min: 5, max: 8 };
+export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 5 };
