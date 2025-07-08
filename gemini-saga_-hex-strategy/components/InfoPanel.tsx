@@ -71,12 +71,12 @@ const ActionPanel: React.FC<{ unit: Unit, tile: Tile | null, onAction: (action: 
         >
           Wait
         </button>
-        <button 
+        {unit.moved && <button 
           onClick={() => onAction('undo')}
           className="bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded transition-colors"
         >
           Undo Move
-        </button>
+        </button>}
       </div>
     </div>
   )
@@ -104,7 +104,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ hoveredHex, hoveredUnit, g
         <div>
           <h2 className="text-2xl font-bold border-b pb-2 border-gray-600">Selected Unit</h2>
           <UnitInfo unit={selectedUnit} />
-          {selectedUnit.moved && !selectedUnit.attacked && <ActionPanel unit={selectedUnit} tile={selectedUnitTile} onAction={onAction} />}
+          {!selectedUnit.attacked && <ActionPanel unit={selectedUnit} tile={selectedUnitTile} onAction={onAction} />}
         </div>
       ) : (
         <div>

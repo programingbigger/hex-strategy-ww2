@@ -337,7 +337,7 @@ const App: React.FC = () => {
                     }
                     setBoardLayout(newBoardLayout);
                 }
-                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, attacked: true } : u));
                 setSelectedUnitId(null);
             }
         } else if (action === 'undo') {
