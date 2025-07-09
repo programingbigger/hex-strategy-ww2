@@ -3,7 +3,7 @@ import { GameBoard } from './components/GameBoard';
 import { Header } from './components/Header';
 import { InfoPanel } from './components/InfoPanel';
 import { BattleReportModal } from './components/BattleReportModal';
-import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
+import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors, findPath } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
 import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS, CITY_HP, CITY_HEAL_RATE, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP } from './constants';
 import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType, GameStateSnapshot } from './types';
@@ -53,6 +53,7 @@ const App: React.FC = () => {
                     moved: false,
                     attacked: false,
                     xp: 0,
+                    fuel: unitStats.maxFuel, // Initialize fuel
                 });
             });
         }
@@ -82,7 +83,7 @@ const App: React.FC = () => {
 
     const reachableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.moved) return [];
-        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units, activeTeam);
+        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, selectedUnit.fuel, boardLayout, units, activeTeam);
     }, [selectedUnit, boardLayout, units]);
 
     const attackableTiles = useMemo(() => {
@@ -302,8 +303,10 @@ const App: React.FC = () => {
             const isReachable = reachableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isReachable && !unitOnHex) {
                 saveStateToHistory();
-                // Move unit
-                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true } : u));
+                // Move unit and deduct fuel
+                const path = findPath(selectedUnit, coord, boardLayout, units, activeTeam);
+                const fuelCost = path ? path.length - 1 : 0;
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true, fuel: u.fuel - fuelCost } : u));
                 // Don't deselect, allow for attack or wait
                 return;
             }

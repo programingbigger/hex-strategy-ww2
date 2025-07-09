@@ -45,6 +45,7 @@ const UnitInfo: React.FC<{ unit: Unit }> = ({ unit }) => {
       <p>Attack: <span className="font-mono">{unit.attack}</span></p>
       <p>Defense: <span className="font-mono">{unit.defense}</span></p>
       <p>Movement: <span className="font-mono">{unit.movement}</span></p>
+      <p>Fuel: <span className="font-mono">{unit.fuel} / {UNIT_STATS[unit.type].maxFuel}</span></p>
       <p>Status: <span className="font-mono">{unit.moved ? (unit.attacked ? 'Acted' : 'Moved') : 'Ready'}</span></p>
     </div>
   );

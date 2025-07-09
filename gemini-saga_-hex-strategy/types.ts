@@ -30,6 +30,7 @@ export interface Unit {
   canCounterAttack: boolean;
   unitClass: UnitClass;
   xp: number;
+  fuel: number;
 }
 
 export interface Tile {
@@ -51,6 +52,7 @@ export interface UnitStats {
   defense: number;
   defenseVs?: { [key in UnitClass]?: number };
   movement: number;
+  maxFuel: number;
   attackRange: { min: number; max: number };
   canCounterAttack: boolean;
   unitClass: UnitClass;
