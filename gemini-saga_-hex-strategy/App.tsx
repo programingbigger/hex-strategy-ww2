@@ -52,6 +52,7 @@ const App: React.FC = () => {
                     y: pos.y,
                     moved: false,
                     attacked: false,
+                    xp: 0,
                 });
             });
         }
@@ -224,7 +225,9 @@ const App: React.FC = () => {
                 return { ...u, hp: Math.max(0, u.hp - damage) };
             }
             if(u.id === attacker.id) {
-                return { ...u, attacked: true, moved: true };
+                // ダメージ分XPを増やし、上限を100に設定
+                const newXp = Math.min(100, u.xp + damage);
+                return { ...u, xp: newXp, attacked: true, moved: true };
             }
             return u;
         });
@@ -259,6 +262,11 @@ const App: React.FC = () => {
                 updatedUnits = updatedUnits.map(u => {
                     if (u.id === attacker.id) {
                         return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+                    }
+                    // 反撃側にも経験値を付与
+                    if (u.id === currentDefender.id) {
+                        const newXp = Math.min(100, u.xp + counterDamage);
+                        return { ...u, xp: newXp };
                     }
                     return u;
                 }).filter(u => u.hp > 0); // Filter again after counter-attack

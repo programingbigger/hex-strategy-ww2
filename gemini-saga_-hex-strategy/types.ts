@@ -29,6 +29,7 @@ export interface Unit {
   attacked: boolean;
   canCounterAttack: boolean;
   unitClass: UnitClass;
+  xp: number;
 }
 
 export interface Tile {

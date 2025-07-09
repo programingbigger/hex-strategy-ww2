@@ -41,6 +41,7 @@ const UnitInfo: React.FC<{ unit: Unit }> = ({ unit }) => {
     <div className="mt-4 pt-4 border-t border-gray-600">
       <h3 className="text-xl font-bold mb-2 text-blue-400">{unit.team} {unit.type}</h3>
       <p>HP: <span className="font-mono">{unit.hp} / {unit.maxHp}</span></p>
+      <p>XP: <span className="font-mono">{unit.xp} / 100</span></p>
       <p>Attack: <span className="font-mono">{unit.attack}</span></p>
       <p>Defense: <span className="font-mono">{unit.defense}</span></p>
       <p>Movement: <span className="font-mono">{unit.movement}</span></p>
