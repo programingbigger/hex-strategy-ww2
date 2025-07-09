@@ -156,7 +156,19 @@ const App: React.FC = () => {
             }
         }
         setBoardLayout(newBoardLayout);
-        setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
+
+        // Unit healing and resupply logic
+        const updatedUnits = units.map(u => {
+            const unitTile = newBoardLayout.get(coordToString(u));
+            if (unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team) {
+                const refueledFuel = Math.min(UNIT_STATS[u.type].maxFuel); // Assuming max fuel per turn in a city
+                const healedHp = Math.min(u.maxHp, u.hp + 2);
+                return { ...u, hp: healedHp, fuel: refueledFuel, moved: false, attacked: false };
+            }
+            return { ...u, moved: false, attacked: false };
+        });
+
+        setUnits(updatedUnits);
         setSelectedUnitId(null);
         checkWinCondition(units, newBoardLayout);
     }, [activeTeam, units, weather, weatherDuration, boardLayout]);
