@@ -305,7 +305,23 @@ const App: React.FC = () => {
                 saveStateToHistory();
                 // Move unit and deduct fuel
                 const path = findPath(selectedUnit, coord, boardLayout, units, activeTeam);
-                const fuelCost = path ? path.length - 1 : 0;
+                let fuelCost = 0;
+                if (path && path.length > 1) {
+                    // 経路の各タイルの移動コストを合計する
+                    // i=1から始めることで、出発タイルを含めないようにする
+                    for (let i = 1; i < path.length; i++) {
+                        const tileCoord = path[i];
+                        const tileKey = coordToString(tileCoord);
+                        const tile = boardLayout.get(tileKey);
+                        if (tile) {
+                            const terrainStats = TERRAIN_STATS[tile.terrain];
+                            const moveCost = terrainStats.movementCost[selectedUnit.type] ?? terrainStats.movementCost.default;
+                            if (moveCost !== Infinity) {
+                                fuelCost += moveCost;
+                            }
+                        }
+                    }
+                }
                 setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true, fuel: u.fuel - fuelCost } : u));
                 // Don't deselect, allow for attack or wait
                 return;
