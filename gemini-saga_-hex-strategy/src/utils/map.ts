@@ -1,5 +1,5 @@
-import type { Coordinate, BoardLayout, Tile, Unit, TerrainType } from '../types';
-import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R, CITY_HP } from '../constants';
+import type { Coordinate, BoardLayout, Tile, Unit, TerrainType } from '@/types';
+import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R, CITY_HP } from '@/config/constants';
 
 export const coordToString = (coord: Coordinate): string => `${coord.x},${coord.y}`;
 export const stringToCoord = (key: string): Coordinate => {

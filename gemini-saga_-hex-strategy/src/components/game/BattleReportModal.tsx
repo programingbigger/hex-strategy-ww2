@@ -1,6 +1,6 @@
 
 import React from 'react';
-import type { BattleReport } from '../types';
+import type { BattleReport } from '@/types';
 
 interface BattleReportModalProps {
   report: BattleReport;

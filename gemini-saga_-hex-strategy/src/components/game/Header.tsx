@@ -1,7 +1,7 @@
 
 import React from 'react';
-import type { Team, Unit, Coordinate, WeatherType } from '../types';
-import { UNIT_STATS, TEAM_COLORS } from '../constants';
+import type { Team, Unit, Coordinate, WeatherType } from '@/types';
+import { UNIT_STATS, TEAM_COLORS } from '@/config/constants';
 
 interface HeaderProps {
   turn: number;

@@ -1,7 +1,7 @@
 
 import React from 'react';
-import type { Coordinate, TerrainType, Team } from '../types';
-import { axialToPixel } from '../utils/map';
+import type { Coordinate, TerrainType, Team } from '@/types';
+import { axialToPixel } from '@/utils/map';
 
 interface HexagonProps {
   coord: Coordinate;

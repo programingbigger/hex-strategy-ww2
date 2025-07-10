@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Hexagon } from './Hexagon';
-import { UnitIcon } from './Icons';
-import { axialToPixel, coordToString } from '../utils/map';
-import { HEX_SIZE, TEAM_COLORS } from '../constants';
-import type { BoardLayout, Unit, Coordinate, Team, WeatherType } from '../types';
+import { UnitIcon } from '@/components/icons/UnitIcon';
+import { axialToPixel, coordToString } from '@/utils/map';
+import { HEX_SIZE, TEAM_COLORS } from '@/config/constants';
+import type { BoardLayout, Unit, Coordinate, Team, WeatherType } from '@/types';
 
 interface GameBoardProps {
   boardLayout: BoardLayout;

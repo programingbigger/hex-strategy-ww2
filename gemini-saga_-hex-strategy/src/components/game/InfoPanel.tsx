@@ -1,6 +1,6 @@
 import React from 'react';
-import { TERRAIN_STATS, UNIT_STATS } from '../constants';
-import type { Tile, Unit, GameState, Team, UnitType } from '../types';
+import { TERRAIN_STATS, UNIT_STATS } from '@/config/constants';
+import type { Tile, Unit, GameState, Team, UnitType } from '@/types';
 
 interface InfoPanelProps {
   hoveredHex: Tile | null;
