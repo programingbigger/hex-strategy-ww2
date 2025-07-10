@@ -131,6 +131,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
                 coord={tile}
                 size={HEX_SIZE}
                 terrain={tile.terrain}
+                owner={tile.owner}
                 onClick={() => onHexClick(tile)}
                 onMouseEnter={() => onHexHover(tile)}
                 isReachable={isReachable}

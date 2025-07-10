@@ -7,10 +7,10 @@ export const MAP_MAX_R = 6;
 export const HEX_SIZE = 48;
 
 export const UNIT_STATS: Record<UnitType, UnitStats> = {
-  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'infantry' },
-  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'vehicle' },
-  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'vehicle' },
-  Artillery: { maxHp: 12, attack: 8, defense: 3, movement: 1, canCounterAttack: false, attackRange: { min: 2, max: 5 }, unitClass: 'infantry' },
+  Infantry: { maxHp: 10, attack: 4, defense: 2, movement: 3, maxFuel: 60, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'infantry' },
+  Tank: { maxHp: 20, attack: 7, defense: 5, movement: 4, maxFuel: 40, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'vehicle' },
+  ArmoredCar: { maxHp: 15, attack: 5, defense: 4, movement: 6, maxFuel: 60, canCounterAttack: true, attackRange: { min: 1, max: 1 }, unitClass: 'vehicle' },
+  Artillery: { maxHp: 12, attack: 8, defense: 3, movement: 1, maxFuel: 40, canCounterAttack: false, attackRange: { min: 2, max: 5 }, unitClass: 'infantry' },
   AntiTank: {
     maxHp: 10,
     attack: 0, // Default attack, not used if attackVs is defined
@@ -18,6 +18,7 @@ export const UNIT_STATS: Record<UnitType, UnitStats> = {
     defense: 0, // Default defense, not used if defenseVs is defined
     defenseVs: { vehicle: 6, infantry: 2 },
     movement: 1,
+    maxFuel: 40,
     canCounterAttack: true,
     attackRange: { min: 1, max: 1 },
     unitClass: 'infantry',
@@ -100,3 +101,8 @@ export const TEAM_COLORS: Record<Team, { primary: string; secondary: string; hex
     Blue: { primary: 'bg-blue-600', secondary: 'border-blue-400', hex: '#2563eb', glow: 'url(#glow-blue)' },
     Red: { primary: 'bg-red-600', secondary: 'border-red-400', hex: '#dc2626', glow: 'url(#glow-red)' },
 };
+
+export const CITY_HP = 10;
+export const CITY_HEAL_RATE = 1;
+export const CAPTURE_DAMAGE_HIGH_HP = { min: 5, max: 8 };
+export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 5 };

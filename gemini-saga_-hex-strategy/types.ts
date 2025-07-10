@@ -29,6 +29,8 @@ export interface Unit {
   attacked: boolean;
   canCounterAttack: boolean;
   unitClass: UnitClass;
+  xp: number;
+  fuel: number;
 }
 
 export interface Tile {
@@ -36,6 +38,9 @@ export interface Tile {
   y: number;
   terrain: TerrainType;
   zocByTeam?: Team; // Optional, indicates which team's ZOC this tile is in
+  owner?: Team | null; // Optional: Indicates the team that owns the city
+  hp?: number;
+  maxHp?: number;
 }
 
 export type BoardLayout = Map<string, Tile>;
@@ -47,6 +52,7 @@ export interface UnitStats {
   defense: number;
   defenseVs?: { [key in UnitClass]?: number };
   movement: number;
+  maxFuel: number;
   attackRange: { min: number; max: number };
   canCounterAttack: boolean;
   unitClass: UnitClass;

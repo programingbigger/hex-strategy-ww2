@@ -3,9 +3,9 @@ import { GameBoard } from './components/GameBoard';
 import { Header } from './components/Header';
 import { InfoPanel } from './components/InfoPanel';
 import { BattleReportModal } from './components/BattleReportModal';
-import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors } from './utils/map';
+import { generateBoardLayout, calculateReachableTiles, coordToString, getDistance, getNeighbors, findPath } from './utils/map';
 import { generateBattleReport } from './services/battleReport.ts';
-import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS } from './constants';
+import { UNIT_STATS, TERRAIN_STATS, INITIAL_UNIT_POSITIONS, CITY_HP, CITY_HEAL_RATE, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP } from './constants';
 import type { Team, Unit, Tile, Coordinate, BoardLayout, BattleReport, GameState, WeatherType, GameStateSnapshot } from './types';
 
 const App: React.FC = () => {
@@ -52,6 +52,8 @@ const App: React.FC = () => {
                     y: pos.y,
                     moved: false,
                     attacked: false,
+                    xp: 0,
+                    fuel: unitStats.maxFuel, // Initialize fuel
                 });
             });
         }
@@ -74,9 +76,14 @@ const App: React.FC = () => {
 
     const selectedUnit = useMemo(() => units.find(u => u.id === selectedUnitId), [units, selectedUnitId]);
 
+    const selectedUnitTile = useMemo(() => {
+        if (!selectedUnit) return null;
+        return boardLayout.get(coordToString(selectedUnit)) ?? null;
+    }, [selectedUnit, boardLayout]);
+
     const reachableTiles = useMemo(() => {
         if (!selectedUnit || selectedUnit.moved) return [];
-        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, boardLayout, units, activeTeam);
+        return calculateReachableTiles({ x: selectedUnit.x, y: selectedUnit.y }, selectedUnit.movement, selectedUnit.fuel, boardLayout, units, activeTeam);
     }, [selectedUnit, boardLayout, units]);
 
     const attackableTiles = useMemo(() => {
@@ -101,6 +108,17 @@ const App: React.FC = () => {
     const handleEndTurn = useCallback(() => {
         const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
         setActiveTeam(nextTeam);
+
+        const newBoardLayout = new Map(boardLayout);
+
+        // City HP recovery logic
+        newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'City' && tile.owner !== activeTeam) {
+                const newHp = Math.min(tile.maxHp || CITY_HP, (tile.hp || 0) + CITY_HEAL_RATE);
+                newBoardLayout.set(key, { ...tile, hp: newHp });
+            }
+        });
+
         if (nextTeam === 'Blue') {
             setTurn(t => t + 1);
             // Weather update logic
@@ -117,7 +135,6 @@ const App: React.FC = () => {
             setWeather(nextWeather);
             setWeatherDuration(newDuration);
             // Terrain change logic
-            const newBoardLayout = new Map(boardLayout);
             let changed = false;
             if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
                 newBoardLayout.forEach((tile, key) => {
@@ -138,20 +155,51 @@ const App: React.FC = () => {
                 setBoardLayout(newBoardLayout);
             }
         }
-        setUnits(units.map(u => ({ ...u, moved: false, attacked: false })));
+        setBoardLayout(newBoardLayout);
+
+        // Unit healing and resupply logic
+        const updatedUnits = units.map(u => {
+            const unitTile = newBoardLayout.get(coordToString(u));
+            if (unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team) {
+                const refueledFuel = Math.min(UNIT_STATS[u.type].maxFuel); // Assuming max fuel per turn in a city
+                const healedHp = Math.min(u.maxHp, u.hp + 2);
+                return { ...u, hp: healedHp, fuel: refueledFuel, moved: false, attacked: false };
+            }
+            return { ...u, moved: false, attacked: false };
+        });
+
+        setUnits(updatedUnits);
         setSelectedUnitId(null);
+        checkWinCondition(units, newBoardLayout);
     }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
-    const checkWinCondition = useCallback((currentUnits: Unit[]) => {
+    const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
         const blueUnits = currentUnits.filter(u => u.team === 'Blue');
         const redUnits = currentUnits.filter(u => u.team === 'Red');
 
         if (redUnits.length === 0) {
             setGameState('gameOver');
             setWinner('Blue');
-        } else if (blueUnits.length === 0) {
+            return;
+        }
+        if (blueUnits.length === 0) {
             setGameState('gameOver');
             setWinner('Red');
+            return;
+        }
+
+        const cities = Array.from(currentBoard.values()).filter(t => t.terrain === 'City');
+        const blueCities = cities.filter(c => c.owner === 'Blue').length;
+        const redCities = cities.filter(c => c.owner === 'Red').length;
+
+        if (cities.length > 0) {
+            if (blueCities === cities.length) {
+                setGameState('gameOver');
+                setWinner('Blue');
+            } else if (redCities === cities.length) {
+                setGameState('gameOver');
+                setWinner('Red');
+            }
         }
     }, []);
     
@@ -190,7 +238,9 @@ const App: React.FC = () => {
                 return { ...u, hp: Math.max(0, u.hp - damage) };
             }
             if(u.id === attacker.id) {
-                return { ...u, attacked: true, moved: true };
+                // ダメージ分XPを増やし、上限を100に設定
+                const newXp = Math.min(100, u.xp + damage);
+                return { ...u, xp: newXp, attacked: true, moved: true };
             }
             return u;
         });
@@ -226,6 +276,11 @@ const App: React.FC = () => {
                     if (u.id === attacker.id) {
                         return { ...u, hp: Math.max(0, u.hp - counterDamage) };
                     }
+                    // 反撃側にも経験値を付与
+                    if (u.id === currentDefender.id) {
+                        const newXp = Math.min(100, u.xp + counterDamage);
+                        return { ...u, xp: newXp };
+                    }
                     return u;
                 }).filter(u => u.hp > 0); // Filter again after counter-attack
             }
@@ -233,7 +288,7 @@ const App: React.FC = () => {
         
         setUnits(updatedUnits);
         setSelectedUnitId(null);
-        checkWinCondition(updatedUnits);
+        checkWinCondition(updatedUnits, boardLayout);
 
     }, [boardLayout, units, checkWinCondition]);
 
@@ -260,8 +315,26 @@ const App: React.FC = () => {
             const isReachable = reachableTiles.some(t => t.x === coord.x && t.y === coord.y);
             if (isReachable && !unitOnHex) {
                 saveStateToHistory();
-                // Move unit
-                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true } : u));
+                // Move unit and deduct fuel
+                const path = findPath(selectedUnit, coord, boardLayout, units, activeTeam);
+                let fuelCost = 0;
+                if (path && path.length > 1) {
+                    // 経路の各タイルの移動コストを合計する
+                    // i=1から始めることで、出発タイルを含めないようにする
+                    for (let i = 1; i < path.length; i++) {
+                        const tileCoord = path[i];
+                        const tileKey = coordToString(tileCoord);
+                        const tile = boardLayout.get(tileKey);
+                        if (tile) {
+                            const terrainStats = TERRAIN_STATS[tile.terrain];
+                            const moveCost = terrainStats.movementCost[selectedUnit.type] ?? terrainStats.movementCost.default;
+                            if (moveCost !== Infinity) {
+                                fuelCost += moveCost;
+                            }
+                        }
+                    }
+                }
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true, fuel: u.fuel - fuelCost } : u));
                 // Don't deselect, allow for attack or wait
                 return;
             }
@@ -277,13 +350,36 @@ const App: React.FC = () => {
         }
     }, [gameState, isLoadingAI, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack]);
 
-    const handleAction = (action: 'wait' | 'undo') => {
+    const handleAction = (action: 'wait' | 'undo' | 'capture') => {
         if (!selectedUnit) return;
-
+    
         if (action === 'wait') {
             saveStateToHistory();
             setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
             setSelectedUnitId(null);
+        } else if (action === 'capture') {
+            if (selectedUnit.type === 'Infantry' && selectedUnitTile?.terrain === 'City') {
+                saveStateToHistory();
+                const newBoardLayout = new Map(boardLayout);
+                const tileKey = coordToString(selectedUnit);
+                const currentTile = newBoardLayout.get(tileKey);
+    
+                if (currentTile && currentTile.hp && currentTile.hp > 0) {
+                    const damageRange = selectedUnit.hp > selectedUnit.maxHp / 2 ? CAPTURE_DAMAGE_HIGH_HP : CAPTURE_DAMAGE_LOW_HP;
+                    const damage = Math.floor(Math.random() * (damageRange.max - damageRange.min + 1)) + damageRange.min;
+                    const newHp = Math.max(0, currentTile.hp - damage);
+    
+                    if (newHp === 0) {
+                        newBoardLayout.set(tileKey, { ...currentTile, hp: 4, owner: selectedUnit.team });
+                    } else {
+                        newBoardLayout.set(tileKey, { ...currentTile, hp: newHp });
+                    }
+                    setBoardLayout(newBoardLayout);
+                }
+                // 修正箇所：占領後にユニットが行動済みになるように moved: true を追加
+                setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
+                setSelectedUnitId(null);
+            }
         } else if (action === 'undo') {
             if (history.length > 0) {
                 const lastState = history[history.length - 1];
@@ -326,6 +422,7 @@ const App: React.FC = () => {
                     winner={winner}
                     onRestart={initializeGame}
                     selectedUnit={selectedUnit}
+                    selectedUnitTile={selectedUnitTile}
                     onAction={handleAction}
                 />
             </div>

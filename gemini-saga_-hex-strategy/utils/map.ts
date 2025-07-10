@@ -1,5 +1,5 @@
 import type { Coordinate, BoardLayout, Tile, Unit, TerrainType } from '../types';
-import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R } from '../constants';
+import { TERRAIN_STATS, INITIAL_UNIT_POSITIONS, MAP_MIN_Q, MAP_MAX_Q, MAP_MIN_R, MAP_MAX_R, CITY_HP } from '../constants';
 
 export const coordToString = (coord: Coordinate): string => `${coord.x},${coord.y}`;
 export const stringToCoord = (key: string): Coordinate => {
@@ -62,6 +62,8 @@ export function generateBoardLayout(): BoardLayout {
 
             if (isFarEnough) {
                 candidateTile.terrain = 'City';
+                candidateTile.hp = CITY_HP;
+                candidateTile.maxHp = CITY_HP;
                 cities.push(candidateTile);
                 cityCandidates.splice(candidateIndex, 1); // Remove from candidates
                 placed = true;
@@ -175,7 +177,7 @@ export function generateBoardLayout(): BoardLayout {
     return layout;
 }
 
-export function calculateReachableTiles(start: Coordinate, movement: number, board: BoardLayout, units: Unit[], currentTeam: Team): Coordinate[] {
+export function calculateReachableTiles(start: Coordinate, movement: number, fuel: number, board: BoardLayout, units: Unit[], currentTeam: Team): Coordinate[] {
     const startNodeKey = coordToString(start);
     const costs: Map<string, number> = new Map([[startNodeKey, 0]]);
     const frontier: Array<{ key: string; cost: number }> = [{ key: startNodeKey, cost: 0 }];
@@ -231,7 +233,7 @@ export function calculateReachableTiles(start: Coordinate, movement: number, boa
 
             const newCost = currentNode.cost + moveCost;
 
-            if (newCost <= movement) {
+            if (newCost <= movement && newCost <= fuel) {
                 if (!costs.has(neighborKey) || newCost < costs.get(neighborKey)!) {
                     costs.set(neighborKey, newCost);
                     // If entering a ZOC hex, stop movement (do not add to frontier for further exploration)
@@ -246,4 +248,74 @@ export function calculateReachableTiles(start: Coordinate, movement: number, boa
     }
 
     return reachable;
+}
+
+export function findPath(start: Coordinate, goal: Coordinate, board: BoardLayout, units: Unit[], currentTeam: Team): Coordinate[] | null {
+    const startNodeKey = coordToString(start);
+    const goalNodeKey = coordToString(goal);
+
+    const openSet: Set<string> = new Set([startNodeKey]);
+    const cameFrom: Map<string, string> = new Map();
+
+    const gScore: Map<string, number> = new Map();
+    gScore.set(startNodeKey, 0);
+
+    const fScore: Map<string, number> = new Map();
+    fScore.set(startNodeKey, getDistance(start, goal));
+
+    const unitAtStart = units.find(u => u.x === start.x && u.y === start.y);
+    if (!unitAtStart) return null;
+
+    while (openSet.size > 0) {
+        let currentKey: string | null = null;
+        let lowestFScore = Infinity;
+        for (const key of openSet) {
+            if ((fScore.get(key) ?? Infinity) < lowestFScore) {
+                lowestFScore = fScore.get(key)!;
+                currentKey = key;
+            }
+        }
+
+        if (currentKey === null) break;
+
+        if (currentKey === goalNodeKey) {
+            // Reconstruct path
+            const path: Coordinate[] = [];
+            let tempKey = currentKey;
+            while (tempKey) {
+                path.unshift(stringToCoord(tempKey));
+                tempKey = cameFrom.get(tempKey)!;
+            }
+            return path;
+        }
+
+        openSet.delete(currentKey);
+        const currentCoord = stringToCoord(currentKey);
+
+        for (const neighborCoord of getNeighbors(currentCoord)) {
+            const neighborKey = coordToString(neighborCoord);
+            const tile = board.get(neighborKey);
+            if (!tile) continue;
+
+            const unitOnTile = units.some(u => u.x === neighborCoord.x && u.y === neighborCoord.y && !(u.x === start.x && u.y === start.y));
+            if (unitOnTile) continue;
+
+            const terrainStats = TERRAIN_STATS[tile.terrain];
+            const moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
+            if (moveCost === Infinity) continue;
+
+            const tentativeGScore = (gScore.get(currentKey) ?? 0) + moveCost;
+
+            if (tentativeGScore < (gScore.get(neighborKey) ?? Infinity)) {
+                cameFrom.set(neighborKey, currentKey);
+                gScore.set(neighborKey, tentativeGScore);
+                fScore.set(neighborKey, tentativeGScore + getDistance(neighborCoord, goal));
+                if (!openSet.has(neighborKey)) {
+                    openSet.add(neighborKey);
+                }
+            }
+        }
+    }
+
+    return null; // Path not found
 }
