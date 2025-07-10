@@ -1,4 +1,4 @@
-import type { Unit, TerrainType } from '../types';
+import type { Unit, TerrainType } from '@/types';
 
 /**
  * 戦闘レポートを生成します。APIを使用せず、事前に定義されたテンプレートに基づいてレポートを作成します。

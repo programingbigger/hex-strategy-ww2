@@ -1,6 +1,6 @@
 import React from 'react';
-import type { UnitType, Team } from '../types';
-import { TEAM_COLORS } from '../constants';
+import type { UnitType, Team } from '@/types';
+import { TEAM_COLORS } from '@/config/constants';
 
 interface UnitIconProps extends React.SVGProps<SVGSVGElement> {
   type: UnitType;
