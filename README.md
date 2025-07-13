@@ -1,4 +1,7 @@
 # hex-strategy-ww2
+## ゲームタイトル
+Commander
+
 ## ブランチについて
 ### main
 #### 役割

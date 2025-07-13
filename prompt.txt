@@ -1,0 +1,356 @@
+以下のエラーが出ました。
+解消し、まずはゲームができる状態に持っていきましょう。
+
+ERROR in src/components/game/GameBoard.tsx:33:28
+TS2802: Type 'IterableIterator<[string, Tile]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+    31 |     const hexes: React.ReactElement[] = [];
+    32 |     
+  > 33 |     for (const [, tile] of boardLayout.entries()) {
+       |                            ^^^^^^^^^^^^^^^^^^^^^
+    34 |       const unit = units.find(u => u.x === tile.x && u.y === tile.y);
+    35 |       const isSelected = selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y;
+    36 |       const isReachable = reachableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
+
+ERROR in src/data/units.ts:12:3
+TS2741: Property 'xp' is missing in type '{ id: string; type: UnitType; team: "Blue" | "Red"; x: number; y: number; hp: number; maxHp: number; attack: number; defense: number; movement: number; attackRange: { min: number; max: number; } | { ...; }; ... 5 more ...; maxFuel: number; }' but required in type 'Unit'.
+    10 |   const unitStats = getUnitStats(type);
+    11 |   
+  > 12 |   return {
+       |   ^^^^^^^^
+  > 13 |     id,
+       | ^^^^^^^
+  > 14 |     type,
+       | ^^^^^^^
+  > 15 |     team,
+       | ^^^^^^^
+  > 16 |     x,
+       | ^^^^^^^
+  > 17 |     y,
+       | ^^^^^^^
+  > 18 |     hp: unitStats.maxHp,
+       | ^^^^^^^
+  > 19 |     maxHp: unitStats.maxHp,
+       | ^^^^^^^
+  > 20 |     attack: unitStats.attack,
+       | ^^^^^^^
+  > 21 |     defense: unitStats.defense,
+       | ^^^^^^^
+  > 22 |     movement: unitStats.movement,
+       | ^^^^^^^
+  > 23 |     attackRange: unitStats.attackRange,
+       | ^^^^^^^
+  > 24 |     moved: false,
+       | ^^^^^^^
+  > 25 |     attacked: false,
+       | ^^^^^^^
+  > 26 |     canCounterAttack: unitStats.canCounterAttack,
+       | ^^^^^^^
+  > 27 |     unitClass: unitStats.unitClass,
+       | ^^^^^^^
+  > 28 |     fuel: unitStats.maxFuel,
+       | ^^^^^^^
+  > 29 |     maxFuel: unitStats.maxFuel
+       | ^^^^^^^
+  > 30 |   };
+       | ^^^^^
+    31 | };
+    32 |
+    33 | const getUnitStats = (type: UnitType) => {
+
+ERROR in src/hooks/useGameLogic.ts:94:28
+TS2802: Type 'IterableIterator<[string, Tile]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+    92 |
+    93 |     const potentialTargets: Coordinate[] = [];
+  > 94 |     for (const [, tile] of boardLayout.entries()) {
+       |                            ^^^^^^^^^^^^^^^^^^^^^
+    95 |       const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
+    96 |       if (distance >= attackRangeMin && distance <= attackRangeMax) {
+    97 |         potentialTargets.push(tile);
+
+ERROR in src/screens/BattleScreen.tsx:86:15
+TS2740: Type '{ id: string; type: "Tank"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+     84 |             },
+     85 |             units: [
+  >  86 |               {
+        |               ^
+  >  87 |                 id: 'u-0',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  88 |                 type: 'Tank',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  89 |                 team: 'Blue',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  90 |                 x: -2,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  91 |                 y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  92 |                 hp: 20,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  93 |                 fuel: 40,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  94 |                 xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  95 |                 moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  96 |                 attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  >  97 |               },
+        | ^^^^^^^^^^^^^^^^
+     98 |               {
+     99 |                 id: 'u-1',
+    100 |                 type: 'Infantry',
+
+ERROR in src/screens/BattleScreen.tsx:98:15
+TS2740: Type '{ id: string; type: "Infantry"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+     96 |                 attacked: false
+     97 |               },
+  >  98 |               {
+        |               ^
+  >  99 |                 id: 'u-1',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 100 |                 type: 'Infantry',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 101 |                 team: 'Blue',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 102 |                 x: -1,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 103 |                 y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 104 |                 hp: 10,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 105 |                 fuel: 60,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 106 |                 xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 107 |                 moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 108 |                 attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 109 |               },
+        | ^^^^^^^^^^^^^^^^
+    110 |               {
+    111 |                 id: 'u-2',
+    112 |                 type: 'Tank',
+
+ERROR in src/screens/BattleScreen.tsx:110:15
+TS2740: Type '{ id: string; type: "Tank"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    108 |                 attacked: false
+    109 |               },
+  > 110 |               {
+        |               ^
+  > 111 |                 id: 'u-2',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 112 |                 type: 'Tank',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 113 |                 team: 'Red',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 114 |                 x: 2,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 115 |                 y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 116 |                 hp: 20,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 117 |                 fuel: 40,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 118 |                 xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 119 |                 moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 120 |                 attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 121 |               },
+        | ^^^^^^^^^^^^^^^^
+    122 |               {
+    123 |                 id: 'u-3',
+    124 |                 type: 'Infantry',
+
+ERROR in src/screens/BattleScreen.tsx:122:15
+TS2740: Type '{ id: string; type: "Infantry"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    120 |                 attacked: false
+    121 |               },
+  > 122 |               {
+        |               ^
+  > 123 |                 id: 'u-3',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 124 |                 type: 'Infantry',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 125 |                 team: 'Red',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 126 |                 x: 1,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 127 |                 y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 128 |                 hp: 10,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 129 |                 fuel: 60,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 130 |                 xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 131 |                 moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 132 |                 attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  > 133 |               }
+        | ^^^^^^^^^^^^^^^^
+    134 |             ]
+    135 |           };
+    136 |           loadGame(fallbackMapData);
+
+ERROR in src/screens/BattleScreen.tsx:183:13
+TS2740: Type '{ id: string; type: "Tank"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    181 |           },
+    182 |           units: [
+  > 183 |             {
+        |             ^
+  > 184 |               id: 'u-0',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 185 |               type: 'Tank',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 186 |               team: 'Blue',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 187 |               x: -2,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 188 |               y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 189 |               hp: 20,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 190 |               fuel: 40,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 191 |               xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 192 |               moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 193 |               attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 194 |             },
+        | ^^^^^^^^^^^^^^
+    195 |             {
+    196 |               id: 'u-1',
+    197 |               type: 'Infantry',
+
+ERROR in src/screens/BattleScreen.tsx:195:13
+TS2740: Type '{ id: string; type: "Infantry"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    193 |               attacked: false
+    194 |             },
+  > 195 |             {
+        |             ^
+  > 196 |               id: 'u-1',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 197 |               type: 'Infantry',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 198 |               team: 'Blue',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 199 |               x: -1,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 200 |               y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 201 |               hp: 10,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 202 |               fuel: 60,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 203 |               xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 204 |               moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 205 |               attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 206 |             },
+        | ^^^^^^^^^^^^^^
+    207 |             {
+    208 |               id: 'u-2',
+    209 |               type: 'Tank',
+
+ERROR in src/screens/BattleScreen.tsx:207:13
+TS2740: Type '{ id: string; type: "Tank"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    205 |               attacked: false
+    206 |             },
+  > 207 |             {
+        |             ^
+  > 208 |               id: 'u-2',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 209 |               type: 'Tank',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 210 |               team: 'Red',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 211 |               x: 2,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 212 |               y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 213 |               hp: 20,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 214 |               fuel: 40,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 215 |               xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 216 |               moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 217 |               attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 218 |             },
+        | ^^^^^^^^^^^^^^
+    219 |             {
+    220 |               id: 'u-3',
+    221 |               type: 'Infantry',
+
+ERROR in src/screens/BattleScreen.tsx:219:13
+TS2740: Type '{ id: string; type: "Infantry"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
+    217 |               attacked: false
+    218 |             },
+  > 219 |             {
+        |             ^
+  > 220 |               id: 'u-3',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 221 |               type: 'Infantry',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 222 |               team: 'Red',
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 223 |               x: 1,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 224 |               y: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 225 |               hp: 10,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 226 |               fuel: 60,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 227 |               xp: 0,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 228 |               moved: false,
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 229 |               attacked: false
+        | ^^^^^^^^^^^^^^^^^^^^^^^^
+  > 230 |             }
+        | ^^^^^^^^^^^^^^
+    231 |           ]
+    232 |         };
+    233 |         loadGame(fallbackMapData);
+
+ERROR in src/screens/BattleScreen.tsx:275:11
+TS2322: Type 'Coordinate | null' is not assignable to type 'Coordinate | undefined'.
+  Type 'null' is not assignable to type 'Coordinate | undefined'.
+    273 |         <InfoPanel
+    274 |           selectedUnit={selectedUnit}
+  > 275 |           hoveredHex={hoveredHex}
+        |           ^^^^^^^^^^
+    276 |           boardLayout={boardLayout}
+    277 |           units={units}
+    278 |         />
+
+ERROR in src/screens/BattleScreen.tsx:281:11
+TS2322: Type 'Unit | undefined' is not assignable to type 'Unit | null'.
+  Type 'undefined' is not assignable to type 'Unit | null'.
+    279 |         
+    280 |         <ActionPanel
+  > 281 |           selectedUnit={selectedUnit}
+        |           ^^^^^^^^^^^^
+    282 |           selectedUnitTile={selectedUnitTile}
+    283 |           onAction={handleAction}
+    284 |         />
+
+ERROR in src/utils/map.ts:166:23
+TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
+    164 |     let currentKey: string | null = null;
+    165 |     let lowestFScore = Infinity;
+  > 166 |     for (const key of openSet) {
+        |                       ^^^^^^^
+    167 |       if ((fScore.get(key) ?? Infinity) < lowestFScore) {
+    168 |         lowestFScore = fScore.get(key)!;
+    169 |         currentKey = key;

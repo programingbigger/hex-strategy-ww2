@@ -16,6 +16,7 @@ const App: React.FC = () => {
 
   // 3. ゲーム開始ボタンが押されたら、表示を 'game' に切り替える関数
   const handleStartGame = () => {
+    gameLogic.initializeGame();
     setScreen('game');
   };
 
