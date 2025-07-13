@@ -169,7 +169,7 @@ export const useGameLogic = () => {
     setUnits(updatedUnits);
     setSelectedUnitId(null);
     checkWinCondition(updatedUnits, newBoardLayout);
-  }, [activeTeam, units, weather, weatherDuration, boardLayout, checkWinCondition]);
+  }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
   const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
     const blueUnits = currentUnits.filter(u => u.team === 'Blue');

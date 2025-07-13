@@ -123,16 +123,16 @@ export const INITIAL_UNIT_POSITIONS: { [key in Team]: Array<{ x: number; y: numb
   ]
 };
 
-export const MAP_MIN_Q = -6;
-export const MAP_MAX_Q = 5;
-export const MAP_MIN_R = -6;
-export const MAP_MAX_R = 6;
+export const MAP_MIN_Q = -12;
+export const MAP_MAX_Q = 12;
+export const MAP_MIN_R = -10;
+export const MAP_MAX_R = 10;
 
 export const CITY_HP = 10;
 export const CITY_HEAL_RATE = 2;
 export const CAPTURE_DAMAGE_HIGH_HP = { min: 2, max: 4 };
 export const CAPTURE_DAMAGE_LOW_HP = { min: 1, max: 2 };
 
-export const HEX_SIZE = 30;
+export const HEX_SIZE = 40;
 export const HEX_WIDTH = HEX_SIZE * Math.sqrt(3);
 export const HEX_HEIGHT = HEX_SIZE * 2;

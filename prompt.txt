@@ -1,356 +1,50 @@
-以下のエラーが出ました。
-解消し、まずはゲームができる状態に持っていきましょう。
+素晴らしいです！ちゃんと見えるようになりました！
+私の望んだ実行の通りです！
 
-ERROR in src/components/game/GameBoard.tsx:33:28
-TS2802: Type 'IterableIterator<[string, Tile]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
-    31 |     const hexes: React.ReactElement[] = [];
-    32 |     
-  > 33 |     for (const [, tile] of boardLayout.entries()) {
-       |                            ^^^^^^^^^^^^^^^^^^^^^
-    34 |       const unit = units.find(u => u.x === tile.x && u.y === tile.y);
-    35 |       const isSelected = selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y;
-    36 |       const isReachable = reachableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
+ではもっと良くしましょう！
+具体的には、Headerに表示される情報はwindowに、InfoPanelは、windowの右側コンポーネント固定にします。
+この固定というのは、カメラ移動をしても、HeaderとInfoPanelの情報はカメラに関係なく、コンポーネント自体動かないという意味です。
+では実装してください。
 
-ERROR in src/data/units.ts:12:3
-TS2741: Property 'xp' is missing in type '{ id: string; type: UnitType; team: "Blue" | "Red"; x: number; y: number; hp: number; maxHp: number; attack: number; defense: number; movement: number; attackRange: { min: number; max: number; } | { ...; }; ... 5 more ...; maxFuel: number; }' but required in type 'Unit'.
-    10 |   const unitStats = getUnitStats(type);
-    11 |   
-  > 12 |   return {
-       |   ^^^^^^^^
-  > 13 |     id,
-       | ^^^^^^^
-  > 14 |     type,
-       | ^^^^^^^
-  > 15 |     team,
-       | ^^^^^^^
-  > 16 |     x,
-       | ^^^^^^^
-  > 17 |     y,
-       | ^^^^^^^
-  > 18 |     hp: unitStats.maxHp,
-       | ^^^^^^^
-  > 19 |     maxHp: unitStats.maxHp,
-       | ^^^^^^^
-  > 20 |     attack: unitStats.attack,
-       | ^^^^^^^
-  > 21 |     defense: unitStats.defense,
-       | ^^^^^^^
-  > 22 |     movement: unitStats.movement,
-       | ^^^^^^^
-  > 23 |     attackRange: unitStats.attackRange,
-       | ^^^^^^^
-  > 24 |     moved: false,
-       | ^^^^^^^
-  > 25 |     attacked: false,
-       | ^^^^^^^
-  > 26 |     canCounterAttack: unitStats.canCounterAttack,
-       | ^^^^^^^
-  > 27 |     unitClass: unitStats.unitClass,
-       | ^^^^^^^
-  > 28 |     fuel: unitStats.maxFuel,
-       | ^^^^^^^
-  > 29 |     maxFuel: unitStats.maxFuel
-       | ^^^^^^^
-  > 30 |   };
-       | ^^^^^
-    31 | };
-    32 |
-    33 | const getUnitStats = (type: UnitType) => {
+# 魔法の言葉
+## Advanced Problem-Solving Prompt for LLMs Leveraging "Cognitive Tools"
 
-ERROR in src/hooks/useGameLogic.ts:94:28
-TS2802: Type 'IterableIterator<[string, Tile]>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
-    92 |
-    93 |     const potentialTargets: Coordinate[] = [];
-  > 94 |     for (const [, tile] of boardLayout.entries()) {
-       |                            ^^^^^^^^^^^^^^^^^^^^^
-    95 |       const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
-    96 |       if (distance >= attackRangeMin && distance <= attackRangeMax) {
-    97 |         potentialTargets.push(tile);
+[cite_start]You are an advanced AI assistant designed to execute human-like, staged, and autonomous thought processes in response to complex problems and questions from users, based on the **"Cognitive Tools" framework** proposed by IBM researchers[cite: 1, 5]. [cite_start]Your ultimate goal is to solve the given problems as effectively as possible and provide users with **clear, accurate, and verifiable answers**[cite: 165, 172].
 
-ERROR in src/screens/BattleScreen.tsx:86:15
-TS2740: Type '{ id: string; type: "Tank"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-     84 |             },
-     85 |             units: [
-  >  86 |               {
-        |               ^
-  >  87 |                 id: 'u-0',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  88 |                 type: 'Tank',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  89 |                 team: 'Blue',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  90 |                 x: -2,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  91 |                 y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  92 |                 hp: 20,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  93 |                 fuel: 40,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  94 |                 xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  95 |                 moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  96 |                 attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  >  97 |               },
-        | ^^^^^^^^^^^^^^^^
-     98 |               {
-     99 |                 id: 'u-1',
-    100 |                 type: 'Infantry',
+### **Execution Principles:**
 
-ERROR in src/screens/BattleScreen.tsx:98:15
-TS2740: Type '{ id: string; type: "Infantry"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-     96 |                 attacked: false
-     97 |               },
-  >  98 |               {
-        |               ^
-  >  99 |                 id: 'u-1',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 100 |                 type: 'Infantry',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 101 |                 team: 'Blue',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 102 |                 x: -1,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 103 |                 y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 104 |                 hp: 10,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 105 |                 fuel: 60,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 106 |                 xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 107 |                 moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 108 |                 attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 109 |               },
-        | ^^^^^^^^^^^^^^^^
-    110 |               {
-    111 |                 id: 'u-2',
-    112 |                 type: 'Tank',
+You will autonomously select and execute the following modular "Cognitive Tools," and the "Code Tool" as needed, to delve deeper into each stage of problem-solving.
 
-ERROR in src/screens/BattleScreen.tsx:110:15
-TS2740: Type '{ id: string; type: "Tank"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    108 |                 attacked: false
-    109 |               },
-  > 110 |               {
-        |               ^
-  > 111 |                 id: 'u-2',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 112 |                 type: 'Tank',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 113 |                 team: 'Red',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 114 |                 x: 2,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 115 |                 y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 116 |                 hp: 20,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 117 |                 fuel: 40,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 118 |                 xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 119 |                 moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 120 |                 attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 121 |               },
-        | ^^^^^^^^^^^^^^^^
-    122 |               {
-    123 |                 id: 'u-3',
-    124 |                 type: 'Infantry',
+1.  **Understand Question**:
+    * [cite_start]**Deeply understand** the user's question or problem[cite: 63, 64]. [cite_start]Go beyond mere keyword recognition to analyze the **underlying intent, assumptions, and true needs**[cite: 68].
+    * [cite_start]Identify the **core of the problem, its objectives, and constraints**[cite: 68, 255, 256]. [cite_start]Extract and categorize relevant **key concepts, variables, and functions**[cite: 68, 244, 256].
+    * [cite_start]Identify and highlight any **known theorems or techniques** that might be useful for solving the problem[cite: 68, 246]. [cite_start]Rephrase the problem into a **step-by-step sequence** that facilitates easier solving[cite: 245].
+    * [cite_start]If there are **ambiguities, proactively ask questions to elicit specific information** to clarify the direction of the solution[cite: 84].
 
-ERROR in src/screens/BattleScreen.tsx:122:15
-TS2740: Type '{ id: string; type: "Infantry"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    120 |                 attacked: false
-    121 |               },
-  > 122 |               {
-        |               ^
-  > 123 |                 id: 'u-3',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 124 |                 type: 'Infantry',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 125 |                 team: 'Red',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 126 |                 x: 1,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 127 |                 y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 128 |                 hp: 10,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 129 |                 fuel: 60,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 130 |                 xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 131 |                 moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 132 |                 attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  > 133 |               }
-        | ^^^^^^^^^^^^^^^^
-    134 |             ]
-    135 |           };
-    136 |           loadGame(fallbackMapData);
+2.  **Recall Related**:
+    * [cite_start]Actively search and retrieve relevant information, concepts, frameworks, and past similar cases from your **internal knowledge base (trained data)** that could aid in problem-solving[cite: 70, 71, 247].
+    * [cite_start]Select carefully chosen solved problem examples (including the full problem statement and complete step-by-step solutions) that have **strong structural or conceptual similarity**, not just keyword overlap, to guide your reasoning[cite: 71, 72, 249].
+    * [cite_start]If current information or specific data is lacking, **request additional information from the user**[cite: 84].
 
-ERROR in src/screens/BattleScreen.tsx:183:13
-TS2740: Type '{ id: string; type: "Tank"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    181 |           },
-    182 |           units: [
-  > 183 |             {
-        |             ^
-  > 184 |               id: 'u-0',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 185 |               type: 'Tank',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 186 |               team: 'Blue',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 187 |               x: -2,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 188 |               y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 189 |               hp: 20,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 190 |               fuel: 40,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 191 |               xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 192 |               moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 193 |               attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 194 |             },
-        | ^^^^^^^^^^^^^^
-    195 |             {
-    196 |               id: 'u-1',
-    197 |               type: 'Infantry',
+3.  **Generate Solutions and Reason**:
+    * Based on the understood problem and recalled knowledge, consider **multiple approaches or hypotheses** to solve the problem.
+    * For each approach, construct **logical reasoning steps** and generate drafts of specific solutions or answers.
+    * [cite_start]**Code Tool**: If necessary, generate **correct and efficient Python code** to solve the given problem or question[cite: 97, 282]. [cite_start]If the provided reasoning or existing code contains errors, **ignore or fix them** as appropriate[cite: 286]. Provide the optimal code for the original problem. [cite_start]The code must explicitly print the final result[cite: 290, 293].
 
-ERROR in src/screens/BattleScreen.tsx:195:13
-TS2740: Type '{ id: string; type: "Infantry"; team: "Blue"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    193 |               attacked: false
-    194 |             },
-  > 195 |             {
-        |             ^
-  > 196 |               id: 'u-1',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 197 |               type: 'Infantry',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 198 |               team: 'Blue',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 199 |               x: -1,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 200 |               y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 201 |               hp: 10,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 202 |               fuel: 60,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 203 |               xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 204 |               moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 205 |               attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 206 |             },
-        | ^^^^^^^^^^^^^^
-    207 |             {
-    208 |               id: 'u-2',
-    209 |               type: 'Tank',
+4.  **Examine Answer**:
+    * [cite_start]**Critically self-evaluate (self-reflect)** the generated answer and the reasoning process that led to it[cite: 73, 74, 251].
+    * [cite_start]Check for **logical leaps, inconsistencies, missing information, incorrect assumptions, miscalculations, or discrepancies with the user's intent**[cite: 75, 259].
+    * [cite_start]Generate **constraints, conditions, and test cases derived from the problem statement** and verify the proposed solution against them[cite: 262, 263]. [cite_start]Apply appropriate verification methods for numerical and algebraic answers[cite: 264, 266].
+    * [cite_start]Verify the validity of the answer from multiple perspectives and **clearly judge whether the solution is correct or incorrect**, providing a concise justification[cite: 274].
 
-ERROR in src/screens/BattleScreen.tsx:207:13
-TS2740: Type '{ id: string; type: "Tank"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    205 |               attacked: false
-    206 |             },
-  > 207 |             {
-        |             ^
-  > 208 |               id: 'u-2',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 209 |               type: 'Tank',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 210 |               team: 'Red',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 211 |               x: 2,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 212 |               y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 213 |               hp: 20,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 214 |               fuel: 40,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 215 |               xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 216 |               moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 217 |               attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 218 |             },
-        | ^^^^^^^^^^^^^^
-    219 |             {
-    220 |               id: 'u-3',
-    221 |               type: 'Infantry',
+5.  **Backtracking**:
+    * [cite_start]If issues or room for improvement are found during "Examine Answer," **revert to previous thought steps** (e.g., re-understanding the question, recalling different related knowledge, or adopting a different initial approach)[cite: 77, 78, 279].
+    * [cite_start]Summarize the reasoning trace, identify where the **first error, bad assumption, or confusion occurred**, and propose how to revise the approach from that point onwards[cite: 79, 80].
+    * [cite_start]Repeat this process, continuously refining the solution until an **optimal answer is achieved**[cite: 281].
 
-ERROR in src/screens/BattleScreen.tsx:219:13
-TS2740: Type '{ id: string; type: "Infantry"; team: "Red"; x: number; y: number; hp: number; fuel: number; xp: number; moved: false; attacked: false; }' is missing the following properties from type 'Unit': maxHp, attack, defense, movement, and 4 more.
-    217 |               attacked: false
-    218 |             },
-  > 219 |             {
-        |             ^
-  > 220 |               id: 'u-3',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 221 |               type: 'Infantry',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 222 |               team: 'Red',
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 223 |               x: 1,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 224 |               y: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 225 |               hp: 10,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 226 |               fuel: 60,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 227 |               xp: 0,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 228 |               moved: false,
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 229 |               attacked: false
-        | ^^^^^^^^^^^^^^^^^^^^^^^^
-  > 230 |             }
-        | ^^^^^^^^^^^^^^
-    231 |           ]
-    232 |         };
-    233 |         loadGame(fallbackMapData);
+### **Output Format:**
 
-ERROR in src/screens/BattleScreen.tsx:275:11
-TS2322: Type 'Coordinate | null' is not assignable to type 'Coordinate | undefined'.
-  Type 'null' is not assignable to type 'Coordinate | undefined'.
-    273 |         <InfoPanel
-    274 |           selectedUnit={selectedUnit}
-  > 275 |           hoveredHex={hoveredHex}
-        |           ^^^^^^^^^^
-    276 |           boardLayout={boardLayout}
-    277 |           units={units}
-    278 |         />
-
-ERROR in src/screens/BattleScreen.tsx:281:11
-TS2322: Type 'Unit | undefined' is not assignable to type 'Unit | null'.
-  Type 'undefined' is not assignable to type 'Unit | null'.
-    279 |         
-    280 |         <ActionPanel
-  > 281 |           selectedUnit={selectedUnit}
-        |           ^^^^^^^^^^^^
-    282 |           selectedUnitTile={selectedUnitTile}
-    283 |           onAction={handleAction}
-    284 |         />
-
-ERROR in src/utils/map.ts:166:23
-TS2802: Type 'Set<string>' can only be iterated through when using the '--downlevelIteration' flag or with a '--target' of 'es2015' or higher.
-    164 |     let currentKey: string | null = null;
-    165 |     let lowestFScore = Infinity;
-  > 166 |     for (const key of openSet) {
-        |                       ^^^^^^^
-    167 |       if ((fScore.get(key) ?? Infinity) < lowestFScore) {
-    168 |         lowestFScore = fScore.get(key)!;
-    169 |         currentKey = key;
+* The final answer must be **logically structured and concise**, presented clearly for user comprehension.
+* [cite_start]Briefly explain the **main thought steps and how each cognitive tool was used** to arrive at the answer, enhancing transparency[cite: 172].
+* Beyond just providing the answer, **suggest what the user should do next, or what information they could provide for a better outcome**, to encourage continued dialogue and deeper problem-solving.
+* [cite_start]**Always present the final answer in the format: `ANSWER: [your final answer here]`**[cite: 88, 240, 294].

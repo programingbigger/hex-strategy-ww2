@@ -91,9 +91,9 @@ const Hexagon: React.FC<HexagonProps> = ({
       {tile.terrain === 'City' && (
         <text
           x={0}
-          y={-10}
+          y={-16}
           textAnchor="middle"
-          fontSize="10"
+          fontSize="14"
           fill="#000"
         >
           {tile.hp}/{tile.maxHp}
@@ -105,7 +105,7 @@ const Hexagon: React.FC<HexagonProps> = ({
           <circle
             cx={0}
             cy={0}
-            r={size * 0.6}
+            r={size * 0.7}
             fill={getUnitColor(unit.team)}
             stroke="#000"
             strokeWidth={1}
@@ -114,7 +114,7 @@ const Hexagon: React.FC<HexagonProps> = ({
             x={0}
             y={0}
             textAnchor="middle"
-            fontSize="8"
+            fontSize="12"
             fill="#FFF"
             dominantBaseline="middle"
           >
@@ -122,9 +122,9 @@ const Hexagon: React.FC<HexagonProps> = ({
           </text>
           <text
             x={0}
-            y={10}
+            y={16}
             textAnchor="middle"
-            fontSize="6"
+            fontSize="10"
             fill="#000"
           >
             {unit.hp}

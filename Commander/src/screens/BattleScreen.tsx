@@ -41,7 +41,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     // Load the test map on component mount
     const loadTestMap = async () => {
       try {
-        const response = await fetch('/data/maps/test_map_1.json');
+        const response = await fetch('/data/maps/large_map.json');
         if (!response.ok) {
           // Fallback to creating a basic map
           const fallbackMapData: MapData = {
@@ -54,33 +54,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
               weatherDuration: 0
             },
             board: {
-              tiles: [
-                { x: -2, y: -2, terrain: 'Plains' },
-                { x: -1, y: -2, terrain: 'Plains' },
-                { x: 0, y: -2, terrain: 'Plains' },
-                { x: 1, y: -2, terrain: 'Plains' },
-                { x: 2, y: -2, terrain: 'Plains' },
-                { x: -2, y: -1, terrain: 'Plains' },
-                { x: -1, y: -1, terrain: 'Plains' },
-                { x: 0, y: -1, terrain: 'Plains' },
-                { x: 1, y: -1, terrain: 'Plains' },
-                { x: 2, y: -1, terrain: 'Plains' },
-                { x: -2, y: 0, terrain: 'Plains' },
-                { x: -1, y: 0, terrain: 'Plains' },
-                { x: 0, y: 0, terrain: 'Plains' },
-                { x: 1, y: 0, terrain: 'Plains' },
-                { x: 2, y: 0, terrain: 'Plains' },
-                { x: -2, y: 1, terrain: 'Plains' },
-                { x: -1, y: 1, terrain: 'Plains' },
-                { x: 0, y: 1, terrain: 'Plains' },
-                { x: 1, y: 1, terrain: 'Plains' },
-                { x: 2, y: 1, terrain: 'Plains' },
-                { x: -2, y: 2, terrain: 'Plains' },
-                { x: -1, y: 2, terrain: 'Plains' },
-                { x: 0, y: 2, terrain: 'Plains' },
-                { x: 1, y: 2, terrain: 'Plains' },
-                { x: 2, y: 2, terrain: 'Plains' },
-              ]
+              tiles: Array.from({ length: 25 }, (_, i) => {
+                const x = (i % 5) - 2;
+                const y = Math.floor(i / 5) - 2;
+                return { x, y, terrain: 'Plains' as any };
+              }).concat([
+                { x: -8, y: -5, terrain: 'City', owner: 'Blue', hp: 10, maxHp: 10 } as any,
+                { x: 8, y: 5, terrain: 'City', owner: 'Red', hp: 10, maxHp: 10 } as any
+              ])
             },
             units: [
               {
@@ -183,41 +164,22 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             weatherDuration: 0
           },
           board: {
-            tiles: [
-              { x: -2, y: -2, terrain: 'Plains' },
-              { x: -1, y: -2, terrain: 'Plains' },
-              { x: 0, y: -2, terrain: 'Plains' },
-              { x: 1, y: -2, terrain: 'Plains' },
-              { x: 2, y: -2, terrain: 'Plains' },
-              { x: -2, y: -1, terrain: 'Plains' },
-              { x: -1, y: -1, terrain: 'Plains' },
-              { x: 0, y: -1, terrain: 'Plains' },
-              { x: 1, y: -1, terrain: 'Plains' },
-              { x: 2, y: -1, terrain: 'Plains' },
-              { x: -2, y: 0, terrain: 'Plains' },
-              { x: -1, y: 0, terrain: 'Plains' },
-              { x: 0, y: 0, terrain: 'Plains' },
-              { x: 1, y: 0, terrain: 'Plains' },
-              { x: 2, y: 0, terrain: 'Plains' },
-              { x: -2, y: 1, terrain: 'Plains' },
-              { x: -1, y: 1, terrain: 'Plains' },
-              { x: 0, y: 1, terrain: 'Plains' },
-              { x: 1, y: 1, terrain: 'Plains' },
-              { x: 2, y: 1, terrain: 'Plains' },
-              { x: -2, y: 2, terrain: 'Plains' },
-              { x: -1, y: 2, terrain: 'Plains' },
-              { x: 0, y: 2, terrain: 'Plains' },
-              { x: 1, y: 2, terrain: 'Plains' },
-              { x: 2, y: 2, terrain: 'Plains' },
-            ]
+            tiles: Array.from({ length: 25 }, (_, i) => {
+                const x = (i % 5) - 2;
+                const y = Math.floor(i / 5) - 2;
+                return { x, y, terrain: 'Plains' as any };
+              }).concat([
+                { x: -8, y: -5, terrain: 'City', owner: 'Blue', hp: 10, maxHp: 10 } as any,
+                { x: 8, y: 5, terrain: 'City', owner: 'Red', hp: 10, maxHp: 10 } as any
+              ])
           },
           units: [
             {
               id: 'u-0',
               type: 'Tank',
               team: 'Blue',
-              x: -2,
-              y: 0,
+              x: -6,
+              y: -2,
               hp: 20,
               maxHp: 20,
               attack: 7,
@@ -236,8 +198,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
               id: 'u-1',
               type: 'Infantry',
               team: 'Blue',
-              x: -1,
-              y: 0,
+              x: -5,
+              y: -2,
               hp: 10,
               maxHp: 10,
               attack: 4,
@@ -256,8 +218,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
               id: 'u-2',
               type: 'Tank',
               team: 'Red',
-              x: 2,
-              y: 0,
+              x: 6,
+              y: 2,
               hp: 20,
               maxHp: 20,
               attack: 7,
@@ -276,8 +238,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
               id: 'u-3',
               type: 'Infantry',
               team: 'Red',
-              x: 1,
-              y: 0,
+              x: 5,
+              y: 2,
               hp: 10,
               maxHp: 10,
               attack: 4,
@@ -312,17 +274,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const redUnits = units.filter(u => u.team === 'Red').length;
 
   return (
-    <div className="screen battle-screen" style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header
-        turn={turn}
-        activeTeam={activeTeam}
-        weather={weather || 'Clear'}
-        blueUnits={blueUnits}
-        redUnits={redUnits}
-        onEndTurn={handleEndTurn}
-      />
-      
-      <div style={{ flex: 1, position: 'relative', overflow: 'hidden' }}>
+    <div className="screen battle-screen" style={{ height: '100vh', width: '100vw', position: 'relative' }}>
+      {/* Full-screen game board */}
+      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <GameBoard
           boardLayout={boardLayout}
           units={units}
@@ -333,27 +287,38 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexHover={setHoveredHex}
           onHexLeave={() => setHoveredHex(null)}
         />
-        
+      </div>
+      
+      {/* UI overlay elements */}
+      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+        <Header
+          turn={turn}
+          activeTeam={activeTeam}
+          weather={weather || 'Clear'}
+          blueUnits={blueUnits}
+          redUnits={redUnits}
+          onEndTurn={handleEndTurn}
+        />
+      </div>
+      
+      <div style={{ position: 'absolute', bottom: '10px', left: '10px', zIndex: 1000 }}>
         <InfoPanel
           selectedUnit={selectedUnit}
           hoveredHex={hoveredHex}
           boardLayout={boardLayout}
           units={units}
         />
-        
+      </div>
+      
+      <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
         <ActionPanel
           selectedUnit={selectedUnit}
           selectedUnitTile={selectedUnitTile}
           onAction={handleAction}
         />
-        
-        <BattleReportModal
-          battleReport={battleReport}
-          onClose={() => setBattleReport(null)}
-        />
       </div>
       
-      <div style={{ padding: '10px', textAlign: 'center' }}>
+      <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
         <button 
           onClick={() => onNavigate('home')}
           style={{
@@ -369,6 +334,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           Return to Main Menu
         </button>
       </div>
+      
+      <BattleReportModal
+        battleReport={battleReport}
+        onClose={() => setBattleReport(null)}
+      />
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { BoardLayout, Unit, Coordinate } from '../../types';
 import { coordToString } from '../../utils/map';
 import Hexagon from './Hexagon';
 import { HEX_SIZE } from '../../config/constants';
+import { useCamera } from '../../hooks/useCamera';
 
 interface GameBoardProps {
   boardLayout: BoardLayout;
@@ -26,6 +27,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   onHexLeave
 }) => {
   const selectedUnit = units.find(u => u.id === selectedUnitId);
+  const { camera } = useCamera();
   
   const renderHexes = () => {
     const hexes: React.ReactElement[] = [];
@@ -55,12 +57,42 @@ const GameBoard: React.FC<GameBoardProps> = ({
     return hexes;
   };
   
+  // Calculate viewport based on camera position and zoom
+  const viewportWidth = 2000 / camera.zoom;
+  const viewportHeight = 1200 / camera.zoom;
+  const viewportX = camera.x - viewportWidth / 2;
+  const viewportY = camera.y - viewportHeight / 2;
+
   return (
-    <div className="game-board">
+    <div className="game-board" style={{ width: '100%', height: '100%', position: 'relative' }}>
+      <div 
+        style={{
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          background: 'rgba(0,0,0,0.7)',
+          color: 'white',
+          padding: '10px',
+          borderRadius: '5px',
+          fontSize: '14px',
+          zIndex: 1000
+        }}
+      >
+        <div>Camera Controls:</div>
+        <div>Move: Arrow Keys or WASD</div>
+        <div>Zoom: +/- keys</div>
+        <div>Reset: R key</div>
+        <div>Zoom: {camera.zoom.toFixed(1)}x</div>
+      </div>
       <svg
         className="hex-grid"
-        viewBox="-400 -300 800 600"
-        style={{ width: '100%', height: '100%', background: '#f0f8ff' }}
+        viewBox={`${viewportX} ${viewportY} ${viewportWidth} ${viewportHeight}`}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          background: '#f0f8ff',
+          cursor: 'move'
+        }}
       >
         {renderHexes()}
       </svg>
