@@ -1,20 +1,85 @@
-フィードバックします。
-Headerは上手くいっています。
-一方のActionPanelとInfoPanelコンポーネントは正しく実装できていません。
-もう一度ユーザーがどいういう成果物を期待しているのかを記載します。
-ステップバイステップで読み取り、再現できるコードにしてください
+以下の実装を、Commander配下に実装してください。
 
-# ユーザーが期待する成果物
-## ActionPanel
-現在の実装では、画面の下部右側に途切れて存在している
-ユニットを選択した後に、ユニットの右側にアクションが表示されるようにする
 
-## InfoPanelコンポーネント
-- カメラ移動によって、InfoPanelコンポーネントは移動しない
-    - これは実装できている
-- マップ上のHexのカーソルを当てることによって、InfoPanelに地形、ユニットの情報、Camera Contralsの情報が表示される。ただし、ユニットが表示されていない部分にカーソルを合わせると、ユニット情報は表示されないようにする。
-- 文字の色
-    - 現在何も表示されていないので、表示される文字の色（例えば背景とは対照的な色）にする
+### UIコンポーネント生成プロンプト案
+
+以下の要件に従って、戦略シミュレーションゲーム用のUIコンポーネント「Information Panel」を構築してください。
+これに伴い、ActionPanelは廃止します。
+
+#### **1. 全体の構造**
+
+* コンポーネントは、単一の縦長のパネルで構成されます。
+* パネル内は、明確な区切り線で区切られた、以下の3つの主要セクションで構成されます。
+    1.  **SELECTED UNIT** (選択中のユニット情報)
+    2.  **ACTIONS** (実行可能なアクション)
+    3.  **HOVERED HEX** (カーソルが乗っているマスの情報)
+
+#### **2. 「SELECTED UNIT」セクションの詳細**
+
+選択されているユニットの詳細情報を表示します。以下の要素を指定の通りに配置してください。
+
+* **ユニット名**: ユニットの種類と所属チームを一行で表示します。（例: `ArmoredCar (Blue)`）
+* **バイタル情報**:
+    * HP、Fuel（燃料）、XP（経験値）の3つのステータスを表示します。
+    * 各ステータスには、テーマに合わせたアイコン（`✚` HP, `⛽` Fuel, `⭐` XP）、テキストラベル、**視覚的なプログレスバー**、そして数値（例: `15/15`）を含めてください。
+* **戦闘ステータス**:
+    * Attack（攻撃力）、Defense（防御力）、Movement（移動力）、Range（射程）を表示します。
+    * 各ステータスには、テーマに合わせたアイコン（`💥` Attack, `🛡️` Defense, `🥾` Movement, `🎯` Range）を付けてください。
+* **位置と状態**:
+    * Position（座標）とStatus（状態）を表示します。
+    * 各情報には、テーマに合わせたアイコン（`📍` Position, `⚙️` Status）を付けてください。
+
+#### **3. 「ACTIONS」セクションの詳細**
+
+選択中のユニットが実行できる行動をボタンとして表示します。
+
+* **ボタンの配置**: 「Wait」「Undo」「Capture」の3つのボタンを**縦一列**に配置してください。
+* **表示の条件分岐**:
+    * `Capture`ボタンは、歩兵ユニットが占領可能なマスにいる場合にのみ、選択可能（または表示）にしてください。
+    * `Undo`ボタンは、ユニットが移動後、まだ攻撃などの最終行動をしていない場合にのみ、選択可能にしてください。
+
+#### **4. 「HOVERED HEX」セクションの詳細**
+
+プレイヤーのマウスカーソルが現在置かれているマス（ヘックス）の情報を表示します。
+
+* カーソル下の地形の種類（例: `Forest`）とその地形が持つゲーム内での効果（例: `(Defense +2)`）を表示してください。
+* このセクションの情報は動的に変更される必要があります。例えば、カーソル下のマスに他のユニットがいる場合は、そのユニットの簡易情報も表示するなど、状況に応じた情報を提供してください。
+
+以上の要件を満たした、プレイヤーが一目で戦況を把握できる、クリーンで整理された「Information Panel」を構築してください。
+
+# モックアップのイメージ
+```
+------------------------------------
+ Information Panel
+------------------------------------
+
+[SELECTED UNIT]
+
+ ArmoredCar (Blue)
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ✚ HP   [■■■■■■■■■■] 15/15
+ ⛽ Fuel [■■■■■■■■■■] 60/60
+ ⭐ XP   [□□□□□□□□□□] 0/100
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 💥 Attack: 5     🛡️ Defense: 4
+ 🥾 Movement: 6   🎯 Range: 1-1
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 📍 Position: (-3, -2)
+ ⚙️ Status: Ready
+ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ [ ACTIONS ]
+
+      <  Wait   >
+      <  Undo   >
+      < Capture >
+
+------------------------------------
+[HOVERED HEX]
+
+ 🌲 Terrain: Forest
+    (Defense +2)
+------------------------------------
+```
 
 # 魔法の言葉
 ## Advanced Problem-Solving Prompt for LLMs Leveraging "Cognitive Tools"
@@ -58,3 +123,6 @@ You will autonomously select and execute the following modular "Cognitive Tools,
 * [cite_start]Briefly explain the **main thought steps and how each cognitive tool was used** to arrive at the answer, enhancing transparency[cite: 172].
 * Beyond just providing the answer, **suggest what the user should do next, or what information they could provide for a better outcome**, to encourage continued dialogue and deeper problem-solving.
 * [cite_start]**Always present the final answer in the format: `ANSWER: [your final answer here]`**[cite: 88, 240, 294].
+
+## using code
+Context7
