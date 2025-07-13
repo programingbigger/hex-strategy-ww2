@@ -33,55 +33,89 @@ const Header: React.FC<HeaderProps> = ({
   
   return (
     <div style={{
-      background: 'rgba(102, 126, 234, 0.9)',
       color: 'white',
-      padding: '10px 15px',
-      borderRadius: '10px',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-      backdropFilter: 'blur(10px)',
-      minWidth: '300px'
+      padding: '15px 30px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: '70px',
+      boxSizing: 'border-box'
     }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-            Turn {turn}
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '16px' }}>{getWeatherEmoji(weather)}</span>
-            <span style={{ fontSize: '14px' }}>{weather}</span>
-          </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+        <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
+          Turn {turn}
         </div>
         
         <div style={{
-          padding: '6px 12px',
-          background: activeTeam === 'Blue' ? 'rgba(0, 102, 204, 0.8)' : 'rgba(204, 0, 0, 0.8)',
-          borderRadius: '15px',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          textAlign: 'center'
+          padding: '8px 16px',
+          background: activeTeam === 'Blue' ? '#0066cc' : '#cc0000',
+          borderRadius: '20px',
+          fontSize: '16px',
+          fontWeight: 'bold'
         }}>
           {activeTeam} Team's Turn
         </div>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '20px' }}>{getWeatherEmoji(weather)}</span>
+          <span style={{ fontSize: '16px' }}>{weather}</span>
+        </div>
+        
+        <div style={{ display: 'flex', gap: '20px', fontSize: '16px' }}>
           <div style={{ color: '#87ceeb' }}>
-            🔵 {blueUnits}
+            🔵 Blue: {blueUnits}
           </div>
           <div style={{ color: '#ffb6c1' }}>
-            🔴 {redUnits}
+            🔴 Red: {redUnits}
           </div>
         </div>
+      </div>
+      
+      <div style={{ display: 'flex', gap: '10px' }}>
+        {onSave && (
+          <button
+            onClick={onSave}
+            style={{
+              padding: '10px 20px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              color: 'white',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Save
+          </button>
+        )}
+        
+        {onLoad && (
+          <button
+            onClick={onLoad}
+            style={{
+              padding: '10px 20px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              color: 'white',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Load
+          </button>
+        )}
         
         <button
           onClick={onEndTurn}
           style={{
-            padding: '8px 16px',
+            padding: '12px 24px',
             background: '#28a745',
             color: 'white',
             border: 'none',
             borderRadius: '5px',
             cursor: 'pointer',
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: 'bold',
             transition: 'background-color 0.2s'
           }}

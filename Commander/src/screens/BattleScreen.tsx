@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import GameBoard from '../components/game/GameBoard';
@@ -6,6 +6,9 @@ import Header from '../components/game/Header';
 import InfoPanel from '../components/game/InfoPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
 import ActionPanel from '../components/game/ActionPanel';
+import { axialToPixel } from '../utils/map';
+import { HEX_SIZE } from '../config/constants';
+import { useCamera } from '../hooks/useCamera';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -14,6 +17,7 @@ interface BattleScreenProps {
 }
 
 const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, onNavigate }) => {
+  const { camera } = useCamera();
   const {
     gameState: battleGameState,
     turn,
@@ -37,11 +41,35 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setBattleReport,
   } = useGameLogic();
 
+  // Calculate screen position for selected unit
+  const getUnitScreenPosition = useCallback(() => {
+    if (!selectedUnit) return null;
+    
+    // Get hex pixel position in SVG coordinates
+    const hexPixel = axialToPixel(selectedUnit, HEX_SIZE);
+    
+    // Account for camera transform
+    const viewportWidth = 2000 / camera.zoom;
+    const viewportHeight = 1200 / camera.zoom;
+    const viewportX = camera.x - viewportWidth / 2;
+    const viewportY = camera.y - viewportHeight / 2;
+    
+    // Convert SVG coordinates to screen coordinates
+    const gameBoardRect = { width: window.innerWidth - 320, height: window.innerHeight - 130 }; // Subtract UI areas
+    
+    const screenX = ((hexPixel.x - viewportX) / viewportWidth) * gameBoardRect.width;
+    const screenY = ((hexPixel.y - viewportY) / viewportHeight) * gameBoardRect.height + 70; // Add header height
+    
+    return { x: screenX, y: screenY };
+  }, [selectedUnit, camera]);
+
+  const unitScreenPosition = getUnitScreenPosition();
+
   useEffect(() => {
     // Load the test map on component mount
     const loadTestMap = async () => {
       try {
-        const response = await fetch('/data/maps/large_map.json');
+        const response = await fetch('data/maps/test_map_1.json');
         if (!response.ok) {
           // Fallback to creating a basic map
           const fallbackMapData: MapData = {
@@ -275,8 +303,51 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
 
   return (
     <div className="screen battle-screen" style={{ height: '100vh', width: '100vw', position: 'relative' }}>
-      {/* Full-screen game board */}
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+      {/* Fixed Header at top of window */}
+      <div style={{ 
+        position: 'fixed', 
+        top: 0, 
+        left: 0, 
+        right: 0, 
+        zIndex: 1000,
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+      }}>
+        <Header
+          turn={turn}
+          activeTeam={activeTeam}
+          weather={weather || 'Clear'}
+          blueUnits={blueUnits}
+          redUnits={redUnits}
+          onEndTurn={handleEndTurn}
+        />
+      </div>
+
+      {/* Fixed InfoPanel on right side of window */}
+      <div style={{ 
+        position: 'fixed', 
+        top: '80px', 
+        right: '10px', 
+        zIndex: 1000,
+        maxHeight: 'calc(100vh - 160px)',
+        overflowY: 'auto'
+      }}>
+        <InfoPanel
+          selectedUnit={selectedUnit}
+          hoveredHex={hoveredHex}
+          boardLayout={boardLayout}
+          units={units}
+        />
+      </div>
+      
+      {/* Full-screen game board with margin for fixed UI */}
+      <div style={{ 
+        position: 'absolute', 
+        top: '70px', 
+        left: 0, 
+        right: '320px', 
+        bottom: '60px'
+      }}>
         <GameBoard
           boardLayout={boardLayout}
           units={units}
@@ -289,36 +360,22 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       </div>
       
-      {/* UI overlay elements */}
-      <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
-        <Header
-          turn={turn}
-          activeTeam={activeTeam}
-          weather={weather || 'Clear'}
-          blueUnits={blueUnits}
-          redUnits={redUnits}
-          onEndTurn={handleEndTurn}
-        />
-      </div>
+      {/* ActionPanel next to selected unit */}
+      <ActionPanel
+        selectedUnit={selectedUnit}
+        selectedUnitTile={selectedUnitTile}
+        onAction={handleAction}
+        unitScreenPosition={unitScreenPosition}
+      />
       
-      <div style={{ position: 'absolute', bottom: '10px', left: '10px', zIndex: 1000 }}>
-        <InfoPanel
-          selectedUnit={selectedUnit}
-          hoveredHex={hoveredHex}
-          boardLayout={boardLayout}
-          units={units}
-        />
-      </div>
-      
-      <div style={{ position: 'absolute', bottom: '10px', right: '10px', zIndex: 1000 }}>
-        <ActionPanel
-          selectedUnit={selectedUnit}
-          selectedUnitTile={selectedUnitTile}
-          onAction={handleAction}
-        />
-      </div>
-      
-      <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000 }}>
+      {/* Return button at bottom center */}
+      <div style={{ 
+        position: 'fixed', 
+        bottom: '10px', 
+        left: '50%', 
+        transform: 'translateX(-50%)', 
+        zIndex: 1000 
+      }}>
         <button 
           onClick={() => onNavigate('home')}
           style={{

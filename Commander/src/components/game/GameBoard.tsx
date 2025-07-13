@@ -65,25 +65,6 @@ const GameBoard: React.FC<GameBoardProps> = ({
 
   return (
     <div className="game-board" style={{ width: '100%', height: '100%', position: 'relative' }}>
-      <div 
-        style={{
-          position: 'absolute',
-          top: '10px',
-          left: '10px',
-          background: 'rgba(0,0,0,0.7)',
-          color: 'white',
-          padding: '10px',
-          borderRadius: '5px',
-          fontSize: '14px',
-          zIndex: 1000
-        }}
-      >
-        <div>Camera Controls:</div>
-        <div>Move: Arrow Keys or WASD</div>
-        <div>Zoom: +/- keys</div>
-        <div>Reset: R key</div>
-        <div>Zoom: {camera.zoom.toFixed(1)}x</div>
-      </div>
       <svg
         className="hex-grid"
         viewBox={`${viewportX} ${viewportY} ${viewportWidth} ${viewportHeight}`}

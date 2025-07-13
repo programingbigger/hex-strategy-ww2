@@ -21,17 +21,16 @@ const InfoPanel: React.FC<InfoPanelProps> = ({
   
   return (
     <div className="info-panel" style={{
-      position: 'absolute',
-      top: '20px',
-      right: '20px',
-      width: '250px',
-      background: 'rgba(255, 255, 255, 0.9)',
+      width: '300px',
+      background: 'rgba(255, 255, 255, 0.95)',
       border: '2px solid #333',
       borderRadius: '8px',
       padding: '15px',
-      fontSize: '14px'
+      fontSize: '14px',
+      color: '#333',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
     }}>
-      <h3 style={{ margin: '0 0 10px 0', color: '#333' }}>Information Panel</h3>
+      <h3 style={{ margin: '0 0 15px 0', color: '#333', borderBottom: '2px solid #667eea', paddingBottom: '8px' }}>Information Panel</h3>
       
       {selectedUnit && (
         <div style={{ marginBottom: '15px', padding: '10px', background: '#e8f4f8', borderRadius: '5px' }}>
@@ -82,6 +81,16 @@ const InfoPanel: React.FC<InfoPanelProps> = ({
           <p style={{ margin: 0, color: '#666' }}>Select a unit or hover over a hex for details</p>
         </div>
       )}
+      
+      {/* Camera Controls Information */}
+      <div style={{ marginTop: '15px', padding: '10px', background: '#f8f9fa', borderRadius: '5px', borderLeft: '4px solid #667eea' }}>
+        <h4 style={{ margin: '0 0 8px 0', color: '#667eea', fontSize: '12px' }}>Camera Controls</h4>
+        <div style={{ fontSize: '12px', color: '#555' }}>
+          <div><strong>Move:</strong> Arrow Keys or WASD</div>
+          <div><strong>Zoom:</strong> +/- Keys</div>
+          <div><strong>Reset:</strong> R Key</div>
+        </div>
+      </div>
     </div>
   );
 };
