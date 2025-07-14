@@ -1,14 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
-import InfoPanel from '../components/game/InfoPanel';
+import InformationPanel from '../components/game/InformationPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
-import ActionPanel from '../components/game/ActionPanel';
-import { axialToPixel } from '../utils/map';
-import { HEX_SIZE } from '../config/constants';
-import { useCamera } from '../hooks/useCamera';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -17,7 +13,6 @@ interface BattleScreenProps {
 }
 
 const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, onNavigate }) => {
-  const { camera } = useCamera();
   const {
     gameState: battleGameState,
     turn,
@@ -41,29 +36,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setBattleReport,
   } = useGameLogic();
 
-  // Calculate screen position for selected unit
-  const getUnitScreenPosition = useCallback(() => {
-    if (!selectedUnit) return null;
-    
-    // Get hex pixel position in SVG coordinates
-    const hexPixel = axialToPixel(selectedUnit, HEX_SIZE);
-    
-    // Account for camera transform
-    const viewportWidth = 2000 / camera.zoom;
-    const viewportHeight = 1200 / camera.zoom;
-    const viewportX = camera.x - viewportWidth / 2;
-    const viewportY = camera.y - viewportHeight / 2;
-    
-    // Convert SVG coordinates to screen coordinates
-    const gameBoardRect = { width: window.innerWidth - 320, height: window.innerHeight - 130 }; // Subtract UI areas
-    
-    const screenX = ((hexPixel.x - viewportX) / viewportWidth) * gameBoardRect.width;
-    const screenY = ((hexPixel.y - viewportY) / viewportHeight) * gameBoardRect.height + 70; // Add header height
-    
-    return { x: screenX, y: screenY };
-  }, [selectedUnit, camera]);
-
-  const unitScreenPosition = getUnitScreenPosition();
 
   useEffect(() => {
     // Load the test map on component mount
@@ -323,7 +295,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       </div>
 
-      {/* Fixed InfoPanel on right side of window */}
+      {/* Fixed InformationPanel on right side of window */}
       <div style={{ 
         position: 'fixed', 
         top: '80px', 
@@ -332,11 +304,13 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         maxHeight: 'calc(100vh - 160px)',
         overflowY: 'auto'
       }}>
-        <InfoPanel
+        <InformationPanel
           selectedUnit={selectedUnit}
+          selectedUnitTile={selectedUnitTile}
           hoveredHex={hoveredHex}
           boardLayout={boardLayout}
           units={units}
+          onAction={handleAction}
         />
       </div>
       
@@ -359,14 +333,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexLeave={() => setHoveredHex(null)}
         />
       </div>
-      
-      {/* ActionPanel next to selected unit */}
-      <ActionPanel
-        selectedUnit={selectedUnit}
-        selectedUnitTile={selectedUnitTile}
-        onAction={handleAction}
-        unitScreenPosition={unitScreenPosition}
-      />
       
       {/* Return button at bottom center */}
       <div style={{ 
