@@ -130,8 +130,8 @@ export const MAP_MAX_R = 10;
 
 export const CITY_HP = 10;
 export const CITY_HEAL_RATE = 2;
-export const CAPTURE_DAMAGE_HIGH_HP = { min: 2, max: 4 };
-export const CAPTURE_DAMAGE_LOW_HP = { min: 1, max: 2 };
+export const CAPTURE_DAMAGE_HIGH_HP = { min: 6, max: 8 };
+export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 5 };
 
 export const HEX_SIZE = 40;
 export const HEX_WIDTH = HEX_SIZE * Math.sqrt(3);
