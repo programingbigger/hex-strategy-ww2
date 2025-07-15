@@ -22,7 +22,9 @@ import {
   CITY_HP,
   CITY_HEAL_RATE,
   CAPTURE_DAMAGE_HIGH_HP,
-  CAPTURE_DAMAGE_LOW_HP
+  CAPTURE_DAMAGE_LOW_HP,
+  UNIT_HEAL_HP,
+  UNIT_HEAL_FUEL_FULL
 } from '../config/constants';
 
 export const useGameLogic = () => {
@@ -104,6 +106,71 @@ export const useGameLogic = () => {
 
   const handleEndTurn = useCallback(() => {
     const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
+    console.log(`🔄 Turn ending: ${activeTeam} -> ${nextTeam}. Checking healing for ${nextTeam} team units...`);
+    
+    // Debug: Show all cities on the map
+    const cities = Array.from(boardLayout.entries()).filter(([, tile]) => tile.terrain === 'City');
+    console.log(`🏙️ Cities on map:`, cities.map(([coord, tile]) => ({
+      coord: coord,
+      terrain: tile.terrain,
+      owner: tile.owner,
+      hp: tile.hp
+    })));
+    
+    // Reset unit flags for all units
+    const unitsWithReset = units.map(u => ({ ...u, moved: false, attacked: false }));
+    
+    // Unit healing and resupply logic for the NEXT team (at start of their turn)
+    const unitsWithHealing = unitsWithReset.map(u => {
+      // Only heal units that belong to the next team (starting their turn)
+      if (u.team === nextTeam) {
+        const unitTile = boardLayout.get(coordToString(u));
+        // Debug: Check healing conditions
+        const coordString = coordToString(u);
+        const isCityAndOwned = unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team;
+        console.log(`🔍 Checking unit ${u.type} (${u.id}) at (${u.x}, ${u.y}) for healing:`, {
+          unitTeam: u.team,
+          nextTeam: nextTeam,
+          coordString: coordString,
+          unitTile: unitTile?.terrain || 'NOT_FOUND',
+          tileOwner: unitTile?.owner || 'NO_OWNER',
+          currentHp: u.hp,
+          maxHp: u.maxHp,
+          currentFuel: u.fuel,
+          maxFuel: UNIT_STATS[u.type].maxFuel,
+          UNIT_HEAL_HP: UNIT_HEAL_HP,
+          UNIT_HEAL_FUEL_FULL: UNIT_HEAL_FUEL_FULL,
+          willHeal: isCityAndOwned,
+          healingConditions: {
+            isCorrectTeam: u.team === nextTeam,
+            hasUnitTile: !!unitTile,
+            isCity: unitTile?.terrain === 'City',
+            isOwnedByUnit: unitTile?.owner === u.team
+          }
+        });
+        
+        if (unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team) {
+          // Heal HP by UNIT_HEAL_HP amount, capped at maxHp
+          const healedHp = Math.min(u.maxHp, u.hp + UNIT_HEAL_HP);
+          // Restore fuel to maximum if UNIT_HEAL_FUEL_FULL is true
+          const refueledFuel = UNIT_HEAL_FUEL_FULL ? UNIT_STATS[u.type].maxFuel : u.fuel;
+          console.log(`✅ HEALING APPLIED to ${u.type} (${u.id}) at (${u.x}, ${u.y}):`, {
+            oldHp: u.hp,
+            newHp: healedHp,
+            hpChange: healedHp - u.hp,
+            oldFuel: u.fuel,
+            newFuel: refueledFuel,
+            fuelChange: refueledFuel - u.fuel,
+            healAmount: UNIT_HEAL_HP,
+            maxFuelRestored: UNIT_HEAL_FUEL_FULL
+          });
+          return { ...u, hp: healedHp, fuel: refueledFuel };
+        }
+      }
+      return u;
+    });
+
+    setUnits(unitsWithHealing);
     setActiveTeam(nextTeam);
 
     const newBoardLayout = new Map(boardLayout);
@@ -154,21 +221,8 @@ export const useGameLogic = () => {
       }
     }
     setBoardLayout(newBoardLayout);
-
-    // Unit healing and resupply logic
-    const updatedUnits = units.map(u => {
-      const unitTile = newBoardLayout.get(coordToString(u));
-      if (unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team) {
-        const refueledFuel = UNIT_STATS[u.type].maxFuel;
-        const healedHp = Math.min(u.maxHp, u.hp + 2);
-        return { ...u, hp: healedHp, fuel: refueledFuel, moved: false, attacked: false };
-      }
-      return { ...u, moved: false, attacked: false };
-    });
-
-    setUnits(updatedUnits);
     setSelectedUnitId(null);
-    checkWinCondition(updatedUnits, newBoardLayout);
+    checkWinCondition(unitsWithHealing, newBoardLayout);
   }, [activeTeam, units, weather, weatherDuration, boardLayout]);
 
   const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {

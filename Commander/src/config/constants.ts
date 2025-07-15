@@ -133,6 +133,10 @@ export const CITY_HEAL_RATE = 2;
 export const CAPTURE_DAMAGE_HIGH_HP = { min: 6, max: 8 };
 export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 5 };
 
+// Unit healing constants
+export const UNIT_HEAL_HP = 2;
+export const UNIT_HEAL_FUEL_FULL = true;
+
 export const HEX_SIZE = 40;
 export const HEX_WIDTH = HEX_SIZE * Math.sqrt(3);
 export const HEX_HEIGHT = HEX_SIZE * 2;
