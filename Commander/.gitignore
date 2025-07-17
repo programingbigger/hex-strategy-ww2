@@ -1,1 +1,15 @@
 node_modules/
+
+ref_folders/
+
+# Screenshots and images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.svg
+
+# Build files
+build/
+dist/
