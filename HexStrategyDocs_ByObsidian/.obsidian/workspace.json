@@ -1,0 +1,180 @@
+{
+  "main": {
+    "id": "e4c02d594fe2e56c",
+    "type": "split",
+    "children": [
+      {
+        "id": "a8a031de8e975792",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "da6fee3bfa052b7d",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "グラフビュー"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "9edef51c4c2ad1dc",
+    "type": "split",
+    "children": [
+      {
+        "id": "afe136346414b3b3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9e6ead3b29e6983f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "ファイルエクスプローラ"
+            }
+          },
+          {
+            "id": "e60a60b68c580bb6",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#test_tag_1",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "検索"
+            }
+          },
+          {
+            "id": "4456b70ff4f950ad",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "ブックマーク"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "67641f51103fe375",
+    "type": "split",
+    "children": [
+      {
+        "id": "306fa234c9e393a5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "705a4d3492a01b6b",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "バックリンク"
+            }
+          },
+          {
+            "id": "547b5eb590aab689",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "アウトゴーイングリンク"
+            }
+          },
+          {
+            "id": "7c37ea8def0bcecc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "タグ"
+            }
+          },
+          {
+            "id": "5bde9bc0f6e7fda4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "アウトライン"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:クイックスイッチャーを開く": false,
+      "graph:グラフビューを開く": false,
+      "canvas:新規キャンバスを作成": false,
+      "daily-notes:今日のデイリーノートを開く": false,
+      "templates:テンプレートを挿入": false,
+      "command-palette:コマンドパレットを開く": false
+    }
+  },
+  "active": "da6fee3bfa052b7d",
+  "lastOpenFiles": [
+    "TestFolder/test_tag_1.md",
+    "TestFolder/test_tag_2.md",
+    "TestFolder/test_tag_3.md",
+    "HexStrategyDocs_ByObsidian/TestFolder/test_tag_2.md",
+    "Welcome.md",
+    "create a link.md",
+    "HexStrategyDocs_ByObsidian/TestFolder",
+    "HexStrategyDocs_ByObsidian",
+    "TestFolder/README.md",
+    "TestFolder/test_tag_1 copy.md",
+    "TestFolder",
+    "2025-07-19.md",
+    "無題のファイル.canvas"
+  ]
+}
