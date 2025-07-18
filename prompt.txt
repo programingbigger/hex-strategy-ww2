@@ -1,0 +1,15 @@
+### **Prompt for AI Development Assistant**
+
+You are an AI programmer specializing in game development using React and TypeScript.
+I need you to fix a critical bug in a hex-based strategy game currently under development.
+
+#### **Task: Resolve the issue where unit deployment is not reflected in the battle scene.**
+
+**[Current Bug]**
+Currently, when a player places units on the "Unit Deployment Screen" and selects "Start Battle," that placement information is not carried over to the "Battle Screen." As a result, the battle begins in a default state, ignoring the player's strategic deployment.
+
+**[Expected Behavior]**
+The battle should commence with the **player's unit configuration** from the "Unit Deployment Screen" and the predefined **enemy unit deployment** correctly reflected on the map, allowing the game to be played from that state.
+
+**[Instruction]**
+Please analyze the data flow and state management between the "Unit Deployment Screen" and the "Battle Screen" to identify the root cause of why the unit placement data is being lost. Then, refactor the code to ensure the state is correctly passed and the expected behavior is achieved.
