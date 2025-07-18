@@ -179,6 +179,7 @@
       { "x": 5, "y": 6, "terrain": "Mountain" }
     ]
   },
+  "deploymentCenter": { "q": -4, "r": -2 },
   "units": [
     {
       "id": "u-0",

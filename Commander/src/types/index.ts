@@ -3,6 +3,7 @@ export type GameScreen =
   | 'home'
   | 'scenario-select'
   | 'battle-prep'
+  | 'deployment'
   | 'battle'
   | 'result';
 
@@ -12,6 +13,7 @@ export interface GameMap {
   description: string;
   difficulty: 'Easy' | 'Normal' | 'Hard';
   thumbnail?: string;
+  deploymentCenter?: { q: number; r: number };
 }
 
 export type Team = 'Blue' | 'Red';
@@ -74,6 +76,7 @@ export interface GameState {
   gameState?: 'playing' | 'gameOver';
   weather?: WeatherType;
   weatherDuration?: number;
+  battlePrep?: BattlePrepState;
 }
 
 export interface BattleResult {
@@ -129,4 +132,16 @@ export interface MapData {
     tiles: Tile[];
   };
   units: Unit[];
+  deploymentCenter?: { q: number; r: number };
+}
+
+export interface BattlePrepState {
+  selectedUnits: Unit[];
+  deployedUnits: Map<string, { x: number; y: number }>;
+  victoryConditions: string[];
+}
+
+export interface DeploymentCoordinate {
+  q: number;
+  r: number;
 }

@@ -1,2 +1,0 @@
-In the current code implementation, after pressing the Deploy Units button in Commander/docs/スクリーンショット 2025-07-17 6.10.13.png, it becomes Commander/docs/スクリーンショット 2025-07-17 6.10.24.png. Please implement this under Commander based on the requirements of the Commander/docs/unit-deployment-specs.md file.
-
