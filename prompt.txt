@@ -1,15 +1,42 @@
-### **Prompt for AI Development Assistant**
+# あなたへの指示
+以下の情報を元に、成果物を作成してください。
+成果物は、HexStrategyDocs_ByObsidian/HexStrategyDocs_ByObsidian/docs配下にmd形式やフォルダを作成し、整理した構造的な状態です。
+ファイル名は、Commander配下の各プログラムのファイル名で、そのプログラムの概要、引数、設定のポイント（このコードや関数は、このゲームにとって、この部分に影響し、このようなことができます）をまとめてください。
+フォルダ名は、Commander配下は確認し、ユーザーにとってどのようなドキュメントならば見やすいか、理解しやすいかを考慮した上で作成・構成してください。
+成果物は”日本語”でマークダウン形式で作成すること
 
-You are an AI programmer specializing in game development using React and TypeScript.
-I need you to fix a critical bug in a hex-based strategy game currently under development.
+***情報***
+# 目的
+現在のCommanderについて、情報を整理したい
 
-#### **Task: Resolve the issue where unit deployment is not reflected in the battle scene.**
+# ゴール
+- グラフビューによる、各ファイルの依存関係の可視化
+    - 依存関係とは？
+        - このプログラミングファイルAの入力の可視化、つまり1対nの関係性
+- タグによる管理をしたい
 
-**[Current Bug]**
-Currently, when a player places units on the "Unit Deployment Screen" and selects "Start Battle," that placement information is not carried over to the "Battle Screen." As a result, the battle begins in a default state, ignoring the player's strategic deployment.
+# 設定方法
+基本的には、md形式のファイルと設定は同じです。
+以下には、ゴールを達成するためのチップスを載せておきます。この設定をすることによって、グラフィカルな依存関係の可視化が可能になります。
+タグによる管理は、検索をする時に役立ちます
 
-**[Expected Behavior]**
-The battle should commence with the **player's unit configuration** from the "Unit Deployment Screen" and the predefined **enemy unit deployment** correctly reflected on the map, allowing the game to be played from that state.
+## 各ファイルの依存関係の設定方法
+fileA⇨fileBのとき
 
-**[Instruction]**
-Please analyze the data flow and state management between the "Unit Deployment Screen" and the "Battle Screen" to identify the root cause of why the unit placement data is being lost. Then, refactor the code to ensure the state is correctly passed and the expected behavior is achieved.
+### fileA
+```md
+これはfileAです。
+```
+
+### fileB
+```md
+このfileBは、[[fileA]]の依存者です。
+```
+
+## タグ付け方法
+fileAに対して、「開発タグ」を付ける際は、以下のように設定
+### fileA
+```md
+これはfileAです。
+#fileA
+```
