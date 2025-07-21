@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a8a031de8e975792",
+        "id": "df7350e93fc8f6c5",
         "type": "tabs",
         "children": [
           {
-            "id": "da6fee3bfa052b7d",
+            "id": "85e859a6adef0243",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "グラフビュー"
+              "type": "markdown",
+              "state": {
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "constants"
             }
           }
         ]
@@ -49,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#test_tag_1",
+                "query": "ユニット 設定",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -70,7 +74,8 @@
               "title": "ブックマーク"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -90,6 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -99,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "バックリンク"
+              "title": "constantsへのバックリンク"
             }
           },
           {
@@ -108,11 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "アウトゴーイングリンク"
+              "title": "constantsからのアウトゴーイングリンク"
             }
           },
           {
@@ -136,12 +143,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "アウトライン"
+              "title": "constantsのアウトライン"
             }
           }
         ]
@@ -161,22 +169,22 @@
       "command-palette:コマンドパレットを開く": false
     }
   },
-  "active": "da6fee3bfa052b7d",
+  "active": "85e859a6adef0243",
   "lastOpenFiles": [
+    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Hexagon.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/GameBoard.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/useGameLogic.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md.tmp.91829.1752879081699",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/README.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/TitleScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/useGameLogic.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/InformationPanel.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Hexagon.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/GameBoard.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components",
