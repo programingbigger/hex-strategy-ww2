@@ -38,141 +38,151 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   } = useGameLogic();
 
   useEffect(() => {
-    // Load the battle with units from gameState (deployed units) or fallback to map data
     const loadBattle = async () => {
-      try {
-        const response = await fetch('data/maps/alpha_ver_stage.json'); //　data/maps/test_map_1.json
-        if (!response.ok) {
-          throw new Error('Failed to load map');
-        }
-        const mapData: MapData = await response.json();
-        
-        // If we have deployed units from gameState, use them instead of map units
-        if (gameState.units && gameState.units.length > 0) {
-          // Use the map data for board and enemy units, but replace player units with deployed ones
-          const enemyUnits = mapData.units.filter(unit => unit.team === 'Red');
-          const allUnits = [...gameState.units, ...enemyUnits];
+      if (gameState.selectedMap) {
+        try {
+          // Use the selected map from gameState instead of hardcoded map
+          const response = await fetch(`data/maps/${gameState.selectedMap.id}.json`);
+          if (!response.ok) {
+            throw new Error(`Failed to load map ${gameState.selectedMap.id}`);
+          }
+          const mapData: MapData = await response.json();
           
-          const customMapData: MapData = {
-            ...mapData,
-            units: allUnits
-          };
-          loadGame(customMapData);
-        } else {
-          // No deployed units, use default map data
-          loadGame(mapData);
+          // If we have deployed units from gameState, use them instead of map units
+          if (gameState.units && gameState.units.length > 0) {
+            // Use the map data for board and enemy units, but replace player units with deployed ones
+            const enemyUnits = mapData.units.filter(unit => unit.team === 'Red');
+            const allUnits = [...gameState.units, ...enemyUnits];
+            
+            const customMapData: MapData = {
+              ...mapData,
+              units: allUnits
+            };
+            loadGame(customMapData);
+          } else {
+            // No deployed units, use default map data
+            loadGame(mapData);
+          }
+        } catch (error) {
+          console.error(`Failed to load map ${gameState.selectedMap.id}:`, error);
+          // Use fallback map on error
+          loadFallbackMap();
         }
-      } catch (error) {
-        console.error('Failed to load map:', error);
-        // Use fallback map on error
-        const fallbackMapData: MapData = {
-          gameStatus: {
-            gameState: 'playing',
-            turn: 1,
-            activeTeam: 'Blue',
-            winner: null,
-            weather: 'Clear',
-            weatherDuration: 0
-          },
-          board: {
-            tiles: Array.from({ length: 25 }, (_, i) => {
-              const x = (i % 5) - 2;
-              const y = Math.floor(i / 5) - 2;
-              return { x, y, terrain: 'Plains' as any };
-            }).concat([
-              { x: -8, y: -5, terrain: 'City', owner: 'Blue', hp: 10, maxHp: 10 } as any,
-              { x: 8, y: 5, terrain: 'City', owner: 'Red', hp: 10, maxHp: 10 } as any
-            ])
-          },
-          units: gameState.units && gameState.units.length > 0 ? gameState.units : [
-            {
-              id: 'u-0',
-              type: 'Tank',
-              team: 'Blue',
-              x: -2,
-              y: 0,
-              hp: 20,
-              maxHp: 20,
-              attack: 7,
-              defense: 5,
-              movement: 4,
-              attackRange: { min: 1, max: 1 },
-              canCounterAttack: true,
-              unitClass: 'Vehicle',
-              fuel: 40,
-              maxFuel: 40,
-              xp: 0,
-              moved: false,
-              attacked: false
-            },
-            {
-              id: 'u-1',
-              type: 'Infantry',
-              team: 'Blue',
-              x: -1,
-              y: 0,
-              hp: 10,
-              maxHp: 10,
-              attack: 4,
-              defense: 2,
-              movement: 3,
-              attackRange: { min: 1, max: 1 },
-              canCounterAttack: true,
-              unitClass: 'Infantry',
-              fuel: 60,
-              maxFuel: 60,
-              xp: 0,
-              moved: false,
-              attacked: false
-            },
-            {
-              id: 'u-2',
-              type: 'Tank',
-              team: 'Red',
-              x: 2,
-              y: 0,
-              hp: 20,
-              maxHp: 20,
-              attack: 7,
-              defense: 5,
-              movement: 4,
-              attackRange: { min: 1, max: 1 },
-              canCounterAttack: true,
-              unitClass: 'Vehicle',
-              fuel: 40,
-              maxFuel: 40,
-              xp: 0,
-              moved: false,
-              attacked: false
-            },
-            {
-              id: 'u-3',
-              type: 'Infantry',
-              team: 'Red',
-              x: 1,
-              y: 0,
-              hp: 10,
-              maxHp: 10,
-              attack: 4,
-              defense: 2,
-              movement: 3,
-              attackRange: { min: 1, max: 1 },
-              canCounterAttack: true,
-              unitClass: 'Infantry',
-              fuel: 60,
-              maxFuel: 60,
-              xp: 0,
-              moved: false,
-              attacked: false
-            }
-          ]
-        };
-        loadGame(fallbackMapData);
+      } else {
+        // No selected map available, use fallback
+        console.warn('No selected map found, using fallback map');
+        loadFallbackMap();
       }
+    };
+
+    const loadFallbackMap = () => {
+      const fallbackMapData: MapData = {
+        gameStatus: {
+          gameState: 'playing',
+          turn: 1,
+          activeTeam: 'Blue',
+          winner: null,
+          weather: 'Clear',
+          weatherDuration: 0
+        },
+        board: {
+          tiles: Array.from({ length: 25 }, (_, i) => {
+            const x = (i % 5) - 2;
+            const y = Math.floor(i / 5) - 2;
+            return { x, y, terrain: 'Plains' as any };
+          }).concat([
+            { x: -8, y: -5, terrain: 'City', owner: 'Blue', hp: 10, maxHp: 10 } as any,
+            { x: 8, y: 5, terrain: 'City', owner: 'Red', hp: 10, maxHp: 10 } as any
+          ])
+        },
+        units: gameState.units && gameState.units.length > 0 ? gameState.units : [
+          {
+            id: 'u-0',
+            type: 'Tank',
+            team: 'Blue',
+            x: -2,
+            y: 0,
+            hp: 20,
+            maxHp: 20,
+            attack: 7,
+            defense: 5,
+            movement: 4,
+            attackRange: { min: 1, max: 1 },
+            canCounterAttack: true,
+            unitClass: 'Vehicle',
+            fuel: 40,
+            maxFuel: 40,
+            xp: 0,
+            moved: false,
+            attacked: false
+          },
+          {
+            id: 'u-1',
+            type: 'Infantry',
+            team: 'Blue',
+            x: -1,
+            y: 0,
+            hp: 10,
+            maxHp: 10,
+            attack: 4,
+            defense: 2,
+            movement: 3,
+            attackRange: { min: 1, max: 1 },
+            canCounterAttack: true,
+            unitClass: 'Infantry',
+            fuel: 60,
+            maxFuel: 60,
+            xp: 0,
+            moved: false,
+            attacked: false
+          },
+          {
+            id: 'u-2',
+            type: 'Tank',
+            team: 'Red',
+            x: 2,
+            y: 0,
+            hp: 20,
+            maxHp: 20,
+            attack: 7,
+            defense: 5,
+            movement: 4,
+            attackRange: { min: 1, max: 1 },
+            canCounterAttack: true,
+            unitClass: 'Vehicle',
+            fuel: 40,
+            maxFuel: 40,
+            xp: 0,
+            moved: false,
+            attacked: false
+          },
+          {
+            id: 'u-3',
+            type: 'Infantry',
+            team: 'Red',
+            x: 1,
+            y: 0,
+            hp: 10,
+            maxHp: 10,
+            attack: 4,
+            defense: 2,
+            movement: 3,
+            attackRange: { min: 1, max: 1 },
+            canCounterAttack: true,
+            unitClass: 'Infantry',
+            fuel: 60,
+            maxFuel: 60,
+            xp: 0,
+            moved: false,
+            attacked: false
+          }
+        ]
+      };
+      loadGame(fallbackMapData);
     };
     
     loadBattle();
-  }, [loadGame, gameState.units]);
+  }, [loadGame, gameState.units, gameState.selectedMap]);
 
   useEffect(() => {
     if (battleGameState === 'gameOver' && winner) {
