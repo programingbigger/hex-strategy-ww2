@@ -279,6 +279,9 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             
             <div style={{ fontSize: '13px' }}>
               <div style={{ marginBottom: '5px' }}>
+                📍 Position: ({hoveredHex?.x}, {hoveredHex?.y})
+              </div>
+              <div style={{ marginBottom: '5px' }}>
                 🌲 Terrain: {hoveredTile.terrain}
               </div>
               <div style={{ 

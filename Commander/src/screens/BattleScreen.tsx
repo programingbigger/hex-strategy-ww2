@@ -5,6 +5,7 @@ import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
 import InformationPanel from '../components/game/InformationPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
+import RainEffect from '../components/game/RainEffect';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -40,7 +41,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     // Load the battle with units from gameState (deployed units) or fallback to map data
     const loadBattle = async () => {
       try {
-        const response = await fetch('data/maps/test_map_1.json');
+        const response = await fetch('data/maps/alpha_ver_stage.json'); //　data/maps/test_map_1.json
         if (!response.ok) {
           throw new Error('Failed to load map');
         }
@@ -249,6 +250,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           />
         </div>
       </div>
+
+      {/* Rain Effect */}
+      <RainEffect weather={weather} />
 
       {/* Battle Report Modal */}
       {battleReport && (
