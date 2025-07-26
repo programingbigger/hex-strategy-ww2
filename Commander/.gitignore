@@ -9,6 +9,7 @@ ref_folders/
 *.gif
 *.bmp
 *.svg
+*.mp4
 
 # Build files
 build/
