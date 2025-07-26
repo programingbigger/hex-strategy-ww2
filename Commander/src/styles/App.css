@@ -101,27 +101,58 @@ body {
 
 .menu-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1rem;
   align-items: center;
+  justify-content: center;
 }
 
 .menu-button {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(52, 73, 94, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   color: white;
-  padding: 12px 24px;
+  padding: 15px 30px;
   font-size: 1.2em;
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 200px;
+  position: relative;
+  margin: 8px;
+  border-radius: 8px;
 }
 
-.menu-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
+.menu-button:hover:not(:disabled) {
+  background: rgba(74, 123, 144, 0.95);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.menu-button:active:not(:disabled) {
+  background: rgba(39, 174, 96, 0.9);
+  transform: translateY(-1px) scale(1.01);
+}
+
+.menu-button:disabled {
+  background: rgba(52, 73, 94, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+
+.menu-button-back {
+  background: rgba(231, 76, 60, 0.9) !important;
+  margin-top: 2rem;
+}
+
+.menu-button-back:hover:not(:disabled) {
+  background: rgba(231, 76, 60, 0.95) !important;
+}
+
+/* Title screen specific hex-shaped buttons */
+.title-screen .menu-button {
+  clip-path: polygon(20% 0%, 80% 0%, 100% 30%, 100% 70%, 80% 100%, 20% 100%, 0% 70%, 0% 30%);
+  border-radius: 0;
 }
 
 .map-grid {

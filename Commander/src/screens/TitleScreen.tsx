@@ -40,7 +40,6 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
         
         <button 
           className="menu-button"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
           disabled
         >
           Continue (Not Available)
@@ -48,7 +47,6 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
         
         <button 
           className="menu-button"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
           disabled
         >
           Settings (Not Available)

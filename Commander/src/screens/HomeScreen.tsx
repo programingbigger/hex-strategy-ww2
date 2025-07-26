@@ -13,7 +13,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
       <div className="menu-container">
         <button 
           className="menu-button"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
           disabled
         >
           Story Mode (Coming Soon)
@@ -28,7 +27,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
         
         <button 
           className="menu-button"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
           disabled
         >
           Tutorial (Coming Soon)
@@ -36,16 +34,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
         
         <button 
           className="menu-button"
-          style={{ opacity: 0.5, cursor: 'not-allowed' }}
           disabled
         >
           Settings (Coming Soon)
         </button>
         
         <button 
-          className="menu-button"
+          className="menu-button menu-button-back"
           onClick={() => onNavigate('title')}
-          style={{ marginTop: '2rem', background: 'rgba(231, 76, 60, 0.2)' }}
         >
           Back to Title
         </button>
