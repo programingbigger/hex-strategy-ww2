@@ -59,7 +59,8 @@ export const UNIT_STATS: { [key in UnitType]: UnitStats } = {
     unitClass: 'Infantry',
     maxFuel: 40,
     attackVs: { Vehicle: 8, Infantry: 8 },
-    defenseVs: { Vehicle: 3, Infantry: 3 }
+    defenseVs: { Vehicle: 3, Infantry: 3 },
+    isArtillery: true
   }
 };
 
@@ -103,6 +104,11 @@ export const TERRAIN_STATS: { [key: string]: TerrainStats } = {
     defenseBonus: -1,
     attackBonus: 0,
     movementCost: { Infantry: 2, Vehicle: 3, default: 2 }
+  },
+  Sea: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: { Infantry: Infinity, Vehicle: Infinity, default: Infinity }
   }
 };
 

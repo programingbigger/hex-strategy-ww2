@@ -49,6 +49,106 @@ const Hexagon: React.FC<HexagonProps> = ({
     }
   };
   
+  const renderUnitSymbol = (unit: Unit, size: number) => {
+    const symbolSize = size * 0.5;
+    const strokeWidth = 2;
+    const symbolColor = '#FFF';
+    
+    switch (unit.type) {
+      case 'Infantry':
+        return (
+          <g>
+            <line
+              x1={-symbolSize * 0.4}
+              y1={-symbolSize * 0.4}
+              x2={symbolSize * 0.4}
+              y2={symbolSize * 0.4}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+            <line
+              x1={symbolSize * 0.4}
+              y1={-symbolSize * 0.4}
+              x2={-symbolSize * 0.4}
+              y2={symbolSize * 0.4}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+          </g>
+        );
+      case 'Tank':
+        return (
+          <ellipse
+            cx={0}
+            cy={0}
+            rx={symbolSize * 0.6}
+            ry={symbolSize * 0.4}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+        );
+      case 'ArmoredCar':
+        return (
+          <line
+            x1={-symbolSize * 0.4}
+            y1={symbolSize * 0.4}
+            x2={symbolSize * 0.4}
+            y2={-symbolSize * 0.4}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+          />
+        );
+      case 'AntiTank':
+        return (
+          <g>
+            <rect
+              x={-symbolSize * 0.3}
+              y={-symbolSize * 0.3}
+              width={symbolSize * 0.6}
+              height={symbolSize * 0.6}
+              fill={symbolColor}
+            />
+            <line
+              x1={-symbolSize * 0.4}
+              y1={0}
+              x2={symbolSize * 0.4}
+              y2={0}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+            />
+          </g>
+        );
+      case 'Artillery':
+        return (
+          <circle
+            cx={0}
+            cy={0}
+            r={symbolSize * 0.3}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+        );
+      default:
+        return (
+          <text
+            x={0}
+            y={0}
+            textAnchor="middle"
+            fontSize="12"
+            fill={symbolColor}
+            dominantBaseline="middle"
+          >
+            ?
+          </text>
+        );
+    }
+  };
+  
   const hexPoints = [
     [0, -size],
     [size * Math.sqrt(3) / 2, -size / 2],
@@ -102,24 +202,17 @@ const Hexagon: React.FC<HexagonProps> = ({
       
       {unit && (
         <>
-          <circle
-            cx={0}
-            cy={0}
-            r={size * 0.7}
+          <rect
+            x={-size * 0.6}
+            y={-size * 0.4}
+            width={size * 1.2}
+            height={size * 0.8}
+            rx={4}
             fill={getUnitColor(unit.team)}
-            stroke="#000"
-            strokeWidth={1}
+            stroke="#FFF"
+            strokeWidth={2}
           />
-          <text
-            x={0}
-            y={0}
-            textAnchor="middle"
-            fontSize="12"
-            fill="#FFF"
-            dominantBaseline="middle"
-          >
-            {unit.type.charAt(0)}
-          </text>
+          {renderUnitSymbol(unit, size)}
           <text
             x={0}
             y={16}

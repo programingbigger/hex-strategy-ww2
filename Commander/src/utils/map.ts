@@ -112,6 +112,13 @@ export function calculateReachableTiles(
       const terrainStats = TERRAIN_STATS[tile.terrain];
       let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
 
+      // Check vehicle restrictions for terrain
+      if (unitAtStart.unitClass === 'Vehicle') {
+        if (tile.terrain === 'River' || tile.terrain === 'Sea' || tile.terrain === 'Mountain') {
+          moveCost = Infinity;
+        }
+      }
+
       if (moveCost === Infinity) continue;
 
       // ZOC logic

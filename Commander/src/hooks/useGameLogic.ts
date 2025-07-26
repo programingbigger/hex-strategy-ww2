@@ -373,7 +373,13 @@ export const useGameLogic = () => {
             }
           }
         }
-        setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, ...coord, moved: true, fuel: u.fuel - fuelCost } : u));
+        
+        // Artillery cannot attack after moving
+        const updatedUnit = selectedUnit.type === 'Artillery' 
+          ? { ...selectedUnit, ...coord, moved: true, attacked: true, fuel: selectedUnit.fuel - fuelCost }
+          : { ...selectedUnit, ...coord, moved: true, fuel: selectedUnit.fuel - fuelCost };
+        
+        setUnits(units.map(u => u.id === selectedUnit.id ? updatedUnit : u));
         return;
       }
 

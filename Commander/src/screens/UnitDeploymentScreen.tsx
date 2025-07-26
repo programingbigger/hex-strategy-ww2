@@ -21,6 +21,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
     gameState.battlePrep?.deployedUnits || new Map()
   );
   const [hoveredUnit, setHoveredUnit] = useState<Unit | null>(null);
+  const [hoveredTerrain, setHoveredTerrain] = useState<{terrain: string, coord: Coordinate} | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const selectedUnits = gameState.battlePrep?.selectedUnits || [];
@@ -58,8 +59,28 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
     }
   };
 
+  const canDeployUnitOnTerrain = (unit: Unit, coord: Coordinate): boolean => {
+    const tileKey = coordToString(coord);
+    const tile = gameState.board.get(tileKey);
+    if (!tile) return false;
+    
+    // Vehicle restrictions
+    if (unit.unitClass === 'Vehicle') {
+      if (tile.terrain === 'River' || tile.terrain === 'Sea' || tile.terrain === 'Mountain') {
+        return false;
+      }
+    }
+    
+    return true;
+  };
+
   const handleHexClick = (coord: Coordinate) => {
     if (selectedUnitForDeployment) {
+      // Check if unit can be deployed on this terrain
+      if (!canDeployUnitOnTerrain(selectedUnitForDeployment, coord)) {
+        return; // Cannot deploy here
+      }
+      
       // Deploy the selected unit
       const newDeployedUnits = new Map(deployedUnits);
       newDeployedUnits.set(selectedUnitForDeployment.id, { x: coord.x, y: coord.y });
@@ -149,6 +170,17 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
       <div className="deployment-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
           <h1>Deployment Phase</h1>
+        </div>
+        <p>{headerText}</p>
+        
+        <div style={{ display: 'flex', gap: '10px', marginTop: '10px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button
+            className="menu-button"
+            onClick={returnToUnitSelection}
+            style={{ background: 'rgba(231, 76, 60, 0.2)' }}
+          >
+            Return to Unit Selection
+          </button>
           <button
             className="menu-button"
             onClick={handleStartBattle}
@@ -160,17 +192,6 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             }}
           >
             Start Battle
-          </button>
-        </div>
-        <p>{headerText}</p>
-        
-        <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-          <button
-            className="menu-button"
-            onClick={returnToUnitSelection}
-            style={{ background: 'rgba(231, 76, 60, 0.2)' }}
-          >
-            Return to Unit Selection
           </button>
         </div>
       </div>
@@ -187,8 +208,20 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             onHexHover={(coord) => {
               const unit = boardUnits.find(u => u.x === coord.x && u.y === coord.y);
               setHoveredUnit(unit || null);
+              
+              // Set terrain info
+              const tileKey = coordToString(coord);
+              const tile = gameState.board.get(tileKey);
+              if (tile) {
+                setHoveredTerrain({ terrain: tile.terrain, coord });
+              } else {
+                setHoveredTerrain(null);
+              }
             }}
-            onHexLeave={() => setHoveredUnit(null)}
+            onHexLeave={() => {
+              setHoveredUnit(null);
+              setHoveredTerrain(null);
+            }}
           />
         </div>
 
@@ -252,6 +285,30 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
                 </div>
               );
             })}
+          </div>
+
+          {/* Terrain Information Panel - positioned at 1/4 from top */}
+          <div className="terrain-info-panel" style={{ 
+            position: 'absolute',
+            top: '25%',
+            right: '20px',
+            width: '280px',
+            padding: '15px',
+            background: 'rgba(52, 73, 94, 0.9)',
+            borderRadius: '8px',
+            border: '1px solid #3498db',
+            zIndex: 100
+          }}>
+            <h4>Terrain Information</h4>
+            {hoveredTerrain ? (
+              <div>
+                <div><strong>Terrain: {hoveredTerrain.terrain}</strong></div>
+                <div>Position: ({hoveredTerrain.coord.x}, {hoveredTerrain.coord.y})</div>
+                {/* Display terrain stats if available */}
+              </div>
+            ) : (
+              <div>Hover over terrain to see details</div>
+            )}
           </div>
 
           {/* Information Panel */}

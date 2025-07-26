@@ -24,7 +24,7 @@ export type UnitClass = 'Infantry' | 'Vehicle';
 
 export type WeatherType = 'Clear' | 'Rain' | 'HeavyRain';
 
-export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud';
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea';
 
 export interface Coordinate {
   x: number;
@@ -117,6 +117,7 @@ export interface UnitStats {
   maxFuel: number;
   attackVs?: { [key in UnitClass]?: number };
   defenseVs?: { [key in UnitClass]?: number };
+  isArtillery?: boolean;
 }
 
 export interface MapData {
