@@ -1,0 +1,11 @@
+# 地形画像フォルダ
+
+ここに各地形タイプの画像ファイルを配置してください：
+- plains.png
+- forest.png
+- mountain.png
+- river.png
+- city.png
+- road.png
+- mud.png
+- bridge.png

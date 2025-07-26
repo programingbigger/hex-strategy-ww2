@@ -1,19 +1,23 @@
 
+
+# 目的
+プログラミングによって改修した部分を確認するため
+
+# ゴール
+Commander/public/data/maps/test_map_1.json上で、上記目的を検証できるマップの作成
+
+# 成果物
+Commander/public/data/maps/test_map_1.jsonをゴールに沿った改修
+
 # ユーザーの要望
-Commander/public/data/maps/alpha_ver_stage.jsonで設定されているマップをDeployment PhaseとBattlePhaseで表示させたい。
+目的を達成するために、ユーザーはtest_map_1.jsonを以下のようにしたい
+- 地形による移動制限を確認できるようにする
+- ユニット同士の攻撃を確認できるようにする
+- 敵側のユニットは、全てのユニットが1種類ずつ配置されている。
+    - 配置場所は、右端
 
-# 課題
-現在のコードの実装では、以下の状態となっている
-- Deployment Phase⇨Commander/public/data/maps/test_map_1.jsonを参照し描画（コードで明示的に指示はしていないのが難点）
-- BattlePhase⇨Commander/public/data/maps/alpha_ver_stage.jsonを参照し描画（これはコードで明示的に実装。ハードコーディングされているので、ユーザーライク
-。わかりやすい。）
+# 前提条件
+- マップの大きさは絶対に変更しない。絶対に。⇨新しいHexタイルを増やさないこと
 
-# ユーザーが思っている実装
-マップ描画をするというプログラムまたは、ファイルを挟む⇨意図はマップを読み込むjsonファイルの入り口を1つにする。
 
-直感的な図示
-xxxxx_map.json
-⇩
-マップ描画をするというプログラムorファイル
-⇩                                   ⇩
-Deployment Phaseでは上記を参照し描画　　BattlePhaseでは上記を参照して描画
+

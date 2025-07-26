@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "UnitDeploymentScreen"
+              "title": "画像・動画素材管理システム"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "UnitDeploymentScreenへのバックリンク"
+              "title": "画像・動画素材管理システムへのバックリンク"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "UnitDeploymentScreenからのアウトゴーイングリンク"
+              "title": "画像・動画素材管理システムからのアウトゴーイングリンク"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "UnitDeploymentScreenのアウトライン"
+              "title": "画像・動画素材管理システムのアウトライン"
             }
           }
         ]
@@ -170,6 +170,8 @@
   },
   "active": "85e859a6adef0243",
   "lastOpenFiles": [
+    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/map-rendering-system.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/GameBoard.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Hexagon.md",
@@ -180,7 +182,6 @@
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/useGameLogic.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/TitleScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
