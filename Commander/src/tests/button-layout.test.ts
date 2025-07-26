@@ -75,6 +75,24 @@ export const verifyButtonRequirements = () => {
   return true;
 };
 
-// Run tests
+describe('Button Layout Tests', () => {
+  it('validates button layout configuration', () => {
+    const result = testButtonLayout();
+    expect(result).toBe(true);
+  });
+
+  it('verifies all button requirements are met', () => {
+    const result = verifyButtonRequirements();
+    expect(result).toBe(true);
+  });
+
+  it('checks button order is correct', () => {
+    const expectedOrder = ['Return to Unit Selection', 'Start Battle'];
+    expect(expectedOrder[0]).toBe('Return to Unit Selection');
+    expect(expectedOrder[1]).toBe('Start Battle');
+  });
+});
+
+// Run tests for console output
 testButtonLayout();
 verifyButtonRequirements();

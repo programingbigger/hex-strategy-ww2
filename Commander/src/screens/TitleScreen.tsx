@@ -8,6 +8,15 @@ interface TitleScreenProps {
 const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
   return (
     <div className="screen title-screen">
+      {/* Title Section (Top) */}
+      <div className="title-header">
+        <h1 className="screen-title">COMMANDER</h1>
+        <p style={{ fontSize: '1.2em', opacity: 0.8 }}>
+          Strategic Warfare Simulation
+        </p>
+      </div>
+
+      {/* Background Video (Center) */}
       <video 
         className="title-background-video"
         autoPlay 
@@ -19,12 +28,8 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
         Your browser does not support the video tag.
       </video>
       
-      <div className="title-content">
-        <h1 className="screen-title">COMMANDER</h1>
-        <p style={{ fontSize: '1.2em', marginBottom: '2rem', opacity: 0.8 }}>
-          Strategic Warfare Simulation
-        </p>
-        
+      {/* Button Section (Bottom) */}
+      <div className="title-footer">
         <div className="menu-container">
         <button 
           className="menu-button"
@@ -48,9 +53,9 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
         >
           Settings (Not Available)
         </button>
-      </div>
+        </div>
         
-        <div style={{ position: 'absolute', bottom: '20px', opacity: 0.6 }}>
+        <div className="copyright-text">
           <p>© 2025 Commander Strategy Game</p>
         </div>
       </div>

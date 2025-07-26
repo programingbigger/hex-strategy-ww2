@@ -2,18 +2,9 @@ import { UNIT_STATS, TERRAIN_STATS } from '../config/constants';
 import { Unit, Tile, BoardLayout } from '../types';
 import { calculateReachableTiles, coordToString } from '../utils/map';
 
-// Mock test framework functions for documentation purposes
-const describe = (name: string, fn: () => void) => console.log(`Test Suite: ${name}`);
-const test = (name: string, fn: () => void) => console.log(`Test: ${name}`);
-const expect = (value: any) => ({
-  toBe: (expected: any) => value === expected,
-  toBeUndefined: () => value === undefined,
-  toBeDefined: () => value !== undefined
-});
-
 describe('Game Logic Tests', () => {
   // Test Artillery movement restrictions
-  test('Artillery cannot attack after moving', () => {
+  it('Artillery has correct stats and cannot counter-attack', () => {
     const artilleryUnit: Unit = {
       id: 'test-artillery',
       type: 'Artillery',
@@ -42,7 +33,7 @@ describe('Game Logic Tests', () => {
   });
 
   // Test terrain restrictions for vehicles
-  test('Vehicle units cannot move through River, Sea, Mountain', () => {
+  it('Vehicle units cannot move through River, Sea, Mountain', () => {
     const tankUnit: Unit = {
       id: 'test-tank',
       type: 'Tank',
@@ -106,7 +97,7 @@ describe('Game Logic Tests', () => {
   });
 
   // Test Infantry can cross River
-  test('Infantry units can move through River', () => {
+  it('Infantry units can move through River', () => {
     const infantryUnit: Unit = {
       id: 'test-infantry',
       type: 'Infantry',
@@ -152,7 +143,7 @@ describe('Game Logic Tests', () => {
   });
 
   // Test terrain movement costs
-  test('Terrain movement costs are correct', () => {
+  it('Terrain movement costs are correct', () => {
     expect(TERRAIN_STATS.River.movementCost.Infantry).toBe(2);
     expect(TERRAIN_STATS.River.movementCost.Vehicle).toBe(Infinity);
     expect(TERRAIN_STATS.Mountain.movementCost.Vehicle).toBe(Infinity);
@@ -161,7 +152,7 @@ describe('Game Logic Tests', () => {
   });
 
   // Test unit deployment restrictions
-  test('Unit deployment terrain restrictions work correctly', () => {
+  it('Unit deployment terrain restrictions work correctly', () => {
     const canDeployUnitOnTerrain = (unit: Unit, terrain: string): boolean => {
       // Vehicle restrictions
       if (unit.unitClass === 'Vehicle') {

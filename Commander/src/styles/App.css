@@ -33,6 +33,18 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title-header {
+  position: relative;
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  backdrop-filter: blur(5px);
+  flex-shrink: 0;
 }
 
 .title-background-video {
@@ -45,15 +57,18 @@ body {
   z-index: 1;
 }
 
-.title-content {
+.title-footer {
   position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3); /* Semi-transparent overlay for readability */
+  z-index: 3;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(0, 0, 0, 0.3) 100%);
+  padding: 40px 20px 20px;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.copyright-text {
+  margin-top: 20px;
+  opacity: 0.6;
 }
 
 .home-screen {

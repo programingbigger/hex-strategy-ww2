@@ -64,6 +64,26 @@ export const createTestTile = (terrain: Tile['terrain'] = 'Plains'): Tile => ({
   terrain
 });
 
-// コンソールで確認用の情報
-console.log('Hexagon兵科記号テスト用データが準備されました');
-console.log('使用方法: createTestUnit("Infantry"), createTestTile("Forest")など');
+describe('Hexagon Component Tests', () => {
+  it('creates test unit with correct properties', () => {
+    const unit = createTestUnit('Infantry');
+    expect(unit.type).toBe('Infantry');
+    expect(unit.team).toBe('Blue');
+    expect(unit.hp).toBe(10);
+  });
+
+  it('creates test tile with correct terrain', () => {
+    const tile = createTestTile('Forest');
+    expect(tile.terrain).toBe('Forest');
+    expect(tile.x).toBe(0);
+    expect(tile.y).toBe(0);
+  });
+
+  it('creates different unit types correctly', () => {
+    const infantry = createTestUnit('Infantry');
+    const tank = createTestUnit('Tank');
+    
+    expect(infantry.unitClass).toBe('Infantry');
+    expect(tank.unitClass).toBe('Vehicle');
+  });
+});
