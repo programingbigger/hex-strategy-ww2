@@ -30,7 +30,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
       
       <button 
         className="menu-button"
-        onClick={() => onNavigate('home')}
+        onClick={() => onNavigate('title')}
         style={{ marginTop: '2rem', background: 'rgba(231, 76, 60, 0.2)' }}
       >
         Back to Mode Select

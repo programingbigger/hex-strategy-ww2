@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GameScreen } from '../types';
 
 interface TitleScreenProps {
@@ -6,6 +6,7 @@ interface TitleScreenProps {
 }
 
 const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
+  const [modeSelectExpanded, setModeSelectExpanded] = useState(false);
   return (
     <div className="screen title-screen">
       {/* Title Section (Top) */}
@@ -31,26 +32,67 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
       {/* Button Section (Bottom) */}
       <div className="title-footer">
         <div className="menu-container">
-        <button 
-          className="menu-button"
-          onClick={() => onNavigate('home')}
-        >
-          Mode Select
-        </button>
-        
-        <button 
-          className="menu-button"
-          disabled
-        >
-          Continue (Not Available)
-        </button>
-        
-        <button 
-          className="menu-button"
-          disabled
-        >
-          Settings (Not Available)
-        </button>
+        {!modeSelectExpanded ? (
+          <>
+            <button 
+              className="menu-button"
+              onClick={() => setModeSelectExpanded(true)}
+            >
+              Mode Select
+            </button>
+            
+            <button 
+              className="menu-button"
+              disabled
+            >
+              Continue (Not Available)
+            </button>
+            
+            <button 
+              className="menu-button"
+              disabled
+            >
+              Settings (Not Available)
+            </button>
+          </>
+        ) : (
+          <>
+            <button 
+              className="menu-button"
+              disabled
+            >
+              Tutorial (Coming Soon)
+            </button>
+            
+            <button 
+              className="menu-button"
+              disabled
+            >
+              Story Mode (Coming Soon)
+            </button>
+            
+            <button 
+              className="menu-button"
+              onClick={() => onNavigate('scenario-select')}
+            >
+              Scenario Mode
+            </button>
+            
+            <button 
+              className="menu-button"
+              disabled
+            >
+              Settings (Coming Soon)
+            </button>
+            
+            <button 
+              className="menu-button menu-button-back"
+              onClick={() => setModeSelectExpanded(false)}
+            >
+              Back to Title
+            </button>
+          </>
+        )}
         </div>
         
         <div className="copyright-text">
