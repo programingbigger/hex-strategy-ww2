@@ -1,5 +1,6 @@
 import React from 'react';
 import { Unit, Tile, Coordinate } from '../../types';
+import { WeaponInfoPanel } from './WeaponInfoPanel';
 
 interface InformationPanelProps {
   selectedUnit?: Unit;
@@ -181,6 +182,9 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                 }
               </div>
             </div>
+            
+            {/* Weapon Information */}
+            <WeaponInfoPanel unit={selectedUnit} />
           </div>
 
           {/* ACTIONS Section */}

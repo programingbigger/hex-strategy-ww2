@@ -55,7 +55,8 @@ export const createTestUnit = (type: Unit['type'], team: Unit['team'] = 'Blue'):
   unitClass: type === 'Infantry' ? 'Infantry' : 'Vehicle',
   fuel: 50,
   maxFuel: 50,
-  xp: 0
+  xp: 0,
+  weapons: []
 });
 
 export const createTestTile = (terrain: Tile['terrain'] = 'Plains'): Tile => ({

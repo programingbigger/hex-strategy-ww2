@@ -7,7 +7,8 @@ import {
   Team,
   WeatherType,
   GameStateSnapshot,
-  MapData
+  MapData,
+  Weapon
 } from '../types';
 import {
   loadMapFromJSON,
@@ -16,6 +17,13 @@ import {
   getDistance,
   findPath
 } from '../utils/map';
+import {
+  getWeaponsInRange,
+  selectCounterAttackWeapon,
+  consumeAmmunition,
+  getMaxAttackRange,
+  getMinAttackRange
+} from '../utils/weapons';
 import {
   UNIT_STATS,
   TERRAIN_STATS,
@@ -40,6 +48,11 @@ export const useGameLogic = () => {
   const [weather, setWeather] = useState<WeatherType>('Clear');
   const [weatherDuration, setWeatherDuration] = useState(0);
   const [history, setHistory] = useState<GameStateSnapshot[]>([]);
+  const [weaponSelectionState, setWeaponSelectionState] = useState<{
+    isOpen: boolean;
+    attacker: Unit | null;
+    target: Unit | null;
+  }>({ isOpen: false, attacker: null, target: null });
 
   const loadGame = useCallback((mapData: MapData) => {
     const { board, units: loadedUnits } = loadMapFromJSON(mapData);
@@ -88,6 +101,26 @@ export const useGameLogic = () => {
   const attackableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.attacked) return [];
 
+    // For units with weapon system, use weapon ranges
+    if (selectedUnit.weapons && Array.isArray(selectedUnit.weapons) && selectedUnit.weapons.length > 0) {
+      const attackRangeMin = getMinAttackRange(selectedUnit);
+      const attackRangeMax = getMaxAttackRange(selectedUnit);
+      
+      if (attackRangeMax === 0) return []; // No available weapons
+
+      const potentialTargets: Coordinate[] = [];
+      for (const [, tile] of Array.from(boardLayout.entries())) {
+        const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
+        if (distance >= attackRangeMin && distance <= attackRangeMax) {
+          potentialTargets.push(tile);
+        }
+      }
+      return potentialTargets.filter(coord =>
+        units.some(u => u.x === coord.x && u.y === coord.y && u.team !== selectedUnit.team)
+      );
+    }
+
+    // Legacy system for units without weapons (like Infantry)
     const attackRangeMin = selectedUnit.attackRange.min;
     const attackRangeMax = selectedUnit.attackRange.max;
 
@@ -336,6 +369,108 @@ export const useGameLogic = () => {
     checkWinCondition(updatedUnits, boardLayout);
   }, [boardLayout, units, checkWinCondition]);
 
+  // New weapon-based attack handler  
+  const handleAttackWithWeapon = useCallback((attacker: Unit, defender: Unit, weapon: Weapon) => {
+    const attackerTile = boardLayout.get(coordToString(attacker));
+    const defenderTile = boardLayout.get(coordToString(defender));
+    if (!attackerTile || !defenderTile) return;
+
+    const attackerTerrainStats = TERRAIN_STATS[attackerTile.terrain];
+    const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
+    
+    // Use weapon attack power
+    const baseAttackPower = weapon.effectiveness?.[defender.unitClass] ?? weapon.attack;
+    const attackPower = baseAttackPower + attackerTerrainStats.attackBonus;
+    
+    let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
+    if (attacker.type === 'Artillery') {
+      defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense);
+    }
+    
+    const damage = Math.max(1, attackPower - defensePower);
+    const reportText = `${attacker.type}が${weapon.name}で${defender.type}を攻撃！ ${damage}ダメージ！`;
+
+    setBattleReport({
+      attacker,
+      defender,
+      damage,
+      report: reportText,
+      weaponUsed: weapon,
+    });
+
+    // Update units: consume ammunition and apply damage
+    let updatedUnits = units.map(u => {
+      if (u.id === defender.id) {
+        return { ...u, hp: Math.max(0, u.hp - damage) };
+      }
+      if (u.id === attacker.id) {
+        const newXp = Math.min(100, u.xp + damage);
+        const updatedUnit = consumeAmmunition(u, weapon.id);
+        return { ...updatedUnit, xp: newXp, attacked: true, moved: true };
+      }
+      return u;
+    });
+    updatedUnits = updatedUnits.filter(u => u.hp > 0);
+
+    // Counter-attack logic with weapon selection
+    const currentDefender = updatedUnits.find(u => u.id === defender.id);
+    if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && attacker.type !== 'Artillery') {
+      const counterWeapon = selectCounterAttackWeapon(currentDefender);
+      
+      if (counterWeapon) {
+        const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
+        const counterDefenderTile = boardLayout.get(coordToString(attacker));
+        
+        if (counterAttackerTile && counterDefenderTile) {
+          const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
+          const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
+          
+          const counterBaseAttackPower = counterWeapon.effectiveness?.[attacker.unitClass] ?? counterWeapon.attack;
+          const counterAttackPower = counterBaseAttackPower + counterAttackerTerrainStats.attackBonus;
+          const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
+          const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
+          
+          const counterReportText = `\n\n反撃！ ${currentDefender.type}が${counterWeapon.name}で${attacker.type}を攻撃！ ${counterDamage}ダメージ！`;
+          
+          setBattleReport(prevReport => ({
+            ...prevReport!,
+            counterDamage,
+            report: prevReport!.report + counterReportText,
+            counterWeaponUsed: counterWeapon,
+          }));
+          
+          updatedUnits = updatedUnits.map(u => {
+            if (u.id === attacker.id) {
+              return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+            }
+            if (u.id === currentDefender.id) {
+              const newXp = Math.min(100, u.xp + counterDamage);
+              const updatedUnit = consumeAmmunition(u, counterWeapon.id);
+              return { ...updatedUnit, xp: newXp };
+            }
+            return u;
+          }).filter(u => u.hp > 0);
+        }
+      }
+    }
+
+    setUnits(updatedUnits);
+    setSelectedUnitId(null);
+    checkWinCondition(updatedUnits, boardLayout);
+  }, [boardLayout, units, checkWinCondition]);
+
+  // Weapon selection handlers
+  const handleWeaponSelect = useCallback((weapon: Weapon) => {
+    if (weaponSelectionState.attacker && weaponSelectionState.target) {
+      handleAttackWithWeapon(weaponSelectionState.attacker, weaponSelectionState.target, weapon);
+      setWeaponSelectionState({ isOpen: false, attacker: null, target: null });
+    }
+  }, [weaponSelectionState, handleAttackWithWeapon]);
+
+  const handleWeaponSelectionClose = useCallback(() => {
+    setWeaponSelectionState({ isOpen: false, attacker: null, target: null });
+  }, []);
+
   const handleHexClick = useCallback((coord: Coordinate) => {
     if (gameState === 'gameOver') return;
 
@@ -350,7 +485,32 @@ export const useGameLogic = () => {
       const isAttackable = attackableTiles.some(t => t.x === coord.x && t.y === coord.y);
       if (isAttackable && unitOnHex && unitOnHex.team !== selectedUnit.team) {
         saveStateToHistory();
-        handleAttack(selectedUnit, unitOnHex);
+        
+        // Check if unit has weapons and handle weapon selection
+        if (selectedUnit.weapons && Array.isArray(selectedUnit.weapons) && selectedUnit.weapons.length > 0) {
+          const distance = getDistance(selectedUnit, unitOnHex);
+          const availableWeapons = getWeaponsInRange(selectedUnit, distance);
+          
+          if (availableWeapons.length === 0) {
+            console.warn('No weapons available for attack');
+            return;
+          } else if (availableWeapons.length === 1) {
+            // Only one weapon available, use it directly
+            handleAttackWithWeapon(selectedUnit, unitOnHex, availableWeapons[0]);
+            return;
+          } else {
+            // Multiple weapons available, show selection modal
+            setWeaponSelectionState({
+              isOpen: true,
+              attacker: selectedUnit,
+              target: unitOnHex
+            });
+            return;
+          }
+        } else {
+          // Legacy attack for units without weapons
+          handleAttack(selectedUnit, unitOnHex);
+        }
         return;
       }
 
@@ -389,7 +549,7 @@ export const useGameLogic = () => {
         setSelectedUnitId(unitOnHex.id);
       }
     }
-  }, [gameState, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack, saveStateToHistory, boardLayout]);
+  }, [gameState, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack, handleAttackWithWeapon, saveStateToHistory, boardLayout]);
 
   const handleAction = useCallback((action: 'wait' | 'undo' | 'capture') => {
     if (!selectedUnit) return;
@@ -453,5 +613,8 @@ export const useGameLogic = () => {
     handleAction,
     setHoveredHex,
     setBattleReport,
+    weaponSelectionState,
+    handleWeaponSelect,
+    handleWeaponSelectionClose,
   };
 };

@@ -22,6 +22,19 @@ export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiT
 
 export type UnitClass = 'Infantry' | 'Vehicle';
 
+export type WeaponType = '37mm主砲' | '36MG機銃' | '9mmライフル' | '105mm野砲';
+
+export interface Weapon {
+  id: string;
+  name: string;
+  type: WeaponType;
+  ammunition: number;
+  maxAmmunition: number;
+  range: { min: number; max: number };
+  attack: number;
+  effectiveness?: { [key in UnitClass]?: number };
+}
+
 export type WeatherType = 'Clear' | 'Rain' | 'HeavyRain';
 
 export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea';
@@ -37,10 +50,10 @@ export interface Unit {
   team: Team;
   hp: number;
   maxHp: number;
-  attack: number;
+  attack: number; // Legacy - will be deprecated in favor of weapons
   defense: number;
   movement: number;
-  attackRange: { min: number; max: number };
+  attackRange: { min: number; max: number }; // Legacy - will be deprecated
   x: number;
   y: number;
   moved: boolean;
@@ -52,6 +65,7 @@ export interface Unit {
   xp: number;
   attackVs?: { [key in UnitClass]?: number };
   defenseVs?: { [key in UnitClass]?: number };
+  weapons: Weapon[]; // New weapon system
 }
 
 export interface Tile {
@@ -91,6 +105,8 @@ export interface BattleReport {
   damage: number;
   counterDamage?: number;
   report: string;
+  weaponUsed?: Weapon;
+  counterWeaponUsed?: Weapon;
 }
 
 export interface GameStateSnapshot {

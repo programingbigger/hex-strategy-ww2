@@ -1,4 +1,53 @@
-import { Unit, UnitType } from '../types';
+import { Unit, UnitType, Weapon, WeaponType } from '../types';
+
+// Weapon creation functions
+const createWeapon = (
+  id: string,
+  name: string,
+  type: WeaponType,
+  ammunition: number,
+  range: { min: number; max: number },
+  attack: number,
+  effectiveness?: { [key: string]: number }
+): Weapon => ({
+  id,
+  name,
+  type,
+  ammunition,
+  maxAmmunition: ammunition,
+  range,
+  attack,
+  effectiveness
+});
+
+// Weapon definitions based on requirements
+const createUnitWeapons = (type: UnitType): Weapon[] => {
+  switch (type) {
+    case 'Tank':
+      return [
+        createWeapon('tank-main-gun', '37mm主砲', '37mm主砲', 11, { min: 1, max: 1 }, 8),
+        createWeapon('tank-mg', '36MG機銃', '36MG機銃', 5, { min: 1, max: 1 }, 6)
+      ];
+    case 'ArmoredCar':
+      return [
+        createWeapon('armored-mg', '36MG機銃', '36MG機銃', 5, { min: 1, max: 1 }, 6)
+      ];
+    case 'AntiTank':
+      return [
+        createWeapon('antitank-gun', '37mm主砲', '37mm主砲', 11, { min: 1, max: 1 }, 6),
+        createWeapon('antitank-rifle', '9mmライフル', '9mmライフル', 3, { min: 1, max: 1 }, 4)
+      ];
+    case 'Artillery':
+      return [
+        createWeapon('artillery-howitzer', '105mm野砲', '105mm野砲', 4, { min: 2, max: 5 }, 10),
+        createWeapon('artillery-rifle', '9mmライフル', '9mmライフル', 3, { min: 1, max: 1 }, 4)
+      ];
+    case 'Infantry':
+    default:
+      // Infantry keeps legacy system for now
+      return [];
+  }
+};
 
 export const createUnit = (
   id: string,
@@ -8,6 +57,7 @@ export const createUnit = (
   y: number = 0
 ): Unit => {
   const unitStats = getUnitStats(type);
+  const weapons = createUnitWeapons(type);
   
   return {
     id,
@@ -27,7 +77,8 @@ export const createUnit = (
     unitClass: unitStats.unitClass,
     fuel: unitStats.maxFuel,
     maxFuel: unitStats.maxFuel,
-    xp: 0
+    xp: 0,
+    weapons
   };
 };
 
@@ -72,7 +123,7 @@ const getUnitStats = (type: UnitType) => {
         attack: 10,
         defense: 2,
         movement: 2,
-        attackRange: { min: 2, max: 4 },
+        attackRange: { min: 2, max: 5 },
         canCounterAttack: false,
         unitClass: 'Vehicle' as const,
         maxFuel: 30

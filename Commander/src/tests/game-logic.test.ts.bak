@@ -118,8 +118,7 @@ describe('Game Logic Tests', () => {
       unitClass: 'Infantry',
       fuel: 60,
       maxFuel: 60,
-      xp: 0,
-      weapons: []
+      xp: 0
     };
 
     const board: BoardLayout = new Map();
@@ -206,8 +205,7 @@ describe('Game Logic Tests', () => {
       unitClass: 'Infantry',
       fuel: 60,
       maxFuel: 60,
-      xp: 0,
-      weapons: []
+      xp: 0
     };
 
     // Tank cannot deploy on restricted terrains

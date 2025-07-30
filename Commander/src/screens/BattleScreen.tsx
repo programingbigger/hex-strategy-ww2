@@ -6,6 +6,7 @@ import Header from '../components/game/Header';
 import InformationPanel from '../components/game/InformationPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
 import RainEffect from '../components/game/RainEffect';
+import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -35,6 +36,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     handleAction,
     setHoveredHex,
     setBattleReport,
+    weaponSelectionState,
+    handleWeaponSelect,
+    handleWeaponSelectionClose,
   } = useGameLogic();
 
   useEffect(() => {
@@ -114,7 +118,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             maxFuel: 40,
             xp: 0,
             moved: false,
-            attacked: false
+            attacked: false,
+            weapons: []
           },
           {
             id: 'u-1',
@@ -134,7 +139,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             maxFuel: 60,
             xp: 0,
             moved: false,
-            attacked: false
+            attacked: false,
+            weapons: []
           },
           {
             id: 'u-2',
@@ -154,7 +160,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             maxFuel: 40,
             xp: 0,
             moved: false,
-            attacked: false
+            attacked: false,
+            weapons: []
           },
           {
             id: 'u-3',
@@ -174,7 +181,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             maxFuel: 60,
             xp: 0,
             moved: false,
-            attacked: false
+            attacked: false,
+            weapons: []
           }
         ]
       };
@@ -269,6 +277,17 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         <BattleReportModal
           battleReport={battleReport}
           onClose={() => setBattleReport(null)}
+        />
+      )}
+
+      {/* Weapon Selection Modal */}
+      {weaponSelectionState.attacker && weaponSelectionState.target && (
+        <WeaponSelectorModal
+          isOpen={weaponSelectionState.isOpen}
+          attacker={weaponSelectionState.attacker}
+          target={weaponSelectionState.target}
+          onWeaponSelect={handleWeaponSelect}
+          onClose={handleWeaponSelectionClose}
         />
       )}
     </div>
