@@ -318,11 +318,14 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   <div style={{ fontWeight: 'bold', marginBottom: '3px' }}>
                     Unit: {hoveredUnit.type} ({hoveredUnit.team})
                   </div>
-                  <div style={{ fontSize: '12px', color: '#666' }}>
+                  <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
                     HP: {hoveredUnit.hp}/{hoveredUnit.maxHp} | 
                     Fuel: {hoveredUnit.fuel}/{hoveredUnit.maxFuel} | 
                     XP: {hoveredUnit.xp}/100
                   </div>
+                  
+                  {/* Weapon Information for Hovered Unit */}
+                  <WeaponInfoPanel unit={hoveredUnit} />
                 </div>
               )}
             </div>

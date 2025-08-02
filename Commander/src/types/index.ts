@@ -22,7 +22,10 @@ export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiT
 
 export type UnitClass = 'Infantry' | 'Vehicle';
 
-export type WeaponType = '37mm主砲' | '36MG機銃' | '9mmライフル' | '105mm野砲';
+export type WeaponType = 
+  | '37mm主砲' | '36MG機銃' | '9mmライフル' | '105mm野砲'  // Legacy weapons
+  | '50mm主砲' | '30cal機銃' | '57mm対戦車砲' | 'M1ライフル' | '155mm榴弾砲' | 'BAR機銃'  // Blue faction weapons
+  | '7.7mm機銃' | '47mm対戦車砲' | '6.5mmライフル' | '99式軽機銃';  // Red faction weapons
 
 export interface Weapon {
   id: string;

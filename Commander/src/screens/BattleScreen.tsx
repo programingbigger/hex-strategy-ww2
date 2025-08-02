@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
+import { createUnit } from '../data/units';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
 import InformationPanel from '../components/game/InformationPanel';
@@ -100,90 +101,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           ])
         },
         units: gameState.units && gameState.units.length > 0 ? gameState.units : [
-          {
-            id: 'u-0',
-            type: 'Tank',
-            team: 'Blue',
-            x: -2,
-            y: 0,
-            hp: 20,
-            maxHp: 20,
-            attack: 7,
-            defense: 5,
-            movement: 4,
-            attackRange: { min: 1, max: 1 },
-            canCounterAttack: true,
-            unitClass: 'Vehicle',
-            fuel: 40,
-            maxFuel: 40,
-            xp: 0,
-            moved: false,
-            attacked: false,
-            weapons: []
-          },
-          {
-            id: 'u-1',
-            type: 'Infantry',
-            team: 'Blue',
-            x: -1,
-            y: 0,
-            hp: 10,
-            maxHp: 10,
-            attack: 4,
-            defense: 2,
-            movement: 3,
-            attackRange: { min: 1, max: 1 },
-            canCounterAttack: true,
-            unitClass: 'Infantry',
-            fuel: 60,
-            maxFuel: 60,
-            xp: 0,
-            moved: false,
-            attacked: false,
-            weapons: []
-          },
-          {
-            id: 'u-2',
-            type: 'Tank',
-            team: 'Red',
-            x: 2,
-            y: 0,
-            hp: 20,
-            maxHp: 20,
-            attack: 7,
-            defense: 5,
-            movement: 4,
-            attackRange: { min: 1, max: 1 },
-            canCounterAttack: true,
-            unitClass: 'Vehicle',
-            fuel: 40,
-            maxFuel: 40,
-            xp: 0,
-            moved: false,
-            attacked: false,
-            weapons: []
-          },
-          {
-            id: 'u-3',
-            type: 'Infantry',
-            team: 'Red',
-            x: 1,
-            y: 0,
-            hp: 10,
-            maxHp: 10,
-            attack: 4,
-            defense: 2,
-            movement: 3,
-            attackRange: { min: 1, max: 1 },
-            canCounterAttack: true,
-            unitClass: 'Infantry',
-            fuel: 60,
-            maxFuel: 60,
-            xp: 0,
-            moved: false,
-            attacked: false,
-            weapons: []
-          }
+          createUnit('u-0', 'Tank', 'Blue', -2, 0),
+          createUnit('u-1', 'Infantry', 'Blue', -1, 0),
+          createUnit('u-2', 'Tank', 'Red', 2, 0),
+          createUnit('u-3', 'Infantry', 'Red', 1, 0)
         ]
       };
       loadGame(fallbackMapData);

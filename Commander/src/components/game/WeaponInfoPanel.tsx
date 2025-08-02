@@ -6,7 +6,10 @@ interface WeaponInfoPanelProps {
 }
 
 export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
-  if (!unit || !unit.weapons || !Array.isArray(unit.weapons) || unit.weapons.length === 0) return null;
+  if (!unit) return null;
+  
+  // Show info for all units - if no weapons, show basic attack info
+  const hasWeapons = unit.weapons && Array.isArray(unit.weapons) && unit.weapons.length > 0;
 
   return (
     <div 
@@ -31,11 +34,11 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
           paddingBottom: '4px'
         }}
       >
-        🔫 武装状況
+        🔫 武装状況 ({unit.team})
       </div>
       
       <div className="weapons-list">
-        {unit.weapons.map((weapon: Weapon, index: number) => (
+        {hasWeapons ? unit.weapons!.map((weapon: Weapon, index: number) => (
           <div
             key={weapon.id}
             className="weapon-item"
@@ -76,7 +79,7 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
                   marginTop: '2px'
                 }}
               >
-                攻撃力{weapon.attack} | 射程{weapon.range.min}-{weapon.range.max}
+                攻撃力{weapon.attack} | 射程{weapon.range.min}-{weapon.range.max} | 命中率85%
               </div>
             </div>
             
@@ -123,10 +126,63 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+          <div
+            className="legacy-weapon-item"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '6px 0'
+            }}
+          >
+            <div className="weapon-details">
+              <div 
+                className="weapon-name"
+                style={{
+                  fontSize: '13px',
+                  fontWeight: 'bold',
+                  color: '#4CAF50'
+                }}
+              >
+                基本武装
+              </div>
+              <div 
+                className="weapon-stats"
+                style={{
+                  fontSize: '11px',
+                  color: '#ccc',
+                  marginTop: '2px'
+                }}
+              >
+                攻撃力{unit.attack} | 射程{unit.attackRange.min}-{unit.attackRange.max} | 命中率85%
+              </div>
+            </div>
+            
+            <div 
+              className="ammo-indicator"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              <div 
+                className="ammo-count"
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  color: '#4CAF50'
+                }}
+              >
+                ∞
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       
-      {unit.weapons && unit.weapons.every(w => w.ammunition === 0) && (
+      {hasWeapons && unit.weapons!.every(w => w.ammunition === 0) && (
         <div 
           className="no-ammo-warning"
           style={{

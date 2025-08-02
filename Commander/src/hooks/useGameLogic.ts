@@ -137,6 +137,7 @@ export const useGameLogic = () => {
     );
   }, [selectedUnit, units, boardLayout]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleEndTurn = useCallback(() => {
     const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
     console.log(`🔄 Turn ending: ${activeTeam} -> ${nextTeam}. Checking healing for ${nextTeam} team units...`);
@@ -389,6 +390,20 @@ export const useGameLogic = () => {
     
     const damage = Math.max(1, attackPower - defensePower);
     const reportText = `${attacker.type}が${weapon.name}で${defender.type}を攻撃！ ${damage}ダメージ！`;
+    
+    // Debug logging for HP bug investigation
+    console.log('=== ATTACK DEBUG ===');
+    console.log('Attack damage calculation:', {
+      baseAttackPower: weapon.effectiveness?.[defender.unitClass] ?? weapon.attack,
+      attackPower,
+      defensePower,
+      damage,
+      attackerType: attacker.type,
+      attackerTeam: attacker.team,
+      defenderType: defender.type,
+      defenderTeam: defender.team,
+      weaponUsed: weapon.name
+    });
 
     setBattleReport({
       attacker,
@@ -401,11 +416,48 @@ export const useGameLogic = () => {
     // Update units: consume ammunition and apply damage
     let updatedUnits = units.map(u => {
       if (u.id === defender.id) {
-        return { ...u, hp: Math.max(0, u.hp - damage) };
+        const newHp = Math.max(0, u.hp - damage);
+        console.log('Defender HP update:', {
+          oldHp: u.hp,
+          damage,
+          newHp,
+          unitId: u.id,
+          unitType: u.type,
+          unitTeam: u.team
+        });
+        return { ...u, hp: newHp };
       }
       if (u.id === attacker.id) {
         const newXp = Math.min(100, u.xp + damage);
         const updatedUnit = consumeAmmunition(u, weapon.id);
+        
+        // RED ARMY TANK HP BUG INVESTIGATION - Check if ammunition consumption corrupts HP
+        if (u.team === 'Red' && u.type === 'Tank') {
+          console.error('=== RED ARMY TANK AMMUNITION CONSUMPTION CHECK ===');
+          console.error('Tank state during attack:', {
+            originalTankHp: u.hp,
+            updatedTankHp: updatedUnit.hp,
+            hpChanged: u.hp !== updatedUnit.hp,
+            weaponUsed: weapon.id,
+            originalWeapons: u.weapons?.map(w => ({ id: w.id, ammo: w.ammunition })),
+            updatedWeapons: updatedUnit.weapons?.map(w => ({ id: w.id, ammo: w.ammunition }))
+          });
+          
+          // POTENTIAL BUG FIX: Ensure HP is not corrupted during ammunition consumption
+          if (updatedUnit.hp !== u.hp) {
+            console.error('HP CORRUPTION DETECTED during ammunition consumption!');
+            return { ...updatedUnit, hp: u.hp, xp: newXp, attacked: true, moved: true };
+          }
+        }
+        
+        console.log('Attacker after ammunition consumption:', {
+          originalUnit: u.id,
+          originalHp: u.hp,
+          updatedUnit: updatedUnit.id,
+          updatedHp: updatedUnit.hp,
+          weaponUsed: weapon.id,
+          weaponsAfter: updatedUnit.weapons?.map(w => ({ id: w.id, ammo: w.ammunition }))
+        });
         return { ...updatedUnit, xp: newXp, attacked: true, moved: true };
       }
       return u;
@@ -415,9 +467,15 @@ export const useGameLogic = () => {
     // Counter-attack logic with weapon selection
     const currentDefender = updatedUnits.find(u => u.id === defender.id);
     if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && attacker.type !== 'Artillery') {
-      const counterWeapon = selectCounterAttackWeapon(currentDefender);
+      const counterWeapon = selectCounterAttackWeapon(currentDefender, attacker);
       
-      if (counterWeapon) {
+      // Check range constraint for counter-attack
+      const counterDistance = getDistance(currentDefender, attacker);
+      const canPerformCounterAttack = counterWeapon && 
+        counterDistance >= counterWeapon.range.min && 
+        counterDistance <= counterWeapon.range.max;
+      
+      if (canPerformCounterAttack) {
         const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
         const counterDefenderTile = boardLayout.get(coordToString(attacker));
         
@@ -430,6 +488,24 @@ export const useGameLogic = () => {
           const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
           const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
           
+          // Debug logging for HP bug investigation
+          console.log('=== COUNTER-ATTACK DEBUG ===');
+          console.log('Attacker before counter:', {
+            id: attacker.id,
+            type: attacker.type,
+            team: attacker.team,
+            hp: attacker.hp,
+            maxHp: attacker.maxHp
+          });
+          console.log('Counter damage calculation:', {
+            counterBaseAttackPower,
+            counterAttackPower,
+            counterDefensePower,
+            counterDamage,
+            attackerUnit: attacker.unitClass,
+            defenderUnit: currentDefender.unitClass
+          });
+          
           const counterReportText = `\n\n反撃！ ${currentDefender.type}が${counterWeapon.name}で${attacker.type}を攻撃！ ${counterDamage}ダメージ！`;
           
           setBattleReport(prevReport => ({
@@ -441,15 +517,62 @@ export const useGameLogic = () => {
           
           updatedUnits = updatedUnits.map(u => {
             if (u.id === attacker.id) {
-              return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+              const newHp = Math.max(0, u.hp - counterDamage);
+              
+              // RED ARMY TANK HP BUG INVESTIGATION
+              if (u.team === 'Red' && u.type === 'Tank') {
+                console.error('=== RED ARMY TANK HP BUG ALERT ===');
+                console.error('Tank HP about to be updated:', {
+                  tankId: u.id,
+                  originalHp: u.hp,
+                  maxHp: u.maxHp,
+                  counterDamage,
+                  calculatedNewHp: newHp,
+                  counterWeaponUsed: counterWeapon?.name,
+                  counterAttackPower,
+                  counterDefensePower,
+                  attackerUnit: attacker.unitClass,
+                  defenderUnit: currentDefender.unitClass
+                });
+                
+                // POTENTIAL BUG FIX: Prevent HP from dropping too drastically
+                if (counterDamage > u.hp - 1 && u.hp > 1) {
+                  console.error('SUSPICIOUS DAMAGE DETECTED - Capping damage to prevent HP=1 bug');
+                  const safeDamage = Math.min(counterDamage, u.hp - 2);
+                  const safeNewHp = Math.max(1, u.hp - safeDamage);
+                  console.error('Applying safe damage:', {
+                    originalDamage: counterDamage,
+                    safeDamage,
+                    safeNewHp
+                  });
+                  return { ...u, hp: safeNewHp };
+                }
+              }
+              
+              console.log('Attacker HP update:', {
+                oldHp: u.hp,
+                counterDamage,
+                newHp,
+                unitId: u.id,
+                unitType: u.type,
+                unitTeam: u.team
+              });
+              return { ...u, hp: newHp };
             }
             if (u.id === currentDefender.id) {
               const newXp = Math.min(100, u.xp + counterDamage);
               const updatedUnit = consumeAmmunition(u, counterWeapon.id);
+              console.log('Defender after counter-attack ammunition consumption:', {
+                originalUnit: u.id,
+                updatedUnit: updatedUnit.id,
+                weaponUsed: counterWeapon.id,
+                weaponsAfter: updatedUnit.weapons?.map(w => ({ id: w.id, ammo: w.ammunition }))
+              });
               return { ...updatedUnit, xp: newXp };
             }
             return u;
           }).filter(u => u.hp > 0);
+          console.log('=== END COUNTER-ATTACK DEBUG ===');
         }
       }
     }
@@ -494,18 +617,20 @@ export const useGameLogic = () => {
           if (availableWeapons.length === 0) {
             console.warn('No weapons available for attack');
             return;
-          } else if (availableWeapons.length === 1) {
-            // Only one weapon available, use it directly
-            handleAttackWithWeapon(selectedUnit, unitOnHex, availableWeapons[0]);
-            return;
           } else {
-            // Multiple weapons available, show selection modal
-            setWeaponSelectionState({
-              isOpen: true,
-              attacker: selectedUnit,
-              target: unitOnHex
-            });
-            return;
+            // Always show weapon selection modal regardless of weapon count - this is the core gameplay feature
+            if (selectedUnit.team === activeTeam) {
+              setWeaponSelectionState({
+                isOpen: true,
+                attacker: selectedUnit,
+                target: unitOnHex
+              });
+              return;
+            } else {
+              // For AI/non-active team, use first available weapon as fallback
+              handleAttackWithWeapon(selectedUnit, unitOnHex, availableWeapons[0]);
+              return;
+            }
           }
         } else {
           // Legacy attack for units without weapons

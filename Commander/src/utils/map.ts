@@ -1,5 +1,6 @@
 import { Coordinate, BoardLayout, Unit, Team, MapData } from '../types';
-import { TERRAIN_STATS, UNIT_STATS } from '../config/constants';
+import { TERRAIN_STATS } from '../config/constants';
+import { createUnit } from '../data/units';
 
 export const coordToString = (coord: Coordinate): string => `${coord.x},${coord.y}`;
 export const stringToCoord = (key: string): Coordinate => {
@@ -37,22 +38,17 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
     board.set(coordToString(tile), tile);
   });
   
-  // Load units with full stats
+  // Load units with full stats and weapons
   const units: Unit[] = mapData.units.map(unitData => {
-    const stats = UNIT_STATS[unitData.type];
+    // Use createUnit to get properly initialized unit with faction-specific weapons
+    const baseUnit = createUnit(unitData.id, unitData.type, unitData.team, unitData.x, unitData.y);
+    
+    // Override with any additional properties from the map data
     return {
-      ...stats,
+      ...baseUnit,
       ...unitData,
-      maxHp: stats.maxHp,
-      attack: stats.attack,
-      defense: stats.defense,
-      movement: stats.movement,
-      attackRange: stats.attackRange,
-      canCounterAttack: stats.canCounterAttack,
-      unitClass: stats.unitClass,
-      maxFuel: stats.maxFuel,
-      attackVs: stats.attackVs,
-      defenseVs: stats.defenseVs
+      // Preserve the weapons array from createUnit (faction-specific)
+      weapons: baseUnit.weapons
     };
   });
   

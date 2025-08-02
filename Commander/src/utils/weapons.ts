@@ -14,6 +14,22 @@ export const getWeaponsInRange = (unit: Unit, targetDistance: number): Weapon[] 
   );
 };
 
+export const canCounterAttack = (defender: Unit, attacker: Unit): boolean => {
+  if (!defender.canCounterAttack) {
+    return false;
+  }
+  
+  // Check if defender has ammunition for appropriate counter-attack weapon
+  const counterWeapon = selectCounterAttackWeapon(defender, attacker);
+  if (!counterWeapon) {
+    return false;
+  }
+  
+  // Check if attacker is within effective range of counter-attack weapon
+  const distance = 1; // Counter-attacks typically happen at range 1
+  return distance >= counterWeapon.range.min && distance <= counterWeapon.range.max;
+};
+
 export const getMainWeapon = (unit: Unit): Weapon | undefined => {
   if (!unit.weapons || !Array.isArray(unit.weapons) || unit.weapons.length === 0) {
     return undefined;
@@ -21,22 +37,74 @@ export const getMainWeapon = (unit: Unit): Weapon | undefined => {
   return unit.weapons[0];
 };
 
-export const selectCounterAttackWeapon = (unit: Unit): Weapon | undefined => {
-  // Counter-attack weapon selection logic
-  // 1. Main weapon if available
-  const mainWeapon = getMainWeapon(unit);
-  if (mainWeapon && mainWeapon.ammunition > 0) {
-    return mainWeapon;
+export const selectCounterAttackWeapon = (unit: Unit, attacker?: Unit): Weapon | undefined => {
+  // Counter-attack weapon selection rules by unit type as per requirements
+  
+  if (!unit.weapons || !Array.isArray(unit.weapons) || unit.weapons.length === 0) {
+    return undefined;
   }
   
-  // 2. Any available weapon with priority
   const availableWeapons = getAvailableWeapons(unit);
-  if (availableWeapons.length > 0) {
-    return availableWeapons[0];
+  if (availableWeapons.length === 0) {
+    return undefined;
   }
   
-  // 3. No weapons available
-  return undefined;
+  // Unit-type specific counter-attack weapon selection
+  switch (unit.type) {
+    case 'Tank': {
+      // Always use main weapon (主砲). If main weapon is out of ammunition, use remaining sub-weapons
+      const mainWeapon = getMainWeapon(unit);
+      if (mainWeapon && mainWeapon.ammunition > 0) {
+        return mainWeapon;
+      }
+      // Use any available sub-weapon
+      return availableWeapons[0];
+    }
+    
+    case 'ArmoredCar': {
+      // Always use machine gun (機銃) regardless of attacking weapon type
+      const machineGun = availableWeapons.find(w => 
+        w.type === '36MG機銃' || w.type === '30cal機銃' || w.type === '7.7mm機銃'
+      );
+      return machineGun || availableWeapons[0];
+    }
+    
+    case 'Infantry': {
+      // Always use machine gun (機銃) regardless of attacking weapon type
+      // Infantry uses legacy system but we handle it here for consistency
+      return availableWeapons[0];
+    }
+    
+    case 'Artillery': {
+      // Use rifle (ライフル) for range-1 attacks (only weapon available at close range)
+      const rifle = availableWeapons.find(w => 
+        w.type === '9mmライフル' || w.type === 'M1ライフル' || w.type === '6.5mmライフル'
+      );
+      return rifle || availableWeapons[0];
+    }
+    
+    case 'AntiTank': {
+      // Use main gun (主砲) against armored targets, rifle (ライフル) against infantry targets
+      if (attacker) {
+        if (attacker.unitClass === 'Vehicle') {
+          const mainGun = availableWeapons.find(w => 
+            w.type === '37mm主砲' || w.type === '57mm対戦車砲' || w.type === '47mm対戦車砲'
+          );
+          return mainGun || availableWeapons[0];
+        } else {
+          const rifle = availableWeapons.find(w => 
+            w.type === '9mmライフル' || w.type === 'M1ライフル' || w.type === '6.5mmライフル'
+          );
+          return rifle || availableWeapons[0];
+        }
+      }
+      // Default to main weapon
+      return availableWeapons[0];
+    }
+    
+    default:
+      return availableWeapons[0];
+  }
 };
 
 export const consumeAmmunition = (unit: Unit, weaponId: string): Unit => {
