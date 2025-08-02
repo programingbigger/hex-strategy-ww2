@@ -2,7 +2,9 @@ node_modules/
 
 ref_folders/
 
-HexStrategyDocs_ByObsidian/.obsidian/
+HexStrategyDocs_ByObsidian/.obsidian/*.json
+
+/Users/namiya_fuminori/hex-strategy-ww2/.serena/*
 
 # Screenshots and images
 *.png

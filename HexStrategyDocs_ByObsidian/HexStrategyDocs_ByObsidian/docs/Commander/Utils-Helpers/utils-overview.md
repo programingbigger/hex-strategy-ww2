@@ -81,6 +81,106 @@ export const calculateHitRate = (
 }
 ```
 
+### 武器システム (`weapons.ts`) - 2025年8月強化
+武器選択システムの大幅改善により実装された新機能群：
+
+```typescript
+// 使用可能武器の取得（弾薬チェック込み）
+export const getAvailableWeapons = (unit: Unit): Weapon[] => {
+  if (\!unit.weapons || \!Array.isArray(unit.weapons)) {
+    return [];
+  }
+  return unit.weapons.filter(weapon => weapon.ammunition > 0);
+};
+
+// 射程内武器の取得（距離による自動フィルタリング）
+export const getWeaponsInRange = (unit: Unit, targetDistance: number): Weapon[] => {
+  return getAvailableWeapons(unit).filter(weapon => 
+    targetDistance >= weapon.range.min && targetDistance <= weapon.range.max
+  );
+};
+
+// 反撃可能性の判定（防御側武器の有効性チェック）
+export const canCounterAttack = (defender: Unit, attacker: Unit): boolean => {
+  if (\!defender.canCounterAttack) return false;
+  
+  const counterWeapon = selectCounterAttackWeapon(defender, attacker);
+  if (\!counterWeapon) return false;
+  
+  const distance = 1; // 反撃は通常距離1で発生
+  return distance >= counterWeapon.range.min && distance <= counterWeapon.range.max;
+};
+
+// 戦術的反撃武器選択システム
+export const selectCounterAttackWeapon = (unit: Unit, attacker?: Unit): Weapon | undefined => {
+  const availableWeapons = getAvailableWeapons(unit);
+  if (availableWeapons.length === 0) return undefined;
+  
+  switch (unit.type) {
+    case 'Tank':
+      // 戦車：主砲優先、弾薬切れ時は副武装
+      const mainWeapon = getMainWeapon(unit);
+      return (mainWeapon?.ammunition > 0) ? mainWeapon : availableWeapons[0];
+    
+    case 'ArmoredCar':
+      // 装甲車：攻撃武器に関係なく機銃で反撃
+      const machineGun = availableWeapons.find(w => 
+        w.type === '36MG機銃' || w.type === '30cal機銃' || w.type === '7.7mm機銃'
+      );
+      return machineGun || availableWeapons[0];
+    
+    case 'AntiTank':
+      // 対戦車砲：敵のユニットクラスに応じて武器選択
+      if (attacker?.unitClass === 'Vehicle') {
+        const antiTankGun = availableWeapons.find(w => 
+          w.type.includes('主砲') || w.type.includes('対戦車砲')
+        );
+        return antiTankGun || availableWeapons[0];
+      } else {
+        const rifle = availableWeapons.find(w => w.type.includes('ライフル'));
+        return rifle || availableWeapons[0];
+      }
+    
+    case 'Artillery':
+      // 砲兵：近距離ではライフルで応戦
+      const rifle = availableWeapons.find(w => w.type.includes('ライフル'));
+      return rifle || availableWeapons[0];
+    
+    default:
+      return availableWeapons[0];
+  }
+};
+
+// 弾薬消費処理（イミュータブル更新）
+export const consumeAmmunition = (unit: Unit, weaponId: string): Unit => {
+  if (\!unit.weapons) return unit;
+  
+  return {
+    ...unit,
+    weapons: unit.weapons.map(weapon => 
+      weapon.id === weaponId 
+        ? { ...weapon, ammunition: Math.max(0, weapon.ammunition - 1) }
+        : weapon
+    )
+  };
+};
+
+// 攻撃射程の動的計算
+export const getMaxAttackRange = (unit: Unit): number => {
+  const availableWeapons = getAvailableWeapons(unit);
+  return availableWeapons.length > 0 
+    ? Math.max(...availableWeapons.map(weapon => weapon.range.max)) 
+    : 0;
+};
+
+export const getMinAttackRange = (unit: Unit): number => {
+  const availableWeapons = getAvailableWeapons(unit);
+  return availableWeapons.length > 0 
+    ? Math.min(...availableWeapons.map(weapon => weapon.range.min)) 
+    : 0;
+};
+```
+
 ### パスファインディング (`pathfindingUtils.ts`)
 ```typescript
 // A*アルゴリズムによる最短経路探索
@@ -127,7 +227,7 @@ export const getReachableTiles = (
   ];
   
   while (queue.length > 0) {
-    const {pos, fuel} = queue.shift()!;
+    const {pos, fuel} = queue.shift()\!;
     const key = `${pos.x},${pos.y}`;
     
     if (visited.has(key)) continue;
@@ -165,7 +265,7 @@ export const isValidUnitPlacement = (
   board: Board
 ): boolean => {
   // 1. 座標の有効性
-  if (!isValidPosition(position, board)) return false;
+  if (\!isValidPosition(position, board)) return false;
   
   // 2. タイルの占有状況
   const tile = board.tiles[position.y][position.x];
@@ -186,13 +286,13 @@ export const isValidAttack = (
   const distance = calculateDistance(attacker.position, target);
   
   // 射程チェック
-  if (!isInRange(attacker.position, target, attacker.range)) {
+  if (\!isInRange(attacker.position, target, attacker.range)) {
     return false;
   }
   
   // ターゲット存在チェック
   const targetTile = board.tiles[target.y][target.x];
-  if (!targetTile.unit || targetTile.unit.team === attacker.team) {
+  if (\!targetTile.unit || targetTile.unit.team === attacker.team) {
     return false;
   }
   
@@ -200,90 +300,22 @@ export const isValidAttack = (
 }
 ```
 
-### ゲーム状態管理 (`stateUtils.ts`)
-```typescript
-// ゲーム状態の深いコピー
-export const deepCloneGameState = (state: GameState): GameState => {
-  return JSON.parse(JSON.stringify(state));
-}
+## 武器システム強化の影響
 
-// ユニット検索
-export const findUnitById = (units: Unit[], id: string): Unit | undefined => {
-  return units.find(unit => unit.id === id);
-}
+### 戦略的深度の向上
+- **リソース管理**: 弾薬という限定リソースの戦術的運用
+- **武器特性活用**: 距離・対象に応じた最適武器選択
+- **タイミング判断**: 高威力武器の温存 vs 即時使用の判断
 
-// チーム別ユニット取得
-export const getUnitsByTeam = (units: Unit[], team: Team): Unit[] => {
-  return units.filter(unit => unit.team === team && !unit.isDestroyed);
-}
+### プレイヤー体験の改善
+- **選択の自由**: 強制的な「最適」選択からの解放
+- **戦術的思考**: 状況判断能力の重要性向上
+- **学習曲線**: 武器システムを通じたゲーム理解の深化
 
-// 勝利条件チェック
-export const checkVictoryConditions = (
-  board: Board, 
-  units: Unit[]
-): 'blue_victory' | 'red_victory' | 'draw' | 'ongoing' => {
-  const blueUnits = getUnitsByTeam(units, 'blue');
-  const redUnits = getUnitsByTeam(units, 'red');
-  
-  // 全滅チェック
-  if (blueUnits.length === 0) return 'red_victory';
-  if (redUnits.length === 0) return 'blue_victory';
-  
-  // 都市占領チェック
-  const blueCities = board.cities.filter(city => city.owner === 'blue');
-  const redCities = board.cities.filter(city => city.owner === 'red');
-  
-  if (blueCities.length >= board.cities.length * 0.7) return 'blue_victory';
-  if (redCities.length >= board.cities.length * 0.7) return 'red_victory';
-  
-  return 'ongoing';
-}
-```
-
-### ランダム・確率処理 (`randomUtils.ts`)
-```typescript
-// シード可能な疑似乱数生成器
-class SeededRandom {
-  private seed: number;
-  
-  constructor(seed: number) {
-    this.seed = seed;
-  }
-  
-  next(): number {
-    this.seed = (this.seed * 9301 + 49297) % 233280;
-    return this.seed / 233280;
-  }
-}
-
-// 確率判定
-export const rollDice = (probability: number, random: SeededRandom): boolean => {
-  return random.next() < probability / 100;
-}
-
-// ランダム要素選択
-export const randomChoice = <T>(array: T[], random: SeededRandom): T => {
-  const index = Math.floor(random.next() * array.length);
-  return array[index];
-}
-```
-
-## ゲームへの影響とポイント
-
-### パフォーマンス最適化
-- **計算効率**: 最適化されたアルゴリズムによる高速処理
-- **メモ化**: 重い計算結果のキャッシュ
-- **遅延評価**: 必要な時点での計算実行
-
-### 品質向上
-- **テスト可能性**: 純粋関数による単体テストの容易さ
-- **予測可能性**: 同じ入力に対する同じ出力の保証
-- **デバッグ支援**: 計算過程の追跡とログ出力
-
-### 拡張性確保
-- **モジュール性**: 機能別の分離による保守性向上
-- **再利用性**: 汎用的な関数による開発効率向上
-- **設定可能性**: パラメータによる動作調整
+### 技術的品質
+- **関数型設計**: 純粋関数による予測可能な動作
+- **型安全性**: TypeScriptによる実行時エラー防止
+- **テスト可能性**: 各関数の独立性による単体テスト容易化
 
 ## 設計原則
 
@@ -306,6 +338,7 @@ export const randomChoice = <T>(array: T[], random: SeededRandom): T => {
 - [[types-index]] - 型定義の参照
 - [[constants]] - 定数値の使用
 - [[useGameLogic]] - ゲームロジックでの利用
+- [[WeaponSelectorModal]] - 武器選択UIとの連携
 
 ## テストカバレッジ
 ```typescript
@@ -320,11 +353,17 @@ describe('coordinateUtils', () => {
     expect(neighbors).toHaveLength(6);
   });
 });
+
+describe('weapons', () => {
+  test('getAvailableWeapons should filter out empty ammunition', () => {
+    const unit = createTestUnit();
+    unit.weapons[0].ammunition = 0;
+    const available = getAvailableWeapons(unit);
+    expect(available).not.toContain(unit.weapons[0]);
+  });
+});
 ```
 
 ## タグ
-#utils #helpers #algorithms #calculations #pathfinding #validation #performance
-
-<function_calls>
-<invoke name="TodoWrite">
-<parameter name="todos">[{"id": "1", "content": "\u30e1\u30a4\u30f3\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u69cb\u9020\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\u5bfe\u5fdc\uff09", "status": "completed", "priority": "high"}, {"id": "2", "content": "\u30b3\u30a2\u30b3\u30f3\u30dd\u30fc\u30cd\u30f3\u30c8\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\uff09", "status": "completed", "priority": "high"}, {"id": "3", "content": "\u30b2\u30fc\u30e0\u30ed\u30b8\u30c3\u30af\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\uff09", "status": "completed", "priority": "high"}, {"id": "4", "content": "\u753b\u9762\u30b3\u30f3\u30dd\u30fc\u30cd\u30f3\u30c8\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\uff09", "status": "completed", "priority": "medium"}, {"id": "5", "content": "\u578b\u5b9a\u7fa9\u30fb\u8a2d\u5b9a\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\uff09", "status": "completed", "priority": "medium"}, {"id": "6", "content": "\u30e6\u30fc\u30c6\u30a3\u30ea\u30c6\u30a3\u30fb\u30d8\u30eb\u30d1\u30fc\u30c9\u30ad\u30e5\u30e1\u30f3\u30c8\u4f5c\u6210\uff08\u65e5\u672c\u8a9e\uff09", "status": "completed", "priority": "low"}]
+#utils #helpers #algorithms #calculations #pathfinding #validation #performance #weapons #tactical-combat
+EOF < /dev/null

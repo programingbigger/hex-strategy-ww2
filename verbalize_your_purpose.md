@@ -1,12 +1,81 @@
-# ユニット武装充実化システム実装要件書
+# Weapon Selection System Requirements Analysis (言語化結果)
 
-## 目的
+## プロジェクト目的の言語化
 
 現在のHex Strategy WW2ゲームにおいて、**弾薬管理によるリソース戦略システム**を核とした武装システムを導入し、戦術的深度の高い戦闘体験を実現する。単一の攻撃力パラメータではなく、武器種別毎の弾薬管理と射程設定により、限られたリソース（弾薬）をいかに効率的に運用するかという戦略的判断を要求するゲームプレイを構築する。
 
 **本システムの最重要価値**: プレイヤーが弾薬という有限リソースを管理しながら戦術的優位を獲得する、新たなゲーム体験の提供
 
 **将来展望**: 今後のユニット追加・拡張の基盤システムとして、n武装システムへの発展を想定した設計
+
+---
+
+## Requirements Analysis from prompt.txt
+
+### Main Objectives
+The primary goal is to implement a weapon selection system during the attack phase of a hex-strategy game, allowing players to choose which weapon their units use when attacking enemy units.
+
+### Current Problem Statement
+- During the attack phase, players cannot select weapons for their units
+- The current implementation lacks weapon selection functionality
+- Players are unable to choose which weapon to use when attacking target units
+
+### Specific Requirements
+
+#### 1. Weapon Selection Interface
+- Implement a weapon selection mechanism that activates during attack phases
+- The system must work regardless of whether a unit has one weapon or multiple weapons
+- All units should display their available weapons for selection
+
+#### 2. Attack Functionality
+- Enable players to select a specific weapon before executing an attack
+- The selected weapon should be used to calculate and execute the attack against the target unit
+- Replace the current automatic weapon selection (if any) with player-controlled selection
+
+### Technical Specifications
+Based on the file structure visible in the git status, the implementation likely involves:
+
+- **WeaponSelectorModal.tsx** - Modal component for weapon selection UI
+- **WeaponInfoPanel.tsx** - Component displaying weapon information
+- **useGameLogic.ts** - Game logic hook that needs to handle weapon selection
+- **weapons.ts** - Weapon utility functions and data structures
+- **units.ts** - Unit data that includes weapon configurations
+
+### Constraints and Considerations
+- Must integrate with existing game logic and UI components
+- Should maintain consistency with current game flow and user experience
+- Need to handle both single-weapon and multi-weapon units uniformly
+
+### Suggested Implementation Steps
+
+#### 1. UI Development
+- Enhance or complete the WeaponSelectorModal component
+- Ensure weapon information is clearly displayed in WeaponInfoPanel
+- Create intuitive weapon selection interface
+
+#### 2. Game Logic Integration
+- Modify useGameLogic hook to include weapon selection state
+- Implement weapon selection validation and state management
+- Update attack logic to use player-selected weapons
+
+#### 3. Data Structure Updates
+- Ensure units.ts properly defines weapon collections for each unit
+- Verify weapons.ts contains necessary weapon data and utilities
+
+#### 4. User Experience Flow
+- When player initiates attack: Display weapon selection modal
+- Allow weapon choice from available unit weapons
+- Execute attack using selected weapon
+- Provide clear feedback on weapon effects and damage
+
+### Success Criteria
+- Players can select weapons for any unit during attack phase
+- Selected weapons are properly used in combat calculations
+- UI clearly shows available weapons and their properties
+- System works consistently for units with single or multiple weapons
+
+### Summary
+This requirement focuses on enhancing player agency and tactical depth by allowing strategic weapon selection during combat, which is a common and important feature in strategy games.
 
 ## 核心要件
 
@@ -202,9 +271,9 @@ interface Unit {
 
 【武装仕様】
 - 戦車: 37mm主砲(11発)、36MG機銃(5発)、射程1hex
-- 装甲車: 36MG機銃(5発)、射程1hex  
+- 装甲車: 36MG機銃(15発)、射程1hex  
 - 対戦車: 37mm主砲(11発)、9mmライフル(3発)、射程1hex
-- 砲火: 105mm野砲(4発、射程2-5hex)、9mmライフル(3発、射程1hex)
+- 砲火: 105mm野砲(4発、射程2-5hex)、9mmライフル(10発、射程1hex)
 
 【実装順序】
 1. 型定義の拡張（Weapon, Unit interfaceの更新）
