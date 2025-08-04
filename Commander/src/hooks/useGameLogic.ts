@@ -39,6 +39,11 @@ import {
 } from '../config/constants';
 import { armyManager } from '../data/units';
 
+// Helper function to check if terrain is capturable
+const isCapturableTerrain = (terrain: string): boolean => {
+  return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
+};
+
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
   const [turn, setTurn] = useState<number>(1);
@@ -147,7 +152,7 @@ export const useGameLogic = () => {
     console.log(`🔄 Turn ending: ${activeTeam} -> ${nextTeam}. Checking healing for ${nextTeam} team units...`);
     
     // Debug: Show all cities on the map
-    const cities = Array.from(boardLayout.entries()).filter(([, tile]) => tile.terrain === 'City');
+    const cities = Array.from(boardLayout.entries()).filter(([, tile]) => isCapturableTerrain(tile.terrain));
     console.log(`🏙️ Cities on map:`, cities.map(([coord, tile]) => ({
       coord: coord,
       terrain: tile.terrain,
@@ -165,7 +170,7 @@ export const useGameLogic = () => {
         const unitTile = boardLayout.get(coordToString(u));
         // Debug: Check healing conditions
         const coordString = coordToString(u);
-        const isCityAndOwned = unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team;
+        const isCityAndOwned = unitTile && isCapturableTerrain(unitTile.terrain) && unitTile.owner === u.team;
         console.log(`🔍 Checking unit ${u.type} (${u.id}) at (${u.x}, ${u.y}) for healing:`, {
           unitTeam: u.team,
           nextTeam: nextTeam,
@@ -182,12 +187,12 @@ export const useGameLogic = () => {
           healingConditions: {
             isCorrectTeam: u.team === nextTeam,
             hasUnitTile: !!unitTile,
-            isCity: unitTile?.terrain === 'City',
+            isCity: isCapturableTerrain(unitTile?.terrain || ''),
             isOwnedByUnit: unitTile?.owner === u.team
           }
         });
         
-        if (unitTile && unitTile.terrain === 'City' && unitTile.owner === u.team) {
+        if (unitTile && isCapturableTerrain(unitTile.terrain) && unitTile.owner === u.team) {
           // Heal HP by UNIT_HEAL_HP amount, capped at maxHp
           const healedHp = Math.min(u.maxHp, u.hp + UNIT_HEAL_HP);
           // Restore fuel to maximum if UNIT_HEAL_FUEL_FULL is true
@@ -215,7 +220,7 @@ export const useGameLogic = () => {
 
     // City HP recovery logic
     newBoardLayout.forEach((tile, key) => {
-      if (tile.terrain === 'City' && tile.owner !== activeTeam) {
+      if (isCapturableTerrain(tile.terrain) && tile.owner !== activeTeam) {
         const newHp = Math.min(tile.maxHp || CITY_HP, (tile.hp || 0) + CITY_HEAL_RATE);
         newBoardLayout.set(key, { ...tile, hp: newHp });
       }
@@ -278,7 +283,7 @@ export const useGameLogic = () => {
       return;
     }
 
-    const cities = Array.from(currentBoard.values()).filter(t => t.terrain === 'City');
+    const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
     const blueCities = cities.filter(c => c.owner === 'Blue').length;
     const redCities = cities.filter(c => c.owner === 'Red').length;
 
@@ -688,7 +693,7 @@ export const useGameLogic = () => {
       setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
       setSelectedUnitId(null);
     } else if (action === 'capture') {
-      if (selectedUnit.unitClass === 'Infantry' && selectedUnitTile?.terrain === 'City') {
+      if (selectedUnit.unitClass === 'Infantry' && selectedUnitTile && isCapturableTerrain(selectedUnitTile.terrain)) {
         saveStateToHistory();
         const newBoardLayout = new Map(boardLayout);
         const tileKey = coordToString(selectedUnit);

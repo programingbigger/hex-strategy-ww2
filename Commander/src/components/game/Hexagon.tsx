@@ -33,10 +33,19 @@ const Hexagon: React.FC<HexagonProps> = ({
       case 'Forest': return '#228B22';
       case 'Mountain': return '#8B4513';
       case 'River': return '#4169E1';
-      case 'Road': return '#D2691E';
-      case 'Bridge': return '#B8860B';
-      case 'City': return tile.owner === 'Blue' ? '#87CEEB' : tile.owner === 'Red' ? '#FFB6C1' : '#C0C0C0';
+      case 'Road': return '#808080'; // 道路は灰色
+      case 'Bridge': return '#808080'; // 橋は灰色
+      case 'City': return tile.owner === 'Blue' ? '#ADD8E6' : tile.owner === 'Red' ? '#FFB6C1' : '#E6E6E6'; // 都市：青軍=水色、赤軍=薄ピンク、中立=薄灰色
+      case 'Capital': return tile.owner === 'Blue' ? '#87CEEB' : tile.owner === 'Red' ? '#F08080' : '#D3D3D3'; // 首都：青軍=空色、赤軍=薄赤、中立=灰色
+      case 'Airport': return tile.owner === 'Blue' ? '#B0E0E6' : tile.owner === 'Red' ? '#FFA07A' : '#F0F0F0'; // 空港：青軍=薄青、赤軍=サーモン、中立=薄灰色
+      case 'Port': return tile.owner === 'Blue' ? '#AFEEEE' : tile.owner === 'Red' ? '#FF6347' : '#DCDCDC'; // 港：青軍=薄水色、赤軍=トマト色、中立=薄灰色
       case 'Mud': return '#8B4513';
+      case 'Bocage': return '#32CD32'; // ボカージュは森林より薄い色
+      case 'Snow': return '#F0F8FF';
+      case 'Desert': return '#F4A460';
+      case 'Sea': return '#006994';
+      case 'Reef': return '#4682B4';
+      case 'Fortress': return '#696969';
       default: return '#FFFFFF';
     }
   };
@@ -46,6 +55,79 @@ const Hexagon: React.FC<HexagonProps> = ({
       case 'Blue': return '#0066CC';
       case 'Red': return '#CC0000';
       default: return '#666666';
+    }
+  };
+
+  // 兵科式マッピング: 地形シンボルを描画
+  const renderTerrainSymbol = (terrain: string, size: number) => {
+    const symbolSize = size * 0.3;
+    const strokeWidth = 2;
+    const symbolColor = '#000000'; // 黒色で見分けやすく
+    
+    switch (terrain) {
+      case 'City':
+        // 都市: 四角形
+        return (
+          <rect
+            x={-symbolSize * 0.3}
+            y={-symbolSize * 0.3}
+            width={symbolSize * 0.6}
+            height={symbolSize * 0.6}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+        );
+      case 'Capital':
+        // 首都: 星形（簡略化して菱形）
+        return (
+          <g>
+            <polygon
+              points={`0,${-symbolSize * 0.4} ${symbolSize * 0.3},0 0,${symbolSize * 0.4} ${-symbolSize * 0.3},0`}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              fill="none"
+            />
+          </g>
+        );
+      case 'Airport':
+        // 空港: 十字
+        return (
+          <g>
+            <line
+              x1={0}
+              y1={-symbolSize * 0.4}
+              x2={0}
+              y2={symbolSize * 0.4}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+            <line
+              x1={-symbolSize * 0.4}
+              y1={0}
+              x2={symbolSize * 0.4}
+              y2={0}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+          </g>
+        );
+      case 'Port':
+        // 港: 円形（船舶の港を表現）
+        return (
+          <circle
+            cx={0}
+            cy={0}
+            r={symbolSize * 0.3}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            fill="none"
+          />
+        );
+      default:
+        return null;
     }
   };
   
@@ -188,7 +270,11 @@ const Hexagon: React.FC<HexagonProps> = ({
         opacity={0.8}
       />
       
-      {tile.terrain === 'City' && (
+      {/* 兵科式マッピング: 地形シンボル表示 */}
+      {renderTerrainSymbol(tile.terrain, size)}
+
+      {/* HP表示（都市、首都、空港、港） */}
+      {(tile.terrain === 'City' || tile.terrain === 'Capital' || tile.terrain === 'Airport' || tile.terrain === 'Port') && tile.hp !== undefined && (
         <text
           x={0}
           y={-16}

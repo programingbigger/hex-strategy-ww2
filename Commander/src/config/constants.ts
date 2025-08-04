@@ -124,6 +124,46 @@ export const TERRAIN_STATS: { [key: string]: TerrainStats } = {
     defenseBonus: 0,
     attackBonus: 0,
     movementCost: { Infantry: Infinity, Vehicle: Infinity, default: Infinity }
+  },
+  Capital: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
+  },
+  Airport: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
+  },
+  Bocage: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
+  },
+  Snow: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: { Infantry: 2, Vehicle: 2, default: 2 }
+  },
+  Desert: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
+  },
+  Reef: {
+    defenseBonus: 2,
+    attackBonus: 0,
+    movementCost: { Infantry: Infinity, Vehicle: Infinity, default: Infinity }
+  },
+  Fortress: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: { Infantry: 1, Vehicle: 2, default: 1 }
+  },
+  Port: {
+    defenseBonus: 2,
+    attackBonus: 0,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
   }
 };
 
@@ -191,7 +231,7 @@ export const MAP_MIN_R = -10;
 export const MAP_MAX_R = 10;
 
 export const CITY_HP = 10;
-export const CITY_HEAL_RATE = 2;
+export const CITY_HEAL_RATE = 1; // 首都含む占領可能地形の回復レートを+2から+1に変更
 export const CAPTURE_DAMAGE_HIGH_HP = { min: 6, max: 8 };
 export const CAPTURE_DAMAGE_LOW_HP = { min: 3, max: 5 };
 

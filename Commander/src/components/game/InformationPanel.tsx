@@ -24,9 +24,14 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
   const hoveredTile = hoveredHex ? boardLayout.get(coordToString(hoveredHex)) : null;
   const hoveredUnit = hoveredHex ? units.find(u => u.x === hoveredHex.x && u.y === hoveredHex.y) : null;
 
+  // Helper function to check if terrain is capturable
+  const isCapturableTerrain = (terrain: string): boolean => {
+    return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
+  };
+
   // Action conditions
   const canCapture = selectedUnit?.unitClass === 'Infantry' && 
-                    selectedUnitTile?.terrain === 'City' && 
+                    selectedUnitTile && isCapturableTerrain(selectedUnitTile.terrain) &&
                     selectedUnitTile?.owner !== selectedUnit.team;
   
   const canUndo = selectedUnit?.moved && !selectedUnit?.attacked;

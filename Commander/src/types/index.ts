@@ -46,7 +46,7 @@ export interface Weapon {
 
 export type WeatherType = 'Clear' | 'Rain' | 'HeavyRain';
 
-export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea';
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea' | 'Capital' | 'Airport' | 'Bocage' | 'Snow' | 'Desert' | 'Reef' | 'Fortress' | 'Port';
 
 export interface Coordinate {
   x: number;

@@ -3,8 +3,8 @@ import { GameMap } from '../types';
 export const availableMaps: GameMap[] = [
   {
     id: 'test_map_1',
-    name: 'Test Map',
-    description: 'First mission - Secure the battlefield and eliminate enemy forces.',
+    name: 'Diverse Terrain Test Map',
+    description: 'Testing grounds featuring all terrain types - Capital, Port, Fortress, Desert, Snow, Sea coastline, and strategic locations.',
     difficulty: 'Normal',
     deploymentCenter: { q: -4, r: -2 }
   },
