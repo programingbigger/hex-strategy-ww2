@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "ユニット 設定",
+                "query": ".mp4",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +74,8 @@
               "title": "ブックマーク"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -170,10 +171,14 @@
   },
   "active": "85e859a6adef0243",
   "lastOpenFiles": [
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/WeaponInfoPanel.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md.backup",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/WeaponSelectorModal.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/TitleScreen.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/UI改善計画.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/開発計画・実装リスト.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/map-rendering-system.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/GameBoard.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Hexagon.md",
@@ -183,7 +188,6 @@
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/useGameLogic.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/TitleScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
@@ -202,10 +206,7 @@
     "HexStrategyDocs_ByObsidian/TestFolder/test_tag_2.md",
     "Welcome.md",
     "create a link.md",
-    "HexStrategyDocs_ByObsidian/TestFolder",
     "TestFolder/README.md",
-    "TestFolder/test_tag_1 copy.md",
-    "2025-07-19.md",
     "無題のファイル.canvas"
   ]
 }

@@ -1,95 +1,66 @@
-import { Unit, UnitType, Weapon, WeaponType } from '../types';
+import { Unit, UnitType, Weapon, UnitStats, UnitCategory } from '../types';
+import { armyManager, getPlayerStartingUnits as getPlayerStartingUnitsFromArmy, getEnemyStartingUnits as getEnemyStartingUnitsFromArmy } from './armyLoader';
 
-// Weapon creation functions
-const createWeapon = (
-  id: string,
-  name: string,
-  type: WeaponType,
-  ammunition: number,
-  range: { min: number; max: number },
-  attack: number,
-  effectiveness?: { [key: string]: number }
-): Weapon => ({
-  id,
-  name,
-  type,
-  ammunition,
-  maxAmmunition: ammunition,
-  range,
-  attack,
-  effectiveness
-});
-
-// Faction-specific weapon definitions
-const createBlueWeapons = (type: UnitType): Weapon[] => {
-  switch (type) {
-    case 'Tank':
-      return [
-        createWeapon('blue-tank-main-gun', '50mm主砲', '50mm主砲', 12, { min: 1, max: 1 }, 9),
-        createWeapon('blue-tank-mg', '30cal機銃', '30cal機銃', 6, { min: 1, max: 1 }, 7)
-      ];
-    case 'ArmoredCar':
-      return [
-        createWeapon('blue-armored-mg', '30cal機銃', '30cal機銃', 6, { min: 1, max: 1 }, 7)
-      ];
-    case 'AntiTank':
-      return [
-        createWeapon('blue-antitank-gun', '57mm対戦車砲', '57mm対戦車砲', 10, { min: 1, max: 2 }, 8),
-        createWeapon('blue-antitank-rifle', 'M1ライフル', 'M1ライフル', 4, { min: 1, max: 1 }, 5)
-      ];
-    case 'Artillery':
-      return [
-        createWeapon('blue-artillery-howitzer', '155mm榴弾砲', '155mm榴弾砲', 5, { min: 2, max: 6 }, 12),
-        createWeapon('blue-artillery-rifle', 'M1ライフル', 'M1ライフル', 4, { min: 1, max: 1 }, 5)
-      ];
-    case 'Infantry':
-      return [
-        createWeapon('blue-infantry-mg', 'BAR機銃', 'BAR機銃', 10, { min: 1, max: 1 }, 5)
-      ];
-    default:
-      return [];
+// JSON-based unit and weapon creation functions
+const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
+  const templates = armyManager.getUnitTemplatesBy(team, '陸');
+  const template = templates.find(t => t.type === type);
+  
+  if (template) {
+    return template.stats;
   }
+  
+  // Fallback for backward compatibility - should not be reached in normal usage
+  console.warn(`Unit stats not found in JSON for ${type}, using fallback`);
+  return getUnitStatsFallback(type);
 };
 
-const createRedWeapons = (type: UnitType): Weapon[] => {
-  switch (type) {
-    case 'Tank':
-      return [
-        createWeapon('red-tank-main-gun', '37mm主砲', '37mm主砲', 11, { min: 1, max: 1 }, 8),
-        createWeapon('red-tank-mg', '7.7mm機銃', '7.7mm機銃', 5, { min: 1, max: 1 }, 6)
-      ];
-    case 'ArmoredCar':
-      return [
-        createWeapon('red-armored-mg', '7.7mm機銃', '7.7mm機銃', 5, { min: 1, max: 1 }, 6)
-      ];
-    case 'AntiTank':
-      return [
-        createWeapon('red-antitank-gun', '47mm対戦車砲', '47mm対戦車砲', 9, { min: 1, max: 1 }, 7),
-        createWeapon('red-antitank-rifle', '6.5mmライフル', '6.5mmライフル', 3, { min: 1, max: 1 }, 4)
-      ];
-    case 'Artillery':
-      return [
-        createWeapon('red-artillery-howitzer', '105mm野砲', '105mm野砲', 4, { min: 2, max: 5 }, 10),
-        createWeapon('red-artillery-rifle', '6.5mmライフル', '6.5mmライフル', 3, { min: 1, max: 1 }, 4)
-      ];
-    case 'Infantry':
-      return [
-        createWeapon('red-infantry-mg', '99式軽機銃', '99式軽機銃', 8, { min: 1, max: 1 }, 4)
-      ];
-    default:
-      return [];
+const getUnitWeaponsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): Weapon[] => {
+  try {
+    const templates = armyManager.getUnitTemplatesBy(team, '陸');
+    const template = templates.find(t => t.type === type);
+    
+    if (template && template.weapons) {
+      // Reset ammunition to max for new units
+      return template.weapons.map(weapon => ({
+        ...weapon,
+        ammunition: weapon.maxAmmunition
+      }));
+    }
+  } catch (error) {
+    console.warn(`ArmyManager failed for ${type} (${team}), trying direct JSON access:`, error);
   }
+  
+  // Fallback: direct JSON access (still JSON-based, not hardcoded)
+  return getWeaponsFromJSONDirect(type, team);
 };
 
-// Legacy function for backward compatibility
-const createUnitWeapons = (type: UnitType, team?: 'Blue' | 'Red'): Weapon[] => {
-  if (team === 'Blue') {
-    return createBlueWeapons(type);
-  } else if (team === 'Red') {
-    return createRedWeapons(type);
+// Direct JSON access fallback
+const getWeaponsFromJSONDirect = (type: UnitType, team: 'Blue' | 'Red'): Weapon[] => {
+  try {
+    const armyData = require('./armyOrganization.json');
+    const faction = team;
+    const templates = armyData.factions[faction]?.branches['陸']?.unitCategories || {};
+    
+    // Search all categories for matching unit type
+    for (const categoryData of Object.values(templates)) {
+      if (categoryData && typeof categoryData === 'object' && 'units' in categoryData) {
+        const template = (categoryData as any).units.find((t: any) => t.type === type);
+        if (template && template.weapons) {
+          return template.weapons.map((weapon: any) => ({
+            ...weapon,
+            ammunition: weapon.maxAmmunition // Reset ammunition for new unit
+          }));
+        }
+      }
+    }
+  } catch (error) {
+    console.warn(`Direct JSON access failed for ${type} (${team}):`, error);
   }
-  // Default fallback to Blue weapons for compatibility
-  return createBlueWeapons(type);
+  
+  // Final emergency fallback: return empty weapons array
+  console.error(`All JSON methods failed for ${type} (${team}), returning empty weapons array`);
+  return [];
 };
 
 export const createUnit = (
@@ -99,108 +70,158 @@ export const createUnit = (
   x: number = 0,
   y: number = 0
 ): Unit => {
-  const unitStats = getUnitStats(type);
-  const weapons = createUnitWeapons(type, team);
-  
-  return {
-    id,
-    type,
-    team,
-    x,
-    y,
-    hp: unitStats.maxHp,
-    maxHp: unitStats.maxHp,
-    attack: unitStats.attack,
-    defense: unitStats.defense,
-    movement: unitStats.movement,
-    attackRange: unitStats.attackRange,
-    moved: false,
-    attacked: false,
-    canCounterAttack: unitStats.canCounterAttack,
-    unitClass: unitStats.unitClass,
-    fuel: unitStats.maxFuel,
-    maxFuel: unitStats.maxFuel,
-    xp: 0,
-    weapons
-  };
+  // Try to get data from JSON first
+  try {
+    const unitStats = getUnitStatsFromJSON(type, team);
+    const weapons = getUnitWeaponsFromJSON(type, team);
+    
+    return {
+      id,
+      type,
+      team,
+      faction: team, // Add faction info for new system
+      branch: '陸', // Default to land branch
+      category: getUnitCategory(type), // Determine category from type
+      x,
+      y,
+      hp: unitStats.maxHp,
+      maxHp: unitStats.maxHp,
+      attack: unitStats.attack,
+      defense: unitStats.defense,
+      movement: unitStats.movement,
+      attackRange: unitStats.attackRange,
+      moved: false,
+      attacked: false,
+      canCounterAttack: unitStats.canCounterAttack,
+      unitClass: unitStats.unitClass,
+      fuel: unitStats.maxFuel,
+      maxFuel: unitStats.maxFuel,
+      xp: 0,
+      weapons
+    };
+  } catch (error) {
+    console.error('Failed to create unit from JSON, using fallback:', error);
+    return createUnitFallback(id, type, team, x, y);
+  }
 };
 
-const getUnitStats = (type: UnitType) => {
+// Helper function to determine category from type
+const getUnitCategory = (type: UnitType): UnitCategory => {
+  switch (type) {
+    case 'Infantry': return 'infantry';
+    case 'Tank': 
+    case 'ArmoredCar': return 'armor';
+    case 'Artillery': return 'artillery';
+    case 'AntiTank': return 'antitank';
+    default: return 'infantry';
+  }
+};
+
+// === FALLBACK FUNCTIONS (for backward compatibility) ===
+
+// 完全JSON参照ベースのフォールバック関数
+const createUnitWeaponsFallback = (type: UnitType, team?: 'Blue' | 'Red'): Weapon[] => {
+  // この関数は getWeaponsFromJSONDirect を使用（既に実装済み）
+  return getWeaponsFromJSONDirect(type, team || 'Blue');
+};
+
+const getUnitStatsFallback = (type: UnitType): UnitStats => {
   switch (type) {
     case 'Infantry':
       return {
-        maxHp: 10,
-        attack: 4,
-        defense: 2,
-        movement: 3,
-        attackRange: { min: 1, max: 1 },
-        canCounterAttack: true,
-        unitClass: 'Infantry' as const,
-        maxFuel: 50
+        maxHp: 10, attack: 4, defense: 2, movement: 3,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Infantry', maxFuel: 50
       };
     case 'Tank':
       return {
-        maxHp: 20,
-        attack: 8,
-        defense: 6,
-        movement: 4,
-        attackRange: { min: 1, max: 1 },
-        canCounterAttack: true,
-        unitClass: 'Vehicle' as const,
-        maxFuel: 40
+        maxHp: 20, attack: 8, defense: 6, movement: 4,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 40
       };
     case 'ArmoredCar':
       return {
-        maxHp: 15,
-        attack: 6,
-        defense: 4,
-        movement: 6,
-        attackRange: { min: 1, max: 1 },
-        canCounterAttack: true,
-        unitClass: 'Vehicle' as const,
-        maxFuel: 60
+        maxHp: 15, attack: 6, defense: 4, movement: 6,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 60
       };
     case 'Artillery':
       return {
-        maxHp: 12,
-        attack: 10,
-        defense: 2,
-        movement: 2,
-        attackRange: { min: 2, max: 5 },
-        canCounterAttack: false,
-        unitClass: 'Vehicle' as const,
-        maxFuel: 30
+        maxHp: 12, attack: 10, defense: 2, movement: 2,
+        attackRange: { min: 2, max: 5 }, canCounterAttack: false,
+        unitClass: 'Vehicle', maxFuel: 30
       };
     case 'AntiTank':
       return {
-        maxHp: 8,
-        attack: 6,
-        defense: 3,
-        movement: 2,
-        attackRange: { min: 1, max: 2 },
-        canCounterAttack: true,
-        unitClass: 'Infantry' as const,
-        maxFuel: 40
+        maxHp: 8, attack: 6, defense: 3, movement: 2,
+        attackRange: { min: 1, max: 2 }, canCounterAttack: true,
+        unitClass: 'Infantry', maxFuel: 40
       };
   }
 };
 
-export const getPlayerStartingUnits = (): Unit[] => [
-  createUnit('player-infantry-1', 'Infantry', 'Blue'),
-  createUnit('player-infantry-2', 'Infantry', 'Blue'),
-  createUnit('player-infantry-3', 'Infantry', 'Blue'),
-  createUnit('player-infantry-4', 'Infantry', 'Blue'),
-  createUnit('player-infantry-5', 'Infantry', 'Blue'),
-  createUnit('player-tank-1', 'Tank', 'Blue'),
-  createUnit('player-tank-2', 'Tank', 'Blue'),
-  createUnit('player-tank-3', 'Tank', 'Blue'),
-  createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
-  createUnit('player-armored-2', 'ArmoredCar', 'Blue')
-];
+const createUnitFallback = (
+  id: string,
+  type: UnitType,
+  team: 'Blue' | 'Red',
+  x: number = 0,
+  y: number = 0
+): Unit => {
+  const unitStats = getUnitStatsFallback(type);
+  const weapons = createUnitWeaponsFallback(type, team);
+  
+  return {
+    id, type, team, x, y,
+    hp: unitStats.maxHp, maxHp: unitStats.maxHp,
+    attack: unitStats.attack, defense: unitStats.defense,
+    movement: unitStats.movement, attackRange: unitStats.attackRange,
+    moved: false, attacked: false, canCounterAttack: unitStats.canCounterAttack,
+    unitClass: unitStats.unitClass, fuel: unitStats.maxFuel,
+    maxFuel: unitStats.maxFuel, xp: 0, weapons
+  };
+};
 
-export const getEnemyStartingUnits = (): Unit[] => [
-  createUnit('enemy-infantry-1', 'Infantry', 'Red'),
-  createUnit('enemy-infantry-2', 'Infantry', 'Red'),
-  createUnit('enemy-tank-1', 'Tank', 'Red'),
-  createUnit('enemy-artillery-1', 'Artillery', 'Red')
-];
+// Export helper functions for external use
+export const getUnitStats = (type: UnitType, team: 'Blue' | 'Red' = 'Blue'): UnitStats => {
+  return getUnitStatsFromJSON(type, team);
+};
+
+// Legacy unit creation functions - kept for backward compatibility
+export const getPlayerStartingUnits = (): Unit[] => {
+  // Try to use new army system first, fallback to legacy if needed
+  try {
+    return getPlayerStartingUnitsFromArmy();
+  } catch (error) {
+    console.warn('Army system not available, falling back to legacy unit creation:', error);
+    return [
+      createUnit('player-infantry-1', 'Infantry', 'Blue'),
+      createUnit('player-infantry-2', 'Infantry', 'Blue'),
+      createUnit('player-infantry-3', 'Infantry', 'Blue'),
+      createUnit('player-infantry-4', 'Infantry', 'Blue'),
+      createUnit('player-infantry-5', 'Infantry', 'Blue'),
+      createUnit('player-tank-1', 'Tank', 'Blue'),
+      createUnit('player-tank-2', 'Tank', 'Blue'),
+      createUnit('player-tank-3', 'Tank', 'Blue'),
+      createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
+      createUnit('player-armored-2', 'ArmoredCar', 'Blue')
+    ];
+  }
+};
+
+export const getEnemyStartingUnits = (): Unit[] => {
+  // Try to use new army system first, fallback to legacy if needed
+  try {
+    return getEnemyStartingUnitsFromArmy();
+  } catch (error) {
+    console.warn('Army system not available, falling back to legacy unit creation:', error);
+    return [
+      createUnit('enemy-infantry-1', 'Infantry', 'Red'),
+      createUnit('enemy-infantry-2', 'Infantry', 'Red'),
+      createUnit('enemy-tank-1', 'Tank', 'Red'),
+      createUnit('enemy-artillery-1', 'Artillery', 'Red')
+    ];
+  }
+};
+
+// Export the army manager for direct access
+export { armyManager };

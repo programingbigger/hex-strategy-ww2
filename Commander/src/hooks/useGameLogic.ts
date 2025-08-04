@@ -8,7 +8,10 @@ import {
   WeatherType,
   GameStateSnapshot,
   MapData,
-  Weapon
+  Weapon,
+  Faction,
+  MilitaryBranch,
+  UnitCategory
 } from '../types';
 import {
   loadMapFromJSON,
@@ -34,6 +37,7 @@ import {
   UNIT_HEAL_HP,
   UNIT_HEAL_FUEL_FULL
 } from '../config/constants';
+import { armyManager } from '../data/units';
 
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
@@ -717,7 +721,69 @@ export const useGameLogic = () => {
     }
   }, [selectedUnit, selectedUnitTile, units, boardLayout, history, saveStateToHistory]);
 
+  // Army organization related functions
+  const getUnitsByBranch = useCallback((faction: Faction, branch: MilitaryBranch): Unit[] => {
+    return units.filter(unit => unit.faction === faction && unit.branch === branch);
+  }, [units]);
+
+  const getUnitsByCategory = useCallback((faction: Faction, category: UnitCategory): Unit[] => {
+    return units.filter(unit => unit.faction === faction && unit.category === category);
+  }, [units]);
+
+  const getAvailableUnitsFromArmy = useCallback((faction: Faction, branch?: MilitaryBranch, category?: UnitCategory) => {
+    return armyManager.getUnitTemplatesBy(faction, branch, category);
+  }, []);
+
+  const createUnitFromArmy = useCallback((templateId: string, instanceId: string, x: number, y: number): Unit | null => {
+    return armyManager.createUnitFromTemplate(templateId, instanceId, x, y);
+  }, []);
+
+  const getBranchesFor = useCallback((faction: Faction): MilitaryBranch[] => {
+    return armyManager.getBranches(faction);
+  }, []);
+
+  const getCategoriesFor = useCallback((faction: Faction, branch: MilitaryBranch): UnitCategory[] => {
+    return armyManager.getCategories(faction, branch);
+  }, []);
+
+  const getCommandStructure = useCallback(() => {
+    return armyManager.getCommandStructure();
+  }, []);
+
+  // Calculate command bonuses for units in proximity
+  const calculateCommandBonus = useCallback((unit: Unit): { attack: number; defense: number } => {
+    const commandStructure = getCommandStructure();
+    const sameUnitBonus = commandStructure.bonuses['同一師団'];
+    const commanderBonus = commandStructure.bonuses['指揮官効果'];
+    
+    // Count nearby same-faction units (simplified implementation)
+    const nearbyUnits = units.filter(u => 
+      u.faction === unit.faction && 
+      u.id !== unit.id &&
+      getDistance({x: u.x, y: u.y}, {x: unit.x, y: unit.y}) <= (commanderBonus.範囲 || 2)
+    );
+
+    let attackBonus = 0;
+    let defenseBonus = 0;
+
+    if (nearbyUnits.length > 0) {
+      // Same unit type bonus
+      const sameTypeUnits = nearbyUnits.filter(u => u.type === unit.type);
+      if (sameTypeUnits.length > 0) {
+        attackBonus += sameUnitBonus?.attack || 0;
+        defenseBonus += sameUnitBonus?.defense || 0;
+      }
+
+      // Commander effect (simplified)
+      attackBonus += commanderBonus?.効果 || 0;
+      defenseBonus += commanderBonus?.効果 || 0;
+    }
+
+    return { attack: attackBonus, defense: defenseBonus };
+  }, [units, getCommandStructure]);
+
   return {
+    // Existing properties
     gameState,
     turn,
     activeTeam,
@@ -741,5 +807,15 @@ export const useGameLogic = () => {
     weaponSelectionState,
     handleWeaponSelect,
     handleWeaponSelectionClose,
+    
+    // New army organization features
+    getUnitsByBranch,
+    getUnitsByCategory,
+    getAvailableUnitsFromArmy,
+    createUnitFromArmy,
+    getBranchesFor,
+    getCategoriesFor,
+    getCommandStructure,
+    calculateCommandBonus,
   };
 };

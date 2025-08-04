@@ -18,6 +18,12 @@ export interface GameMap {
 
 export type Team = 'Blue' | 'Red';
 
+export type Faction = 'Blue' | 'Red';
+
+export type MilitaryBranch = '陸' | '海' | '空';
+
+export type UnitCategory = 'infantry' | 'armor' | 'artillery' | 'antitank' | 'destroyer' | 'cruiser' | 'battleship' | 'fighter' | 'bomber' | 'transport';
+
 export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiTank';
 
 export type UnitClass = 'Infantry' | 'Vehicle';
@@ -51,6 +57,10 @@ export interface Unit {
   id: string;
   type: UnitType;
   team: Team;
+  faction?: Faction; // New: for army organization compatibility
+  branch?: MilitaryBranch; // New: military branch
+  category?: UnitCategory; // New: unit category within branch
+  name?: string; // New: display name from JSON
   hp: number;
   maxHp: number;
   attack: number; // Legacy - will be deprecated in favor of weapons
@@ -164,4 +174,54 @@ export interface BattlePrepState {
 export interface DeploymentCoordinate {
   q: number;
   r: number;
+}
+
+// New: Army Organization Types
+export interface ArmyUnitTemplate {
+  id: string;
+  name: string;
+  type: UnitType;
+  faction: Faction;
+  branch: MilitaryBranch;
+  category: UnitCategory;
+  stats: UnitStats;
+  weapons: Weapon[];
+}
+
+export interface UnitCategoryData {
+  name: string;
+  units: ArmyUnitTemplate[];
+}
+
+export interface MilitaryBranchData {
+  name: string;
+  unitCategories: Record<string, UnitCategoryData>;
+}
+
+export interface FactionData {
+  name: string;
+  description: string;
+  branches: Record<MilitaryBranch, MilitaryBranchData>;
+}
+
+export interface CommandStructure {
+  hierarchy: string[];
+  bonuses: {
+    [key: string]: {
+      attack?: number;
+      defense?: number;
+      範囲?: number;
+      効果?: number;
+    };
+  };
+}
+
+export interface ArmyOrganization {
+  metadata: {
+    version: string;
+    description: string;
+    lastUpdated: string;
+  };
+  factions: Record<Faction, FactionData>;
+  commandStructure: CommandStructure;
 }

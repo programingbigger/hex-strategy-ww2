@@ -118,7 +118,12 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               marginBottom: '10px',
               color: selectedUnit.team === 'Blue' ? '#0066cc' : '#cc0000'
             }}>
-              {selectedUnit.type} ({selectedUnit.team})
+              {selectedUnit.name || selectedUnit.type} ({selectedUnit.team})
+              {selectedUnit.branch && selectedUnit.category && (
+                <div className="text-xs text-gray-500 mt-1">
+                  {selectedUnit.branch} • {selectedUnit.category}
+                </div>
+              )}
             </div>
             
             {/* Separator */}
