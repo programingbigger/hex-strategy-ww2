@@ -1,7 +1,7 @@
 # types/index - 型定義システム
 
 ## 概要
-TypeScriptによる型安全性を確保するための型定義ファイルです。ゲーム内で使用される全てのデータ構造、インターフェース、列挙型を定義し、開発効率と品質向上を支援します。
+TypeScriptによる型安全性を確保するための型定義ファイルです。ゲーム内で使用される全てのデータ構造、インターフェース、列挙型を定義し、開発効率と品質向上を支援します。地形システムを含む包括的な型安全性を提供します。
 
 ## ファイル場所
 `/Commander/src/types/index.ts`
@@ -11,13 +11,13 @@ TypeScriptによる型安全性を確保するための型定義ファイルで�
 ### 基本ゲーム型
 ```typescript
 // 座標システム
-export interface Position {
+export interface Coordinate {
   x: number;
   y: number;
 }
 
-// ゲーム状態
-export type GameState = 
+// ゲーム画面状態
+export type GameScreen = 
   | 'title' 
   | 'home' 
   | 'scenario-select' 
@@ -26,14 +26,10 @@ export type GameState =
   | 'battle' 
   | 'result';
 
-// プレイヤー/チーム
-export type Team = 'blue' | 'red';
-
-// ターンフェーズ
-export type TurnPhase = 
-  | 'player-turn' 
-  | 'enemy-turn' 
-  | 'turn-end';
+// プレイヤー/チーム/派閥
+export type Team = 'Blue' | 'Red';
+export type Faction = 'Blue' | 'Red';
+export type MilitaryBranch = '陸' | '海' | '空';
 ```
 
 ### ユニット型定義
@@ -42,118 +38,149 @@ export type TurnPhase =
 export type UnitType = 
   | 'Infantry' 
   | 'Tank' 
+  | 'ArmoredCar'
   | 'Artillery' 
-  | 'ArmoredCar' 
   | 'AntiTank';
+
+// ユニットクラス（地形制限判定用）
+export type UnitClass = 'Infantry' | 'Vehicle';
+
+// ユニットカテゴリ
+export type UnitCategory = 
+  | 'infantry' | 'armor' | 'artillery' | 'antitank' 
+  | 'destroyer' | 'cruiser' | 'battleship' 
+  | 'fighter' | 'bomber' | 'transport';
 
 // ユニット詳細情報
 export interface Unit {
   id: string;
   type: UnitType;
   team: Team;
-  position: Position;
+  faction?: Faction;
+  branch?: MilitaryBranch;
+  category?: UnitCategory;
+  name?: string;
   hp: number;
   maxHp: number;
+  attack: number;
+  defense: number;
+  movement: number;
+  attackRange: { min: number; max: number };
+  x: number;
+  y: number;
+  moved: boolean;
+  attacked: boolean;
+  canCounterAttack: boolean;
+  unitClass: UnitClass;
   fuel: number;
   maxFuel: number;
-  experience: number;
-  hasActed: boolean;
-  isDestroyed: boolean;
+  xp: number;
+  attackVs?: { [key in UnitClass]?: number };
+  defenseVs?: { [key in UnitClass]?: number };
+  weapons: Weapon[];
 }
 
 // ユニット能力値
 export interface UnitStats {
-  hp: number;
+  maxHp: number;
   attack: number;
   defense: number;
   movement: number;
-  range: number | [number, number]; // 射程（最小-最大）
-  fuel: number;
-  cost: number;
-  specialAbilities?: string[];
+  attackRange: { min: number; max: number };
+  canCounterAttack: boolean;
+  unitClass: UnitClass;
+  maxFuel: number;
+  attackVs?: { [key in UnitClass]?: number };
+  defenseVs?: { [key in UnitClass]?: number };
+  isArtillery?: boolean;
+}
+```
+
+### 武器システム型
+```typescript
+// 武器タイプ（派閥別）
+export type WeaponType = 
+  | '37mm主砲' | '36MG機銃' | '9mmライフル' | '105mm野砲'  // Legacy weapons
+  | '50mm主砲' | '30cal機銃' | '57mm対戦車砲' | 'M1ライフル' | '155mm榴弾砲' | 'BAR機銃'  // Blue faction
+  | '7.7mm機銃' | '47mm対戦車砲' | '6.5mmライフル' | '99式軽機銃';  // Red faction
+
+// 武器詳細
+export interface Weapon {
+  id: string;
+  name: string;
+  type: WeaponType;
+  ammunition: number;
+  maxAmmunition: number;
+  range: { min: number; max: number };
+  attack: number;
+  effectiveness?: { [key in UnitClass]?: number };
 }
 ```
 
 ### 地形・マップ型
 ```typescript
-// 地形タイプ
+// 地形タイプ（17種類）
 export type TerrainType = 
-  | 'Plains' 
-  | 'Forest' 
-  | 'Mountain' 
-  | 'River' 
-  | 'Road' 
-  | 'Bridge' 
-  | 'City' 
-  | 'Mud';
+  | 'Plains'    // 平原
+  | 'Forest'    // 森林
+  | 'Mountain'  // 山岳
+  | 'River'     // 河川
+  | 'Road'      // 道路
+  | 'Bridge'    // 橋梁
+  | 'City'      // 都市
+  | 'Mud'       // 泥濘
+  | 'Sea'       // 海洋
+  | 'Capital'   // 首都
+  | 'Airport'   // 飛行場
+  | 'Bocage'    // 生垣地
+  | 'Snow'      // 雪原
+  | 'Desert'    // 砂漠
+  | 'Reef'      // 岩礁
+  | 'Fortress'  // 要塞
+  | 'Port';     // 港
 
 // タイル情報
 export interface Tile {
-  position: Position;
+  x: number;
+  y: number;
   terrain: TerrainType;
-  unit?: Unit;
-  isOccupied: boolean;
   owner?: Team;
-  cityHp?: number; // 都市の場合のHP
+  hp?: number;        // 都市・要塞等のHP
+  maxHp?: number;
+}
+
+// 地形効果統計
+export interface TerrainStats {
+  defenseBonus: number;
+  attackBonus: number;
+  movementCost: { [key: string]: number; default: number };
 }
 
 // ボード全体
-export interface Board {
-  width: number;
-  height: number;
-  tiles: Tile[][];
-  cities: CityInfo[];
-}
-
-// 都市情報
-export interface CityInfo {
-  position: Position;
-  owner: Team | null;
-  hp: number;
-  maxHp: number;
-  income: number;
-  isCapital: boolean;
-}
+export type BoardLayout = Map<string, Tile>;
 ```
 
 ### 戦闘・アクション型
 ```typescript
-// アクションタイプ
-export type ActionType = 
-  | 'move' 
-  | 'attack' 
-  | 'wait' 
-  | 'capture';
-
-// アクション詳細
-export interface GameAction {
-  type: ActionType;
-  unitId: string;
-  source: Position;
-  target: Position;
-  timestamp: number;
-}
-
 // 戦闘結果
-export interface CombatResult {
-  attackerId: string;
-  defenderId: string;
-  attackerDamage: number;
-  defenderDamage: number;
-  attackerDestroyed: boolean;
-  defenderDestroyed: boolean;
-  experienceGained: number;
-  isCritical: boolean;
+export interface BattleReport {
+  attacker: Unit;
+  defender: Unit;
+  damage: number;
+  counterDamage?: number;
+  report: string;
+  weaponUsed?: Weapon;
+  counterWeaponUsed?: Weapon;
 }
 
 // 移動結果
 export interface MovementResult {
   unitId: string;
-  fromPosition: Position;
-  toPosition: Position;
+  fromPosition: Coordinate;
+  toPosition: Coordinate;
   fuelConsumed: number;
   isValid: boolean;
-  path: Position[];
+  path: Coordinate[];
 }
 ```
 
@@ -161,73 +188,157 @@ export interface MovementResult {
 ```typescript
 // 天候タイプ
 export type WeatherType = 
-  | 'Clear' 
-  | 'Rain' 
-  | 'HeavyRain' 
-  | 'Snow';
+  | 'Clear'     // 晴天
+  | 'Rain'      // 雨
+  | 'HeavyRain' // 大雨
+  | 'Snow'      // 雪
+  | 'Fog';      // 霧
 
-// 天候効果
+// 天候効果（地形変化を含む）
 export interface WeatherEffect {
   type: WeatherType;
   movementModifier: number;
   visibilityRange: number;
-  terrainChanges: Record<TerrainType, TerrainType>;
+  terrainChanges: Partial<Record<TerrainType, TerrainType>>; // 平原→泥濘など
   combatModifier?: number;
   duration: number;
 }
+```
 
-// ゲーム環境状態
-export interface GameEnvironment {
-  weather: WeatherType;
+### ゲーム状態型
+```typescript
+// ゲーム状態
+export interface GameState {
+  currentScreen: GameScreen;
+  selectedMap?: GameMap;
+  units: Unit[];
+  board: BoardLayout;
+  activeTeam: Team;
   turn: number;
-  maxTurns: number;
-  timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
+  winner?: Team;
+  gameState?: 'playing' | 'gameOver';
+  weather?: WeatherType;
+  weatherDuration?: number;
+  battlePrep?: BattlePrepState;
+}
+
+// ゲーム状態スナップショット
+export interface GameStateSnapshot {
+  units: Unit[];
+  turn: number;
+  activeTeam: Team;
+  selectedUnitId: string | null;
+}
+
+// 戦闘準備状態
+export interface BattlePrepState {
+  selectedUnits: Unit[];
+  deployedUnits: Map<string, { x: number; y: number }>;
+  victoryConditions: string[];
 }
 ```
 
-### UI・表示型
+### マップ・シナリオ型
 ```typescript
-// 画面サイズ・表示設定
-export interface ViewSettings {
-  zoomLevel: number;
-  centerPosition: Position;
-  showGrid: boolean;
-  showCoordinates: boolean;
-  animationSpeed: 'slow' | 'normal' | 'fast';
-}
-
-// 選択状態
-export interface SelectionState {
-  selectedTile: Position | null;
-  selectedUnit: Unit | null;
-  reachableTiles: Position[];
-  attackableTiles: Position[];
-  hoveredTile: Position | null;
-}
-
-// ゲーム表示状態
-export interface GameDisplay {
-  view: ViewSettings;
-  selection: SelectionState;
-  showInfoPanel: boolean;
-  showMiniMap: boolean;
-  uiMode: 'normal' | 'deployment' | 'battle' | 'result';
-}
-```
-
-### セーブ・ロード型
-```typescript
-// セーブデータ
-export interface SaveData {
+// ゲームマップ
+export interface GameMap {
   id: string;
   name: string;
-  timestamp: number;
-  gameState: GameState;
-  board: Board;
+  description: string;
+  difficulty: 'Easy' | 'Normal' | 'Hard';
+  thumbnail?: string;
+  deploymentCenter?: { q: number; r: number };
+}
+
+// マップデータ
+export interface MapData {
+  gameStatus: {
+    gameState: string;
+    turn: number;
+    activeTeam: Team;
+    winner: Team | null;
+    weather: WeatherType;
+    weatherDuration: number;
+  };
+  board: {
+    tiles: Tile[];
+  };
   units: Unit[];
-  environment: GameEnvironment;
-  playerStats: PlayerStats;
-  version: string;
+  deploymentCenter?: { q: number; r: number };
+}
+
+// 配置座標
+export interface DeploymentCoordinate {
+  q: number;
+  r: number;
+}
+```
+
+### 軍編成システム型
+```typescript
+// 軍隊ユニットテンプレート
+export interface ArmyUnitTemplate {
+  id: string;
+  name: string;
+  type: UnitType;
+  faction: Faction;
+  branch: MilitaryBranch;
+  category: UnitCategory;
+  stats: UnitStats;
+  weapons: Weapon[];
+}
+
+// ユニットカテゴリデータ
+export interface UnitCategoryData {
+  name: string;
+  units: ArmyUnitTemplate[];
+}
+
+// 軍種データ
+export interface MilitaryBranchData {
+  name: string;
+  unitCategories: Record<string, UnitCategoryData>;
+}
+
+// 派閥データ
+export interface FactionData {
+  name: string;
+  description: string;
+  branches: Record<MilitaryBranch, MilitaryBranchData>;
+}
+
+// 指揮構造
+export interface CommandStructure {
+  hierarchy: string[];
+  bonuses: {
+    [key: string]: {
+      attack?: number;
+      defense?: number;
+      範囲?: number;
+      効果?: number;
+    };
+  };
+}
+
+// 軍編成システム
+export interface ArmyOrganization {
+  metadata: {
+    version: string;
+    description: string;
+    lastUpdated: string;
+  };
+  factions: Record<Faction, FactionData>;
+  commandStructure: CommandStructure;
+}
+```
+
+### 戦果・結果型
+```typescript
+// 戦闘結果
+export interface BattleResult {
+  winner: Team;
+  turnsToWin: number;
+  unitsLost: number;
 }
 
 // プレイヤー統計
@@ -241,34 +352,23 @@ export interface PlayerStats {
 }
 ```
 
-### AI・敵思考型
-```typescript
-// AI難易度
-export type AIDifficulty = 
-  | 'easy' 
-  | 'normal' 
-  | 'hard' 
-  | 'expert';
-
-// AI行動評価
-export interface AIEvaluation {
-  unitId: string;
-  action: GameAction;
-  priority: number;
-  expectedValue: number;
-  risk: number;
-  reasoning: string;
-}
-
-// AI戦略
-export type AIStrategy = 
-  | 'aggressive' 
-  | 'defensive' 
-  | 'balanced' 
-  | 'economic';
-```
-
 ## ゲームへの影響とポイント
+
+### 地形システムの型安全性
+- **TerrainType**: 17種類の地形を型安全に管理
+- **TerrainStats**: 地形効果の一貫した適用
+- **移動制限**: UnitClassによる地形通行可否の型チェック
+- **戦闘修正**: 地形ボーナスの自動適用とバリデーション
+
+### 武器システムの型安全性
+- **派閥別武器**: WeaponTypeによる派閥固有武器の管理
+- **射程管理**: 武器ごとの攻撃範囲の型安全な処理
+- **弾薬管理**: ammunition/maxAmmunitionによる弾薬制限
+
+### ユニット階層の型管理
+- **兵種分類**: UnitType → UnitClass → UnitCategoryの階層管理
+- **派閥システム**: Faction → MilitaryBranch → UnitCategoryの組織構造
+- **能力継承**: 基本能力と派閥固有能力の型安全な組み合わせ
 
 ### 型安全性の確保
 - **コンパイル時エラー**: 不正なデータアクセスを事前に検出
@@ -280,17 +380,17 @@ export type AIStrategy =
 - **可読性**: 型注釈による意図の明確化
 - **保守性**: 型定義による仕様書的役割
 
-### 拡張性確保
-- **新機能追加**: 型定義の拡張による機能追加支援
-- **API設計**: 外部連携時の型定義による仕様明確化
-- **テスト**: 型安全なテストコードの作成
-
 ## 設計原則
 
 ### 型の命名規則
-- **Interface**: PascalCase（例：`GameState`, `UnitInfo`）
-- **Type Union**: PascalCase（例：`TerrainType`, `ActionType`）
+- **Interface**: PascalCase（例：`GameState`, `UnitStats`）
+- **Type Union**: PascalCase（例：`TerrainType`, `WeaponType`）
 - **Generic**: 1文字大文字（例：`T`, `K`, `V`）
+
+### 地形システム設計原則
+- **拡張性**: 新地形タイプの追加が容易
+- **一貫性**: 全地形で統一されたプロパティ構造
+- **型安全性**: 存在しない地形タイプの参照を防止
 
 ### 構造設計
 - **継承**: 基本型からの拡張による階層構造
@@ -304,8 +404,9 @@ export type AIStrategy =
 
 ## 依存関係
 - 全ゲームコンポーネント - 型定義の参照
-- [[constants]] - 定数値の型注釈
+- [[constants]] - 定数値の型注釈（TERRAIN_STATSなど）
 - [[useGameLogic]] - ゲームロジックの型安全性
+- [[terrain-types]] - 地形仕様の型対応
 
 ## 関連ツール
 - **TypeScript Compiler**: 型チェックとコンパイル
@@ -314,7 +415,7 @@ export type AIStrategy =
 
 ## バージョン管理
 ```typescript
-export const TYPE_VERSION = '1.0.0';
+export const TYPE_VERSION = '2.0.0'; // 地形システム統合対応
 
 // 型定義の後方互換性
 export interface LegacyUnit {
@@ -322,5 +423,12 @@ export interface LegacyUnit {
 }
 ```
 
+## 関連ファイル
+- [[constants]] - 型定義に対応する定数値
+- [[terrain-types]] - 地形タイプの詳細仕様
+- [[useGameLogic]] - 型安全なゲームロジック実装
+- [[Utils-Helpers]] - 型安全なユーティリティ関数
+
 ## タグ
-#types #TypeScript #DataStructure #TypeSafety #API #Interface #Development
+#types #TypeScript #DataStructure #TypeSafety #API #Interface #Development #Terrain #WeaponSystem
+EOF < /dev/null

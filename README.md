@@ -23,7 +23,7 @@ Commander
 * requirement-verbalizer Agent
     * ユーザーの拙い言葉を言語化してくれるエージェント
 * hex-strategy-docs-updater Agnet
-    * docsをアップデートしてくれるエージェント
+    * Obsidianのドキュメントをアップデートしてくれるエージェント
 
 ### Custom Comand
 * _Cognitive_Tools

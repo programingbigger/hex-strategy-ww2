@@ -60,54 +60,235 @@ export const UNIT_STATS = {
 ```
 
 ### 地形効果設定
+
+#### 地形タイプ一覧表
+| 地形タイプ | 和名 | 防御ボーナス | 攻撃ボーナス | 歩兵移動コスト | 車両移動コスト | 飛行移動コスト | 船舶移動コスト |
+|-----------|------|-------------|-------------|---------------|---------------|---------------|---------------|
+| Plains | `平原` | `0` | `0` | `1` | `1` | `1` | `通行不可` |
+| Forest | `森林` | `+1` | `0` | `1` | `2` | `1` | `通行不可` |
+| Mountain | `山岳` | `+3` | `+2` | `2` | `通行不可` | `1` | `通行不可` |
+| River | `河川` | `-2` | `-1` | `2` | `通行不可` | `1` | `1` |
+| Road | `道路` | `-1` | `0` | `1` | `1` | `1` | `通行不可` |
+| Bridge | `橋梁` | `-1` | `0` | `1` | `1` | `1` | `通行不可` |
+| City | `都市` | `+2` | `0` | `1` | `1` | `1` | `通行不可` |
+| Mud | `泥濘` | `-1` | `0` | `2` | `3` | `1` | `通行不可` |
+| Sea | `海洋` | `0` | `0` | `通行不可` | `通行不可` | `1` | `1` |
+| Capital | `首都` | `+3` | `+1` | `1` | `1` | `1` | `通行不可` |
+| Airport | `飛行場` | `+3` | `+1` | `1` | `1` | `1` | `通行不可` |
+| Bocage | `生垣地` | `0` | `0` | `1` | `1` | `1` | `通行不可` |
+| Snow | `雪原` | `0` | `0` | `2` | `2` | `1` | `通行不可` |
+| Desert | `砂漠` | `0` | `0` | `1` | `1` | `1` | `通行不可` |
+| Reef | `岩礁` | `+2` | `0` | `通行不可` | `通行不可` | `1` | `3` |
+| Fortress | `要塞` | `+3` | `+1` | `1` | `2` | `1` | `通行不可` |
+| Port | `港` | `+2` | `0` | `1` | `1` | `1` | `1` |
+
 ```typescript
 export const TERRAIN_EFFECTS = {
   Plains: {
     defenseBonus: 0,    // 防御ボーナス
-    movementCost: 1,    // 移動コスト
     attackBonus: 0,     // 攻撃ボーナス
+    movementCost: {     // 移動コスト（兵種別）
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,  // 通行不可
+    },
     income: 0,          // 収入
   },
   Forest: {
     defenseBonus: 1,
-    movementCost: 2,
     attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 2,
+      air: 1,
+      naval: Infinity,
+    },
     income: 0,
     specialEffect: 'concealment', // 隠蔽効果
   },
   Mountain: {
-    defenseBonus: 2,
-    movementCost: 3,
-    attackBonus: 1,     // 高所利得
+    defenseBonus: 3,
+    attackBonus: 2,     // 高所利得
+    movementCost: {
+      infantry: 2,
+      vehicle: Infinity, // 通行不可
+      air: 1,
+      naval: Infinity,
+    },
     income: 0,
   },
-  City: {
-    defenseBonus: 2,
-    movementCost: 1,
-    attackBonus: 0,
-    income: 100,        // ターンごとの収入
-    canCapture: true,   // 占領可能
-    healingRate: 2,     // 回復量/ターン
-  },
   River: {
-    defenseBonus: 1,
-    movementCost: 3,
-    attackBonus: 0,
+    defenseBonus: -2,
+    attackBonus: -1,
+    movementCost: {
+      infantry: 2,
+      vehicle: Infinity, // 通行不可
+      air: 1,
+      naval: 1,
+    },
     income: 0,
     crossingPenalty: true, // 渡河ペナルティ
   },
   Road: {
-    defenseBonus: 0,
-    movementCost: 0.5,  // 移動促進
+    defenseBonus: -1,
     attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
     income: 0,
   },
-  Mud: {
-    defenseBonus: 0,
-    movementCost: 4,    // 移動困難
+  Bridge: {
+    defenseBonus: -1,
     attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 0,
+  },
+  City: {
+    defenseBonus: 2,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 100,        // ターンごとの収入
+    canCapture: true,   // 占領可能
+    healingRate: 2,     // 回復量/ターン
+  },
+  Mud: {
+    defenseBonus: -1,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 2,
+      vehicle: 3,
+      air: 1,
+      naval: Infinity,
+    },
     income: 0,
     condition: 'weather_dependent', // 天候依存
+  },
+  Sea: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: {
+      infantry: Infinity, // 通行不可
+      vehicle: Infinity,  // 通行不可
+      air: 1,
+      naval: 1,
+    },
+    income: 0,
+  },
+  Capital: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 200,        // 首都の高い収入
+    canCapture: true,
+    healingRate: 3,     // 高い回復率
+    isVictoryCondition: true, // 勝利条件
+  },
+  Airport: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 50,
+    canCapture: true,
+    specialEffect: 'air_support', // 航空支援効果
+  },
+  Bocage: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 0,
+    specialEffect: 'defensive_terrain', // 防御地形効果
+  },
+  Snow: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 2,
+      vehicle: 2,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 0,
+    condition: 'weather_dependent',
+  },
+  Desert: {
+    defenseBonus: 0,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 0,
+    specialEffect: 'visibility_bonus', // 視界ボーナス
+  },
+  Reef: {
+    defenseBonus: 2,
+    attackBonus: 0,
+    movementCost: {
+      infantry: Infinity, // 通行不可
+      vehicle: Infinity,  // 通行不可
+      air: 1,
+      naval: 3,          // 航行困難
+    },
+    income: 0,
+    specialEffect: 'naval_hazard', // 航行危険
+  },
+  Fortress: {
+    defenseBonus: 3,
+    attackBonus: 1,
+    movementCost: {
+      infantry: 1,
+      vehicle: 2,
+      air: 1,
+      naval: Infinity,
+    },
+    income: 0,
+    canCapture: true,
+    healingRate: 2,
+    specialEffect: 'fortified_position', // 要塞効果
+  },
+  Port: {
+    defenseBonus: 2,
+    attackBonus: 0,
+    movementCost: {
+      infantry: 1,
+      vehicle: 1,
+      air: 1,
+      naval: 1,
+    },
+    income: 75,         // 港の収入
+    canCapture: true,
+    specialEffect: 'naval_base', // 海軍基地効果
   }
 }
 ```
