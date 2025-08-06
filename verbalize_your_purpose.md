@@ -1,316 +1,309 @@
-# Weapon Selection System Requirements Analysis (言語化結果)
+# 勝利条件システム拡張要求仕様書
 
-## プロジェクト目的の言語化
+## 1. プロジェクト概要
+**プロジェクト名**: hex-strategy-ww2 勝利条件システム拡張
+**対象システム**: React + TypeScript ヘックス戦略ゲーム
+**作成日**: 2025-08-06
+**要求仕様バージョン**: v1.0
 
-現在のHex Strategy WW2ゲームにおいて、**弾薬管理によるリソース戦略システム**を核とした武装システムを導入し、戦術的深度の高い戦闘体験を実現する。単一の攻撃力パラメータではなく、武器種別毎の弾薬管理と射程設定により、限られたリソース（弾薬）をいかに効率的に運用するかという戦略的判断を要求するゲームプレイを構築する。
+## 2. Purpose Statement（目的）
+現在の勝利条件システム（敵軍全滅、全都市占領）を拡張し、多様な戦略的勝利条件を追加することで、ゲームプレイの戦略性と再現性を向上させる。
 
-**本システムの最重要価値**: プレイヤーが弾薬という有限リソースを管理しながら戦術的優位を獲得する、新たなゲーム体験の提供
+## 3. Context and Background（背景）
+### 現在の実装状況
+- **既存勝利条件**: 
+  - 敵軍全滅（優先度：高）
+  - 全都市占領（優先度：低）
+- **実装場所**: `/Commander/src/hooks/useGameLogic.ts` の `checkWinCondition` 関数（271-299行）
+- **マップデータ形式**: JSON形式でCapitalタイプの都市が存在（例：test_map_1.jsonに2つの首都）
+- **チーム定義**: Blue軍、Red軍
 
-**将来展望**: 今後のユニット追加・拡張の基盤システムとして、n武装システムへの発展を想定した設計
+### 現在の問題点
+1. 勝利条件が限定的で戦略バリエーションが少ない
+2. ターン制限による時間的圧力がない
+3. 首都という重要拠点の戦略的価値が十分活用されていない
+4. 攻守の役割分担が明確でない
+
+## 4. Core Requirements（コア要求事項）
+
+### 4.1 新規勝利条件の実装
+#### 4.1.1 首都占領勝利
+- **条件**: 敵の首都（Capitalタイプ地形）をすべて占領
+- **詳細仕様**:
+  - マップ上の首都が1つの場合：その首都を占領したら即座にゲーム勝利
+  - マップ上の首都が複数の場合：すべての敵首都を占領する必要
+  - 首都占領は`Infantry`ユニットによる占領（capture）行動で実現
+  - 首都のHP=0になった時点で占領完了とする
+
+#### 4.1.2 ターン制限勝利
+- **条件**: 設定されたターン数経過後の判定
+- **詳細仕様**:
+  - 攻め側（デフォルト：Blue軍）：制限ターン到達でゲームオーバー
+  - 守り側（デフォルト：Red軍）：制限ターン到達で勝利
+  - ターン制限値はマップごとに設定可能
+  - ターン制限は `gameStatus.turnLimit` として JSON に追加
+
+### 4.2 勝利条件優先順位の変更
+**新しい優先順位**:
+1. **敵軍全滅** (最高優先度)
+2. **首都占領** (高優先度)
+3. **全都市占領** (中優先度)
+4. **ターン制限** (最低優先度、他の条件が満たされない場合のみ)
+
+### 4.3 攻守役割システム
+- **設定方法**: マップ/シナリオごとに可変設定
+- **デフォルト設定**: Blue軍=攻め側、Red軍=守り側
+- **設定場所**: `gameStatus.attackingTeam` として JSON に追加
+
+## 5. Technical Specifications（技術仕様）
+
+### 5.1 データ構造変更
+
+#### 5.1.1 MapData型拡張
+```typescript
+export interface GameStatus {
+  gameState: 'playing' | 'gameOver';
+  turn: number;
+  activeTeam: Team;
+  winner: Team | null;
+  weather: WeatherType;
+  weatherDuration: number;
+  // 新規追加
+  turnLimit?: number;           // ターン制限（未設定の場合は無制限）
+  attackingTeam: Team;          // 攻め側チーム
+  defendingTeam: Team;          // 守り側チーム
+}
+```
+
+#### 5.1.2 勝利条件タイプ定義
+```typescript
+export type VictoryCondition = 
+  | 'enemy_elimination'    // 敵軍全滅
+  | 'capital_capture'      // 首都占領
+  | 'total_domination'     // 全都市占領
+  | 'turn_limit';          // ターン制限
+
+export interface VictoryResult {
+  condition: VictoryCondition;
+  winner: Team;
+  turn: number;
+  details?: string;        // 勝利条件詳細
+}
+```
+
+### 5.2 機能実装
+
+#### 5.2.1 checkWinCondition関数の拡張
+```typescript
+const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
+  const blueUnits = currentUnits.filter(u => u.team === 'Blue');
+  const redUnits = currentUnits.filter(u => u.team === 'Red');
+
+  // 1. 敵軍全滅チェック（最高優先度）
+  if (redUnits.length === 0) {
+    setGameState('gameOver');
+    setWinner('Blue');
+    return;
+  }
+  if (blueUnits.length === 0) {
+    setGameState('gameOver');
+    setWinner('Red');
+    return;
+  }
+
+  // 2. 首都占領チェック（高優先度）
+  const capitals = Array.from(currentBoard.values()).filter(t => t.terrain === 'Capital');
+  if (capitals.length > 0) {
+    const blueCapitals = capitals.filter(c => c.owner === 'Blue');
+    const redCapitals = capitals.filter(c => c.owner === 'Red');
+    
+    if (blueCapitals.length === capitals.length) {
+      setGameState('gameOver');
+      setWinner('Blue');
+      return;
+    } else if (redCapitals.length === capitals.length) {
+      setGameState('gameOver');
+      setWinner('Red');
+      return;
+    }
+  }
+
+  // 3. 全都市占領チェック（中優先度）
+  const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
+  const blueCities = cities.filter(c => c.owner === 'Blue').length;
+  const redCities = cities.filter(c => c.owner === 'Red').length;
+
+  if (cities.length > 0) {
+    if (blueCities === cities.length) {
+      setGameState('gameOver');
+      setWinner('Blue');
+    } else if (redCities === cities.length) {
+      setGameState('gameOver');
+      setWinner('Red');
+    }
+  }
+
+  // 4. ターン制限チェック（最低優先度）
+  // handleEndTurn関数内で実装
+}, []);
+```
+
+#### 5.2.2 ターン制限チェック機能
+```typescript
+// handleEndTurn関数内に追加
+if (nextTeam === 'Blue') {
+  const newTurn = turn + 1;
+  setTurn(newTurn);
+  
+  // ターン制限チェック
+  if (turnLimit && newTurn > turnLimit) {
+    setGameState('gameOver');
+    setWinner(defendingTeam);
+    return;
+  }
+}
+```
+
+#### 5.2.3 首都識別関数の拡張
+```typescript
+const isCapitalTerrain = (terrain: string): boolean => {
+  return terrain === 'Capital';
+};
+
+const getCapitals = (board: BoardLayout): Tile[] => {
+  return Array.from(board.values()).filter(t => isCapitalTerrain(t.terrain));
+};
+```
+
+### 5.3 UI/UX変更
+
+#### 5.3.1 ゲーム情報表示の拡張
+- ターン制限がある場合、残りターン数を表示
+- 現在の攻守役割を表示
+- 勝利条件の進捗状況を表示
+
+#### 5.3.2 ResultScreen改善
+```typescript
+interface VictoryDetails {
+  condition: VictoryCondition;
+  winner: Team;
+  turn: number;
+  turnLimit?: number;
+  details: string;
+}
+```
+
+## 6. Implementation Priority（実装優先度）
+
+### Phase 1: 高優先度（必須実装）
+1. データ構造拡張（GameStatus, VictoryResult型追加）
+2. checkWinCondition関数の首都占領ロジック追加
+3. 勝利条件優先順位の修正
+
+### Phase 2: 中優先度（重要実装）
+1. ターン制限システムの実装
+2. 攻守役割システムの実装
+3. マップJSONフォーマットの拡張
+
+### Phase 3: 低優先度（改善実装）
+1. UI/UX改善（勝利条件進捗表示）
+2. ResultScreen詳細情報表示
+3. エラーハンドリング強化
+
+## 7. Acceptance Criteria（受け入れ条件）
+
+### 7.1 機能テスト
+1. **首都占領テスト**
+   - [ ] 単一首都マップで首都占領時に即座勝利
+   - [ ] 複数首都マップですべて占領時に勝利
+   - [ ] 一部首都占領では勝利しない
+   
+2. **ターン制限テスト**
+   - [ ] 設定ターン数到達で守り側勝利
+   - [ ] ターン制限未設定時は無制限
+   - [ ] 制限前に他の勝利条件達成時は優先
+
+3. **勝利条件優先度テスト**
+   - [ ] 敵軍全滅が最優先
+   - [ ] 首都占領が全都市占領より優先
+   - [ ] ターン制限が最低優先度
+
+### 7.2 データ整合性テスト
+1. **マップデータ**
+   - [ ] 既存マップで正常動作
+   - [ ] 新形式マップで正常動作
+   - [ ] 不正データでエラーハンドリング
+
+2. **ゲーム状態管理**
+   - [ ] 勝利判定後のゲーム状態が正しい
+   - [ ] 勝利者情報が正確
+   - [ ] 勝利条件詳細が正しく記録
+
+## 8. Dependencies and Constraints（依存関係と制約）
+
+### 8.1 技術的依存関係
+- React Hook (useGameLogic.ts) の既存実装に依存
+- マップJSON形式の後方互換性必須
+- 既存のユニット移動・戦闘システムとの整合性
+
+### 8.2 制約事項
+- 既存のゲームバランスを大きく変更しない
+- 現在のマップデータ形式との互換性維持
+- パフォーマンスに影響を与えない軽量実装
+
+### 8.3 リスク要因
+- 複雑な勝利条件判定による処理負荷増加
+- UI情報量増加によるユーザビリティ低下
+- マップ設計時の勝利条件バランス調整の難しさ
+
+## 9. Testing Strategy（テスト戦略）
+
+### 9.1 ユニットテスト
+- checkWinCondition関数の各勝利条件分岐
+- ターン制限判定ロジック
+- データ型変換・マイグレーション
+
+### 9.2 統合テスト
+- 実際のマップデータを使用した勝利条件テスト
+- UI表示とゲームロジックの連携テスト
+- セーブ・ロード機能との整合性テスト
+
+### 9.3 受け入れテスト
+- 複数シナリオでの実際のゲームプレイテスト
+- ユーザビリティテスト
+- パフォーマンステスト
+
+## 10. Success Metrics（成功指標）
+
+### 10.1 機能的成功指標
+- すべての勝利条件が正しく判定される
+- ゲームバランスが適切に保たれる
+- UI情報が分かりやすく表示される
+
+### 10.2 技術的成功指標
+- 既存コードへの影響が最小限
+- テストカバレッジ90%以上
+- パフォーマンス低下なし
+
+### 10.3 ユーザー体験成功指標
+- 戦略的選択肢の増加
+- ゲームプレイの多様性向上
+- 学習コストの最小化
 
 ---
 
-## Requirements Analysis from prompt.txt
-
-### Main Objectives
-The primary goal is to implement a weapon selection system during the attack phase of a hex-strategy game, allowing players to choose which weapon their units use when attacking enemy units.
-
-### Current Problem Statement
-- During the attack phase, players cannot select weapons for their units
-- The current implementation lacks weapon selection functionality
-- Players are unable to choose which weapon to use when attacking target units
-
-### Specific Requirements
-
-#### 1. Weapon Selection Interface
-- Implement a weapon selection mechanism that activates during attack phases
-- The system must work regardless of whether a unit has one weapon or multiple weapons
-- All units should display their available weapons for selection
-
-#### 2. Attack Functionality
-- Enable players to select a specific weapon before executing an attack
-- The selected weapon should be used to calculate and execute the attack against the target unit
-- Replace the current automatic weapon selection (if any) with player-controlled selection
-
-### Technical Specifications
-Based on the file structure visible in the git status, the implementation likely involves:
-
-- **WeaponSelectorModal.tsx** - Modal component for weapon selection UI
-- **WeaponInfoPanel.tsx** - Component displaying weapon information
-- **useGameLogic.ts** - Game logic hook that needs to handle weapon selection
-- **weapons.ts** - Weapon utility functions and data structures
-- **units.ts** - Unit data that includes weapon configurations
-
-### Constraints and Considerations
-- Must integrate with existing game logic and UI components
-- Should maintain consistency with current game flow and user experience
-- Need to handle both single-weapon and multi-weapon units uniformly
-
-### Suggested Implementation Steps
-
-#### 1. UI Development
-- Enhance or complete the WeaponSelectorModal component
-- Ensure weapon information is clearly displayed in WeaponInfoPanel
-- Create intuitive weapon selection interface
-
-#### 2. Game Logic Integration
-- Modify useGameLogic hook to include weapon selection state
-- Implement weapon selection validation and state management
-- Update attack logic to use player-selected weapons
-
-#### 3. Data Structure Updates
-- Ensure units.ts properly defines weapon collections for each unit
-- Verify weapons.ts contains necessary weapon data and utilities
-
-#### 4. User Experience Flow
-- When player initiates attack: Display weapon selection modal
-- Allow weapon choice from available unit weapons
-- Execute attack using selected weapon
-- Provide clear feedback on weapon effects and damage
-
-### Success Criteria
-- Players can select weapons for any unit during attack phase
-- Selected weapons are properly used in combat calculations
-- UI clearly shows available weapons and their properties
-- System works consistently for units with single or multiple weapons
-
-### Summary
-This requirement focuses on enhancing player agency and tactical depth by allowing strategic weapon selection during combat, which is a common and important feature in strategy games.
-
-## 核心要件
-
-### 1. 武装システムの基本構造
-
-**武器定義仕様**
-- 各ユニットは複数の武器を同時装備可能
-- 武器毎に独立した弾薬数と射程を持つ
-- 武器選択は攻撃時にプレイヤーが決定
-
-**対象ユニットと武装詳細**
-
-```typescript
-// 戦車 (Tank)
-weapons: [
-  { type: '37mm主砲', ammunition: 11, range: { min: 1, max: 1 } },
-  { type: '36MG機銃', ammunition: 5, range: { min: 1, max: 1 } }
-]
-
-// 装甲車 (ArmoredCar)  
-weapons: [
-  { type: '36MG機銃', ammunition: 5, range: { min: 1, max: 1 } }
-]
-
-// 対戦車ユニット (AntiTank)
-weapons: [
-  { type: '37mm主砲', ammunition: 11, range: { min: 1, max: 1 } },
-  { type: '9mmライフル', ammunition: 3, range: { min: 1, max: 1 } }
-]
-
-// 砲火ユニット (Artillery)
-weapons: [
-  { type: '105mm野砲', ammunition: 4, range: { min: 2, max: 5 } },
-  { type: '9mmライフル', ammunition: 3, range: { min: 1, max: 1 } }
-]
-```
-
-### 2. 戦闘システムの拡張
-
-**武器選択フロー（攻撃時）**
-1. 攻撃可能な敵ユニットを選択
-2. 射程内の武器一覧を表示
-3. プレイヤーが使用武器を選択
-4. 弾薬消費を伴う攻撃実行
-
-**反撃フェーズの武器選択ロジック**
-1. メイン武器（最初に定義された武器）に弾薬がある場合：メイン武器で反撃
-2. メイン武器に弾薬がない場合：弾薬がある武器を優先度順で選択
-3. 全ての武器に弾薬がない場合：反撃しない
-
-**弾薬管理システム**
-- 各武器の弾薬は攻撃毎に1発消費
-- 弾薬0の武器は使用不可
-- 弾薬補給システム（後の拡張要素）
-
-### 3. UI/UX設計要件
-
-**武器選択インターフェース**
-- 攻撃時にモーダル形式で武器選択画面を表示
-- 各武器の残弾数、射程、威力を明示
-- 使用不可武器（弾薬不足・射程外）はグレーアウト
-
-**情報表示の強化**
-- ユニット情報パネルに武装詳細を表示
-- 戦闘結果に使用武器名を含める
-- 弾薬残量の視覚的表現
-
-## 技術実装の考慮事項
-
-### データ構造の変更
-
-**Unitインターフェースの拡張**
-```typescript
-interface Weapon {
-  id: string;
-  name: string;
-  type: WeaponType;
-  ammunition: number;
-  maxAmmunition: number;
-  range: { min: number; max: number };
-  attack: number;
-  effectiveness: { [key in UnitClass]?: number };
-}
-
-interface Unit {
-  // 既存フィールド...
-  weapons: Weapon[];
-  // attack: number; // 削除予定
-}
-```
-
-**戦闘ロジックの変更点**
-- 単一攻撃力から武器別攻撃力へ移行
-- 射程判定の武器別実装
-- 弾薬消費処理の追加
-
-### React + TypeScript実装上の配慮
-
-**状態管理の複雑化**
-- 武器選択状態の管理
-- 弾薬変更の不変性保持
-- パフォーマンス最適化（useMemo, useCallback活用）
-
-**コンポーネント設計**
-- WeaponSelectorModal: 武器選択UI
-- WeaponInfoPanel: 武装情報表示
-- AmmoIndicator: 弾薬残量表示
-
-## 段階的実装計画
-
-### フェーズ1: 最小実装（MVP）
-**目標**: n武装システムの基盤構築と動作確認
-- Unitインターフェースの武器配列追加（n武装対応）
-- 戦車の2武器システム実装（将来的にn武器への拡張可能）
-- 簡素な武器選択UI
-- 反撃フェーズの武器選択ロジック実装
-
-**成功条件**:
-- 戦車が2種類の武器で攻撃可能
-- 反撃時の武器選択ロジックが正常動作
-- 弾薬消費が正常に動作
-- 既存の戦闘フローが破綻しない
-- n武装への拡張が容易な設計になっている
-
-### フェーズ2: 全ユニット対応
-**目標**: 全ユニットタイプの武装システム実装
-- 装甲車、対戦車、砲火ユニットの武装実装
-- 射程の異なる武器の動作確認
-- 武器効果の差別化実装
-
-**成功条件**:
-- 4種類全てのユニットが仕様通りの武装を装備
-- 武器毎の射程制限が正常動作
-- 弾薬0での武器使用不可制御が動作
-
-### フェーズ3: UI/UX完成
-**目標**: プレイヤビリティの向上
-- 直感的な武器選択インターフェース
-- 詳細な武装情報表示
-- 戦闘結果の詳細化
-
-**成功条件**:
-- 武器選択が3クリック以内で完了
-- 弾薬残量が一目で判別可能
-- 戦闘ログに武器名が表示される
-
-### フェーズ4: 戦術的深度の追加
-**目標**: 戦略ゲームとしての完成度向上
-- 武器毎の対ユニット効果実装
-- 地形との相互作用
-- AI の武器選択判断
-
-**成功条件**:
-- 武器選択が戦術的意味を持つ
-- プレイヤーが戦況に応じた武器選択を行う
-- ゲームプレイの戦略性が向上
-
-## 実装時の技術的制約
-
-### パフォーマンス考慮事項
-- 武器データの不変性維持によるメモリ使用量増加
-- 複雑化した戦闘計算のレンダリング負荷
-- 状態更新頻度の最適化必要性
-
-### 既存システムとの整合性
-- 現在の攻撃システムからの段階的移行
-- セーブデータの互換性維持
-- 既存UIコンポーネントとの統合
-
-### 拡張性の確保
-- **n武装システムへの発展**: 任意の数の武器を装備可能な設計
-- 将来的な武器追加への対応
-- 弾薬補給システムへの発展
-- 新規ユニット追加時の武装定義の容易性
-- モッドサポートの考慮
-
-## 開発者向け実装プロンプト
-
-```
-【実装タスク: ユニット武装システムの構築】
-
-あなたはReact + TypeScriptで開発されているヘックス戦略ゲームに、詳細な武装システムを実装してください。
-
-【背景】
-現在のゲームは単一の攻撃力パラメータを使用していますが、これを弾薬管理によるリソース戦略システムに置き換えます。このシステムは今後のユニット追加の基盤となる最優先実装事項です。
-
-【技術要件】
-1. 既存のUnit型にweapons配列を追加（n武装対応）
-2. 戦闘時の武器選択UIを実装
-3. 反撃フェーズの武器選択ロジック実装
-4. 弾薬消費ロジックを戦闘システムに統合
-5. 武器情報表示のUIコンポーネント作成
-
-【武装仕様】
-- 戦車: 37mm主砲(11発)、36MG機銃(5発)、射程1hex
-- 装甲車: 36MG機銃(15発)、射程1hex  
-- 対戦車: 37mm主砲(11発)、9mmライフル(3発)、射程1hex
-- 砲火: 105mm野砲(4発、射程2-5hex)、9mmライフル(10発、射程1hex)
-
-【実装順序】
-1. 型定義の拡張（Weapon, Unit interfaceの更新）
-2. units.tsでの武装データ定義
-3. 戦闘ロジックの武器対応化
-4. 武器選択モーダルコンポーネントの作成
-5. 情報パネルでの武装表示実装
-
-【制約条件】
-- 既存のゲームフローを破綻させない
-- TypeScriptの型安全性を維持
-- パフォーマンスを考慮した状態管理
-- 段階的にリリース可能な設計
-
-まず型定義の拡張から始めて、段階的に実装を進めてください。各段階で動作確認可能な状態を維持してください。
-```
-
-## 成功判定基準
-
-### 機能的要件の達成
-- [ ] 各ユニットが仕様通りの武装を装備
-- [ ] 武器毎の弾薬管理が正常動作
-- [ ] 射程制限が適切に機能
-- [ ] 武器選択UIが直感的に操作可能
-
-### 技術的品質の確保
-- [ ] TypeScript型安全性の維持
-- [ ] 既存機能の回帰テスト通過
-- [ ] レンダリングパフォーマンスの維持
-- [ ] コードの可読性と保守性
-
-### ユーザー体験の向上
-- [ ] 戦術的判断の選択肢増加
-- [ ] 操作の直感性とレスポンス性
-- [ ] 視覚的フィードバックの充実
-- [ ] ゲームプレイのリアリティ向上
-
-この要件書は、従来の単純な攻撃システムから、**弾薬管理によるリソース戦略システム**への発展を目指すものです。本システムは今後のユニット追加・拡張の基盤となる最優先実装事項であり、n武装システムへの発展を想定した設計で実装してください。
-
-実装チームはこの仕様に基づいて段階的開発を進め、各フェーズで動作確認を行いながら完成度を高めてください。
+## 補足情報
+
+### 対象ファイル一覧
+- `/Commander/src/hooks/useGameLogic.ts` （メイン実装）
+- `/Commander/src/types/index.ts` （型定義拡張）
+- `/Commander/public/data/maps/*.json` （マップデータ拡張）
+- `/Commander/src/screens/ResultScreen.tsx` （結果表示改善）
+
+### 設計原則
+1. **後方互換性**: 既存マップ・セーブデータとの互換性維持
+2. **拡張性**: 将来的な勝利条件追加を考慮した設計
+3. **可読性**: コードの理解しやすさと保守性重視
+4. **テスト容易性**: 各機能が独立してテスト可能
+
+この要求仕様書に基づいて、段階的な実装を行うことで、安全かつ効果的に勝利条件システムを拡張できます。

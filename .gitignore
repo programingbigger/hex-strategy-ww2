@@ -3,6 +3,7 @@ node_modules/
 ref_folders/
 
 HexStrategyDocs_ByObsidian/.obsidian/*.json
+.serena/*
 
 # Screenshots and images
 *.png

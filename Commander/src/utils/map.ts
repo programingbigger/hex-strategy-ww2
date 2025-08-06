@@ -215,3 +215,162 @@ export function findPath(
 
   return null;
 }
+
+/**
+ * Find all capitals belonging to a specific team on the board
+ * @param board The game board layout
+ * @param team The team whose capitals to find
+ * @returns Array of capital coordinates
+ */
+export function findCapitalsForTeam(board: BoardLayout, team: Team): Coordinate[] {
+  const capitals: Coordinate[] = [];
+  
+  for (const [, tile] of board.entries()) {
+    if (tile.terrain === 'Capital' && tile.owner === team) {
+      capitals.push({ x: tile.x, y: tile.y });
+    }
+  }
+  
+  return capitals;
+}
+
+/**
+ * Calculate deployable tiles within 5-hex radius from all team capitals
+ * @param board The game board layout
+ * @param team The team whose capitals to use as deployment centers
+ * @param radius The deployment radius (default: 5)
+ * @returns Array of deployable coordinates
+ */
+export function calculateDeployableTilesFromCapitals(
+  board: BoardLayout, 
+  team: Team, 
+  radius: number = 5
+): Coordinate[] {
+  const capitals = findCapitalsForTeam(board, team);
+  const deployableTiles: Set<string> = new Set();
+  
+  // If no capitals found, return empty array
+  if (capitals.length === 0) {
+    console.warn(`No capitals found for team ${team}`);
+    return [];
+  }
+  
+  // For each capital, calculate tiles within radius
+  capitals.forEach(capital => {
+    for (let q = -radius; q <= radius; q++) {
+      for (let r = Math.max(-radius, -q - radius); r <= Math.min(radius, -q + radius); r++) {
+        const x = capital.x + q;
+        const y = capital.y + r;
+        const coordinate: Coordinate = { x, y };
+        
+        // Check if tile exists in board
+        const tileKey = coordToString(coordinate);
+        if (board.has(tileKey)) {
+          deployableTiles.add(tileKey);
+        }
+      }
+    }
+  });
+  
+  // Convert set back to coordinate array
+  return Array.from(deployableTiles).map(stringToCoord);
+}
+
+/**
+ * Check if a coordinate is deployable for a specific team
+ * @param board The game board layout
+ * @param team The team to check deployment for
+ * @param coord The coordinate to check
+ * @param radius The deployment radius (default: 5)
+ * @returns True if coordinate is deployable
+ */
+export function isCoordinateDeployable(
+  board: BoardLayout, 
+  team: Team, 
+  coord: Coordinate, 
+  radius: number = 5
+): boolean {
+  const capitals = findCapitalsForTeam(board, team);
+  
+  // Check if coord is within radius of any capital
+  return capitals.some(capital => getDistance(capital, coord) <= radius);
+}
+
+/**
+ * Count units within radius of a specific coordinate
+ * @param coord The center coordinate
+ * @param units Array of all units
+ * @param radius The radius to check within
+ * @param teamFilter Optional team filter (if provided, only count units from this team)
+ * @returns Number of units within radius
+ */
+export function countUnitsWithinRadius(
+  coord: Coordinate, 
+  units: Unit[], 
+  radius: number, 
+  teamFilter?: Team
+): number {
+  return units.filter(unit => {
+    const distance = getDistance(coord, { x: unit.x, y: unit.y });
+    const withinRadius = distance <= radius;
+    const teamMatches = !teamFilter || unit.team === teamFilter;
+    return withinRadius && teamMatches;
+  }).length;
+}
+
+/**
+ * Check if a capital should be moved based on enemy unit proximity
+ * Future feature: Move capital if 5+ enemy units are within 5 hexes
+ * @param capital The capital coordinate
+ * @param units Array of all units
+ * @param capitalTeam The team that owns the capital
+ * @param threatRadius The radius to check for threats (default: 5)
+ * @param threatThreshold Minimum number of enemy units to trigger move (default: 5)
+ * @returns True if capital should be moved
+ */
+export function shouldMoveCapital(
+  capital: Coordinate,
+  units: Unit[],
+  capitalTeam: Team,
+  threatRadius: number = 5,
+  threatThreshold: number = 5
+): boolean {
+  const enemyTeam = capitalTeam === 'Blue' ? 'Red' : 'Blue';
+  const enemyUnitsNearby = countUnitsWithinRadius(capital, units, threatRadius, enemyTeam);
+  const friendlyUnitsNearby = countUnitsWithinRadius(capital, units, threatRadius, capitalTeam);
+  
+  // Consider moving if enemies outnumber friendly units significantly
+  return enemyUnitsNearby >= threatThreshold && enemyUnitsNearby > friendlyUnitsNearby;
+}
+
+/**
+ * Find potential new capital locations
+ * Future feature: Suggest alternative capital positions
+ * @param board The game board layout
+ * @param currentCapital Current capital position
+ * @param team The team looking for new capital location
+ * @param minDistance Minimum distance from current capital
+ * @returns Array of potential new capital coordinates
+ */
+export function findPotentialCapitalLocations(
+  board: BoardLayout,
+  currentCapital: Coordinate,
+  team: Team,
+  minDistance: number = 3
+): Coordinate[] {
+  const potentialLocations: Coordinate[] = [];
+  
+  // Look for City or other capturable terrains that could become capitals
+  for (const [, tile] of board.entries()) {
+    if (tile.terrain === 'City' && (!tile.owner || tile.owner === team)) {
+      const coord = { x: tile.x, y: tile.y };
+      const distance = getDistance(currentCapital, coord);
+      
+      if (distance >= minDistance) {
+        potentialLocations.push(coord);
+      }
+    }
+  }
+  
+  return potentialLocations;
+}

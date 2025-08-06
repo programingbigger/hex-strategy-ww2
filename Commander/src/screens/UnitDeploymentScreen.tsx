@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState, Coordinate } from '../types';
 import GameBoard from '../components/game/GameBoard';
-import { coordToString } from '../utils/map';
+import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable } from '../utils/map';
 
 interface UnitDeploymentScreenProps {
   gameState: GameState;
@@ -25,29 +25,12 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
 
   const selectedUnits = gameState.battlePrep?.selectedUnits || [];
-  const deploymentCenter = gameState.selectedMap?.deploymentCenter || { q: -4, r: -2 };
-
-  // Calculate deployable tiles within 5-hex radius
-  const getDeployableTiles = (): Coordinate[] => {
-    const deployableTiles: Coordinate[] = [];
-    const radius = 5;
-    
-    for (let q = -radius; q <= radius; q++) {
-      for (let r = Math.max(-radius, -q - radius); r <= Math.min(radius, -q + radius); r++) {
-        const x = deploymentCenter.q + q;
-        const y = deploymentCenter.r + r;
-        
-        // Check if tile exists in board
-        if (gameState.board.has(coordToString({ x, y }))) {
-          deployableTiles.push({ x, y });
-        }
-      }
-    }
-    
-    return deployableTiles;
-  };
-
-  const deployableTiles = getDeployableTiles();
+  
+  // Get current team for deployment (assuming Blue team for now - can be made dynamic)
+  const deploymentTeam = gameState.activeTeam || 'Blue';
+  
+  // Calculate deployable tiles from team capitals
+  const deployableTiles = calculateDeployableTilesFromCapitals(gameState.board, deploymentTeam);
 
   const handleUnitListClick = (unit: Unit) => {
     if (selectedUnitForDeployment?.id === unit.id) {
@@ -76,9 +59,16 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
 
   const handleHexClick = (coord: Coordinate) => {
     if (selectedUnitForDeployment) {
+      // Check if coordinate is within deployable range from capitals
+      if (!isCoordinateDeployable(gameState.board, deploymentTeam, coord)) {
+        console.warn(`Cannot deploy unit at (${coord.x}, ${coord.y}): Not within capital deployment range`);
+        return; // Not within capital deployment range
+      }
+      
       // Check if unit can be deployed on this terrain
       if (!canDeployUnitOnTerrain(selectedUnitForDeployment, coord)) {
-        return; // Cannot deploy here
+        console.warn(`Cannot deploy unit at (${coord.x}, ${coord.y}): Terrain restriction`);
+        return; // Cannot deploy here due to terrain
       }
       
       // Deploy the selected unit
