@@ -1,197 +1,230 @@
-# 勝利条件システム拡張要求仕様書
+# ユニット補給システム HP強制変更問題 - 要件仕様書
 
 ## 1. プロジェクト概要
-**プロジェクト名**: hex-strategy-ww2 勝利条件システム拡張
+**プロジェクト名**: hex-strategy-ww2 ユニット補給システム修正
 **対象システム**: React + TypeScript ヘックス戦略ゲーム
 **作成日**: 2025-08-06
 **要求仕様バージョン**: v1.0
 
 ## 2. Purpose Statement（目的）
-現在の勝利条件システム（敵軍全滅、全都市占領）を拡張し、多様な戦略的勝利条件を追加することで、ゲームプレイの戦略性と再現性を向上させる。
+ユニットが都市に置かれた際にHPが強制的に10に設定される不具合を修正し、正常な補給システムの動作を実現する。
 
 ## 3. Context and Background（背景）
 ### 現在の実装状況
-- **既存勝利条件**: 
-  - 敵軍全滅（優先度：高）
-  - 全都市占領（優先度：低）
-- **実装場所**: `/Commander/src/hooks/useGameLogic.ts` の `checkWinCondition` 関数（271-299行）
-- **マップデータ形式**: JSON形式でCapitalタイプの都市が存在（例：test_map_1.jsonに2つの首都）
-- **チーム定義**: Blue軍、Red軍
+- **補給システム実装場所**: `/Commander/src/hooks/useGameLogic.ts` の `handleEndTurn` 関数（198-246行）
+- **補給パラメータ**: 
+  - HP回復量：`UNIT_HEAL_HP = 2` (`/Commander/src/config/constants.ts`)
+  - 燃料補給：`UNIT_HEAL_FUEL_FULL = true`
+- **対象地形**: City、Capital、Airport、Port（占領可能地形）
+- **補給条件**: ユニットが自チーム所有の都市系地形にいる場合、ターン開始時に補給
 
-### 現在の問題点
-1. 勝利条件が限定的で戦略バリエーションが少ない
-2. ターン制限による時間的圧力がない
-3. 首都という重要拠点の戦略的価値が十分活用されていない
-4. 攻守の役割分担が明確でない
+### 報告された問題
+**問題の症状**: 「ユニットが都市に置かれたときに強制的にユニットのHPが10になってしまう」
+
+### 想定される原因
+1. **都市HPとユニットHPの混同**: 都市のHP（maxHp: 10）がユニットのHPに誤って適用
+2. **初期化処理の不具合**: ユニット作成時やマップ読み込み時のHP設定エラー
+3. **補給処理の計算エラー**: ターン終了時の補給計算での意図しない値設定
+4. **戦闘システムの副作用**: 戦闘後の処理でのHP値破損
 
 ## 4. Core Requirements（コア要求事項）
 
-### 4.1 新規勝利条件の実装
-#### 4.1.1 首都占領勝利
-- **条件**: 敵の首都（Capitalタイプ地形）をすべて占領
+### 4.1 問題の詳細分析と特定
+#### 4.1.1 HP強制変更問題の根本原因特定
+- **調査対象**: ユニットが都市配置時にHP=10になる具体的なコードパス
 - **詳細仕様**:
-  - マップ上の首都が1つの場合：その首都を占領したら即座にゲーム勝利
-  - マップ上の首都が複数の場合：すべての敵首都を占領する必要
-  - 首都占領は`Infantry`ユニットによる占領（capture）行動で実現
-  - 首都のHP=0になった時点で占領完了とする
+  - ユニット配置・移動時のHP値追跡ログ実装
+  - 都市属性（hp: 10, maxHp: 10）とユニット属性の分離確認
+  - 補給処理におけるHP計算ロジックの検証
+  - 戦闘システムとの相互作用の調査
 
-#### 4.1.2 ターン制限勝利
-- **条件**: 設定されたターン数経過後の判定
+#### 4.1.2 正常な補給システムの仕様確認
+- **期待される動作**: 都市配置時はHP変更なし、ターン開始時に+2回復
 - **詳細仕様**:
-  - 攻め側（デフォルト：Blue軍）：制限ターン到達でゲームオーバー
-  - 守り側（デフォルト：Red軍）：制限ターン到達で勝利
-  - ターン制限値はマップごとに設定可能
-  - ターン制限は `gameStatus.turnLimit` として JSON に追加
+  - 現在HP維持：都市配置・移動時は現在HPを保持
+  - 補給回復：ターン開始時に`UNIT_HEAL_HP`（2）だけ回復
+  - 上限制御：回復後HPは`unit.maxHp`を超えない
+  - 燃料補給：`UNIT_HEAL_FUEL_FULL`に従い燃料を最大値まで回復
 
-### 4.2 勝利条件優先順位の変更
-**新しい優先順位**:
-1. **敵軍全滅** (最高優先度)
-2. **首都占領** (高優先度)
-3. **全都市占領** (中優先度)
-4. **ターン制限** (最低優先度、他の条件が満たされない場合のみ)
+### 4.2 修正実装要件
+#### 4.2.1 HP管理システムの安全化
+- **HP変更の追跡機能**: すべてのHP変更操作にログとバリデーション追加
+- **型安全性の強化**: ユニットHPと都市HPの明確な分離
+- **不正値の検出**: HP値の異常変更を検出・防止する仕組み
 
-### 4.3 攻守役割システム
-- **設定方法**: マップ/シナリオごとに可変設定
-- **デフォルト設定**: Blue軍=攻め側、Red軍=守り側
-- **設定場所**: `gameStatus.attackingTeam` として JSON に追加
+#### 4.2.2 補給処理の修正
+- **計算ロジックの見直し**: `Math.min(u.maxHp, u.hp + UNIT_HEAL_HP)`の安全実装
+- **エラーハンドリング**: 補給処理での例外的な値変更を防ぐ
+- **テストケース**: 各ユニットタイプでの補給動作検証
+
+### 4.3 デバッグ・診断システム
+- **HP変更ログ**: ユニットHP変更時の詳細ログ出力
+- **システム診断**: 問題発生時の状況再現機能
+- **バリデーション**: HP値の妥当性チェック機能
 
 ## 5. Technical Specifications（技術仕様）
 
-### 5.1 データ構造変更
+### 5.1 HP管理システムの修正
 
-#### 5.1.1 MapData型拡張
+#### 5.1.1 HP変更追跡システム
 ```typescript
-export interface GameStatus {
-  gameState: 'playing' | 'gameOver';
-  turn: number;
-  activeTeam: Team;
-  winner: Team | null;
-  weather: WeatherType;
-  weatherDuration: number;
-  // 新規追加
-  turnLimit?: number;           // ターン制限（未設定の場合は無制限）
-  attackingTeam: Team;          // 攻め側チーム
-  defendingTeam: Team;          // 守り側チーム
+// HP変更のログとバリデーション
+interface HPChangeEvent {
+  unitId: string;
+  unitType: UnitType;
+  oldHp: number;
+  newHp: number;
+  maxHp: number;
+  cause: 'combat' | 'healing' | 'initialization' | 'unknown';
+  timestamp: number;
+  stackTrace?: string;
 }
-```
 
-#### 5.1.2 勝利条件タイプ定義
-```typescript
-export type VictoryCondition = 
-  | 'enemy_elimination'    // 敵軍全滅
-  | 'capital_capture'      // 首都占領
-  | 'total_domination'     // 全都市占領
-  | 'turn_limit';          // ターン制限
-
-export interface VictoryResult {
-  condition: VictoryCondition;
-  winner: Team;
-  turn: number;
-  details?: string;        // 勝利条件詳細
-}
-```
-
-### 5.2 機能実装
-
-#### 5.2.1 checkWinCondition関数の拡張
-```typescript
-const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
-  const blueUnits = currentUnits.filter(u => u.team === 'Blue');
-  const redUnits = currentUnits.filter(u => u.team === 'Red');
-
-  // 1. 敵軍全滅チェック（最高優先度）
-  if (redUnits.length === 0) {
-    setGameState('gameOver');
-    setWinner('Blue');
-    return;
+// HP変更の安全な実行
+const safeUpdateUnitHP = (unit: Unit, newHp: number, cause: HPChangeCause): Unit => {
+  if (newHp < 0 || newHp > unit.maxHp) {
+    console.error(`Invalid HP value: ${newHp} for unit ${unit.id}`);
+    return unit;
   }
-  if (blueUnits.length === 0) {
-    setGameState('gameOver');
-    setWinner('Red');
-    return;
-  }
-
-  // 2. 首都占領チェック（高優先度）
-  const capitals = Array.from(currentBoard.values()).filter(t => t.terrain === 'Capital');
-  if (capitals.length > 0) {
-    const blueCapitals = capitals.filter(c => c.owner === 'Blue');
-    const redCapitals = capitals.filter(c => c.owner === 'Red');
-    
-    if (blueCapitals.length === capitals.length) {
-      setGameState('gameOver');
-      setWinner('Blue');
-      return;
-    } else if (redCapitals.length === capitals.length) {
-      setGameState('gameOver');
-      setWinner('Red');
-      return;
-    }
-  }
-
-  // 3. 全都市占領チェック（中優先度）
-  const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
-  const blueCities = cities.filter(c => c.owner === 'Blue').length;
-  const redCities = cities.filter(c => c.owner === 'Red').length;
-
-  if (cities.length > 0) {
-    if (blueCities === cities.length) {
-      setGameState('gameOver');
-      setWinner('Blue');
-    } else if (redCities === cities.length) {
-      setGameState('gameOver');
-      setWinner('Red');
-    }
-  }
-
-  // 4. ターン制限チェック（最低優先度）
-  // handleEndTurn関数内で実装
-}, []);
-```
-
-#### 5.2.2 ターン制限チェック機能
-```typescript
-// handleEndTurn関数内に追加
-if (nextTeam === 'Blue') {
-  const newTurn = turn + 1;
-  setTurn(newTurn);
   
-  // ターン制限チェック
-  if (turnLimit && newTurn > turnLimit) {
-    setGameState('gameOver');
-    setWinner(defendingTeam);
-    return;
+  logHPChange({
+    unitId: unit.id,
+    unitType: unit.type,
+    oldHp: unit.hp,
+    newHp,
+    maxHp: unit.maxHp,
+    cause,
+    timestamp: Date.now()
+  });
+  
+  return { ...unit, hp: newHp };
+};
+```
+
+#### 5.1.2 補給処理の安全実装
+```typescript
+// 安全な補給処理
+const applySafeHealing = (unit: Unit, healAmount: number): Unit => {
+  const healedHp = Math.min(unit.maxHp, unit.hp + healAmount);
+  
+  // 異常値チェック
+  if (healedHp < unit.hp) {
+    console.error(`Healing calculation error for unit ${unit.id}`);
+    return unit;
   }
-}
-```
-
-#### 5.2.3 首都識別関数の拡張
-```typescript
-const isCapitalTerrain = (terrain: string): boolean => {
-  return terrain === 'Capital';
-};
-
-const getCapitals = (board: BoardLayout): Tile[] => {
-  return Array.from(board.values()).filter(t => isCapitalTerrain(t.terrain));
+  
+  return safeUpdateUnitHP(unit, healedHp, 'healing');
 };
 ```
 
-### 5.3 UI/UX変更
+### 5.2 修正対象の具体的実装
 
-#### 5.3.1 ゲーム情報表示の拡張
-- ターン制限がある場合、残りターン数を表示
-- 現在の攻守役割を表示
-- 勝利条件の進捗状況を表示
-
-#### 5.3.2 ResultScreen改善
+#### 5.2.1 handleEndTurn関数の補給処理修正
 ```typescript
-interface VictoryDetails {
-  condition: VictoryCondition;
-  winner: Team;
-  turn: number;
-  turnLimit?: number;
-  details: string;
-}
+// 修正前の問題のあるコード（推測）
+const unitsWithHealing = unitsWithReset.map(u => {
+  if (u.team === nextTeam) {
+    const unitTile = boardLayout.get(coordToString(u));
+    if (unitTile && isCapturableTerrain(unitTile.terrain) && unitTile.owner === u.team) {
+      // 問題：ここで意図しないHP設定が発生している可能性
+      return applySafeHealing(u, UNIT_HEAL_HP);
+    }
+  }
+  return u;
+});
 ```
+
+#### 5.2.2 ユニット作成・読み込み処理の修正
+```typescript
+// createUnit関数の安全化
+const createUnit = (id: string, type: UnitType, team: Team, x: number = 0, y: number = 0): Unit => {
+  try {
+    const unitStats = getUnitStatsFromJSON(type, team);
+    const weapons = getUnitWeaponsFromJSON(type, team);
+    
+    const unit: Unit = {
+      id, type, team, faction: team, branch: '陸',
+      category: getUnitCategory(type), x, y,
+      hp: unitStats.maxHp,  // 初期HPは必ずmaxHpに設定
+      maxHp: unitStats.maxHp,
+      // 他のプロパティ...
+    };
+    
+    // HP値の妥当性チェック
+    if (unit.hp <= 0 || unit.hp > unit.maxHp) {
+      console.error(`Invalid HP in createUnit: ${unit.hp}/${unit.maxHp}`);
+    }
+    
+    return unit;
+  } catch (error) {
+    console.error('Failed to create unit from JSON:', error);
+    return createUnitFallback(id, type, team, x, y);
+  }
+};
+```
+
+#### 5.2.3 loadMapFromJSON関数の安全化
+```typescript
+// マップ読み込み時のHP値検証
+const loadMapFromJSON = (mapData: MapData): { board: BoardLayout; units: Unit[] } => {
+  const board: BoardLayout = new Map();
+  
+  // タイル読み込み（都市HPとユニットHPの分離確認）
+  mapData.board.tiles.forEach(tile => {
+    board.set(coordToString(tile), tile);
+  });
+  
+  // ユニット読み込み時のHP値検証
+  const units: Unit[] = mapData.units.map(unitData => {
+    const baseUnit = createUnit(unitData.id, unitData.type, unitData.team, unitData.x, unitData.y);
+    
+    const loadedUnit = {
+      ...baseUnit,
+      ...unitData,
+      weapons: baseUnit.weapons // faction-specific weapons保持
+    };
+    
+    // HP値の妥当性チェック
+    if (loadedUnit.hp <= 0 || loadedUnit.hp > loadedUnit.maxHp) {
+      console.warn(`Invalid HP in loaded unit ${loadedUnit.id}: ${loadedUnit.hp}/${loadedUnit.maxHp}`);
+      loadedUnit.hp = Math.min(Math.max(1, loadedUnit.hp), loadedUnit.maxHp);
+    }
+    
+    return loadedUnit;
+  });
+  
+  return { board, units };
+};
+```
+
+### 5.3 デバッグ・診断機能
+
+#### 5.3.1 HP変更監視システム
+```typescript
+// グローバルなHP変更監視
+const HPChangeLogger = {
+  changes: [] as HPChangeEvent[],
+  
+  log: (event: HPChangeEvent) => {
+    console.log(`HP Change: ${event.unitType}(${event.unitId}) ${event.oldHp}->${event.newHp} [${event.cause}]`);
+    HPChangeLogger.changes.push(event);
+  },
+  
+  getChangesFor: (unitId: string) => {
+    return HPChangeLogger.changes.filter(c => c.unitId === unitId);
+  },
+  
+  detectSuspiciousChange: (event: HPChangeEvent): boolean => {
+    // HP=10への強制変更を検出
+    return event.newHp === 10 && event.oldHp !== 10 && event.cause !== 'initialization';
+  }
+};
+```
+
+#### 5.3.2 デバッグ用UI表示
+- 開発モードでの詳細HP変更ログ表示
+- ユニット選択時のHP変更履歴表示
+- 補給処理の詳細ステップ表示
 
 ## 6. Implementation Priority（実装優先度）
 
