@@ -5,7 +5,11 @@
     "activeTeam": "Blue",
     "winner": null,
     "weather": "Clear",
-    "weatherDuration": 0
+    "weatherDuration": 0,
+    "turnLimit": 20,
+    "attackingTeam": "Blue",
+    "defendingTeam": "Red",
+    "enabledVictoryConditions": ["unit_elimination", "capital_capture", "city_capture", "turn_limit"]
   },
   "board": {
     "tiles": [

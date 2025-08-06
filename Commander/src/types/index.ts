@@ -149,6 +149,21 @@ export interface UnitStats {
   isArtillery?: boolean;
 }
 
+// Victory condition types
+export type VictoryCondition = 
+  | 'unit_elimination'    // All enemy units destroyed
+  | 'capital_capture'     // All enemy capitals captured
+  | 'city_capture'        // All cities captured
+  | 'turn_limit'          // Turn limit reached
+  | 'custom';             // Custom scenario-specific conditions
+
+export interface VictoryResult {
+  condition: VictoryCondition;
+  winner: Team;
+  description: string;
+  turnsElapsed: number;
+}
+
 export interface MapData {
   gameStatus: {
     gameState: string;
@@ -157,6 +172,11 @@ export interface MapData {
     winner: Team | null;
     weather: WeatherType;
     weatherDuration: number;
+    // New victory system fields
+    turnLimit?: number;           // Maximum turns (undefined = no limit)
+    attackingTeam?: Team;         // Which team is attacking (loses on timeout)
+    defendingTeam?: Team;         // Which team is defending (wins on timeout)
+    enabledVictoryConditions?: VictoryCondition[]; // Active victory conditions
   };
   board: {
     tiles: Tile[];

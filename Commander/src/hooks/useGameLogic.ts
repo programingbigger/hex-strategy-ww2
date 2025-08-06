@@ -11,7 +11,10 @@ import {
   Weapon,
   Faction,
   MilitaryBranch,
-  UnitCategory
+  UnitCategory,
+  VictoryCondition,
+  VictoryResult,
+  Tile
 } from '../types';
 import {
   loadMapFromJSON,
@@ -43,6 +46,18 @@ import { armyManager } from '../data/units';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
 };
+// 首都識別関数の拡張
+const isCapitalTerrain = (terrain: string): boolean => {
+  return terrain === 'Capital';
+};
+
+const getCapitals = (board: BoardLayout): Tile[] => {
+  return Array.from(board.values()).filter(t => isCapitalTerrain(t.terrain));
+};
+
+const getCapitalsForTeam = (board: BoardLayout, team: Team): Tile[] => {
+  return getCapitals(board).filter(c => c.owner === team);
+};
 
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
@@ -54,6 +69,13 @@ export const useGameLogic = () => {
   const [hoveredHex, setHoveredHex] = useState<Coordinate | null>(null);
   const [battleReport, setBattleReport] = useState<BattleReport | null>(null);
   const [winner, setWinner] = useState<Team | null>(null);
+  const [victoryResult, setVictoryResult] = useState<VictoryResult | null>(null);
+  const [turnLimit, setTurnLimit] = useState<number | undefined>(undefined);
+  const [attackingTeam, setAttackingTeam] = useState<Team>('Blue');
+  const [defendingTeam, setDefendingTeam] = useState<Team>('Red');
+  const [enabledVictoryConditions, setEnabledVictoryConditions] = useState<VictoryCondition[]>([
+    'unit_elimination', 'capital_capture', 'city_capture'
+  ]);
   const [weather, setWeather] = useState<WeatherType>('Clear');
   const [weatherDuration, setWeatherDuration] = useState(0);
   const [history, setHistory] = useState<GameStateSnapshot[]>([]);
@@ -73,8 +95,18 @@ export const useGameLogic = () => {
     setWinner(mapData.gameStatus.winner);
     setWeather(mapData.gameStatus.weather);
     setWeatherDuration(mapData.gameStatus.weatherDuration);
+    
+    // Load new victory system settings
+    setTurnLimit(mapData.gameStatus.turnLimit);
+    setAttackingTeam(mapData.gameStatus.attackingTeam || 'Blue');
+    setDefendingTeam(mapData.gameStatus.defendingTeam || 'Red');
+    setEnabledVictoryConditions(mapData.gameStatus.enabledVictoryConditions || [
+      'unit_elimination', 'capital_capture', 'city_capture'
+    ]);
+    
     setSelectedUnitId(null);
     setBattleReport(null);
+    setVictoryResult(null);
     setHistory([]);
   }, []);
 
@@ -227,7 +259,24 @@ export const useGameLogic = () => {
     });
 
     if (nextTeam === 'Blue') {
-      setTurn(t => t + 1);
+      const newTurn = turn + 1;
+      setTurn(newTurn);
+      
+      // ターン制限チェック（最低優先度）
+      if (turnLimit && newTurn > turnLimit) {
+        setGameState('gameOver');
+        // 攻め側が制限ターンで負け、守り側が勝利
+        const winner = defendingTeam || 'Red'; // デフォルト：Red軍が守り側
+        setWinner(winner);
+        setVictoryResult({
+          condition: 'turn_limit',
+          winner: winner,
+          description: `Turn limit reached (${turnLimit} turns). Defending team wins.`,
+          turnsElapsed: newTurn
+        });
+        return;
+      }
+      
       // Weather update logic
       const weathers: WeatherType[] = ['Clear', 'Rain', 'HeavyRain'];
       const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
@@ -266,23 +315,69 @@ export const useGameLogic = () => {
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(unitsWithHealing, newBoardLayout);
-  }, [activeTeam, units, weather, weatherDuration, boardLayout]);
+  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam]);
 
   const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
     const blueUnits = currentUnits.filter(u => u.team === 'Blue');
     const redUnits = currentUnits.filter(u => u.team === 'Red');
 
+    // 1. 敵軍全滅チェック（最高優先度）
     if (redUnits.length === 0) {
       setGameState('gameOver');
       setWinner('Blue');
+      setVictoryResult({
+        condition: 'unit_elimination',
+        winner: 'Blue',
+        description: 'All Red units eliminated',
+        turnsElapsed: turn
+      });
       return;
     }
     if (blueUnits.length === 0) {
       setGameState('gameOver');
       setWinner('Red');
+      setVictoryResult({
+        condition: 'unit_elimination',
+        winner: 'Red',
+        description: 'All Blue units eliminated',
+        turnsElapsed: turn
+      });
       return;
     }
 
+    // 2. 首都占領チェック（高優先度）
+    const capitals = Array.from(currentBoard.values()).filter(t => t.terrain === 'Capital');
+    if (capitals.length > 0) {
+      const blueCapitals = capitals.filter(c => c.owner === 'Blue');
+      const redCapitals = capitals.filter(c => c.owner === 'Red');
+      
+      // すべての首都をBlueが占領
+      if (blueCapitals.length === capitals.length && capitals.length > 0) {
+        setGameState('gameOver');
+        setWinner('Blue');
+        setVictoryResult({
+          condition: 'capital_capture',
+          winner: 'Blue',
+          description: `All ${capitals.length} capital(s) captured`,
+          turnsElapsed: turn
+        });
+        return;
+      } 
+      // すべての首都をRedが占領
+      else if (redCapitals.length === capitals.length && capitals.length > 0) {
+        setGameState('gameOver');
+        setWinner('Red');
+        setVictoryResult({
+          condition: 'capital_capture',
+          winner: 'Red',
+          description: `All ${capitals.length} capital(s) captured`,
+          turnsElapsed: turn
+        });
+        return;
+      }
+    }
+
+    // 3. 全都市占領チェック（中優先度）
     const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
     const blueCities = cities.filter(c => c.owner === 'Blue').length;
     const redCities = cities.filter(c => c.owner === 'Red').length;
@@ -291,12 +386,26 @@ export const useGameLogic = () => {
       if (blueCities === cities.length) {
         setGameState('gameOver');
         setWinner('Blue');
+        setVictoryResult({
+          condition: 'city_capture',
+          winner: 'Blue',
+          description: `All ${cities.length} capturable terrain(s) occupied`,
+          turnsElapsed: turn
+        });
       } else if (redCities === cities.length) {
         setGameState('gameOver');
         setWinner('Red');
+        setVictoryResult({
+          condition: 'city_capture',
+          winner: 'Red',
+          description: `All ${cities.length} capturable terrain(s) occupied`,
+          turnsElapsed: turn
+        });
       }
     }
-  }, []);
+
+    // 4. ターン制限チェックは handleEndTurn 関数内で実装
+  }, [turn, setGameState, setWinner, setVictoryResult]);;
 
   const handleAttack = useCallback((attacker: Unit, defender: Unit) => {
     const attackerTile = boardLayout.get(coordToString(attacker));
@@ -822,5 +931,15 @@ export const useGameLogic = () => {
     getCategoriesFor,
     getCommandStructure,
     calculateCommandBonus,
+    
+    // Victory system exports
+    turnLimit,
+    attackingTeam,
+    defendingTeam,
+    enabledVictoryConditions,
+    victoryResult,
+    isCapitalTerrain,
+    getCapitals,
+    getCapitalsForTeam,
   };
 };
