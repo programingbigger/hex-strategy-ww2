@@ -38,18 +38,44 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
     board.set(coordToString(tile), tile);
   });
   
-  // Load units with full stats and weapons
+  // Load units with HP corruption prevention
   const units: Unit[] = mapData.units.map(unitData => {
     // Use createUnit to get properly initialized unit with faction-specific weapons
     const baseUnit = createUnit(unitData.id, unitData.type, unitData.team, unitData.x, unitData.y);
     
-    // Override with any additional properties from the map data
-    return {
+    // Safely merge unit data while preserving ACTUAL unit state
+    const loadedUnit = {
       ...baseUnit,
       ...unitData,
-      // Preserve the weapons array from createUnit (faction-specific)
-      weapons: baseUnit.weapons
+      // CRITICAL FIX: Preserve ACTUAL HP, fuel, and ammunition from unitData
+      hp: unitData.hp !== undefined ? unitData.hp : baseUnit.hp,
+      maxHp: baseUnit.maxHp, // Keep calculated maxHp from createUnit
+      fuel: unitData.fuel !== undefined ? unitData.fuel : baseUnit.fuel,
+      // Preserve weapons but keep actual ammunition state
+      weapons: unitData.weapons || baseUnit.weapons
     };
+    
+    // HP validation - only fix truly invalid values
+    if (loadedUnit.hp <= 0) {
+      console.warn(`Invalid HP in loaded unit ${loadedUnit.id}: ${loadedUnit.hp}/${loadedUnit.maxHp}, correcting to 1`);
+      loadedUnit.hp = 1; // Set to 1, not maxHp, to preserve damaged state
+    } else if (loadedUnit.hp > loadedUnit.maxHp) {
+      console.warn(`HP exceeds max in loaded unit ${loadedUnit.id}: ${loadedUnit.hp}/${loadedUnit.maxHp}, correcting to maxHp`);
+      loadedUnit.hp = loadedUnit.maxHp;
+    }
+    
+    // Debug log for HP corruption investigation
+    if (unitData.hp && unitData.hp !== baseUnit.hp) {
+      console.log(`🔧 HP Correction for ${unitData.type} (${unitData.id}):`, {
+        jsonHp: unitData.hp,
+        calculatedHp: baseUnit.hp,
+        finalHp: loadedUnit.hp,
+        maxHp: loadedUnit.maxHp,
+        team: unitData.team
+      });
+    }
+    
+    return loadedUnit;
   });
   
   return { board, units };

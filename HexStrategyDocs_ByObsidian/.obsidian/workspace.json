@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
+                "file": "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/terrain-types.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "terrain-types"
             }
           }
         ]
@@ -170,18 +170,19 @@
   },
   "active": "85db564fb9d1c224",
   "lastOpenFiles": [
+    "HexStrategyDocs_ByObsidian/docs/Commander/UI改善計画.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/map-rendering-system.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/useGameLogic.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/UnitDeploymentScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/画像・動画素材管理システム.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/terrain-types.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/WeaponInfoPanel.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md.backup",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/WeaponSelectorModal.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/TitleScreen.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/UI改善計画.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/開発計画・実装リスト.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/map-rendering-system.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/GameBoard.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Hexagon.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/InformationPanel.md",
@@ -190,7 +191,6 @@
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md.tmp.91829.1752879081699",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration",

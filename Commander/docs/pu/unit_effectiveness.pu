@@ -1,0 +1,18 @@
+@startuml
+
+title Unit Effectiveness
+
+object Infantry
+object Tank
+object Artillery
+object "Armored Car" as AC
+
+Tank ..> Infantry : Strong
+Artillery ..> Tank : Strong
+Artillery ..> Infantry : Strong
+AC ..> Infantry : Strong
+
+Infantry ..> Tank : Weak
+AC ..> Artillery : Weak
+
+@enduml

@@ -14,7 +14,8 @@ import {
   UnitCategory,
   VictoryCondition,
   VictoryResult,
-  Tile
+  Tile,
+  UnitType
 } from '../types';
 import {
   loadMapFromJSON,
@@ -41,10 +42,16 @@ import {
   UNIT_HEAL_FUEL_FULL
 } from '../config/constants';
 import { armyManager } from '../data/units';
+import { log, logError, logInfo } from '../utils/logger';
 
 // Helper function to check if terrain is capturable
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
+};;
+
+// ユニット補給が可能な地形かどうかを判定（CityとCapitalのみ）
+const isSupplyTerrain = (terrain: string): boolean => {
+  return terrain === 'City' || terrain === 'Capital';
 };
 // 首都識別関数の拡張
 const isCapitalTerrain = (terrain: string): boolean => {
@@ -184,7 +191,7 @@ export const useGameLogic = () => {
     console.log(`🔄 Turn ending: ${activeTeam} -> ${nextTeam}. Checking healing for ${nextTeam} team units...`);
     
     // Debug: Show all cities on the map
-    const cities = Array.from(boardLayout.entries()).filter(([, tile]) => isCapturableTerrain(tile.terrain));
+    const cities = Array.from(boardLayout.entries()).filter(([, tile]) => isSupplyTerrain(tile.terrain));
     console.log(`🏙️ Cities on map:`, cities.map(([coord, tile]) => ({
       coord: coord,
       terrain: tile.terrain,
@@ -195,54 +202,97 @@ export const useGameLogic = () => {
     // Reset unit flags for all units
     const unitsWithReset = units.map(u => ({ ...u, moved: false, attacked: false }));
     
-    // Unit healing and resupply logic for the NEXT team (at start of their turn)
+    // Unit healing and resupply logic for the NEXT team (at start of their turn) - COMPLETELY REWRITTEN
     const unitsWithHealing = unitsWithReset.map(u => {
-      // Only heal units that belong to the next team (starting their turn)
-      if (u.team === nextTeam) {
-        const unitTile = boardLayout.get(coordToString(u));
-        // Debug: Check healing conditions
-        const coordString = coordToString(u);
-        const isCityAndOwned = unitTile && isCapturableTerrain(unitTile.terrain) && unitTile.owner === u.team;
-        console.log(`🔍 Checking unit ${u.type} (${u.id}) at (${u.x}, ${u.y}) for healing:`, {
-          unitTeam: u.team,
-          nextTeam: nextTeam,
-          coordString: coordString,
-          unitTile: unitTile?.terrain || 'NOT_FOUND',
-          tileOwner: unitTile?.owner || 'NO_OWNER',
-          currentHp: u.hp,
-          maxHp: u.maxHp,
-          currentFuel: u.fuel,
-          maxFuel: UNIT_STATS[u.type].maxFuel,
-          UNIT_HEAL_HP: UNIT_HEAL_HP,
-          UNIT_HEAL_FUEL_FULL: UNIT_HEAL_FUEL_FULL,
-          willHeal: isCityAndOwned,
-          healingConditions: {
-            isCorrectTeam: u.team === nextTeam,
-            hasUnitTile: !!unitTile,
-            isCity: isCapturableTerrain(unitTile?.terrain || ''),
-            isOwnedByUnit: unitTile?.owner === u.team
-          }
-        });
-        
-        if (unitTile && isCapturableTerrain(unitTile.terrain) && unitTile.owner === u.team) {
-          // Heal HP by UNIT_HEAL_HP amount, capped at maxHp
-          const healedHp = Math.min(u.maxHp, u.hp + UNIT_HEAL_HP);
-          // Restore fuel to maximum if UNIT_HEAL_FUEL_FULL is true
-          const refueledFuel = UNIT_HEAL_FUEL_FULL ? UNIT_STATS[u.type].maxFuel : u.fuel;
-          console.log(`✅ HEALING APPLIED to ${u.type} (${u.id}) at (${u.x}, ${u.y}):`, {
-            oldHp: u.hp,
-            newHp: healedHp,
-            hpChange: healedHp - u.hp,
-            oldFuel: u.fuel,
-            newFuel: refueledFuel,
-            fuelChange: refueledFuel - u.fuel,
-            healAmount: UNIT_HEAL_HP,
-            maxFuelRestored: UNIT_HEAL_FUEL_FULL
-          });
-          return { ...u, hp: healedHp, fuel: refueledFuel };
-        }
+      // Only process units that belong to the next team (starting their turn)
+      if (u.team !== nextTeam) {
+        return u; // Skip units from other teams
       }
-      return u;
+
+      const unitTile = boardLayout.get(coordToString(u));
+      
+      // STRICT SUPPLY CONDITIONS:
+      // 1. Tile must exist
+      // 2. Tile must be City or Capital ONLY
+      // 3. Tile must be owned by the same team as the unit
+      // 4. Owner must not be undefined or null
+      
+      const hasValidTile = unitTile !== undefined;
+      const isValidSupplyTerrain = hasValidTile && (unitTile.terrain === 'City' || unitTile.terrain === 'Capital');
+      const hasValidOwner = hasValidTile && unitTile.owner !== undefined && unitTile.owner !== null;
+      const isOwnedByUnitTeam = hasValidOwner && unitTile.owner === u.team;
+      
+      const canReceiveSupply = hasValidTile && isValidSupplyTerrain && hasValidOwner && isOwnedByUnitTeam;
+      
+      // DETAILED LOGGING FOR DEBUGGING
+      log(`🔍 SUPPLY CHECK for ${u.type}(${u.id}) at (${u.x},${u.y}) team=${u.team}:`);
+      log(`   - Tile exists: ${hasValidTile} (${unitTile?.terrain || 'NONE'})`);
+      log(`   - Is supply terrain: ${isValidSupplyTerrain} (City/Capital only)`);
+      log(`   - Has valid owner: ${hasValidOwner} (owner: ${unitTile?.owner})`);
+      log(`   - Owned by unit team: ${isOwnedByUnitTeam}`);
+      log(`   - ✅ FINAL RESULT: ${canReceiveSupply ? 'SUPPLY GRANTED' : 'SUPPLY DENIED'}`);
+      
+      if (canReceiveSupply) {
+        // Check if unit is land-based (Infantry or Vehicle only - no Aircraft)
+        const isLandUnit = u.unitClass === 'Infantry' || u.unitClass === 'Vehicle';
+        
+        if (!isLandUnit) {
+          log(`❌ SUPPLY DENIED for ${u.type}(${u.id}): AIRCRAFT_NOT_SUPPORTED`);
+          return u; // Aircraft cannot be resupplied by cities
+        }
+        
+        // Apply supply operations for land units only
+        const originalHp = u.hp;
+        const originalFuel = u.fuel;
+        
+        // HP healing (only if needed)
+        const needsHealing = u.hp < u.maxHp;
+        const newHp = needsHealing ? Math.min(u.maxHp, u.hp + UNIT_HEAL_HP) : u.hp;
+        
+        // Fuel resupply (only if needed)
+        const maxFuel = UNIT_STATS[u.type]?.maxFuel || 60;
+        const needsFuel = u.fuel < maxFuel;
+        const newFuel = needsFuel ? maxFuel : u.fuel;
+        
+        // Ammunition resupply (only if needed) - NEW FEATURE
+        let resuppliedWeapons = u.weapons;
+        let ammunitionResupplied = false;
+        
+        if (u.weapons && Array.isArray(u.weapons)) {
+          resuppliedWeapons = u.weapons.map(weapon => {
+            if (weapon.ammunition < weapon.maxAmmunition) {
+              ammunitionResupplied = true;
+              return { ...weapon, ammunition: weapon.maxAmmunition };
+            }
+            return weapon;
+          });
+        }
+        
+        const suppliedUnit = {
+          ...u,
+          hp: newHp,
+          fuel: newFuel,
+          weapons: resuppliedWeapons
+        };
+        
+        // Log supply results
+        log(`🚛 SUPPLY APPLIED to ${u.type}(${u.id}):`);
+        log(`   HP: ${originalHp} → ${newHp} (${needsHealing ? 'HEALED' : 'NO CHANGE'})`);
+        log(`   Fuel: ${originalFuel} → ${newFuel} (${needsFuel ? 'RESUPPLIED' : 'NO CHANGE'})`);
+        log(`   Ammunition: ${ammunitionResupplied ? 'RESUPPLIED' : 'NO CHANGE'}`);
+        
+        return suppliedUnit;
+      } else {
+        // Log why supply was denied
+        const reason = !hasValidTile ? 'TILE_NOT_FOUND' :
+                      !isValidSupplyTerrain ? `INVALID_TERRAIN(${unitTile.terrain})` :
+                      !hasValidOwner ? `INVALID_OWNER(${unitTile.owner})` :
+                      !isOwnedByUnitTeam ? `OWNER_MISMATCH(${unitTile.owner}≠${u.team})` :
+                      'UNKNOWN';
+        
+        log(`❌ SUPPLY DENIED for ${u.type}(${u.id}): ${reason}`);
+        return u; // Return unit unchanged
+      }
     });
 
     setUnits(unitsWithHealing);
@@ -436,7 +486,7 @@ export const useGameLogic = () => {
 
     let updatedUnits = units.map(u => {
       if (u.id === defender.id) {
-        return { ...u, hp: Math.max(0, u.hp - damage) };
+        return safeUpdateUnitHP(u, u.hp - damage, 'combat');
       }
       if (u.id === attacker.id) {
         const newXp = Math.min(100, u.xp + damage);
@@ -472,7 +522,7 @@ export const useGameLogic = () => {
 
         updatedUnits = updatedUnits.map(u => {
           if (u.id === attacker.id) {
-            return { ...u, hp: Math.max(0, u.hp - counterDamage) };
+            return safeUpdateUnitHP(u, u.hp - counterDamage, 'combat');
           }
           if (u.id === currentDefender.id) {
             const newXp = Math.min(100, u.xp + counterDamage);
@@ -534,16 +584,16 @@ export const useGameLogic = () => {
     // Update units: consume ammunition and apply damage
     let updatedUnits = units.map(u => {
       if (u.id === defender.id) {
-        const newHp = Math.max(0, u.hp - damage);
+        const updatedUnit = safeUpdateUnitHP(u, u.hp - damage, 'combat');
         console.log('Defender HP update:', {
           oldHp: u.hp,
           damage,
-          newHp,
+          newHp: updatedUnit.hp,
           unitId: u.id,
           unitType: u.type,
           unitTeam: u.team
         });
-        return { ...u, hp: newHp };
+        return updatedUnit;
       }
       if (u.id === attacker.id) {
         const newXp = Math.min(100, u.xp + damage);
@@ -635,7 +685,7 @@ export const useGameLogic = () => {
           
           updatedUnits = updatedUnits.map(u => {
             if (u.id === attacker.id) {
-              const newHp = Math.max(0, u.hp - counterDamage);
+              const updatedUnit = safeUpdateUnitHP(u, u.hp - counterDamage, 'combat');
               
               // RED ARMY TANK HP BUG INVESTIGATION
               if (u.team === 'Red' && u.type === 'Tank') {
@@ -645,37 +695,24 @@ export const useGameLogic = () => {
                   originalHp: u.hp,
                   maxHp: u.maxHp,
                   counterDamage,
-                  calculatedNewHp: newHp,
+                  calculatedNewHp: updatedUnit.hp,
                   counterWeaponUsed: counterWeapon?.name,
                   counterAttackPower,
                   counterDefensePower,
                   attackerUnit: attacker.unitClass,
                   defenderUnit: currentDefender.unitClass
                 });
-                
-                // POTENTIAL BUG FIX: Prevent HP from dropping too drastically
-                if (counterDamage > u.hp - 1 && u.hp > 1) {
-                  console.error('SUSPICIOUS DAMAGE DETECTED - Capping damage to prevent HP=1 bug');
-                  const safeDamage = Math.min(counterDamage, u.hp - 2);
-                  const safeNewHp = Math.max(1, u.hp - safeDamage);
-                  console.error('Applying safe damage:', {
-                    originalDamage: counterDamage,
-                    safeDamage,
-                    safeNewHp
-                  });
-                  return { ...u, hp: safeNewHp };
-                }
               }
               
               console.log('Attacker HP update:', {
                 oldHp: u.hp,
                 counterDamage,
-                newHp,
+                newHp: updatedUnit.hp,
                 unitId: u.id,
                 unitType: u.type,
                 unitTeam: u.team
               });
-              return { ...u, hp: newHp };
+              return updatedUnit;
             }
             if (u.id === currentDefender.id) {
               const newXp = Math.min(100, u.xp + counterDamage);
@@ -760,6 +797,21 @@ export const useGameLogic = () => {
       const isReachable = reachableTiles.some(t => t.x === coord.x && t.y === coord.y);
       if (isReachable && !unitOnHex) {
         saveStateToHistory();
+        
+        // HP CORRUPTION DEBUG - Log unit state BEFORE movement
+        logError('🚚 UNIT MOVEMENT DEBUG - BEFORE:');
+        logError('Selected unit state:', {
+          id: selectedUnit.id,
+          type: selectedUnit.type,
+          team: selectedUnit.team,
+          hp: selectedUnit.hp,
+          maxHp: selectedUnit.maxHp,
+          position: { x: selectedUnit.x, y: selectedUnit.y },
+          targetPosition: coord,
+          fuel: selectedUnit.fuel,
+          maxFuel: selectedUnit.maxFuel
+        });
+        
         const path = findPath(selectedUnit, coord, boardLayout, units, activeTeam);
         let fuelCost = 0;
         if (path && path.length > 1) {
@@ -779,8 +831,36 @@ export const useGameLogic = () => {
         
         // Artillery cannot attack after moving
         const updatedUnit = selectedUnit.type === 'Artillery' 
-          ? { ...selectedUnit, ...coord, moved: true, attacked: true, fuel: selectedUnit.fuel - fuelCost }
-          : { ...selectedUnit, ...coord, moved: true, fuel: selectedUnit.fuel - fuelCost };
+          ? { ...selectedUnit, x: coord.x, y: coord.y, moved: true, attacked: true, fuel: selectedUnit.fuel - fuelCost }
+          : { ...selectedUnit, x: coord.x, y: coord.y, moved: true, fuel: selectedUnit.fuel - fuelCost };
+        
+        // HP CORRUPTION DEBUG - Log unit state AFTER creation but BEFORE setState
+        logError('🚚 UNIT MOVEMENT DEBUG - AFTER updatedUnit creation:');
+        logError('Updated unit state:', {
+          id: updatedUnit.id,
+          type: updatedUnit.type,
+          team: updatedUnit.team,
+          hp: updatedUnit.hp,
+          maxHp: updatedUnit.maxHp,
+          position: { x: updatedUnit.x, y: updatedUnit.y },
+          fuel: updatedUnit.fuel,
+          maxFuel: updatedUnit.maxFuel,
+          moved: updatedUnit.moved,
+          attacked: updatedUnit.attacked
+        });
+        
+        // Additional check: Verify destination tile terrain
+        const destinationTile = boardLayout.get(coordToString(coord));
+        logError('🏙️ DESTINATION TILE INFO:', {
+          coord: coord,
+          tile: destinationTile,
+          terrain: destinationTile?.terrain,
+          owner: destinationTile?.owner,
+          hp: destinationTile?.hp
+        });
+        
+        // HP CORRUPTION FIX: Only copy position coordinates, not tile properties
+        // The fix above ensures unit stats (hp, maxHp) are never overwritten by tile data
         
         setUnits(units.map(u => u.id === selectedUnit.id ? updatedUnit : u));
         return;
@@ -942,4 +1022,119 @@ export const useGameLogic = () => {
     getCapitals,
     getCapitalsForTeam,
   };
+};
+// HP Change Tracking System
+interface HPChangeEvent {
+  unitId: string;
+  unitType: UnitType;
+  oldHp: number;
+  newHp: number;
+  maxHp: number;
+  cause: 'combat' | 'healing' | 'initialization' | 'movement' | 'capture' | 'unknown';
+  timestamp: number;
+  location: { x: number; y: number };
+}
+
+const HPChangeLogger = {
+  changes: [] as HPChangeEvent[],
+  
+  log: (event: HPChangeEvent) => {
+    console.log(`🩹 HP Change: ${event.unitType}(${event.unitId}) ${event.oldHp}->${event.newHp}/${event.maxHp} [${event.cause}] at (${event.location.x}, ${event.location.y})`);
+    HPChangeLogger.changes.push(event);
+    
+    // Detect suspicious changes
+    if (HPChangeLogger.detectSuspiciousChange(event)) {
+      console.error(`🚨 SUSPICIOUS HP CHANGE DETECTED:`, event);
+    }
+  },
+  
+  detectSuspiciousChange: (event: HPChangeEvent): boolean => {
+    // Detect HP being forced to specific values like 10
+    const isForcedTo10 = event.newHp === 10 && event.oldHp !== 10 && event.cause !== 'initialization';
+    const isInvalidChange = event.newHp > event.maxHp || event.newHp < 0;
+    const isUnexpectedIncrease = event.newHp > event.oldHp && event.cause !== 'healing';
+    
+    return isForcedTo10 || isInvalidChange || isUnexpectedIncrease;
+  },
+  
+  getChangesFor: (unitId: string) => {
+    return HPChangeLogger.changes.filter(c => c.unitId === unitId);
+  },
+  
+  clear: () => {
+    HPChangeLogger.changes = [];
+  }
+};
+
+// Safe HP update function
+const safeUpdateUnitHP = (unit: Unit, newHp: number, cause: HPChangeEvent['cause']): Unit => {
+  // Validation
+  const validatedHp = Math.max(0, Math.min(newHp, unit.maxHp));
+  
+  if (validatedHp !== newHp) {
+    console.warn(`HP value clamped for unit ${unit.id}: requested ${newHp} -> validated ${validatedHp}`);
+  }
+  
+  // Log the change
+  HPChangeLogger.log({
+    unitId: unit.id,
+    unitType: unit.type,
+    oldHp: unit.hp,
+    newHp: validatedHp,
+    maxHp: unit.maxHp,
+    cause,
+    timestamp: Date.now(),
+    location: { x: unit.x, y: unit.y }
+  });
+  
+  return { ...unit, hp: validatedHp };
+};
+
+// Safe healing function with conditional logic
+const applySafeHealing = (unit: Unit, healAmount: number): Unit => {
+  // 補給条件チェック：HPが最大値未満の場合のみ回復
+  if (unit.hp >= unit.maxHp) {
+    console.log(`Unit ${unit.id} already at max HP (${unit.hp}/${unit.maxHp}), skipping HP healing`);
+    return unit; // HP回復不要
+  }
+  
+  const healedHp = Math.min(unit.maxHp, unit.hp + healAmount);
+  
+  // 異常値チェック
+  if (healedHp < unit.hp) {
+    console.error(`Healing calculation error for unit ${unit.id}`);
+    return unit;
+  }
+  
+  return safeUpdateUnitHP(unit, healedHp, 'healing');
+};
+
+// 燃料補給処理
+const applySafeFuelResupply = (unit: Unit): Unit => {
+  const maxFuel = UNIT_STATS[unit.type].maxFuel;
+  
+  // 燃料が最大値未満の場合のみ補給
+  if (unit.fuel >= maxFuel) {
+    console.log(`Unit ${unit.id} already at max fuel (${unit.fuel}/${maxFuel}), skipping fuel resupply`);
+    return unit;
+  }
+  
+  return { ...unit, fuel: maxFuel };
+};
+
+// 統合補給処理
+const applySupplyOperations = (unit: Unit): Unit => {
+  let updatedUnit = unit;
+  
+  // HP回復（必要な場合のみ）
+  if (unit.hp < unit.maxHp) {
+    updatedUnit = applySafeHealing(updatedUnit, UNIT_HEAL_HP);
+  }
+  
+  // 燃料補給（必要な場合のみ）
+  if (UNIT_HEAL_FUEL_FULL && unit.fuel < UNIT_STATS[unit.type].maxFuel) {
+    updatedUnit = applySafeFuelResupply(updatedUnit);
+  }
+  
+  return updatedUnit;
 };

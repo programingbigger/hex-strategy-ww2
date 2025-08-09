@@ -5,6 +5,8 @@ ref_folders/
 HexStrategyDocs_ByObsidian/.obsidian/*.json
 .serena/*
 
+Commander/log/*
+
 # Screenshots and images
 *.png
 *.jpg

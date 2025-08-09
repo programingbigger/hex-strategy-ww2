@@ -1,0 +1,42 @@
+@startuml
+
+start
+
+:Title Screen;
+
+:Home Screen;
+
+if (Start Game?) then (yes)
+  :Scenario Selection;
+  
+  if (Scenario Selected?) then (yes)
+    :Battle Preparation;
+    
+    :Unit Deployment;
+    
+    if (Deployment Complete?) then (yes)
+      :Battle Screen;
+      
+      while (Game Continues?) is (yes)
+        :Player Turn;
+        :Enemy Turn;
+        
+        if (Victory Condition Met?) then (yes)
+          :Result Screen;
+          stop
+        endif
+      endwhile (no)
+      
+    else (no)
+      stop
+    endif
+  else (no)
+    stop
+  endif
+else (no)
+  stop
+endif
+
+stop
+
+@enduml

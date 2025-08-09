@@ -1,0 +1,29 @@
+@startuml
+
+title Blue Army vs Red Army Relationship
+
+package "Blue Army" {
+  [Blue Infantry]
+  [Blue Tank] 
+  [Blue Artillery]
+  [Blue Armored Car]
+}
+
+package "Red Army" {
+  [Red Infantry]
+  [Red Tank]
+  [Red Artillery] 
+  [Red Armored Car]
+}
+
+[Blue Infantry] -down-> [Red Infantry] : Combat
+[Blue Tank] -down-> [Red Tank] : Combat
+[Blue Artillery] -down-> [Red Artillery] : Combat
+[Blue Armored Car] -down-> [Red Armored Car] : Combat
+
+[Blue Infantry] -down-> [Red Tank] : Combat
+[Blue Tank] -down-> [Red Infantry] : Combat
+[Blue Artillery] -down-> [Red Infantry] : Combat
+[Blue Artillery] -down-> [Red Tank] : Combat
+
+@enduml

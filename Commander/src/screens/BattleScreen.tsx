@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { createUnit } from '../data/units';
@@ -8,6 +8,7 @@ import InformationPanel from '../components/game/InformationPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
 import RainEffect from '../components/game/RainEffect';
 import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
+import { LogPanel } from '../components/debug/LogPanel';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -41,6 +42,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     handleWeaponSelect,
     handleWeaponSelectionClose,
   } = useGameLogic();
+
+  // Log panel state
+  const [isLogPanelVisible, setIsLogPanelVisible] = useState(false);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -211,6 +215,12 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onClose={handleWeaponSelectionClose}
         />
       )}
+
+      {/* Debug Log Panel */}
+      <LogPanel
+        isVisible={isLogPanelVisible}
+        onToggle={() => setIsLogPanelVisible(!isLogPanelVisible)}
+      />
     </div>
   );
 };
