@@ -145,7 +145,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           turn={turn} 
           activeTeam={activeTeam} 
           weather={weather} 
-          onEndTurn={handleEndTurn}
           blueUnits={blueUnits}
           redUnits={redUnits}
         />
@@ -190,6 +189,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             boardLayout={boardLayout}
             units={units}
             onAction={handleAction}
+            onEndTurn={handleEndTurn}
           />
         </div>
       </div>

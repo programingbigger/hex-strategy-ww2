@@ -117,11 +117,13 @@
         * Battle結果をもっと見やすくする
             * みづらい原因は、文字が白いこと
             * また、どのユニットがどれだけダメージを受けたのか、逆に減らしたのかが、分かりずらい
-        * infomation Panelを、もっといい感じに見やすくする
-            * 具体的な絵を別ターミナルで描かせよう
-            * それこそアスキーアートで描かせよう
-        * バトルエンドターンをInfomation Panelに実装する。実装場所は、infomation Panelの一番下。
-        * Infomation PanelのSelected Unitをカーソルをユニットに合わせただけで、表示するように改修する
+        * infomation Panleの充実化
+            * バトルエンドターンをInfomation Panelに実装する。実装場所は、infomation Panelの一番下。
+            * Infomation PanelのSelected Unitをカーソルをユニットに合わせただけで、表示するように改修する
+            * フォントサイズを大きくする。みずらい
+            * infomation Panelを、もっといい感じに見やすくする
+                * 具体的な絵を別ターミナルで描かせよう
+                * それこそアスキーアートで描かせよう
 * map部分
     * alpha版
         * tage1~4を再現する

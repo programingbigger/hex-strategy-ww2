@@ -7,7 +7,6 @@ interface HeaderProps {
   weather: WeatherType;
   blueUnits: number;
   redUnits: number;
-  onEndTurn: () => void;
   onSave?: () => void;
   onLoad?: () => void;
 }
@@ -18,7 +17,6 @@ const Header: React.FC<HeaderProps> = ({
   weather,
   blueUnits,
   redUnits,
-  onEndTurn,
   onSave,
   onLoad
 }) => {
@@ -36,10 +34,11 @@ const Header: React.FC<HeaderProps> = ({
       color: 'white',
       padding: '15px 30px',
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'center',
       alignItems: 'center',
       height: '70px',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      position: 'relative'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
         <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
@@ -71,7 +70,12 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
       
-      <div style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ 
+        position: 'absolute', 
+        right: '30px',
+        display: 'flex', 
+        gap: '10px' 
+      }}>
         {onSave && (
           <button
             onClick={onSave}
@@ -106,24 +110,7 @@ const Header: React.FC<HeaderProps> = ({
           </button>
         )}
         
-        <button
-          onClick={onEndTurn}
-          style={{
-            padding: '12px 24px',
-            background: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.background = '#218838'}
-          onMouseOut={(e) => e.currentTarget.style.background = '#28a745'}
-        >
-          End Turn
-        </button>
+
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ interface InformationPanelProps {
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onAction: (action: 'wait' | 'undo' | 'capture') => void;
+  onEndTurn?: () => void;
 }
 
 const InformationPanel: React.FC<InformationPanelProps> = ({
@@ -17,7 +18,8 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
   hoveredHex,
   boardLayout,
   units,
-  onAction
+  onAction,
+  onEndTurn
 }) => {
   const coordToString = (coord: Coordinate) => `${coord.x},${coord.y}`;
   
@@ -79,7 +81,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
       background: 'rgba(255, 255, 255, 0.95)',
       border: '2px solid #333',
       borderRadius: '8px',
-      fontSize: '14px',
+      fontSize: '16px',
       color: '#333',
       boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
       overflow: 'hidden'
@@ -110,7 +112,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               color: '#0066cc',
               borderBottom: '1px solid #ccc',
               paddingBottom: '5px',
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}>
               [SELECTED UNIT]
@@ -139,21 +141,21 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>✚ HP</span>
                 <ProgressBar current={selectedUnit.hp} max={selectedUnit.maxHp} color="#28a745" />
-                <span style={{ marginLeft: '8px', fontSize: '12px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.hp}/{selectedUnit.maxHp}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⛽ Fuel</span>
                 <ProgressBar current={selectedUnit.fuel} max={selectedUnit.maxFuel} color="#ffc107" />
-                <span style={{ marginLeft: '8px', fontSize: '12px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.fuel}/{selectedUnit.maxFuel}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⭐ XP</span>
                 <ProgressBar current={selectedUnit.xp} max={100} color="#17a2b8" />
-                <span style={{ marginLeft: '8px', fontSize: '12px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.xp}/100
                 </span>
               </div>
@@ -168,7 +170,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               gridTemplateColumns: '1fr 1fr', 
               gap: '5px',
               marginBottom: '10px',
-              fontSize: '13px'
+              fontSize: '15px'
             }}>
               <div>💥 Attack: {selectedUnit.attack}</div>
               <div>🛡️ Defense: {selectedUnit.defense}</div>
@@ -180,7 +182,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
             
             {/* Position and Status */}
-            <div style={{ fontSize: '13px' }}>
+            <div style={{ fontSize: '15px' }}>
               <div style={{ marginBottom: '3px' }}>
                 📍 Position: ({selectedUnit.x}, {selectedUnit.y})
               </div>
@@ -208,7 +210,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               margin: '0 0 10px 0',
               color: '#333',
               textAlign: 'center',
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}>
               [ ACTIONS ]
@@ -224,7 +226,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   border: 'none',
                   borderRadius: '5px',
                   cursor: 'pointer',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   fontWeight: '500'
                 }}
               >
@@ -241,7 +243,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   border: 'none',
                   borderRadius: '5px',
                   cursor: canUndo ? 'pointer' : 'not-allowed',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   fontWeight: '500',
                   opacity: canUndo ? 1 : 0.6
                 }}
@@ -259,7 +261,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                     border: 'none',
                     borderRadius: '5px',
                     cursor: 'pointer',
-                    fontSize: '14px',
+                    fontSize: '16px',
                     fontWeight: '500'
                   }}
                 >
@@ -285,13 +287,13 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             <h4 style={{
               margin: '0 0 10px 0',
               color: '#228b22',
-              fontSize: '14px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}>
               [HOVERED HEX]
             </h4>
             
-            <div style={{ fontSize: '13px' }}>
+            <div style={{ fontSize: '15px' }}>
               <div style={{ marginBottom: '5px' }}>
                 📍 Position: ({hoveredHex?.x}, {hoveredHex?.y})
               </div>
@@ -323,15 +325,97 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                 <div style={{ 
                   marginTop: '10px', 
                   paddingTop: '8px', 
-                  borderTop: '1px solid #ccc' 
+                  borderTop: '1px solid #ccc',
+                  background: '#e8f4f8',
+                  borderRadius: '6px',
+                  padding: '12px',
                 }}>
-                  <div style={{ fontWeight: 'bold', marginBottom: '3px' }}>
-                    Unit: {hoveredUnit.type} ({hoveredUnit.team})
+                  <h4 style={{
+                    margin: '0 0 10px 0',
+                    color: '#0066cc',
+                    borderBottom: '1px solid #ccc',
+                    paddingBottom: '5px',
+                    fontSize: '15px',
+                    fontWeight: 'bold'
+                  }}>
+                    [HOVERED UNIT]
+                  </h4>
+                  
+                  {/* Unit Name */}
+                  <div style={{ 
+                    fontSize: '17px', 
+                    fontWeight: 'bold', 
+                    marginBottom: '10px',
+                    color: hoveredUnit.team === 'Blue' ? '#0066cc' : '#cc0000'
+                  }}>
+                    {hoveredUnit.name || hoveredUnit.type} ({hoveredUnit.team})
+                    {hoveredUnit.branch && hoveredUnit.category && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        {hoveredUnit.branch} • {hoveredUnit.category}
+                      </div>
+                    )}
                   </div>
-                  <div style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
-                    HP: {hoveredUnit.hp}/{hoveredUnit.maxHp} | 
-                    Fuel: {hoveredUnit.fuel}/{hoveredUnit.maxFuel} | 
-                    XP: {hoveredUnit.xp}/100
+                  
+                  {/* Separator */}
+                  <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                  
+                  {/* Vital Information */}
+                  <div style={{ marginBottom: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                      <span>✚ HP</span>
+                      <ProgressBar current={hoveredUnit.hp} max={hoveredUnit.maxHp} color="#28a745" />
+                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                        {hoveredUnit.hp}/{hoveredUnit.maxHp}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                      <span>⛽ Fuel</span>
+                      <ProgressBar current={hoveredUnit.fuel} max={hoveredUnit.maxFuel} color="#ffc107" />
+                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                        {hoveredUnit.fuel}/{hoveredUnit.maxFuel}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                      <span>⭐ XP</span>
+                      <ProgressBar current={hoveredUnit.xp} max={100} color="#17a2b8" />
+                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                        {hoveredUnit.xp}/100
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Separator */}
+                  <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                  
+                  {/* Combat Stats */}
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '1fr 1fr', 
+                    gap: '5px',
+                    marginBottom: '10px',
+                    fontSize: '14px'
+                  }}>
+                    <div>💥 Attack: {hoveredUnit.attack}</div>
+                    <div>🛡️ Defense: {hoveredUnit.defense}</div>
+                    <div>🥾 Movement: {hoveredUnit.movement}</div>
+                    <div>🎯 Range: {hoveredUnit.attackRange.min}-{hoveredUnit.attackRange.max}</div>
+                  </div>
+                  
+                  {/* Separator */}
+                  <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                  
+                  {/* Position and Status */}
+                  <div style={{ fontSize: '14px' }}>
+                    <div style={{ marginBottom: '3px' }}>
+                      📍 Position: ({hoveredUnit.x}, {hoveredUnit.y})
+                    </div>
+                    <div>
+                      ⚙️ Status: {
+                        hoveredUnit.moved && hoveredUnit.attacked ? 'Done' :
+                        hoveredUnit.moved ? 'Moved' :
+                        hoveredUnit.attacked ? 'Attacked' : 'Ready'
+                      }
+                    </div>
                   </div>
                   
                   {/* Weapon Information for Hovered Unit */}
@@ -357,6 +441,46 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
           }}>
             Select a unit or hover over a hex for details
           </div>
+        </div>
+      )}
+      
+      {/* End Turn Button - Always at bottom */}
+      {onEndTurn && (
+        <div style={{
+          padding: '15px',
+          borderTop: '2px solid #ddd',
+          background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)'
+        }}>
+          <button
+            onClick={onEndTurn}
+            style={{
+              width: '100%',
+              padding: '15px',
+              background: 'rgba(255, 255, 255, 0.9)',
+              color: '#155724',
+              border: '2px solid #28a745',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = '#28a745';
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+              e.currentTarget.style.color = '#155724';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+            }}
+          >
+            🔄 End Turn
+          </button>
         </div>
       )}
     </div>
