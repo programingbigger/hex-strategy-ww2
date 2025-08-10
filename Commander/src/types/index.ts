@@ -245,3 +245,57 @@ export interface ArmyOrganization {
   factions: Record<Faction, FactionData>;
   commandStructure: CommandStructure;
 }
+
+// 🎯 Battle Log Types for Player UI
+export interface BattleLogEntry {
+  id: string;
+  turn: number;
+  phase: 'Player Phase' | 'Enemy Phase';
+  timestamp: Date;
+  attacker: {
+    team: Team;
+    unitName: string;
+    unitType: UnitType;
+    hpBefore: number;
+    hpAfter: number;
+    position: Coordinate;
+  };
+  defender: {
+    team: Team;
+    unitName: string;
+    unitType: UnitType;
+    hpBefore: number;
+    hpAfter: number;
+    position: Coordinate;
+  };
+  location: {
+    hex: Coordinate;
+    terrain: TerrainType;
+    defenseBonus?: number;
+  };
+  weapon: {
+    name: string;
+    type: WeaponType;
+  };
+  result: {
+    damageDealt: number;
+    damageTaken: number;
+    unitDestroyed?: boolean;
+  };
+  counterAttack?: {
+    weapon: {
+      name: string;
+      type: WeaponType;
+    };
+    damageDealt: number;
+    damageTaken: number;
+    unitDestroyed?: boolean;
+  };
+}
+
+export interface BattleLogState {
+  entries: BattleLogEntry[];
+  maxEntries: number;
+  isVisible: boolean;
+  autoScroll: boolean;
+}

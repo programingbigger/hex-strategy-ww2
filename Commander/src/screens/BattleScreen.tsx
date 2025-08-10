@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { createUnit } from '../data/units';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
+import SelectedUnitPanel from '../components/game/SelectedUnitPanel';
 import InformationPanel from '../components/game/InformationPanel';
+import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
+import TurnChangeModal from '../components/game/TurnChangeModal';
+import ShortcutsPanel from '../components/game/ShortcutsPanel';
 import BattleReportModal from '../components/game/BattleReportModal';
 import RainEffect from '../components/game/RainEffect';
 import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
+import BattleLogPanel from '../components/game/BattleLogPanel';
 import { LogPanel } from '../components/debug/LogPanel';
 
 interface BattleScreenProps {
@@ -41,10 +46,75 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     weaponSelectionState,
     handleWeaponSelect,
     handleWeaponSelectionClose,
+    battleLog,
   } = useGameLogic();
 
   // Log panel state
   const [isLogPanelVisible, setIsLogPanelVisible] = useState(false);
+  
+  // Modal states
+  const [isEndTurnConfirmOpen, setIsEndTurnConfirmOpen] = useState(false);
+  const [isTurnChangeModalOpen, setIsTurnChangeModalOpen] = useState(false);
+  const [lastTurn, setLastTurn] = useState(0);
+  const [lastActiveTeam, setLastActiveTeam] = useState<'Blue' | 'Red'>('Blue');
+
+  // Handle keyboard shortcuts
+  const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    // Cmd+E or Ctrl+E for End Turn
+    if ((event.metaKey || event.ctrlKey) && event.key === 'e') {
+      event.preventDefault();
+      setIsEndTurnConfirmOpen(true);
+    }
+    
+    // Esc to close modals
+    if (event.key === 'Escape') {
+      if (isEndTurnConfirmOpen) {
+        setIsEndTurnConfirmOpen(false);
+      }
+      if (isTurnChangeModalOpen) {
+        setIsTurnChangeModalOpen(false);
+      }
+    }
+    
+    // Any key to close turn change modal
+    if (isTurnChangeModalOpen) {
+      setIsTurnChangeModalOpen(false);
+    }
+  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen]);
+
+  // Add keyboard event listeners
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
+
+  // Detect turn changes
+  useEffect(() => {
+    if (turn !== lastTurn || activeTeam !== lastActiveTeam) {
+      // Only show modal if it's not the first load
+      if (lastTurn !== 0) {
+        setIsTurnChangeModalOpen(true);
+      }
+      setLastTurn(turn);
+      setLastActiveTeam(activeTeam);
+    }
+  }, [turn, activeTeam, lastTurn, lastActiveTeam]);
+
+  // Handle end turn confirmation
+  const handleEndTurnConfirm = useCallback(() => {
+    setIsEndTurnConfirmOpen(false);
+    handleEndTurn();
+  }, [handleEndTurn]);
+
+  const handleEndTurnCancel = useCallback(() => {
+    setIsEndTurnConfirmOpen(false);
+  }, []);
+
+  const handleTurnChangeClose = useCallback(() => {
+    setIsTurnChangeModalOpen(false);
+  }, []);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -156,8 +226,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         display: 'flex',
         paddingTop: '60px' 
       }}>
-        {/* Game Board */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        {/* Game Board - with left margin for SelectedUnitPanel */}
+        <div style={{ flex: 1, minWidth: 0, marginLeft: '320px', marginRight: '350px' }}>
           <GameBoard
             boardLayout={boardLayout}
             units={units}
@@ -167,6 +237,26 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             onHexClick={handleHexClick}
             onHexHover={setHoveredHex}
             onHexLeave={() => setHoveredHex(null)}
+          />
+        </div>
+
+        {/* Fixed Selected Unit Panel on the left */}
+        <div style={{ 
+          position: 'fixed',
+          left: 0,
+          top: '60px',
+          width: '320px',
+          height: 'calc(100vh - 60px)',
+          zIndex: 1000,
+          background: 'rgba(52, 73, 94, 0.9)',
+          backdropFilter: 'blur(5px)',
+          borderRight: '1px solid #3498db',
+          overflowY: 'auto'
+        }}>
+          <SelectedUnitPanel
+            selectedUnit={selectedUnit}
+            selectedUnitTile={selectedUnitTile}
+            onAction={handleAction}
           />
         </div>
 
@@ -180,19 +270,30 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           zIndex: 1000,
           background: 'rgba(52, 73, 94, 0.9)',
           backdropFilter: 'blur(5px)',
-          borderLeft: '1px solid #3498db'
+          borderLeft: '1px solid #3498db',
+          overflowY: 'auto'
         }}>
           <InformationPanel
-            selectedUnit={selectedUnit}
-            selectedUnitTile={selectedUnitTile}
+            selectedUnit={undefined}
+            selectedUnitTile={null}
             hoveredHex={hoveredHex}
             boardLayout={boardLayout}
             units={units}
             onAction={handleAction}
-            onEndTurn={handleEndTurn}
+            onEndTurn={() => setIsEndTurnConfirmOpen(true)}
           />
         </div>
       </div>
+
+      {/* Shortcuts Panel */}
+      <ShortcutsPanel />
+
+      {/* 🎯 Battle Log Panel */}
+      <BattleLogPanel
+        battleLog={battleLog}
+        currentTurn={turn}
+        currentPhase={activeTeam === 'Blue' ? 'Player Phase' : 'Enemy Phase'}
+      />
 
       {/* Rain Effect */}
       <RainEffect weather={weather} />
@@ -220,6 +321,22 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       <LogPanel
         isVisible={isLogPanelVisible}
         onToggle={() => setIsLogPanelVisible(!isLogPanelVisible)}
+      />
+
+      {/* End Turn Confirmation Modal */}
+      <EndTurnConfirmModal
+        isOpen={isEndTurnConfirmOpen}
+        onConfirm={handleEndTurnConfirm}
+        onCancel={handleEndTurnCancel}
+      />
+
+      {/* Turn Change Notification Modal */}
+      <TurnChangeModal
+        isOpen={isTurnChangeModalOpen}
+        turn={turn}
+        activeTeam={activeTeam}
+        weather={weather}
+        onClose={handleTurnChangeClose}
       />
     </div>
   );

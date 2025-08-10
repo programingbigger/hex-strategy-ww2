@@ -15,7 +15,10 @@ import {
   VictoryCondition,
   VictoryResult,
   Tile,
-  UnitType
+  UnitType,
+  BattleLogEntry,
+  BattleLogState,
+  TerrainType
 } from '../types';
 import {
   loadMapFromJSON,
@@ -43,6 +46,7 @@ import {
 } from '../config/constants';
 import { armyManager } from '../data/units';
 import { log, logError, logInfo } from '../utils/logger';
+import { logBattle } from '../utils/debugLogger';
 
 // Helper function to check if terrain is capturable
 const isCapturableTerrain = (terrain: string): boolean => {
@@ -92,6 +96,14 @@ export const useGameLogic = () => {
     target: Unit | null;
   }>({ isOpen: false, attacker: null, target: null });
 
+  // 🎯 Battle Log State
+  const [battleLog, setBattleLog] = useState<BattleLogState>({
+    entries: [],
+    maxEntries: 50,
+    isVisible: true,
+    autoScroll: true
+  });
+
   const loadGame = useCallback((mapData: MapData) => {
     const { board, units: loadedUnits } = loadMapFromJSON(mapData);
     setBoardLayout(board);
@@ -115,6 +127,10 @@ export const useGameLogic = () => {
     setBattleReport(null);
     setVictoryResult(null);
     setHistory([]);
+    
+    // 🎯 Clear battle log when loading new game
+    setBattleLog(prev => ({ ...prev, entries: [] }));
+    logBattle('🎮 New game loaded - Battle log cleared');
   }, []);
 
   const saveStateToHistory = useCallback(() => {
@@ -126,6 +142,98 @@ export const useGameLogic = () => {
     };
     setHistory(prevHistory => [...prevHistory, snapshot]);
   }, [units, turn, activeTeam, selectedUnitId]);
+
+  // 🎯 Battle Log Entry Generation
+  const createBattleLogEntry = useCallback((
+    attacker: Unit,
+    defender: Unit,
+    weapon: Weapon | null,
+    damage: number,
+    counterAttack?: {
+      weapon: Weapon;
+      damage: number;
+      unitDestroyed?: boolean;
+    }
+  ): BattleLogEntry => {
+    const defenderTile = boardLayout.get(coordToString(defender));
+    
+    const currentPhase: 'Player Phase' | 'Enemy Phase' = activeTeam === 'Blue' ? 'Player Phase' : 'Enemy Phase';
+    
+    logBattle(`🎯 Creating battle log entry: ${attacker.type} vs ${defender.type}`, {
+      attackerTeam: attacker.team,
+      defenderTeam: defender.team,
+      damage,
+      weaponUsed: weapon?.name || 'Legacy Attack',
+      counterAttack: counterAttack ? counterAttack.weapon.name : 'None'
+    });
+
+    const entry: BattleLogEntry = {
+      id: `battle-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
+      turn,
+      phase: currentPhase,
+      timestamp: new Date(),
+      attacker: {
+        team: attacker.team,
+        unitName: attacker.name || attacker.type,
+        unitType: attacker.type,
+        hpBefore: attacker.hp,
+        hpAfter: Math.max(0, attacker.hp - (counterAttack?.damage || 0)),
+        position: { x: attacker.x, y: attacker.y }
+      },
+      defender: {
+        team: defender.team,
+        unitName: defender.name || defender.type,
+        unitType: defender.type,
+        hpBefore: defender.hp,
+        hpAfter: Math.max(0, defender.hp - damage),
+        position: { x: defender.x, y: defender.y }
+      },
+      location: {
+        hex: { x: defender.x, y: defender.y },
+        terrain: defenderTile?.terrain as TerrainType || 'Plains',
+        defenseBonus: defenderTile ? TERRAIN_STATS[defenderTile.terrain]?.defenseBonus : 0
+      },
+      weapon: {
+        name: weapon?.name || 'Legacy Attack',
+        type: weapon?.type || '37mm主砲'
+      },
+      result: {
+        damageDealt: damage,
+        damageTaken: counterAttack?.damage || 0,
+        unitDestroyed: (defender.hp - damage) <= 0
+      },
+      counterAttack: counterAttack ? {
+        weapon: {
+          name: counterAttack.weapon.name,
+          type: counterAttack.weapon.type
+        },
+        damageDealt: counterAttack.damage,
+        damageTaken: damage,
+        unitDestroyed: (attacker.hp - counterAttack.damage) <= 0
+      } : undefined
+    };
+
+    return entry;
+  }, [boardLayout, turn, activeTeam]);
+
+  // 🎯 Add Battle Log Entry
+  const addBattleLogEntry = useCallback((entry: BattleLogEntry) => {
+    setBattleLog(prevLog => {
+      const newEntries = [...prevLog.entries, entry];
+      
+      // Limit entries to maxEntries
+      if (newEntries.length > prevLog.maxEntries) {
+        newEntries.shift(); // Remove oldest entry
+      }
+      
+      logBattle(`📝 Added battle log entry (${newEntries.length}/${prevLog.maxEntries})`);
+      
+      return {
+        ...prevLog,
+        entries: newEntries
+      };
+    });
+  }, []);
 
   const selectedUnit = useMemo(() => units.find(u => u.id === selectedUnitId), [units, selectedUnitId]);
 
@@ -498,6 +606,12 @@ export const useGameLogic = () => {
     updatedUnits = updatedUnits.filter(u => u.hp > 0);
 
     // Counter-attack logic
+    let counterAttackData: {
+      weapon: Weapon;
+      damage: number;
+      unitDestroyed?: boolean;
+    } | undefined;
+
     const currentDefender = updatedUnits.find(u => u.id === defender.id);
     if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && attacker.type !== 'Artillery') {
       const counterAttackerTile = boardLayout.get(coordToString(currentDefender));
@@ -512,7 +626,26 @@ export const useGameLogic = () => {
 
         const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
 
-        const counterReportText = `\n\nCounter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDamage} damage!`;
+        // Create legacy weapon for counter-attack logging
+        const legacyCounterWeapon: Weapon = {
+          id: 'legacy-counter',
+          name: `${currentDefender.type} Counter-Attack`,
+          type: '37mm主砲',
+          ammunition: 1,
+          maxAmmunition: 1,
+          range: { min: 1, max: 1 },
+          attack: currentDefender.attack
+        };
+
+        counterAttackData = {
+          weapon: legacyCounterWeapon,
+          damage: counterDamage,
+          unitDestroyed: (attacker.hp - counterDamage) <= 0
+        };
+
+        const counterReportText = `
+
+Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDamage} damage!`;
 
         setBattleReport(prevReport => ({
           ...prevReport!,
@@ -533,10 +666,31 @@ export const useGameLogic = () => {
       }
     }
 
+    // 🎯 Generate Battle Log Entry
+    const legacyWeapon: Weapon = {
+      id: 'legacy-attack',
+      name: `${attacker.type} Attack`,
+      type: '37mm主砲',
+      ammunition: 1,
+      maxAmmunition: 1,
+      range: { min: 1, max: 1 },
+      attack: attacker.attack
+    };
+
+    const battleLogEntry = createBattleLogEntry(
+      attacker,
+      defender,
+      legacyWeapon,
+      damage,
+      counterAttackData
+    );
+
+    addBattleLogEntry(battleLogEntry);
+
     setUnits(updatedUnits);
     setSelectedUnitId(null);
     checkWinCondition(updatedUnits, boardLayout);
-  }, [boardLayout, units, checkWinCondition]);
+  }, [boardLayout, units, checkWinCondition, createBattleLogEntry, addBattleLogEntry]);
 
   // New weapon-based attack handler  
   const handleAttackWithWeapon = useCallback((attacker: Unit, defender: Unit, weapon: Weapon) => {
@@ -632,6 +786,13 @@ export const useGameLogic = () => {
     });
     updatedUnits = updatedUnits.filter(u => u.hp > 0);
 
+    // 🎯 Counter-attack data tracking
+    let counterAttackData: {
+      weapon: Weapon;
+      damage: number;
+      unitDestroyed?: boolean;
+    } | undefined;
+
     // Counter-attack logic with weapon selection
     const currentDefender = updatedUnits.find(u => u.id === defender.id);
     if (currentDefender && currentDefender.hp > 0 && currentDefender.canCounterAttack && attacker.type !== 'Artillery') {
@@ -656,6 +817,13 @@ export const useGameLogic = () => {
           const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
           const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
           
+          // 🎯 Store counter-attack data for battle log
+          counterAttackData = {
+            weapon: counterWeapon,
+            damage: counterDamage,
+            unitDestroyed: (attacker.hp - counterDamage) <= 0
+          };
+          
           // Debug logging for HP bug investigation
           console.log('=== COUNTER-ATTACK DEBUG ===');
           console.log('Attacker before counter:', {
@@ -674,7 +842,9 @@ export const useGameLogic = () => {
             defenderUnit: currentDefender.unitClass
           });
           
-          const counterReportText = `\n\n反撃！ ${currentDefender.type}が${counterWeapon.name}で${attacker.type}を攻撃！ ${counterDamage}ダメージ！`;
+          const counterReportText = `
+
+反撃！ ${currentDefender.type}が${counterWeapon.name}で${attacker.type}を攻撃！ ${counterDamage}ダメージ！`;
           
           setBattleReport(prevReport => ({
             ...prevReport!,
@@ -732,10 +902,21 @@ export const useGameLogic = () => {
       }
     }
 
+    // 🎯 Generate Battle Log Entry
+    const battleLogEntry = createBattleLogEntry(
+      attacker,
+      defender,
+      weapon,
+      damage,
+      counterAttackData
+    );
+
+    addBattleLogEntry(battleLogEntry);
+
     setUnits(updatedUnits);
     setSelectedUnitId(null);
     checkWinCondition(updatedUnits, boardLayout);
-  }, [boardLayout, units, checkWinCondition]);
+  }, [boardLayout, units, checkWinCondition, createBattleLogEntry, addBattleLogEntry]);
 
   // Weapon selection handlers
   const handleWeaponSelect = useCallback((weapon: Weapon) => {
@@ -1001,6 +1182,10 @@ export const useGameLogic = () => {
     weaponSelectionState,
     handleWeaponSelect,
     handleWeaponSelectionClose,
+    
+    // 🎯 Battle Log System
+    battleLog,
+    setBattleLog,
     
     // New army organization features
     getUnitsByBranch,
