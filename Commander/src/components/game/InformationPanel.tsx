@@ -81,7 +81,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
       background: 'rgba(255, 255, 255, 0.95)',
       border: '2px solid #333',
       borderRadius: '8px',
-      fontSize: '16px',
+      fontSize: '18px',
       color: '#333',
       boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
       overflow: 'hidden'
@@ -93,7 +93,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
         padding: '12px 15px',
         fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: '16px'
+        fontSize: '18px'
       }}>
         Information Panel
       </div>
@@ -112,7 +112,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               color: '#0066cc',
               borderBottom: '1px solid #ccc',
               paddingBottom: '5px',
-              fontSize: '16px',
+              fontSize: '18px',
               fontWeight: 'bold'
             }}>
               [SELECTED UNIT]
@@ -120,7 +120,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             
             {/* Unit Name */}
             <div style={{ 
-              fontSize: '16px', 
+              fontSize: '18px', 
               fontWeight: 'bold', 
               marginBottom: '10px',
               color: selectedUnit.team === 'Blue' ? '#0066cc' : '#cc0000'
@@ -141,21 +141,21 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>✚ HP</span>
                 <ProgressBar current={selectedUnit.hp} max={selectedUnit.maxHp} color="#28a745" />
-                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
                   {selectedUnit.hp}/{selectedUnit.maxHp}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⛽ Fuel</span>
                 <ProgressBar current={selectedUnit.fuel} max={selectedUnit.maxFuel} color="#ffc107" />
-                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
                   {selectedUnit.fuel}/{selectedUnit.maxFuel}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⭐ XP</span>
                 <ProgressBar current={selectedUnit.xp} max={100} color="#17a2b8" />
-                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
+                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
                   {selectedUnit.xp}/100
                 </span>
               </div>
@@ -170,7 +170,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               gridTemplateColumns: '1fr 1fr', 
               gap: '5px',
               marginBottom: '10px',
-              fontSize: '15px'
+              fontSize: '17px'
             }}>
               <div>💥 Attack: {selectedUnit.attack}</div>
               <div>🛡️ Defense: {selectedUnit.defense}</div>
@@ -182,7 +182,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
             
             {/* Position and Status */}
-            <div style={{ fontSize: '15px' }}>
+            <div style={{ fontSize: '17px' }}>
               <div style={{ marginBottom: '3px' }}>
                 📍 Position: ({selectedUnit.x}, {selectedUnit.y})
               </div>
@@ -210,7 +210,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               margin: '0 0 10px 0',
               color: '#333',
               textAlign: 'center',
-              fontSize: '16px',
+              fontSize: '18px',
               fontWeight: 'bold'
             }}>
               [ ACTIONS ]
@@ -226,7 +226,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   border: 'none',
                   borderRadius: '5px',
                   cursor: 'pointer',
-                  fontSize: '16px',
+                  fontSize: '18px',
                   fontWeight: '500'
                 }}
               >
@@ -243,7 +243,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   border: 'none',
                   borderRadius: '5px',
                   cursor: canUndo ? 'pointer' : 'not-allowed',
-                  fontSize: '16px',
+                  fontSize: '18px',
                   fontWeight: '500',
                   opacity: canUndo ? 1 : 0.6
                 }}
@@ -261,7 +261,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                     border: 'none',
                     borderRadius: '5px',
                     cursor: 'pointer',
-                    fontSize: '16px',
+                    fontSize: '18px',
                     fontWeight: '500'
                   }}
                 >
@@ -287,13 +287,13 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             <h4 style={{
               margin: '0 0 10px 0',
               color: '#228b22',
-              fontSize: '16px',
+              fontSize: '18px',
               fontWeight: 'bold'
             }}>
               [HOVERED HEX]
             </h4>
             
-            <div style={{ fontSize: '15px' }}>
+            <div style={{ fontSize: '17px' }}>
               <div style={{ marginBottom: '5px' }}>
                 📍 Position: ({hoveredHex?.x}, {hoveredHex?.y})
               </div>
@@ -335,7 +335,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                     color: '#0066cc',
                     borderBottom: '1px solid #ccc',
                     paddingBottom: '5px',
-                    fontSize: '15px',
+                    fontSize: '17px',
                     fontWeight: 'bold'
                   }}>
                     [HOVERED UNIT]
@@ -364,21 +364,21 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                       <span>✚ HP</span>
                       <ProgressBar current={hoveredUnit.hp} max={hoveredUnit.maxHp} color="#28a745" />
-                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                      <span style={{ marginLeft: '8px', fontSize: '17px' }}>
                         {hoveredUnit.hp}/{hoveredUnit.maxHp}
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                       <span>⛽ Fuel</span>
                       <ProgressBar current={hoveredUnit.fuel} max={hoveredUnit.maxFuel} color="#ffc107" />
-                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                      <span style={{ marginLeft: '8px', fontSize: '17px' }}>
                         {hoveredUnit.fuel}/{hoveredUnit.maxFuel}
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                       <span>⭐ XP</span>
                       <ProgressBar current={hoveredUnit.xp} max={100} color="#17a2b8" />
-                      <span style={{ marginLeft: '8px', fontSize: '15px' }}>
+                      <span style={{ marginLeft: '8px', fontSize: '17px' }}>
                         {hoveredUnit.xp}/100
                       </span>
                     </div>
@@ -393,7 +393,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                     gridTemplateColumns: '1fr 1fr', 
                     gap: '5px',
                     marginBottom: '10px',
-                    fontSize: '14px'
+                    fontSize: '16px'
                   }}>
                     <div>💥 Attack: {hoveredUnit.attack}</div>
                     <div>🛡️ Defense: {hoveredUnit.defense}</div>
@@ -405,7 +405,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
                   
                   {/* Position and Status */}
-                  <div style={{ fontSize: '14px' }}>
+                  <div style={{ fontSize: '16px' }}>
                     <div style={{ marginBottom: '3px' }}>
                       📍 Position: ({hoveredUnit.x}, {hoveredUnit.y})
                     </div>
@@ -461,7 +461,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               border: '2px solid #28a745',
               borderRadius: '8px',
               cursor: 'pointer',
-              fontSize: '16px',
+              fontSize: '18px',
               fontWeight: 'bold',
               transition: 'all 0.3s ease',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
