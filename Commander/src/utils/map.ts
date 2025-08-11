@@ -100,7 +100,7 @@ export function calculateReachableTiles(
   // Calculate ZOC for enemy units
   const zocTiles: Map<string, Team> = new Map();
   units.forEach(unit => {
-    if (unit.team !== currentTeam) {
+    if (unit.team !== currentTeam && unit.type !== 'Artillery' && unit.type !== 'AntiTank') {
       const neighbors = getNeighbors({ x: unit.x, y: unit.y });
       neighbors.forEach(neighborCoord => {
         const neighborKey = coordToString(neighborCoord);
@@ -133,6 +133,28 @@ export function calculateReachableTiles(
 
       const terrainStats = TERRAIN_STATS[tile.terrain];
       let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
+
+      // Special movement costs for Transport units
+      if (unitAtStart.type === 'Transport') {
+        switch (tile.terrain) {
+          case 'Road':
+          case 'Bridge':
+            moveCost = 1;
+            break;
+          case 'Plains':
+            moveCost = 2;
+            break;
+          case 'Forest':
+          case 'Snow':
+          case 'Desert':
+            moveCost = 3;
+            break;
+          default:
+            // Use default terrain movement cost for other terrains
+            moveCost = terrainStats.movementCost.Vehicle ?? terrainStats.movementCost.default;
+            break;
+        }
+      }
 
       // Check vehicle restrictions for terrain
       if (unitAtStart.unitClass === 'Vehicle') {
@@ -223,7 +245,30 @@ export function findPath(
       if (unitOnTile) continue;
 
       const terrainStats = TERRAIN_STATS[tile.terrain];
-      const moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
+      let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
+      
+      // Special movement costs for Transport units
+      if (unitAtStart.type === 'Transport') {
+        switch (tile.terrain) {
+          case 'Road':
+          case 'Bridge':
+            moveCost = 1;
+            break;
+          case 'Plains':
+            moveCost = 2;
+            break;
+          case 'Forest':
+          case 'Snow':
+          case 'Desert':
+            moveCost = 3;
+            break;
+          default:
+            // Use default terrain movement cost for other terrains
+            moveCost = terrainStats.movementCost.Vehicle ?? terrainStats.movementCost.default;
+            break;
+        }
+      }
+      
       if (moveCost === Infinity) continue;
 
       const tentativeGScore = (gScore.get(currentKey) ?? 0) + moveCost;

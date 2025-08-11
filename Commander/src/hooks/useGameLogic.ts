@@ -1002,7 +1002,29 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
             const tile = boardLayout.get(tileKey);
             if (tile) {
               const terrainStats = TERRAIN_STATS[tile.terrain];
-              const moveCost = terrainStats.movementCost[selectedUnit.type] ?? terrainStats.movementCost.default;
+              let moveCost = terrainStats.movementCost[selectedUnit.type] ?? terrainStats.movementCost.default;
+              
+              // Special movement costs for Transport units
+              if (selectedUnit.type === 'Transport') {
+                switch (tile.terrain) {
+                  case 'Road':
+                  case 'Bridge':
+                    moveCost = 1;
+                    break;
+                  case 'Plains':
+                    moveCost = 2;
+                    break;
+                  case 'Forest':
+                  case 'Snow':
+                  case 'Desert':
+                    moveCost = 3;
+                    break;
+                  default:
+                    // Use default terrain movement cost for other terrains
+                    moveCost = terrainStats.movementCost.Vehicle ?? terrainStats.movementCost.default;
+                    break;
+                }
+              }
               if (moveCost !== Infinity) {
                 fuelCost += moveCost;
               }
@@ -1055,7 +1077,110 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     }
   }, [gameState, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack, handleAttackWithWeapon, saveStateToHistory, boardLayout]);
 
-  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture') => {
+  // Material system for Engineering vehicles
+  const consumeMaterial = useCallback((unit: Unit, amount: number): Unit | null => {
+    const materialWeapon = unit.weapons?.find(w => w.type === '資材');
+    if (!materialWeapon || materialWeapon.ammunition < amount) {
+      return null; // Not enough materials
+    }
+    
+    const updatedWeapons = unit.weapons?.map(w => 
+      w.type === '資材' 
+        ? { ...w, ammunition: w.ammunition - amount }
+        : w
+    );
+    
+    return { ...unit, weapons: updatedWeapons };
+  }, []);
+
+  const handleMaterialAction = useCallback((
+    action: 'enhance_city' | 'build_bridge' | 'build_fortress', 
+    materialAmount?: number
+  ) => {
+    if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
+    
+    const currentTile = boardLayout.get(coordToString(selectedUnit));
+    if (!currentTile) return;
+    
+    let requiredMaterials = 0;
+    let canPerformAction = false;
+    
+    switch (action) {
+      case 'enhance_city':
+        // Check if on capturable terrain owned by same team
+        canPerformAction = (currentTile.terrain === 'City' || 
+                          currentTile.terrain === 'Capital' || 
+                          currentTile.terrain === 'Airport' || 
+                          currentTile.terrain === 'Port') && 
+                         currentTile.owner === selectedUnit.team;
+        requiredMaterials = materialAmount || 1;
+        break;
+      case 'build_bridge':
+        canPerformAction = currentTile.terrain === 'River';
+        requiredMaterials = 2;
+        break;
+      case 'build_fortress':
+        canPerformAction = currentTile.terrain === 'Plains';
+        requiredMaterials = 1;
+        break;
+    }
+    
+    if (!canPerformAction) return;
+    
+    // Check if unit has enough materials
+    const materialWeapon = selectedUnit.weapons?.find(w => w.type === '資材');
+    if (!materialWeapon || materialWeapon.ammunition < requiredMaterials) {
+      return;
+    }
+    
+    saveStateToHistory();
+    
+    // Consume materials
+    const updatedUnit = consumeMaterial(selectedUnit, requiredMaterials);
+    if (!updatedUnit) return;
+    
+    // Apply terrain/building effects
+    const newBoardLayout = new Map(boardLayout);
+    const tileKey = coordToString(selectedUnit);
+    
+    switch (action) {
+      case 'enhance_city':
+        if (materialAmount && materialAmount > 0) {
+          const hpIncrease = materialAmount * 5;
+          const newMaxHp = (currentTile.maxHp || CITY_HP) + hpIncrease;
+          const newHp = Math.min(newMaxHp, (currentTile.hp || 0) + hpIncrease);
+          newBoardLayout.set(tileKey, { 
+            ...currentTile, 
+            hp: newHp, 
+            maxHp: newMaxHp 
+          });
+        }
+        break;
+      case 'build_bridge':
+        newBoardLayout.set(tileKey, { 
+          ...currentTile, 
+          terrain: 'Bridge' 
+        });
+        break;
+      case 'build_fortress':
+        newBoardLayout.set(tileKey, { 
+          ...currentTile, 
+          terrain: 'Fortress',
+          owner: selectedUnit.team,
+          hp: CITY_HP,
+          maxHp: CITY_HP
+        });
+        break;
+    }
+    
+    setBoardLayout(newBoardLayout);
+    setUnits(units.map(u => u.id === selectedUnit.id ? 
+      { ...updatedUnit, moved: true, attacked: true } : u
+    ));
+    setSelectedUnitId(null);
+  }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial]);
+
+  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress', materialAmount?: number) => {
     if (!selectedUnit) return;
 
     if (action === 'wait') {
@@ -1084,6 +1209,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
         setSelectedUnitId(null);
       }
+    } else if (action === 'enhance_city' || action === 'build_bridge' || action === 'build_fortress') {
+      handleMaterialAction(action, materialAmount);
     } else if (action === 'undo') {
       if (history.length > 0) {
         const lastState = history[history.length - 1];
@@ -1177,6 +1304,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     handleEndTurn,
     handleHexClick,
     handleAction,
+    handleMaterialAction,
     setHoveredHex,
     setBattleReport,
     weaponSelectionState,

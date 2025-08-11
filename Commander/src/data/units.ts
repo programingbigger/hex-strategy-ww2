@@ -113,6 +113,8 @@ const getUnitCategory = (type: UnitType): UnitCategory => {
     case 'ArmoredCar': return 'armor';
     case 'Artillery': return 'artillery';
     case 'AntiTank': return 'antitank';
+    case 'Engineer':
+    case 'Transport': return 'support';
     default: return 'infantry';
   }
 };
@@ -147,15 +149,27 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
       };
     case 'Artillery':
       return {
-        maxHp: 12, attack: 10, defense: 2, movement: 2,
+        maxHp: 12, attack: 10, defense: 2, movement: 1,
         attackRange: { min: 2, max: 5 }, canCounterAttack: false,
         unitClass: 'Vehicle', maxFuel: 30
       };
     case 'AntiTank':
       return {
-        maxHp: 8, attack: 6, defense: 3, movement: 2,
+        maxHp: 8, attack: 6, defense: 3, movement: 1,
         attackRange: { min: 1, max: 2 }, canCounterAttack: true,
         unitClass: 'Infantry', maxFuel: 40
+      };
+    case 'Engineer':
+      return {
+        maxHp: 10, attack: 3, defense: 1, movement: 4,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 40
+      };
+    case 'Transport':
+      return {
+        maxHp: 15, attack: 5, defense: 4, movement: 8,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 60
       };
   }
 };
@@ -189,7 +203,7 @@ export const getUnitStats = (type: UnitType, team: 'Blue' | 'Red' = 'Blue'): Uni
 // Legacy unit creation functions - kept for backward compatibility
 export const getPlayerStartingUnits = (): Unit[] => {
   // Updated unit selection as per requirements:
-  // 歩兵:2, 戦車:2, 装甲車:2, 砲兵:1, 対戦車:1
+  // 歩兵:2, 戦車:2, 装甲車:2, 砲兵:1, 対戦車:1, 工作車:1, 輸送車:1
   return [
     createUnit('player-infantry-1', 'Infantry', 'Blue'),
     createUnit('player-infantry-2', 'Infantry', 'Blue'),
@@ -198,9 +212,11 @@ export const getPlayerStartingUnits = (): Unit[] => {
     createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
     createUnit('player-armored-2', 'ArmoredCar', 'Blue'),
     createUnit('player-artillery-1', 'Artillery', 'Blue'),
-    createUnit('player-antitank-1', 'AntiTank', 'Blue')
+    createUnit('player-antitank-1', 'AntiTank', 'Blue'),
+    createUnit('player-engineer-1', 'Engineer', 'Blue'),
+    createUnit('player-transport-1', 'Transport', 'Blue')
   ];
-};
+};;
 
 export const getEnemyStartingUnits = (): Unit[] => {
   // Try to use new army system first, fallback to legacy if needed
