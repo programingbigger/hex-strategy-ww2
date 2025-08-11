@@ -194,6 +194,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             selectedUnitId={selectedUnitForDeployment?.id || null}
             reachableTiles={selectedUnitForDeployment ? deployableTiles : []}
             attackableTiles={[]}
+            engineerTargetTiles={[]}
             onHexClick={handleHexClick}
             onHexHover={(coord) => {
               const unit = boardUnits.find(u => u.x === coord.x && u.y === coord.y);

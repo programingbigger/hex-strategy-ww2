@@ -11,6 +11,7 @@ interface GameBoardProps {
   selectedUnitId: string | null;
   reachableTiles: Coordinate[];
   attackableTiles: Coordinate[];
+  engineerTargetTiles: Coordinate[];
   onHexClick: (coord: Coordinate) => void;
   onHexHover: (coord: Coordinate) => void;
   onHexLeave: () => void;
@@ -22,6 +23,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   selectedUnitId,
   reachableTiles,
   attackableTiles,
+  engineerTargetTiles,
   onHexClick,
   onHexHover,
   onHexLeave
@@ -37,6 +39,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       const isSelected = selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y;
       const isReachable = reachableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       const isAttackable = attackableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
+      const isEngineerTarget = engineerTargetTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       
       hexes.push(
         <Hexagon
@@ -47,6 +50,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
           isSelected={isSelected}
           isReachable={isReachable}
           isAttackable={isAttackable}
+          isEngineerTarget={isEngineerTarget}
           onClick={onHexClick}
           onMouseEnter={onHexHover}
           onMouseLeave={onHexLeave}

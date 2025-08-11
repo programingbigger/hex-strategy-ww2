@@ -1,17 +1,21 @@
 import React from 'react';
 import { Unit, Tile } from '../../types';
 import { WeaponInfoPanel } from './WeaponInfoPanel';
+import { getNeighbors } from '../../utils/map';
+import { coordToString } from '../../utils/map';
 
 interface SelectedUnitPanelProps {
   selectedUnit?: Unit;
   selectedUnitTile: Tile | null;
-  onAction: (action: 'wait' | 'undo' | 'capture') => void;
+  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge', materialAmount?: number) => void;
+  boardLayout: Map<string, Tile>;
 }
 
 const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   selectedUnit,
   selectedUnitTile,
-  onAction
+  onAction,
+  boardLayout
 }) => {
   // Helper function to check if terrain is capturable
   const isCapturableTerrain = (terrain: string): boolean => {
@@ -24,6 +28,40 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                     selectedUnitTile?.owner !== selectedUnit.team;
   
   const canUndo = selectedUnit?.moved && !selectedUnit?.attacked;
+  // Engineer action conditions
+  const isEngineer = selectedUnit?.type === 'Engineer';
+  const materialWeapon = selectedUnit?.weapons?.find(w => w.type === '資材');
+  const availableMaterials = materialWeapon?.ammunition || 0;
+  
+  const canEnhanceCity = isEngineer && selectedUnitTile && 
+    (selectedUnitTile.terrain === 'City' || selectedUnitTile.terrain === 'Capital' || 
+     selectedUnitTile.terrain === 'Airport' || selectedUnitTile.terrain === 'Port') &&
+    selectedUnitTile.owner === selectedUnit?.team && availableMaterials > 0;
+    
+  // Helper function to check if there's a specific terrain within 1 hex
+  const hasTerrainNearby = (terrainType: string): boolean => {
+    if (!selectedUnit || !boardLayout) return false;
+    
+    // Check current tile first
+    if (selectedUnitTile?.terrain === terrainType) return true;
+    
+    // Check neighboring tiles
+    const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
+    return neighbors.some(coord => {
+      const tile = boardLayout.get(coordToString(coord));
+      return tile?.terrain === terrainType;
+    });
+  };
+
+  const canBuildBridge = isEngineer && hasTerrainNearby('River') && availableMaterials >= 2;
+    
+  const canBuildFortress = isEngineer && selectedUnitTile && 
+    selectedUnitTile.terrain === 'Plains' && availableMaterials >= 1;
+  
+  const canDestroyFortress = isEngineer && selectedUnitTile && 
+    selectedUnitTile.terrain === 'Fortress' && availableMaterials >= 2;
+    
+  const canDestroyBridge = isEngineer && hasTerrainNearby('Bridge') && availableMaterials >= 2;
 
   // Progress bar component
   const ProgressBar: React.FC<{ current: number; max: number; color: string }> = ({ current, max, color }) => {
@@ -240,6 +278,105 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                 >
                   Capture
                 </button>
+              )}
+
+              {/* Engineer Actions - Always shown for Engineers */}
+              {isEngineer && (
+                <>
+                  {/* Enhance City Button */}
+                  <button
+                    onClick={() => onAction('enhance_city')}
+                    disabled={!canEnhanceCity}
+                    style={{
+                      padding: '10px 15px',
+                      background: canEnhanceCity ? '#28a745' : '#ccc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: canEnhanceCity ? 'pointer' : 'not-allowed',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      opacity: canEnhanceCity ? 1 : 0.6
+                    }}
+                  >
+                    🏗️ 増築 (1資材)
+                  </button>
+
+                  {/* Build Bridge Button */}
+                  <button
+                    onClick={() => onAction('build_bridge')}
+                    disabled={!canBuildBridge}
+                    style={{
+                      padding: '10px 15px',
+                      background: canBuildBridge ? '#17a2b8' : '#ccc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: canBuildBridge ? 'pointer' : 'not-allowed',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      opacity: canBuildBridge ? 1 : 0.6
+                    }}
+                  >
+                    🌉 架橋 (2資材)
+                  </button>
+
+                  {/* Build Fortress Button */}
+                  <button
+                    onClick={() => onAction('build_fortress')}
+                    disabled={!canBuildFortress}
+                    style={{
+                      padding: '10px 15px',
+                      background: canBuildFortress ? '#6f42c1' : '#ccc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: canBuildFortress ? 'pointer' : 'not-allowed',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      opacity: canBuildFortress ? 1 : 0.6
+                    }}
+                  >
+                    🏰 要塞化 (1資材)
+                  </button>
+                  {/* Destroy Fortress Button */}
+                  <button
+                    onClick={() => onAction('destroy_fortress')}
+                    disabled={!canDestroyFortress}
+                    style={{
+                      padding: '10px 15px',
+                      background: canDestroyFortress ? '#dc3545' : '#ccc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: canDestroyFortress ? 'pointer' : 'not-allowed',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      opacity: canDestroyFortress ? 1 : 0.6
+                    }}
+                  >
+                    💥 要塞無力化 (2資材)
+                  </button>
+
+                  {/* Destroy Bridge Button */}
+                  <button
+                    onClick={() => onAction('destroy_bridge')}
+                    disabled={!canDestroyBridge}
+                    style={{
+                      padding: '10px 15px',
+                      background: canDestroyBridge ? '#ffc107' : '#ccc',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: canDestroyBridge ? 'pointer' : 'not-allowed',
+                      fontSize: '18px',
+                      fontWeight: '500',
+                      opacity: canDestroyBridge ? 1 : 0.6
+                    }}
+                  >
+                    ⛏️ 橋破壊 (2資材)
+                  </button>
+                </>
               )}
             </div>
           </div>

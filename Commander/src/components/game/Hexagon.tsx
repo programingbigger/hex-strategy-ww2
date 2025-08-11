@@ -9,6 +9,7 @@ interface HexagonProps {
   isSelected?: boolean;
   isReachable?: boolean;
   isAttackable?: boolean;
+  isEngineerTarget?: boolean;
   onClick: (coord: Coordinate) => void;
   onMouseEnter: (coord: Coordinate) => void;
   onMouseLeave: () => void;
@@ -21,6 +22,7 @@ const Hexagon: React.FC<HexagonProps> = ({
   isSelected = false,
   isReachable = false,
   isAttackable = false,
+  isEngineerTarget = false,
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -215,6 +217,39 @@ const Hexagon: React.FC<HexagonProps> = ({
             fill="none"
           />
         );
+      case 'Engineer':
+        // Engineering symbol: Square with crossed diagonal lines (wrench/gear-like)
+        return (
+          <g>
+            <rect
+              x={-symbolSize * 0.3}
+              y={-symbolSize * 0.3}
+              width={symbolSize * 0.6}
+              height={symbolSize * 0.6}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              fill="none"
+            />
+            <line
+              x1={-symbolSize * 0.2}
+              y1={-symbolSize * 0.2}
+              x2={symbolSize * 0.2}
+              y2={symbolSize * 0.2}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+            <line
+              x1={symbolSize * 0.2}
+              y1={-symbolSize * 0.2}
+              x2={-symbolSize * 0.2}
+              y2={symbolSize * 0.2}
+              stroke={symbolColor}
+              strokeWidth={strokeWidth}
+              strokeLinecap="round"
+            />
+          </g>
+        );
       default:
         return (
           <text
@@ -245,6 +280,9 @@ const Hexagon: React.FC<HexagonProps> = ({
   
   if (isSelected) {
     strokeColor = '#FFD700';
+    strokeWidth = 3;
+  } else if (isEngineerTarget) {
+    strokeColor = '#FF8C00'; // Orange for engineer targets
     strokeWidth = 3;
   } else if (isReachable) {
     strokeColor = '#00FF00';

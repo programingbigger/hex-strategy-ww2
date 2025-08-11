@@ -25,7 +25,8 @@ import {
   calculateReachableTiles,
   coordToString,
   getDistance,
-  findPath
+  findPath,
+  getNeighbors
 } from '../utils/map';
 import {
   getWeaponsInRange,
@@ -95,6 +96,28 @@ export const useGameLogic = () => {
     attacker: Unit | null;
     target: Unit | null;
   }>({ isOpen: false, attacker: null, target: null });
+
+  // Engineer action selection state
+  const [engineerActionState, setEngineerActionState] = useState<{
+    mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    unit: Unit | null;
+    availableTargets: Coordinate[];
+  }>({ mode: 'none', unit: null, availableTargets: [] });
+
+  // Engineer action confirmation state
+  const [engineerConfirmState, setEngineerConfirmState] = useState<{
+    isOpen: boolean;
+    actionType: 'build_bridge' | 'destroy_bridge' | null;
+    targetCoord: Coordinate | null;
+    targetTile: Tile | null;
+    materialCost: number;
+  }>({ 
+    isOpen: false, 
+    actionType: null, 
+    targetCoord: null, 
+    targetTile: null, 
+    materialCost: 0 
+  });
 
   // 🎯 Battle Log State
   const [battleLog, setBattleLog] = useState<BattleLogState>({
@@ -244,6 +267,10 @@ export const useGameLogic = () => {
 
   const reachableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.moved) return [];
+    
+    // Don't show movement tiles during engineer action selection
+    if (engineerActionState.mode !== 'none') return [];
+    
     return calculateReachableTiles(
       { x: selectedUnit.x, y: selectedUnit.y }, 
       selectedUnit.movement, 
@@ -252,7 +279,7 @@ export const useGameLogic = () => {
       units, 
       activeTeam
     );
-  }, [selectedUnit, boardLayout, units, activeTeam]);
+  }, [selectedUnit, boardLayout, units, activeTeam, engineerActionState.mode]);
 
   const attackableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.attacked) return [];
@@ -292,6 +319,11 @@ export const useGameLogic = () => {
       units.some(u => u.x === coord.x && u.y === coord.y && u.team !== selectedUnit.team)
     );
   }, [selectedUnit, units, boardLayout]);
+
+  // Engineer target tiles (for highlighting during selection mode)
+  const engineerTargetTiles = useMemo(() => {
+    return engineerActionState.availableTargets;
+  }, [engineerActionState.availableTargets]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleEndTurn = useCallback(() => {
@@ -933,6 +965,12 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
   const handleHexClick = useCallback((coord: Coordinate) => {
     if (gameState === 'gameOver') return;
 
+    // Handle engineer action target selection
+    if (engineerActionState.mode !== 'none') {
+      handleEngineerTargetSelect(coord);
+      return;
+    }
+
     const unitOnHex = units.find(u => u.x === coord.x && u.y === coord.y);
 
     if (selectedUnit) {
@@ -1077,6 +1115,160 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     }
   }, [gameState, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack, handleAttackWithWeapon, saveStateToHistory, boardLayout]);
 
+  // Engineer action target selection functions
+  const getAvailableBridgeBuildTargets = useCallback((unit: Unit): Coordinate[] => {
+    if (!unit || unit.type !== 'Engineer') return [];
+    
+    const targets: Coordinate[] = [];
+    const unitCoord = { x: unit.x, y: unit.y };
+    
+    // Check current position
+    const currentTile = boardLayout.get(coordToString(unitCoord));
+    if (currentTile?.terrain === 'River') {
+      targets.push(unitCoord);
+    }
+    
+    // Check neighboring positions for Rivers
+    const neighbors = getNeighbors(unitCoord);
+    for (const coord of neighbors) {
+      const tile = boardLayout.get(coordToString(coord));
+      if (tile?.terrain === 'River') {
+        targets.push(coord);
+      }
+    }
+    
+    return targets;
+  }, [boardLayout]);
+
+  const getAvailableBridgeDestroyTargets = useCallback((unit: Unit): Coordinate[] => {
+    if (!unit || unit.type !== 'Engineer') return [];
+    
+    const targets: Coordinate[] = [];
+    const unitCoord = { x: unit.x, y: unit.y };
+    
+    // Check current position
+    const currentTile = boardLayout.get(coordToString(unitCoord));
+    if (currentTile?.terrain === 'Bridge') {
+      targets.push(unitCoord);
+    }
+    
+    // Check neighboring positions for Bridges
+    const neighbors = getNeighbors(unitCoord);
+    for (const coord of neighbors) {
+      const tile = boardLayout.get(coordToString(coord));
+      if (tile?.terrain === 'Bridge') {
+        targets.push(coord);
+      }
+    }
+    
+    return targets;
+  }, [boardLayout]);
+
+  // Engineer action handlers
+  const startEngineerAction = useCallback((actionType: 'build_bridge' | 'destroy_bridge') => {
+    if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
+    
+    const materialWeapon = selectedUnit.weapons?.find(w => w.type === '資材');
+    const availableMaterials = materialWeapon?.ammunition || 0;
+    
+    if (availableMaterials < 2) return; // Both actions require 2 materials
+    
+    let targets: Coordinate[] = [];
+    let mode: 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    
+    if (actionType === 'build_bridge') {
+      targets = getAvailableBridgeBuildTargets(selectedUnit);
+      mode = 'selecting_bridge_build';
+    } else {
+      targets = getAvailableBridgeDestroyTargets(selectedUnit);
+      mode = 'selecting_bridge_destroy';
+    }
+    
+    if (targets.length === 0) return; // No valid targets
+    
+    setEngineerActionState({
+      mode,
+      unit: selectedUnit,
+      availableTargets: targets
+    });
+  }, [selectedUnit, getAvailableBridgeBuildTargets, getAvailableBridgeDestroyTargets]);
+
+  const handleEngineerTargetSelect = useCallback((coord: Coordinate) => {
+    if (engineerActionState.mode === 'none' || !engineerActionState.unit) return;
+    
+    // Check if the clicked coordinate is a valid target
+    const isValidTarget = engineerActionState.availableTargets.some(
+      target => target.x === coord.x && target.y === coord.y
+    );
+    
+    if (!isValidTarget) {
+      // Cancel selection if clicked outside valid targets
+      setEngineerActionState({ mode: 'none', unit: null, availableTargets: [] });
+      return;
+    }
+    
+    const targetTile = boardLayout.get(coordToString(coord));
+    if (!targetTile) return;
+    
+    // Show confirmation dialog
+    const actionType = engineerActionState.mode === 'selecting_bridge_build' ? 'build_bridge' : 'destroy_bridge';
+    
+    setEngineerConfirmState({
+      isOpen: true,
+      actionType,
+      targetCoord: coord,
+      targetTile,
+      materialCost: 2
+    });
+    
+    // Reset selection mode
+    setEngineerActionState({ mode: 'none', unit: null, availableTargets: [] });
+  }, [engineerActionState, boardLayout]);
+
+  const confirmEngineerAction = useCallback(() => {
+    if (!engineerConfirmState.isOpen || !engineerConfirmState.targetCoord || !engineerConfirmState.actionType) return;
+    
+    const { actionType, targetCoord } = engineerConfirmState;
+    
+    // Execute the action with specific target coordinate
+    handleMaterialActionWithTarget(actionType, targetCoord);
+    
+    // Close confirmation dialog
+    setEngineerConfirmState({ 
+      isOpen: false, 
+      actionType: null, 
+      targetCoord: null, 
+      targetTile: null, 
+      materialCost: 0 
+    });
+  }, [engineerConfirmState]);
+
+  const cancelEngineerAction = useCallback(() => {
+    setEngineerConfirmState({ 
+      isOpen: false, 
+      actionType: null, 
+      targetCoord: null, 
+      targetTile: null, 
+      materialCost: 0 
+    });
+    
+    // Also cancel any active selection mode
+    setEngineerActionState({ 
+      mode: 'none', 
+      unit: null, 
+      availableTargets: [] 
+    });
+  }, []);
+
+  // Function to cancel engineer selection mode
+  const cancelEngineerSelectionMode = useCallback(() => {
+    setEngineerActionState({ 
+      mode: 'none', 
+      unit: null, 
+      availableTargets: [] 
+    });
+  }, []);
+
   // Material system for Engineering vehicles
   const consumeMaterial = useCallback((unit: Unit, amount: number): Unit | null => {
     const materialWeapon = unit.weapons?.find(w => w.type === '資材');
@@ -1094,7 +1286,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
   }, []);
 
   const handleMaterialAction = useCallback((
-    action: 'enhance_city' | 'build_bridge' | 'build_fortress', 
+    action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge', 
     materialAmount?: number
   ) => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
@@ -1104,6 +1296,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     
     let requiredMaterials = 0;
     let canPerformAction = false;
+    let targetTile = currentTile;
+    let targetCoord = { x: selectedUnit.x, y: selectedUnit.y };
     
     switch (action) {
       case 'enhance_city':
@@ -1113,15 +1307,57 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
                           currentTile.terrain === 'Airport' || 
                           currentTile.terrain === 'Port') && 
                          currentTile.owner === selectedUnit.team;
-        requiredMaterials = materialAmount || 1;
+        requiredMaterials = 1; // Fixed to 1 material
         break;
       case 'build_bridge':
-        canPerformAction = currentTile.terrain === 'River';
+        // Check if there's a River within 1 hex (including current position)
         requiredMaterials = 2;
+        if (currentTile.terrain === 'River') {
+          canPerformAction = true;
+          targetTile = currentTile;
+          targetCoord = { x: selectedUnit.x, y: selectedUnit.y };
+        } else {
+          // Check neighboring tiles for River
+          const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
+          for (const coord of neighbors) {
+            const tile = boardLayout.get(coordToString(coord));
+            if (tile?.terrain === 'River') {
+              canPerformAction = true;
+              targetTile = tile;
+              targetCoord = coord;
+              break;
+            }
+          }
+        }
         break;
       case 'build_fortress':
         canPerformAction = currentTile.terrain === 'Plains';
         requiredMaterials = 1;
+        break;
+      case 'destroy_fortress':
+        canPerformAction = currentTile.terrain === 'Fortress';
+        requiredMaterials = 2;
+        break;
+      case 'destroy_bridge':
+        // Check if there's a Bridge within 1 hex (including current position)
+        requiredMaterials = 2;
+        if (currentTile.terrain === 'Bridge') {
+          canPerformAction = true;
+          targetTile = currentTile;
+          targetCoord = { x: selectedUnit.x, y: selectedUnit.y };
+        } else {
+          // Check neighboring tiles for Bridge
+          const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
+          for (const coord of neighbors) {
+            const tile = boardLayout.get(coordToString(coord));
+            if (tile?.terrain === 'Bridge') {
+              canPerformAction = true;
+              targetTile = tile;
+              targetCoord = coord;
+              break;
+            }
+          }
+        }
         break;
     }
     
@@ -1141,24 +1377,23 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     
     // Apply terrain/building effects
     const newBoardLayout = new Map(boardLayout);
-    const tileKey = coordToString(selectedUnit);
+    const tileKey = coordToString(targetCoord);
     
     switch (action) {
       case 'enhance_city':
-        if (materialAmount && materialAmount > 0) {
-          const hpIncrease = materialAmount * 5;
-          const newMaxHp = (currentTile.maxHp || CITY_HP) + hpIncrease;
-          const newHp = Math.min(newMaxHp, (currentTile.hp || 0) + hpIncrease);
-          newBoardLayout.set(tileKey, { 
-            ...currentTile, 
-            hp: newHp, 
-            maxHp: newMaxHp 
-          });
-        }
+        // Fixed enhancement: +5 HP for 1 material
+        const hpIncrease = 5;
+        const newMaxHp = (currentTile.maxHp || CITY_HP) + hpIncrease;
+        const newHp = Math.min(newMaxHp, (currentTile.hp || 0) + hpIncrease);
+        newBoardLayout.set(tileKey, { 
+          ...currentTile, 
+          hp: newHp, 
+          maxHp: newMaxHp 
+        });
         break;
       case 'build_bridge':
         newBoardLayout.set(tileKey, { 
-          ...currentTile, 
+          ...targetTile, 
           terrain: 'Bridge' 
         });
         break;
@@ -1171,6 +1406,21 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
           maxHp: CITY_HP
         });
         break;
+      case 'destroy_fortress':
+        newBoardLayout.set(tileKey, { 
+          ...currentTile, 
+          terrain: 'Plains',
+          owner: undefined,
+          hp: undefined,
+          maxHp: undefined
+        });
+        break;
+      case 'destroy_bridge':
+        newBoardLayout.set(tileKey, { 
+          ...targetTile, 
+          terrain: 'River'
+        });
+        break;
     }
     
     setBoardLayout(newBoardLayout);
@@ -1180,7 +1430,64 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     setSelectedUnitId(null);
   }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial]);
 
-  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress', materialAmount?: number) => {
+  // New material action handler with specific target coordinate
+  const handleMaterialActionWithTarget = useCallback((
+    action: 'build_bridge' | 'destroy_bridge',
+    targetCoord: Coordinate
+  ) => {
+    if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
+    
+    const targetTile = boardLayout.get(coordToString(targetCoord));
+    if (!targetTile) return;
+    
+    const requiredMaterials = 2; // Both actions require 2 materials
+    
+    // Validate action and target terrain
+    let canPerformAction = false;
+    if (action === 'build_bridge' && targetTile.terrain === 'River') {
+      canPerformAction = true;
+    } else if (action === 'destroy_bridge' && targetTile.terrain === 'Bridge') {
+      canPerformAction = true;
+    }
+    
+    if (!canPerformAction) return;
+    
+    // Check if unit has enough materials
+    const materialWeapon = selectedUnit.weapons?.find(w => w.type === '資材');
+    if (!materialWeapon || materialWeapon.ammunition < requiredMaterials) {
+      return;
+    }
+    
+    saveStateToHistory();
+    
+    // Consume materials
+    const updatedUnit = consumeMaterial(selectedUnit, requiredMaterials);
+    if (!updatedUnit) return;
+    
+    // Apply terrain changes
+    const newBoardLayout = new Map(boardLayout);
+    const tileKey = coordToString(targetCoord);
+    
+    if (action === 'build_bridge') {
+      newBoardLayout.set(tileKey, { 
+        ...targetTile, 
+        terrain: 'Bridge' 
+      });
+    } else if (action === 'destroy_bridge') {
+      newBoardLayout.set(tileKey, { 
+        ...targetTile, 
+        terrain: 'River'
+      });
+    }
+    
+    setBoardLayout(newBoardLayout);
+    setUnits(units.map(u => u.id === selectedUnit.id ? 
+      { ...updatedUnit, moved: true, attacked: true } : u
+    ));
+    setSelectedUnitId(null);
+  }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial]);
+
+  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge', materialAmount?: number) => {
     if (!selectedUnit) return;
 
     if (action === 'wait') {
@@ -1209,8 +1516,14 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
         setSelectedUnitId(null);
       }
-    } else if (action === 'enhance_city' || action === 'build_bridge' || action === 'build_fortress') {
-      handleMaterialAction(action, materialAmount);
+    } else if (action === 'build_bridge') {
+      // Start bridge building target selection
+      startEngineerAction('build_bridge');
+    } else if (action === 'destroy_bridge') {
+      // Start bridge destruction target selection  
+      startEngineerAction('destroy_bridge');
+    } else if (action === 'enhance_city' || action === 'build_fortress' || action === 'destroy_fortress') {
+      handleMaterialAction(action);
     } else if (action === 'undo') {
       if (history.length > 0) {
         const lastState = history[history.length - 1];
@@ -1299,6 +1612,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     weather,
     reachableTiles,
     attackableTiles,
+    engineerTargetTiles,
     selectedUnitTile,
     loadGame,
     handleEndTurn,
@@ -1310,6 +1624,13 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     weaponSelectionState,
     handleWeaponSelect,
     handleWeaponSelectionClose,
+    
+    // Engineer action system
+    engineerActionState,
+    engineerConfirmState,
+    confirmEngineerAction,
+    cancelEngineerAction,
+    cancelEngineerSelectionMode,
     
     // 🎯 Battle Log System
     battleLog,

@@ -15,6 +15,7 @@ import RainEffect from '../components/game/RainEffect';
 import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
 import BattleLogPanel from '../components/game/BattleLogPanel';
 import { LogPanel } from '../components/debug/LogPanel';
+import EngineerActionConfirmModal from '../components/game/EngineerActionConfirmModal';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -37,6 +38,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     weather,
     reachableTiles,
     attackableTiles,
+    engineerTargetTiles,
     selectedUnitTile,
     loadGame,
     handleEndTurn,
@@ -48,6 +50,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     handleWeaponSelect,
     handleWeaponSelectionClose,
     battleLog,
+    engineerConfirmState,
+    confirmEngineerAction,
+    cancelEngineerAction,
+    engineerActionState,
+    cancelEngineerSelectionMode,
   } = useGameLogic();
 
   // Log panel state
@@ -69,13 +76,15 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       setIsEndTurnConfirmOpen(true);
     }
     
-    // Esc to close modals
+    // Esc to close modals and cancel engineer selection
     if (event.key === 'Escape') {
       if (isEndTurnConfirmOpen) {
         setIsEndTurnConfirmOpen(false);
-      }
-      if (isTurnChangeModalOpen) {
+      } else if (isTurnChangeModalOpen) {
         setIsTurnChangeModalOpen(false);
+      } else if (engineerActionState.mode !== 'none') {
+        // Cancel engineer selection mode
+        cancelEngineerSelectionMode();
       }
     }
     
@@ -83,7 +92,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     if (isTurnChangeModalOpen) {
       setIsTurnChangeModalOpen(false);
     }
-  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen]);
+  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode]);
 
   // Add keyboard event listeners
   useEffect(() => {
@@ -245,6 +254,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             selectedUnitId={selectedUnitId}
             reachableTiles={reachableTiles}
             attackableTiles={attackableTiles}
+            engineerTargetTiles={engineerTargetTiles}
             onHexClick={handleHexClick}
             onHexHover={setHoveredHex}
             onHexLeave={() => setHoveredHex(null)}
@@ -268,6 +278,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             selectedUnit={selectedUnit}
             selectedUnitTile={selectedUnitTile}
             onAction={handleAction}
+            boardLayout={boardLayout}
           />
         </div>
 
@@ -324,6 +335,17 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onClose={handleWeaponSelectionClose}
         />
       )}
+
+      {/* Engineer Action Confirmation Modal */}
+      <EngineerActionConfirmModal
+        isOpen={engineerConfirmState.isOpen}
+        actionType={engineerConfirmState.actionType}
+        targetCoord={engineerConfirmState.targetCoord}
+        targetTile={engineerConfirmState.targetTile}
+        materialCost={engineerConfirmState.materialCost}
+        onConfirm={confirmEngineerAction}
+        onCancel={cancelEngineerAction}
+      />
 
       {/* Debug Log Panel */}
       <LogPanel
