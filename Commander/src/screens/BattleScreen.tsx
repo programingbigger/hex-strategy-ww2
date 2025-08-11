@@ -8,8 +8,9 @@ import SelectedUnitPanel from '../components/game/SelectedUnitPanel';
 import InformationPanel from '../components/game/InformationPanel';
 import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
 import TurnChangeModal from '../components/game/TurnChangeModal';
-import ShortcutsPanel from '../components/game/ShortcutsPanel';
+
 import BattleReportModal from '../components/game/BattleReportModal';
+import VictoryModal from '../components/game/VictoryModal';
 import RainEffect from '../components/game/RainEffect';
 import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
 import BattleLogPanel from '../components/game/BattleLogPanel';
@@ -55,6 +56,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   // Modal states
   const [isEndTurnConfirmOpen, setIsEndTurnConfirmOpen] = useState(false);
   const [isTurnChangeModalOpen, setIsTurnChangeModalOpen] = useState(false);
+  const [isVictoryModalOpen, setIsVictoryModalOpen] = useState(false);
+  const [victoryInfo, setVictoryInfo] = useState<{defeatedArmy?: string; winnerArmy?: string}>({});
   const [lastTurn, setLastTurn] = useState(0);
   const [lastActiveTeam, setLastActiveTeam] = useState<'Blue' | 'Red'>('Blue');
 
@@ -93,10 +96,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   // Detect turn changes
   useEffect(() => {
     if (turn !== lastTurn || activeTeam !== lastActiveTeam) {
-      // Only show modal if it's not the first load
-      if (lastTurn !== 0) {
-        setIsTurnChangeModalOpen(true);
-      }
+      // Show modal for all turn changes, including the first turn
+      setIsTurnChangeModalOpen(true);
       setLastTurn(turn);
       setLastActiveTeam(activeTeam);
     }
@@ -115,6 +116,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const handleTurnChangeClose = useCallback(() => {
     setIsTurnChangeModalOpen(false);
   }, []);
+
+  const handleVictoryModalClose = useCallback(() => {
+    setIsVictoryModalOpen(false);
+    onNavigate('title');
+  }, [onNavigate]);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -189,10 +195,15 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
 
   useEffect(() => {
     if (battleGameState === 'gameOver' && winner) {
+      // Determine defeated army and winner
+      const defeatedArmy = winner === 'Blue' ? 'Red' : 'Blue';
+      const winnerArmy = winner;
+      
+      setVictoryInfo({ defeatedArmy, winnerArmy });
+      setIsVictoryModalOpen(true);
       setGameState(prev => ({ ...prev, winner }));
-      onNavigate('result');
     }
-  }, [battleGameState, winner, setGameState, onNavigate]);
+  }, [battleGameState, winner, setGameState]);
 
   const blueUnits = units.filter(u => u.team === 'Blue').length;
   const redUnits = units.filter(u => u.team === 'Red').length;
@@ -280,13 +291,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             boardLayout={boardLayout}
             units={units}
             onAction={handleAction}
-            onEndTurn={() => setIsEndTurnConfirmOpen(true)}
           />
         </div>
       </div>
 
-      {/* Shortcuts Panel */}
-      <ShortcutsPanel />
 
       {/* 🎯 Battle Log Panel */}
       <BattleLogPanel
@@ -337,6 +345,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         activeTeam={activeTeam}
         weather={weather}
         onClose={handleTurnChangeClose}
+      />
+
+      {/* Victory Modal */}
+      <VictoryModal
+        isOpen={isVictoryModalOpen}
+        defeatedArmy={victoryInfo.defeatedArmy}
+        winnerArmy={victoryInfo.winnerArmy}
+        onClose={handleVictoryModalClose}
       />
     </div>
   );

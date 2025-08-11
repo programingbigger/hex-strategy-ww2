@@ -188,24 +188,18 @@ export const getUnitStats = (type: UnitType, team: 'Blue' | 'Red' = 'Blue'): Uni
 
 // Legacy unit creation functions - kept for backward compatibility
 export const getPlayerStartingUnits = (): Unit[] => {
-  // Try to use new army system first, fallback to legacy if needed
-  try {
-    return getPlayerStartingUnitsFromArmy();
-  } catch (error) {
-    console.warn('Army system not available, falling back to legacy unit creation:', error);
-    return [
-      createUnit('player-infantry-1', 'Infantry', 'Blue'),
-      createUnit('player-infantry-2', 'Infantry', 'Blue'),
-      createUnit('player-infantry-3', 'Infantry', 'Blue'),
-      createUnit('player-infantry-4', 'Infantry', 'Blue'),
-      createUnit('player-infantry-5', 'Infantry', 'Blue'),
-      createUnit('player-tank-1', 'Tank', 'Blue'),
-      createUnit('player-tank-2', 'Tank', 'Blue'),
-      createUnit('player-tank-3', 'Tank', 'Blue'),
-      createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
-      createUnit('player-armored-2', 'ArmoredCar', 'Blue')
-    ];
-  }
+  // Updated unit selection as per requirements:
+  // 歩兵:2, 戦車:2, 装甲車:2, 砲兵:1, 対戦車:1
+  return [
+    createUnit('player-infantry-1', 'Infantry', 'Blue'),
+    createUnit('player-infantry-2', 'Infantry', 'Blue'),
+    createUnit('player-tank-1', 'Tank', 'Blue'),
+    createUnit('player-tank-2', 'Tank', 'Blue'),
+    createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
+    createUnit('player-armored-2', 'ArmoredCar', 'Blue'),
+    createUnit('player-artillery-1', 'Artillery', 'Blue'),
+    createUnit('player-antitank-1', 'AntiTank', 'Blue')
+  ];
 };
 
 export const getEnemyStartingUnits = (): Unit[] => {

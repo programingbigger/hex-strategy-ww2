@@ -261,6 +261,91 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
           </div>
         </div>
       )}
+
+      {/* SHORTCUTS Section - Always present in lower half */}
+      <div style={{
+        background: '#f8f9fa',
+        borderTop: '2px solid #ddd',
+        padding: '15px'
+      }}>
+        <h4 style={{
+          margin: '0 0 12px 0',
+          color: '#333',
+          fontSize: '16px',
+          fontWeight: 'bold',
+          borderBottom: '1px solid #ddd',
+          paddingBottom: '8px'
+        }}>
+          ⌨️ Keyboard Shortcuts
+        </h4>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '6px 0',
+            borderBottom: '1px solid #e0e0e0'
+          }}>
+            <span style={{ fontSize: '14px', color: '#666' }}>End Turn</span>
+            <kbd style={{
+              background: '#34495e',
+              color: '#ecf0f1',
+              padding: '3px 6px',
+              borderRadius: '3px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              border: '1px solid #2c3e50',
+              fontFamily: 'monospace'
+            }}>
+              Cmd+E
+            </kbd>
+          </div>
+          
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '6px 0',
+            borderBottom: '1px solid #e0e0e0'
+          }}>
+            <span style={{ fontSize: '14px', color: '#666' }}>Cancel Selection</span>
+            <kbd style={{
+              background: '#34495e',
+              color: '#ecf0f1',
+              padding: '3px 6px',
+              borderRadius: '3px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              border: '1px solid #2c3e50',
+              fontFamily: 'monospace'
+            }}>
+              Esc
+            </kbd>
+          </div>
+          
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '6px 0'
+          }}>
+            <span style={{ fontSize: '14px', color: '#666' }}>Center on Selected</span>
+            <kbd style={{
+              background: '#34495e',
+              color: '#ecf0f1',
+              padding: '3px 6px',
+              borderRadius: '3px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              border: '1px solid #2c3e50',
+              fontFamily: 'monospace'
+            }}>
+              Space
+            </kbd>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -10,7 +10,6 @@ interface InformationPanelProps {
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onAction: (action: 'wait' | 'undo' | 'capture') => void;
-  onEndTurn?: () => void;
 }
 
 const InformationPanel: React.FC<InformationPanelProps> = ({
@@ -19,8 +18,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
   hoveredHex,
   boardLayout,
   units,
-  onAction,
-  onEndTurn
+  onAction
 }) => {
   const coordToString = (coord: Coordinate) => `${coord.x},${coord.y}`;
   
@@ -379,45 +377,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
         </div>
       )}
       
-      {/* End Turn Button - Always at bottom */}
-      {onEndTurn && (
-        <div style={{
-          padding: '15px',
-          borderTop: '2px solid #ddd',
-          background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)'
-        }}>
-          <button
-            onClick={onEndTurn}
-            style={{
-              width: '100%',
-              padding: '15px',
-              background: 'rgba(255, 255, 255, 0.9)',
-              color: '#155724',
-              border: '2px solid #28a745',
-              borderRadius: '8px',
-              cursor: 'pointer',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#28a745';
-              e.currentTarget.style.color = 'white';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
-              e.currentTarget.style.color = '#155724';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            }}
-          >
-            🔄 End Turn
-          </button>
-        </div>
-      )}
+
     </div>
   );
 };

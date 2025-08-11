@@ -4,8 +4,7 @@ export type GameScreen =
   | 'scenario-select'
   | 'battle-prep'
   | 'deployment'
-  | 'battle'
-  | 'result';
+  | 'battle';
 
 export interface GameMap {
   id: string;

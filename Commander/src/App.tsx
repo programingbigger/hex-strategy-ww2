@@ -6,7 +6,7 @@ import ScenarioSelectScreen from './screens/ScenarioSelectScreen';
 import BattlePrepScreen from './screens/BattlePrepScreen';
 import UnitDeploymentScreen from './screens/UnitDeploymentScreen';
 import BattleScreen from './screens/BattleScreen';
-import ResultScreen from './screens/ResultScreen';
+
 import { TestRunner } from './components/test/TestRunner';
 import { loadCompleteMap } from './utils/mapLoader';
 import './styles/App.css';
@@ -89,8 +89,6 @@ const App: React.FC = () => {
         return <UnitDeploymentScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} onStartBattle={startBattle} />;
       case 'battle':
         return <BattleScreen gameState={gameState} setGameState={setGameState} onNavigate={navigateToScreen} />;
-      case 'result':
-        return <ResultScreen onNavigate={navigateToScreen} />;
       default:
         return <TitleScreen onNavigate={navigateToScreen} />;
     }
