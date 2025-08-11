@@ -1,63 +1,44 @@
 # GameBoard - ゲームボード表示コンポーネント
 
 ## 概要
-ヘックス戦略ゲームのメインボード表示を担当するReactコンポーネントです。ヘックスタイルの配置、ユニットの表示、ユーザーの操作処理を行います。
+
+`GameBoard.tsx`は、ゲームの盤面全体をSVGとして描画するコンテナコンポーネントです。`boardLayout`（盤面情報）を元にループ処理を行い、個々のヘックスの描画は子コンポーネントの `Hexagon` に委譲します。また、`useCamera` フックと連携し、マップのズームやパン（視点移動）を実現します。
 
 ## ファイル場所
+
 `/Commander/src/components/game/GameBoard.tsx`
 
-## 主要機能
+## ロジックフロー
 
-### ボード描画
-- **ヘックスグリッド表示**: 6角形タイルをSVGで描画
-- **地形表示**: 平原、森林、山、川、道路、橋、都市、泥地の視覚的区別
-- **座標システム**: x, y座標によるヘックス配置
-
-### ユニット表示
-- **ユニット配置**: 各ヘックスにユニットアイコンを表示
-- **チーム識別**: 青軍（プレイヤー）と赤軍（敵）の色分け
-- **ステータス表示**: HP、燃料、経験値の視覚的表現
-
-### ユーザー操作
-- **タイル選択**: クリックによるヘックス選択
-- **移動範囲表示**: 選択ユニットの移動可能範囲をハイライト
-- **攻撃範囲表示**: 攻撃可能なターゲットの強調表示
+1.  `boardLayout` Propを受け取り、マップ上の全タイルに対してループ処理を行います。
+2.  各タイルについて、`units`, `selectedUnitId`, `reachableTiles`, `attackableTiles`, `engineerTargetTiles` などのPropsから、そのタイルの状態（選択されているか、移動可能か、攻撃可能かなど）を判定します。
+3.  判定した状態とタイル・ユニット情報を `Hexagon` コンポーネントにPropsとして渡し、個々のヘックスの描画を依頼します。
+4.  `useCamera` フックから受け取ったカメラの座標とズームレベルをSVGの `viewBox` 属性に設定し、表示領域を制御します。
 
 ## Props（引数）
 
-```typescript
-interface GameBoardProps {
-  board: Board;              // ボード状態
-  selectedTile: Position | null;    // 選択されたタイル
-  onTileClick: (position: Position) => void;  // タイルクリック時の処理
-  gameState: GameState;      // ゲーム状態
-}
-```
-
-## ゲームへの影響とポイント
-
-### 戦術的重要性
-- **視覚的フィードバック**: プレイヤーの戦術判断をサポート
-- **操作性**: 直感的なタイル選択でゲーム体験を向上
-- **情報提供**: 地形効果や移動コストを視覚的に伝達
-
-### パフォーマンス考慮
-- **SVG最適化**: 大量のヘックスタイルを効率的に描画
-- **再描画制御**: 必要な部分のみを更新してパフォーマンス維持
-
-### 設定ポイント
-- **ズーム機能**: 大きなマップでの視認性向上
-- **アニメーション**: ユニット移動時の滑らかな動作
-- **レスポンシブ対応**: 異なる画面サイズでの適切な表示
+| Prop                  | Type                  | Description                                                      |
+| --------------------- | --------------------- | ---------------------------------------------------------------- |
+| `boardLayout`         | `BoardLayout`         | ゲーム盤面のタイル情報を持つMapオブジェクト。                      |
+| `units`               | `Unit[]`              | 全ユニットの配列。                                               |
+| `selectedUnitId`      | `string \| null`      | 選択されているユニットのID。                                     |
+| `reachableTiles`      | `Coordinate[]`        | 選択中ユニットが移動可能なタイル座標の配列。                     |
+| `attackableTiles`     | `Coordinate[]`        | 選択中ユニットが攻撃可能なタイル座標の配列。                     |
+| `engineerTargetTiles` | `Coordinate[]`        | 工兵のアクション対象となるタイル座標の配列。                     |
+| `onHexClick`          | `(coord: Coordinate) => void` | ヘックスがクリックされたときに呼び出されるコールバック。         |
+| `onHexHover`          | `(coord: Coordinate) => void` | マウスがヘックス上にあるときに呼び出されるコールバック。         |
+| `onHexLeave`          | `() => void`          | マウスがヘックスから離れたときに呼び出されるコールバック。       |
 
 ## 依存関係
-- [[Hexagon]] - 個別ヘックスタイルの描画に依存
-- [[useGameLogic]] - ゲーム状態の管理に依存
-- [[types-index]] - 型定義に依存
+
+- [[Hexagon]] - 個別ヘックスタイルの描画に依存します。
+- [[useCamera]] - マップの視点操作（ズーム、パン）に依存します。
+- [[types-index]] - 型定義に依存します。
+- `../config/constants.ts` - ヘックスの基本サイズ（`HEX_SIZE`）を取得します。
 
 ## 関連コンポーネント
-- [[InformationPanel]] - 選択されたタイル/ユニット情報の表示
-- [[BattleScreen]] - メイン戦闘画面での使用
+
+- [[BattleScreen]] - メイン戦闘画面でこのコンポーネントを使用します。
 
 ## タグ
-#GameBoard #CoreComponent #UI #HexGrid #UserInterface #SVG
+#GameBoard #CoreComponent #UI #HexGrid #SVG #ViewPort

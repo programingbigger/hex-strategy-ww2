@@ -2,88 +2,57 @@
 
 ## 概要
 
-ヘックス戦略ゲームの核となるロジックを管理するReactカスタムフックです。ゲーム状態、戦闘システム、ターン管理、勝利条件など、すべてのゲームメカニクスを統合管理します。このフックは、`Commander/src/hooks/useGameLogic.ts` にあります。
+ヘックス戦略ゲームの核となるロジックを管理するReactカスタムフックです。ゲーム状態、戦闘システム、ターン管理、勝利条件に加え、**工兵の特殊アクション**や**戦闘ログ**、**軍隊の指揮系統**など、すべてのゲームメカニクスを統合管理します。このフックは、`Commander/src/hooks/useGameLogic.ts` にあります。
 
 ## 主要機能
 
-- **状態管理:** ゲームの全状態（ターン、アクティブプレイヤー、ユニット、ボード、勝利条件など）を一元管理。
+- **状態管理:** ゲームの全状態（ターン、ユニット、ボード、天候、勝利条件など）を一元管理。
 - **ゲームサイクル管理:** `loadGame` による初期化、`handleEndTurn` によるターン進行。
 - **ユーザーインタラクション:** `handleHexClick` によるユニットの選択、移動、攻撃命令の受付。
 - **戦闘システム:** `handleAttackWithWeapon` を中心とした、武器、地形効果、反撃を考慮した戦闘処理。
-- **補給と回復:** ターン開始時の自動的なHP・燃料・弾薬の回復処理。
+- **補給と回復:** ターン開始時の自動的なHP・燃料・弾薬の回復処理（厳格な条件下）。
 - **勝利条件判定:** ターン終了ごとに、複数の勝利条件（敵全滅、首都占領など）を優先順位に従って判定。
+- **工兵アクション:** 資材を消費する建設・破壊活動（架橋、要塞化など）の管理。
+- **戦闘ログ:** `BattleLogState` を通じて、すべての戦闘イベントを記録・管理。
+- **軍隊管理:** `armyManager`と連携し、ユニットの動員や指揮官ボーナスの計算を行う。
 - **アクション履歴:** `history` stateを利用した「元に戻す」機能。
 
-## 主要な関数とロジックフロー
+## 主要な関数とシステム
 
-### ゲームの読み込みとターン進行
+### ゲーム進行と補給
 
-```typescript
-// マップデータからゲームを初期化
-const loadGame = (mapData: MapData) => { /* ... */ }
-
-// ターンを終了し、次のプレイヤーへ移行
-const handleEndTurn = useCallback(() => {
-  // 1. プレイヤー交代
-  // 2. 全ユニットの行動フラグをリセット
-  // 3. 次のチームのユニットの補給・回復処理
-  //    - 所有する都市・首都にいる陸上ユニットが対象
-  //    - HP、燃料、弾薬を回復
-  // 4. ターン数を更新（Blueチームのターン開始時）
-  // 5. 天候を更新し、状況に応じて地形を「ぬかるみ」に変更
-  // 6. 勝利条件とターン制限をチェック
-}, [/* ... */]);
-```
+- `loadGame(mapData)`: マップデータからゲームを初期化します。
+- `handleEndTurn()`: ターンを終了し、次のプレイヤーへ移行します。
+  - **厳格な補給ロジック**: 次のターンのチームに所属する**陸上ユニット**が、自軍の**都市・首都**にいる場合のみ、HP・燃料・弾薬を補給します。
+  - 天候を更新し、長雨が続くと平原が「ぬかるみ」に変わるなどの地形変化を処理します。
+  - ターン制限を超えていないかチェックします。
 
 ### ユニットの行動と戦闘
 
-```typescript
-// ヘックスがクリックされたときの処理
-const handleHexClick = useCallback((coord: Coordinate) => {
-  // 選択、移動、攻撃のロジックを処理
-  if (selectedUnit) {
-    // 攻撃可能な敵ユニットをクリックした場合
-    if (isAttackable && unitOnHex) {
-      // 武器選択モーダルを開くか、直接攻撃を実行
-      setWeaponSelectionState({ isOpen: true, attacker: selectedUnit, target: unitOnHex });
-      return;
-    }
-    // 移動可能な空き地をクリックした場合
-    if (isReachable && !unitOnHex) {
-      // ユニットを移動させ、燃料を消費
-      // 砲兵は移動後に攻撃不可
-    }
-  }
-}, [/* ... */]);
+- `handleHexClick(coord)`: ヘックスがクリックされた際の主要な処理です。
+  - ユニットの選択、移動、攻撃対象の指定を行います。
+  - **工兵アクションモード中**は、ユニット移動がブロックされ、ターゲット選択ロジックが優先されます。
+- `handleAttackWithWeapon(attacker, defender, weapon)`: 武器を使用した攻撃処理です。
+  - ダメージ計算、弾薬消費、反撃処理を行います。
+  - `createBattleLogEntry`を呼び出して、詳細な戦闘ログを生成・追加します。
 
-// 武器を使用した攻撃処理
-const handleAttackWithWeapon = useCallback((attacker: Unit, defender: Unit, weapon: Weapon) => {
-  // 1. ダメージ計算（武器攻撃力、相性、地形効果）
-  // 2. 攻撃側の弾薬を消費
-  // 3. 戦闘レポートを作成
-  // 4. 双方のHPを更新 (HPが0になったユニットは除去)
-  // 5. 防御側が反撃可能な場合、自動で武器を選択して反撃
-  // 6. 勝利条件をチェック
-}, [/* ... */]);
-```
+### 工兵アクションシステム
 
-### 特殊アクション
+工兵ユニット (`type === 'Engineer'`) のための多段階アクションを管理します。
 
-```typescript
-// 待機、占領、元に戻すアクションを処理
-const handleAction = useCallback((action: 'wait' | 'undo' | 'capture') => {
-  if (action === 'wait') { /* ユニットの行動を完了 */ }
-  if (action === 'capture') {
-    // 歩兵が敵都市のHPを減少させる
-    // HPが0になったら自軍の都市に
-  }
-  if (action === 'undo') {
-    // history stateから直前の状態を復元
-  }
-}, [/* ... */]);
-```
+1.  `handleAction(action)`: `SelectedUnitPanel`から`'build_bridge'`などのアクションを受け取ると、`startEngineerAction`を呼び出します。
+2.  `startEngineerAction(actionType)`: **ターゲット選択モード**を開始します。建設/破壊可能なヘックスをハイライト表示します。
+3.  `handleEngineerTargetSelect(coord)`: プレイヤーがターゲットのヘックスをクリックすると、確認モーダル(`EngineerConfirmState`)を開きます。
+4.  `confirmEngineerAction()`: プレイヤーが確認すると、`handleMaterialActionWithTarget`を実行し、資材を消費して地形を実際に変更します。
 
-## 勝利条件の判定 (`checkWinCondition`)
+### その他のアクション
+
+- `handleAction(action)`: 上記の工兵アクション以外も処理します。
+  - `'wait'`: ユニットの行動を完了させます。
+  - `'capture'`: 歩兵が敵の都市/施設のHPを削り、0にすると占領します。
+  - `'undo'`: 直前のアクションを取り消します。
+
+### 勝利条件の判定 (`checkWinCondition`)
 
 ターン終了時に、以下の優先順位で勝利条件を評価します。
 
@@ -94,9 +63,9 @@ const handleAction = useCallback((action: 'wait' | 'undo' | 'capture') => {
 ## 依存関係
 
 - **Types:** `../types/index.ts`
-- **Utils:** `../utils/map.ts`, `../utils/weapons.ts`, `../utils/logger.ts`
+- **Utils:** `../utils/map.ts`, `../utils/weapons.ts`, `../utils/logger.ts`, `../utils/debugLogger.ts`
 - **Config:** `../config/constants.ts`
 - **Data:** `../data/units.ts`
 
 ## タグ
-#useGameLogic #GameCore #Hooks #Combat #TurnManagement #StateManagement
+#useGameLogic #GameCore #Hooks #Combat #TurnManagement #StateManagement #Engineer #BattleLog

@@ -171,6 +171,13 @@
   },
   "active": "85db564fb9d1c224",
   "lastOpenFiles": [
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/mapLoader.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/weapons.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/map.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/BattleLogPanel.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/VictoryModal.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/Header.md",
+    "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/SelectedUnitPanel.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers/utils-overview.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Screen-Components/BattleScreen.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/constants.md",
@@ -191,7 +198,6 @@
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/InformationPanel.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Core-Components/README.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md",
-    "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration/types-index.md",
     "HexStrategyDocs_ByObsidian/docs/Commander/Game-Logic/README.md.tmp.91829.1752879081699",
     "HexStrategyDocs_ByObsidian/docs/Commander/Utils-Helpers",
     "HexStrategyDocs_ByObsidian/docs/Commander/Types-Configuration",
@@ -201,12 +207,6 @@
     "HexStrategyDocs_ByObsidian/docs/Commander",
     "HexStrategyDocs_ByObsidian/docs",
     "HexStrategyDocs_ByObsidian/TestFolder/docs",
-    "TestFolder/test_tag_1.md",
-    "TestFolder/test_tag_2.md",
-    "TestFolder/test_tag_3.md",
-    "HexStrategyDocs_ByObsidian/TestFolder/test_tag_2.md",
-    "Welcome.md",
-    "create a link.md",
     "無題のファイル.canvas"
   ]
 }
