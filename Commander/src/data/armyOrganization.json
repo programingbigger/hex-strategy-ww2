@@ -262,6 +262,15 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 60
                   },
+                  "transport": {
+                    "capacity": 2,
+                    "transportableUnits": ["infantry", "antitank", "artillery"],
+                    "unitCapacityCosts": {
+                      "infantry": 1,
+                      "antitank": 1,
+                      "artillery": 2
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "blue-transport-mg",
@@ -570,6 +579,15 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60
+                  },
+                  "transport": {
+                    "capacity": 2,
+                    "transportableUnits": ["infantry", "antitank", "artillery"],
+                    "unitCapacityCosts": {
+                      "infantry": 1,
+                      "antitank": 1,
+                      "artillery": 2
+                    }
                   },
                   "weapons": []
                 }

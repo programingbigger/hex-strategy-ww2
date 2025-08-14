@@ -28,3 +28,9 @@ Commander
 ### Custom Comand
 * _Cognitive_Tools
 * _gitcommit
+
+##　用語集
+- コンポーネント
+- インジケーター
+    - 「プレイヤーにゲームの状態を視覚的に、そして直
+  感的に伝えるための小さな目印や記号」
