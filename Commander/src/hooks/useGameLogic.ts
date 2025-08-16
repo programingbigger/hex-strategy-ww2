@@ -46,8 +46,8 @@ import {
   UNIT_HEAL_FUEL_FULL
 } from '../config/constants';
 import { armyManager } from '../data/units';
-import { log, logError, logInfo } from '../utils/logger';
-import { logBattle } from '../utils/debugLogger';
+import { log, logError, logInfo, logTransportOperation, logInfantryAction, logUnitMovement } from '../utils/logger';
+import { logBattle } from '../utils/battleLogger';
 
 // Helper function to check if terrain is capturable
 const isCapturableTerrain = (terrain: string): boolean => {
@@ -103,6 +103,22 @@ export const useGameLogic = () => {
     unit: Unit | null;
     availableTargets: Coordinate[];
   }>({ mode: 'none', unit: null, availableTargets: [] });
+
+  // Transport unload action selection state
+  const [transportActionState, setTransportActionState] = useState<{
+    mode: 'none' | 'selecting_unload_position';
+    unit: Unit | null;
+    availableTargets: Coordinate[];
+  }>({ mode: 'none', unit: null, availableTargets: [] });
+
+  // Transport unload action confirmation state
+  const [transportConfirmState, setTransportConfirmState] = useState<{
+    isOpen: boolean;
+    actionType: 'unload' | null;
+    targetCoord: Coordinate | null;
+    targetTile: Tile | null;
+    loadedUnit: Unit | null;
+  }>({ isOpen: false, actionType: null, targetCoord: null, targetTile: null, loadedUnit: null });
 
   // Engineer action confirmation state
   const [engineerConfirmState, setEngineerConfirmState] = useState<{
@@ -258,7 +274,7 @@ export const useGameLogic = () => {
     });
   }, []);
 
-  const selectedUnit = useMemo(() => units.find(u => u.id === selectedUnitId), [units, selectedUnitId]);
+  const selectedUnit = useMemo(() => units.find(u => u.id === selectedUnitId && !u.loaded) || null, [units, selectedUnitId]);
 
   const selectedUnitTile = useMemo(() => {
     if (!selectedUnit) return null;
@@ -324,6 +340,11 @@ export const useGameLogic = () => {
   const engineerTargetTiles = useMemo(() => {
     return engineerActionState.availableTargets;
   }, [engineerActionState.availableTargets]);
+
+  // Transport target tiles (for highlighting during selection mode)
+  const transportTargetTiles = useMemo(() => {
+    return transportActionState.availableTargets;
+  }, [transportActionState.availableTargets]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleEndTurn = useCallback(() => {
@@ -971,6 +992,12 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
       return;
     }
 
+    // Handle transport action target selection
+    if (transportActionState.mode !== 'none') {
+      handleTransportTargetSelect(coord);
+      return;
+    }
+
     const unitOnHex = units.find(u => u.x === coord.x && u.y === coord.y);
 
     if (selectedUnit) {
@@ -1164,6 +1191,35 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     return targets;
   }, [boardLayout]);
 
+  // Transport unload target functions
+  const getAvailableUnloadTargets = useCallback((unit: Unit): Coordinate[] => {
+    if (!unit || unit.type !== 'Transport') return [];
+    
+    const targets: Coordinate[] = [];
+    const unitCoord = { x: unit.x, y: unit.y };
+    
+    // Check neighboring positions for valid unload locations
+    const neighbors = getNeighbors(unitCoord);
+    for (const coord of neighbors) {
+      const tile = boardLayout.get(coordToString(coord));
+      if (!tile) continue; // Position doesn't exist on map
+      
+      // Check if no unit is at this position
+      const unitAtPosition = units.find(u => 
+        u.x === coord.x && 
+        u.y === coord.y && 
+        !u.loaded
+      );
+      
+      // Can unload if position is empty and not on sea
+      if (!unitAtPosition && tile.terrain !== 'Sea') {
+        targets.push(coord);
+      }
+    }
+    
+    return targets;
+  }, [boardLayout, units]);
+
   // Engineer action handlers
   const startEngineerAction = useCallback((actionType: 'build_bridge' | 'destroy_bridge') => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
@@ -1263,6 +1319,138 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
   // Function to cancel engineer selection mode
   const cancelEngineerSelectionMode = useCallback(() => {
     setEngineerActionState({ 
+      mode: 'none', 
+      unit: null, 
+      availableTargets: [] 
+    });
+  }, []);
+
+  // Transport action handlers
+  const startTransportAction = useCallback(() => {
+    if (!selectedUnit || selectedUnit.type !== 'Transport') return;
+    
+    // Check if transport has loaded units
+    const loadedUnit = units.find(unit => 
+      unit.loaded && 
+      unit.transportId === selectedUnit.id
+    );
+    
+    if (!loadedUnit) return; // No loaded units
+    
+    const targets = getAvailableUnloadTargets(selectedUnit);
+    if (targets.length === 0) return; // No valid unload targets
+    
+    setTransportActionState({
+      mode: 'selecting_unload_position',
+      unit: selectedUnit,
+      availableTargets: targets
+    });
+  }, [selectedUnit, units, getAvailableUnloadTargets]);
+
+  const handleTransportTargetSelect = useCallback((coord: Coordinate) => {
+    if (transportActionState.mode === 'none' || !transportActionState.unit) return;
+    
+    // Check if the clicked coordinate is a valid target
+    const isValidTarget = transportActionState.availableTargets.some(
+      target => target.x === coord.x && target.y === coord.y
+    );
+    
+    if (!isValidTarget) {
+      // Cancel selection if clicked outside valid targets
+      setTransportActionState({ mode: 'none', unit: null, availableTargets: [] });
+      return;
+    }
+    
+    // Get the target tile
+    const targetTile = boardLayout.get(coordToString(coord));
+    const loadedUnit = units.find(unit => 
+      unit.loaded && 
+      unit.transportId === transportActionState.unit!.id
+    );
+    
+    if (!targetTile || !loadedUnit) return;
+    
+    // Clear selection mode
+    setTransportActionState({ mode: 'none', unit: null, availableTargets: [] });
+    
+    // Open confirmation dialog
+    setTransportConfirmState({
+      isOpen: true,
+      actionType: 'unload',
+      targetCoord: coord,
+      targetTile,
+      loadedUnit
+    });
+  }, [transportActionState, boardLayout, units]);
+
+  const confirmTransportAction = useCallback(() => {
+    if (!transportConfirmState.isOpen || !transportConfirmState.targetCoord || !transportConfirmState.loadedUnit) return;
+    
+    const targetCoord = transportConfirmState.targetCoord;
+    const loadedUnit = transportConfirmState.loadedUnit;
+    const transportUnit = units.find(u => u.id === loadedUnit.transportId);
+    
+    if (!transportUnit) return;
+    
+    // Log the transport operation
+    logTransportOperation({
+      infantryId: loadedUnit.id,
+      infantryName: loadedUnit.name || loadedUnit.type,
+      transportId: transportUnit.id,
+      transportName: transportUnit.name || transportUnit.type,
+      position: targetCoord,
+      team: transportUnit.team,
+      operation: 'unload'
+    });
+
+    // Execute unload
+    const updatedUnits = units.map(u => {
+      if (u.id === loadedUnit.id) {
+        return { 
+          ...u, 
+          loaded: false, 
+          transportId: undefined, 
+          x: targetCoord.x, 
+          y: targetCoord.y,
+          moved: true, 
+          attacked: true 
+        };
+      }
+      return u;
+    });
+    
+    setUnits(updatedUnits);
+    setSelectedUnitId(null);
+    
+    // Close confirmation dialog
+    setTransportConfirmState({ 
+      isOpen: false, 
+      actionType: null, 
+      targetCoord: null, 
+      targetTile: null, 
+      loadedUnit: null 
+    });
+  }, [transportConfirmState, units, setUnits, setSelectedUnitId, logTransportOperation]);
+
+  const cancelTransportAction = useCallback(() => {
+    setTransportConfirmState({ 
+      isOpen: false, 
+      actionType: null, 
+      targetCoord: null, 
+      targetTile: null, 
+      loadedUnit: null 
+    });
+    
+    // Also cancel any active selection mode
+    setTransportActionState({ 
+      mode: 'none', 
+      unit: null, 
+      availableTargets: [] 
+    });
+  }, []);
+
+  const cancelTransportSelectionMode = useCallback(() => {
+    setTransportActionState({ 
       mode: 'none', 
       unit: null, 
       availableTargets: [] 
@@ -1487,15 +1675,36 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     setSelectedUnitId(null);
   }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial]);
 
-  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge', materialAmount?: number) => {
+  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload', materialAmount?: number) => {
     if (!selectedUnit) return;
 
     if (action === 'wait') {
+      // Log infantry wait action if it's an infantry unit
+      if (selectedUnit.unitClass === 'Infantry') {
+        logInfantryAction({
+          infantryId: selectedUnit.id,
+          infantryName: selectedUnit.name || selectedUnit.type,
+          action: 'wait',
+          position: { x: selectedUnit.x, y: selectedUnit.y },
+          team: selectedUnit.team
+        });
+      }
+
       saveStateToHistory();
       setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
       setSelectedUnitId(null);
     } else if (action === 'capture') {
       if (selectedUnit.unitClass === 'Infantry' && selectedUnitTile && isCapturableTerrain(selectedUnitTile.terrain)) {
+        // Log the infantry capture action
+        logInfantryAction({
+          infantryId: selectedUnit.id,
+          infantryName: selectedUnit.name || selectedUnit.type,
+          action: 'capture',
+          position: { x: selectedUnit.x, y: selectedUnit.y },
+          team: selectedUnit.team,
+          target: { x: selectedUnit.x, y: selectedUnit.y, type: selectedUnitTile.terrain }
+        });
+
         saveStateToHistory();
         const newBoardLayout = new Map(boardLayout);
         const tileKey = coordToString(selectedUnit);
@@ -1515,6 +1724,109 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         }
         setUnits(units.map(u => u.id === selectedUnit.id ? { ...u, moved: true, attacked: true } : u));
         setSelectedUnitId(null);
+      }
+    } else if (action === 'load') {
+      // Handle infantry loading into transport
+      if (selectedUnit.unitClass === 'Infantry') {
+        saveStateToHistory();
+        
+        // Find a nearby transport unit
+        const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
+        const allPositions = [{ x: selectedUnit.x, y: selectedUnit.y }, ...neighbors];
+        
+        const nearbyTransport = units.find(unit => 
+          unit.type === 'Transport' && 
+          unit.team === selectedUnit.team &&
+          allPositions.some(pos => pos.x === unit.x && pos.y === unit.y)
+        );
+        
+        if (nearbyTransport) {
+          // Log the transport operation
+          logTransportOperation({
+            infantryId: selectedUnit.id,
+            infantryName: selectedUnit.name || selectedUnit.type,
+            transportId: nearbyTransport.id,
+            transportName: nearbyTransport.name || nearbyTransport.type,
+            position: { x: selectedUnit.x, y: selectedUnit.y },
+            team: selectedUnit.team,
+            operation: 'load'
+          });
+
+          // Log the infantry action
+          logInfantryAction({
+            infantryId: selectedUnit.id,
+            infantryName: selectedUnit.name || selectedUnit.type,
+            action: 'load_transport',
+            position: { x: selectedUnit.x, y: selectedUnit.y },
+            team: selectedUnit.team,
+            target: { x: nearbyTransport.x, y: nearbyTransport.y, type: nearbyTransport.type }
+          });
+
+          // Remove the infantry unit from the map and mark as loaded
+          const updatedUnits = units.map(u => {
+            if (u.id === selectedUnit.id) {
+              return { ...u, loaded: true, transportId: nearbyTransport.id, moved: true, attacked: true };
+            }
+            return u;
+          });
+          setUnits(updatedUnits);
+          setSelectedUnitId(null);
+        }
+      }
+    } else if (action === 'unload') {
+      // Handle unloading infantry from transport
+      if (selectedUnit.type === 'Transport') {
+        saveStateToHistory();
+        
+        // Find loaded infantry in this transport
+        const loadedInfantry = units.find(unit => 
+          unit.loaded && 
+          unit.transportId === selectedUnit.id
+        );
+        
+        if (loadedInfantry) {
+          // Calculate front position for unloading
+          const frontPosition = { x: selectedUnit.x + 1, y: selectedUnit.y };
+          
+          // Check if front position is valid and empty
+          const frontTile = boardLayout.get(`${frontPosition.x},${frontPosition.y}`);
+          const unitAtFront = units.find(u => 
+            u.x === frontPosition.x && 
+            u.y === frontPosition.y && 
+            !u.loaded
+          );
+          
+          if (frontTile && !unitAtFront && frontTile.terrain !== 'Sea') {
+            // Log the transport operation
+            logTransportOperation({
+              infantryId: loadedInfantry.id,
+              infantryName: loadedInfantry.name || loadedInfantry.type,
+              transportId: selectedUnit.id,
+              transportName: selectedUnit.name || selectedUnit.type,
+              position: frontPosition,
+              team: selectedUnit.team,
+              operation: 'unload'
+            });
+
+            // Unload the infantry unit at front position
+            const updatedUnits = units.map(u => {
+              if (u.id === loadedInfantry.id) {
+                return { 
+                  ...u, 
+                  loaded: false, 
+                  transportId: undefined, 
+                  x: frontPosition.x, 
+                  y: frontPosition.y,
+                  moved: true, 
+                  attacked: true 
+                };
+              }
+              return u;
+            });
+            setUnits(updatedUnits);
+            setSelectedUnitId(null);
+          }
+        }
       }
     } else if (action === 'build_bridge') {
       // Start bridge building target selection
@@ -1613,6 +1925,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     reachableTiles,
     attackableTiles,
     engineerTargetTiles,
+    transportTargetTiles,
     selectedUnitTile,
     loadGame,
     handleEndTurn,
@@ -1631,6 +1944,15 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     confirmEngineerAction,
     cancelEngineerAction,
     cancelEngineerSelectionMode,
+    
+    // Transport action system
+    transportActionState,
+    transportConfirmState,
+    startTransportAction,
+    handleTransportTargetSelect,
+    confirmTransportAction,
+    cancelTransportAction,
+    cancelTransportSelectionMode,
     
     // 🎯 Battle Log System
     battleLog,

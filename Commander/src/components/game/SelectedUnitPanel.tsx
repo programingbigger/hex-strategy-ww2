@@ -3,19 +3,24 @@ import { Unit, Tile } from '../../types';
 import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { getNeighbors } from '../../utils/map';
 import { coordToString } from '../../utils/map';
+import { armyManager } from '../../data/armyLoader';
 
 interface SelectedUnitPanelProps {
-  selectedUnit?: Unit;
+  selectedUnit: Unit | null;
   selectedUnitTile: Tile | null;
-  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge', materialAmount?: number) => void;
+  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload', materialAmount?: number) => void;
   boardLayout: Map<string, Tile>;
+  units: Unit[];
+  onStartTransportAction?: () => void;
 }
 
 const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   selectedUnit,
   selectedUnitTile,
   onAction,
-  boardLayout
+  boardLayout,
+  units,
+  onStartTransportAction
 }) => {
   // Helper function to check if terrain is capturable
   const isCapturableTerrain = (terrain: string): boolean => {
@@ -53,6 +58,32 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     });
   };
 
+  // Helper function to check for nearby transport units
+  const hasTransportNearby = (): boolean => {
+    if (!selectedUnit || !units) return false;
+    
+    // Check current position for transport unit
+    const currentPositionTransport = units.find(unit => 
+      unit.type === 'Transport' && 
+      unit.team === selectedUnit.team &&
+      unit.x === selectedUnit.x && 
+      unit.y === selectedUnit.y &&
+      unit.id !== selectedUnit.id
+    );
+    if (currentPositionTransport) return true;
+    
+    // Check neighboring positions for transport units
+    const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
+    return neighbors.some(coord => {
+      return units.some(unit => 
+        unit.type === 'Transport' && 
+        unit.team === selectedUnit.team &&
+        unit.x === coord.x && 
+        unit.y === coord.y
+      );
+    });
+  };
+
   const canBuildBridge = isEngineer && hasTerrainNearby('River') && availableMaterials >= 2;
     
   const canBuildFortress = isEngineer && selectedUnitTile && 
@@ -62,6 +93,94 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     selectedUnitTile.terrain === 'Fortress' && availableMaterials >= 2;
     
   const canDestroyBridge = isEngineer && hasTerrainNearby('Bridge') && availableMaterials >= 2;
+
+  // Helper function to get transport capacity info
+  const getTransportCapacity = (): { capacity: number; unitCapacityCosts: Record<string, number> } | null => {
+    if (!selectedUnit || selectedUnit.type !== 'Transport') return null;
+    
+    try {
+      const templates = armyManager.getUnitTemplatesBy(selectedUnit.team as 'Blue' | 'Red', '陸');
+      const template = templates.find(t => t.type === selectedUnit.type);
+      
+      if (template) {
+        // Access the transport info from the JSON data directly
+        const armyData = require('../../data/armyOrganization.json');
+        const factionData = armyData.factions[selectedUnit.team];
+        const supportCategory = factionData?.branches?.['陸']?.unitCategories?.support;
+        const transportTemplate = supportCategory?.units?.find((u: any) => u.type === 'Transport');
+        
+        if (transportTemplate?.transport) {
+          return {
+            capacity: transportTemplate.transport.capacity,
+            unitCapacityCosts: transportTemplate.transport.unitCapacityCosts
+          };
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to get transport capacity info:', error);
+    }
+    
+    return { capacity: 2, unitCapacityCosts: { infantry: 1, antitank: 1, artillery: 2 } }; // fallback
+  };
+
+  // Helper function to get loaded units in transport
+  const getLoadedUnits = (): Unit[] => {
+    if (!selectedUnit || selectedUnit.type !== 'Transport' || !units) return [];
+    
+    return units.filter(unit => 
+      unit.loaded && 
+      unit.transportId === selectedUnit.id
+    );
+  };
+
+  // Helper function to check for loaded units in transport
+  const hasLoadedUnits = (): boolean => {
+    return getLoadedUnits().length > 0;
+  };
+
+  // Helper function to calculate current capacity usage
+  const getCurrentCapacityUsage = (): number => {
+    const loadedUnits = getLoadedUnits();
+    const transportCapacity = getTransportCapacity();
+    
+    if (!transportCapacity) return 0;
+    
+    return loadedUnits.reduce((total, unit) => {
+      const costKey = unit.category || 'infantry'; // fallback to infantry
+      const cost = transportCapacity.unitCapacityCosts[costKey] || 1;
+      return total + cost;
+    }, 0);
+  };
+
+  // Helper function to check if front position is available for unloading
+  const canUnloadAtFront = (): boolean => {
+    if (!selectedUnit || !boardLayout) return false;
+    
+    // Calculate front position (for now, we'll use position in front of transport - could be enhanced with direction)
+    const frontPosition = { x: selectedUnit.x + 1, y: selectedUnit.y }; // Simple front calculation
+    
+    // Check if the front position is empty (no units and valid terrain)
+    const frontTile = boardLayout.get(`${frontPosition.x},${frontPosition.y}`);
+    if (!frontTile) return false; // Position doesn't exist on map
+    
+    // Check if no unit is at front position
+    const unitAtFront = units.find(u => 
+      u.x === frontPosition.x && 
+      u.y === frontPosition.y && 
+      !u.loaded
+    );
+    
+    return !unitAtFront && frontTile.terrain !== 'Sea'; // Can't unload on sea
+  };
+
+  // Transport loading conditions - only for Infantry units
+  const isInfantry = selectedUnit?.unitClass === 'Infantry';
+  const canLoad = isInfantry && hasTransportNearby();
+
+  // Transport unloading conditions - only for Transport units with loaded units
+  const isTransport = selectedUnit?.type === 'Transport';
+  const canUnload = isTransport && hasLoadedUnits();
+  const canEnhancedUnload = canUnload && onStartTransportAction; // Enhanced unload with position selection
 
   // Progress bar component
   const ProgressBar: React.FC<{ current: number; max: number; color: string }> = ({ current, max, color }) => {
@@ -206,6 +325,89 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               </div>
             </div>
             
+            {/* Transport Capacity Information - Only for Transport units */}
+            {selectedUnit.type === 'Transport' && (
+              <>
+                <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                <div style={{ marginBottom: '10px' }}>
+                  <h5 style={{
+                    margin: '0 0 8px 0',
+                    color: '#0066cc',
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                  }}>
+                    🚛 Transport Capacity
+                  </h5>
+                  
+                  {(() => {
+                    const capacity = getTransportCapacity();
+                    const currentUsage = getCurrentCapacityUsage();
+                    const maxCapacity = capacity?.capacity || 2;
+                    
+                    return (
+                      <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+                        <span>Capacity: {currentUsage}/{maxCapacity}</span>
+                        <ProgressBar 
+                          current={currentUsage} 
+                          max={maxCapacity} 
+                          color={currentUsage >= maxCapacity ? '#dc3545' : '#28a745'} 
+                        />
+                      </div>
+                    );
+                  })()}
+                  
+                  {/* Loaded Units Display */}
+                  {(() => {
+                    const loadedUnits = getLoadedUnits();
+                    
+                    if (loadedUnits.length > 0) {
+                      return (
+                        <div style={{ marginTop: '8px' }}>
+                          <h6 style={{
+                            margin: '0 0 5px 0',
+                            color: '#666',
+                            fontSize: '14px',
+                            fontWeight: 'bold'
+                          }}>
+                            📦 Loaded Units:
+                          </h6>
+                          <div style={{ fontSize: '14px', lineHeight: '1.4' }}>
+                            {loadedUnits.map((unit, index) => (
+                              <div key={unit.id} style={{
+                                padding: '4px 8px',
+                                margin: '2px 0',
+                                background: '#f0f8ff',
+                                borderRadius: '4px',
+                                border: '1px solid #e0e0e0'
+                              }}>
+                                <span style={{ fontWeight: 'bold', color: '#0066cc' }}>
+                                  {unit.name || unit.type}
+                                </span>
+                                <span style={{ marginLeft: '8px', color: '#666' }}>
+                                  HP: {unit.hp}/{unit.maxHp}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div style={{ 
+                          fontSize: '14px', 
+                          color: '#999', 
+                          fontStyle: 'italic',
+                          marginTop: '8px'
+                        }}>
+                          No units loaded
+                        </div>
+                      );
+                    }
+                  })()}
+                </div>
+              </>
+            )}
+
             {/* Weapon Information */}
             <WeaponInfoPanel unit={selectedUnit} />
           </div>
@@ -277,6 +479,50 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                   }}
                 >
                   Capture
+                </button>
+              )}
+
+              {canLoad && (
+                <button
+                  onClick={() => onAction('load')}
+                  style={{
+                    padding: '10px 15px',
+                    background: '#20c997',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    fontWeight: '500'
+                  }}
+                >
+                  📦 搭載
+                </button>
+              )}
+
+              {canUnload && (
+                <button
+                  onClick={() => {
+                    if (canEnhancedUnload) {
+                      // Use enhanced unload with position selection
+                      onStartTransportAction!();
+                    } else {
+                      // Fallback to direct unload
+                      onAction('unload');
+                    }
+                  }}
+                  style={{
+                    padding: '10px 15px',
+                    background: '#fd7e14',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer',
+                    fontSize: '18px',
+                    fontWeight: '500'
+                  }}
+                >
+                  📤 降車
                 </button>
               )}
 

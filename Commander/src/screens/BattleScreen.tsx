@@ -16,6 +16,7 @@ import { WeaponSelectorModal } from '../components/game/WeaponSelectorModal';
 import BattleLogPanel from '../components/game/BattleLogPanel';
 import { LogPanel } from '../components/debug/LogPanel';
 import EngineerActionConfirmModal from '../components/game/EngineerActionConfirmModal';
+import TransportActionConfirmModal from '../components/game/TransportActionConfirmModal';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -39,6 +40,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     reachableTiles,
     attackableTiles,
     engineerTargetTiles,
+    transportTargetTiles,
     selectedUnitTile,
     loadGame,
     handleEndTurn,
@@ -55,6 +57,15 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     cancelEngineerAction,
     engineerActionState,
     cancelEngineerSelectionMode,
+    
+    // Transport action system
+    transportActionState,
+    transportConfirmState,
+    startTransportAction,
+    handleTransportTargetSelect,
+    confirmTransportAction,
+    cancelTransportAction,
+    cancelTransportSelectionMode,
   } = useGameLogic();
 
   // Log panel state
@@ -85,6 +96,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       } else if (engineerActionState.mode !== 'none') {
         // Cancel engineer selection mode
         cancelEngineerSelectionMode();
+      } else if (transportActionState.mode !== 'none') {
+        // Cancel transport selection mode
+        cancelTransportSelectionMode();
       }
     }
     
@@ -92,7 +106,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     if (isTurnChangeModalOpen) {
       setIsTurnChangeModalOpen(false);
     }
-  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode]);
+  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode, transportActionState.mode, cancelTransportSelectionMode]);
 
   // Add keyboard event listeners
   useEffect(() => {
@@ -255,6 +269,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             reachableTiles={reachableTiles}
             attackableTiles={attackableTiles}
             engineerTargetTiles={engineerTargetTiles}
+            transportTargetTiles={transportTargetTiles}
             onHexClick={handleHexClick}
             onHexHover={setHoveredHex}
             onHexLeave={() => setHoveredHex(null)}
@@ -279,6 +294,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             selectedUnitTile={selectedUnitTile}
             onAction={handleAction}
             boardLayout={boardLayout}
+            units={units}
+            onStartTransportAction={startTransportAction}
           />
         </div>
 
@@ -345,6 +362,17 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         materialCost={engineerConfirmState.materialCost}
         onConfirm={confirmEngineerAction}
         onCancel={cancelEngineerAction}
+      />
+
+      {/* Transport Action Confirmation Modal */}
+      <TransportActionConfirmModal
+        isOpen={transportConfirmState.isOpen}
+        actionType={transportConfirmState.actionType}
+        targetCoord={transportConfirmState.targetCoord}
+        targetTile={transportConfirmState.targetTile}
+        loadedUnit={transportConfirmState.loadedUnit}
+        onConfirm={confirmTransportAction}
+        onCancel={cancelTransportAction}
       />
 
       {/* Debug Log Panel */}

@@ -12,6 +12,7 @@ interface GameBoardProps {
   reachableTiles: Coordinate[];
   attackableTiles: Coordinate[];
   engineerTargetTiles: Coordinate[];
+  transportTargetTiles: Coordinate[];
   onHexClick: (coord: Coordinate) => void;
   onHexHover: (coord: Coordinate) => void;
   onHexLeave: () => void;
@@ -24,22 +25,24 @@ const GameBoard: React.FC<GameBoardProps> = ({
   reachableTiles,
   attackableTiles,
   engineerTargetTiles,
+  transportTargetTiles,
   onHexClick,
   onHexHover,
   onHexLeave
 }) => {
-  const selectedUnit = units.find(u => u.id === selectedUnitId);
+  const selectedUnit = units.find(u => u.id === selectedUnitId && !u.loaded) || null;
   const { camera } = useCamera();
   
   const renderHexes = () => {
     const hexes: React.ReactElement[] = [];
     
     for (const [, tile] of Array.from(boardLayout.entries())) {
-      const unit = units.find(u => u.x === tile.x && u.y === tile.y);
-      const isSelected = selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y;
+      const unit = units.find(u => u.x === tile.x && u.y === tile.y && !u.loaded);
+      const isSelected = !!(selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y);
       const isReachable = reachableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       const isAttackable = attackableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       const isEngineerTarget = engineerTargetTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
+      const isTransportTarget = transportTargetTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       
       hexes.push(
         <Hexagon
@@ -51,6 +54,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
           isReachable={isReachable}
           isAttackable={isAttackable}
           isEngineerTarget={isEngineerTarget}
+          isTransportTarget={isTransportTarget}
           onClick={onHexClick}
           onMouseEnter={onHexHover}
           onMouseLeave={onHexLeave}

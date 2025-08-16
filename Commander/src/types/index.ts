@@ -79,6 +79,8 @@ export interface Unit {
   attackVs?: { [key in UnitClass]?: number };
   defenseVs?: { [key in UnitClass]?: number };
   weapons: Weapon[]; // New weapon system
+  loaded?: boolean; // New: for transport system - indicates if unit is loaded in transport
+  transportId?: string; // New: for transport system - ID of transport unit
 }
 
 export interface Tile {

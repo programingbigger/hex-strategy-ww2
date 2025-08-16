@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { BattleLogEntry, BattleLogState, Team, Coordinate } from '../../types';
-import { logBattle } from '../../utils/debugLogger';
+import { logBattle } from '../../utils/battleLogger';
 
 interface BattleLogPanelProps {
   battleLog: BattleLogState;

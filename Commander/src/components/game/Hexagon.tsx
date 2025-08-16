@@ -10,6 +10,7 @@ interface HexagonProps {
   isReachable?: boolean;
   isAttackable?: boolean;
   isEngineerTarget?: boolean;
+  isTransportTarget?: boolean;
   onClick: (coord: Coordinate) => void;
   onMouseEnter: (coord: Coordinate) => void;
   onMouseLeave: () => void;
@@ -23,6 +24,7 @@ const Hexagon: React.FC<HexagonProps> = ({
   isReachable = false,
   isAttackable = false,
   isEngineerTarget = false,
+  isTransportTarget = false,
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -283,6 +285,9 @@ const Hexagon: React.FC<HexagonProps> = ({
     strokeWidth = 3;
   } else if (isEngineerTarget) {
     strokeColor = '#FF8C00'; // Orange for engineer targets
+    strokeWidth = 3;
+  } else if (isTransportTarget) {
+    strokeColor = '#00BFFF'; // Deep sky blue for transport targets
     strokeWidth = 3;
   } else if (isReachable) {
     strokeColor = '#00FF00';
