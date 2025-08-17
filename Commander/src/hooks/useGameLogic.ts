@@ -1361,19 +1361,22 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
       return;
     }
     
-    // Get the target tile
+    // Get the target tile and loaded unit
     const targetTile = boardLayout.get(coordToString(coord));
     const loadedUnit = units.find(unit => 
       unit.loaded && 
       unit.transportId === transportActionState.unit!.id
     );
     
-    if (!targetTile || !loadedUnit) return;
-    
-    // Clear selection mode
+    // Always clear selection mode first to prevent double-click requirement
     setTransportActionState({ mode: 'none', unit: null, availableTargets: [] });
     
-    // Open confirmation dialog
+    if (!targetTile || !loadedUnit) {
+      // If data is invalid, just clear selection mode (already done above)
+      return;
+    }
+    
+    // Open confirmation dialog immediately
     setTransportConfirmState({
       isOpen: true,
       actionType: 'unload',
