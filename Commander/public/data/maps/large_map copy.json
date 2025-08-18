@@ -9,7 +9,8 @@
     "turnLimit": 99,
     "attackingTeam": "Blue",
     "defendingTeam": "Red",
-    "enabledVictoryConditions": ["unit_elimination", "capital_capture", "city_capture", "turn_limit"]
+    "enabledVictoryConditions": ["unit_elimination", "capital_capture", "city_capture", "turn_limit"],
+    "description": "戦略性のあるマップを作成する"
   },
   "board": {
     "tiles": [
