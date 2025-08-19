@@ -6,14 +6,15 @@ interface RainEffectProps {
 }
 
 const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
-  if (weather !== 'Rain' && weather !== 'HeavyRain') {
+  if (weather !== 'Rain' && weather !== 'HeavyRain' && weather !== 'Storm') {
     return null;
   }
 
   const isHeavyRain = weather === 'HeavyRain';
-  const dropCount = isHeavyRain ? 150 : 80;
-  const opacity = isHeavyRain ? 0.6 : 0.4;
-  const animationSpeed = isHeavyRain ? '0.5s' : '0.8s';
+  const isStorm = weather === 'Storm';
+  const dropCount = isStorm ? 200 : isHeavyRain ? 150 : 80;
+  const opacity = isStorm ? 0.8 : isHeavyRain ? 0.6 : 0.4;
+  const animationSpeed = isStorm ? '0.3s' : isHeavyRain ? '0.5s' : '0.8s';
 
   return (
     <div
@@ -35,9 +36,11 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
           style={{
             position: 'absolute',
             left: `${Math.random() * 100}%`,
-            width: '2px',
+            width: isStorm ? '3px' : '2px',
             height: `${Math.random() * 15 + 10}px`,
-            background: `linear-gradient(to bottom, transparent, rgba(173, 216, 230, ${opacity}))`,
+            background: isStorm 
+              ? `linear-gradient(to bottom, transparent, rgba(135, 206, 235, ${opacity}))` 
+              : `linear-gradient(to bottom, transparent, rgba(173, 216, 230, ${opacity}))`,
             borderRadius: '1px',
             animation: `rainDrop ${animationSpeed} infinite linear`,
             animationDelay: `${Math.random() * 2}s`,
@@ -46,7 +49,23 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
         />
       ))}
       
-      {/* Add CSS keyframes for rain animation */}
+      {/* Lightning effect for storm */}
+      {isStorm && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(255, 255, 255, 0.1)',
+            animation: 'lightning 3s infinite',
+            animationDelay: `${Math.random() * 5}s`
+          }}
+        />
+      )}
+      
+      {/* Add CSS keyframes for rain and lightning animation */}
       <style>
         {`
           @keyframes rainDrop {
@@ -63,6 +82,18 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
             100% {
               transform: translateY(100vh) rotate(10deg);
               opacity: 0;
+            }
+          }
+          
+          @keyframes lightning {
+            0%, 90%, 96%, 100% {
+              background: rgba(255, 255, 255, 0);
+            }
+            93%, 94% {
+              background: rgba(255, 255, 255, 0.4);
+            }
+            95% {
+              background: rgba(255, 255, 255, 0.6);
             }
           }
         `}

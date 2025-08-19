@@ -44,7 +44,7 @@ export interface Weapon {
   effectiveness?: { [key in UnitClass]?: number };
 }
 
-export type WeatherType = 'Clear' | 'Rain' | 'HeavyRain';
+export type WeatherType = 'Clear' | 'Rain' | 'HeavyRain' | 'Storm';
 
 export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea' | 'Capital' | 'Airport' | 'Bocage' | 'Snow' | 'Desert' | 'Reef' | 'Fortress' | 'Port';
 
