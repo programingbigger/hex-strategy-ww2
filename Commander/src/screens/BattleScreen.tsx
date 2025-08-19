@@ -231,7 +231,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const blueUnits = units.filter(u => u.team === 'Blue').length;
   const redUnits = units.filter(u => u.team === 'Red').length;
 
-  // Get weather-based background gradient
+  // Get weather-based background gradient 天候による背景グラデーション
   const getWeatherBackground = (): string => {
     switch (weather) {
       case 'Clear':
