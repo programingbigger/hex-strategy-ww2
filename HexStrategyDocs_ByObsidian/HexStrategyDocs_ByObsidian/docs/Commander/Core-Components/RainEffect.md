@@ -273,5 +273,93 @@ useEffect(() => {
 - より自然な雨滴軌道の計算
 - 風向きによる雨の角度変化
 
+## 📈 最新改善履歴（調査結果反映）
+
+### パフォーマンス最適化 (Based on weather_animation_investigation.md)
+
+#### React.useMemo活用によるメモ化
+```typescript
+// 天候設定のメモ化で不要な再計算を防止
+const weatherConfig = useMemo(() => ({
+  dropCount: isStorm ? 200 : isHeavyRain ? 150 : 100,
+  opacity: isStorm ? 0.8 : isHeavyRain ? 0.6 : 0.4,
+  isHeavyRain, isStorm
+}), [weather]);
+
+// 雨粒データのメモ化で再レンダリング最適化
+const rainDrops = useMemo(() => 
+  Array.from({ length: dropCount }, (_, i) => ({
+    id: i, left: Math.random() * 100,
+    animationDelay: Math.random() * 2,
+    height: Math.random() * 15 + (isStorm ? 15 : 10),
+    duration: `${baseSpeed + Math.random() * variation}s`
+  })), [dropCount, isStorm, isHeavyRain]
+);
+```
+
+#### 大気オーバーレイ効果の追加
+```typescript
+// 天候感を高める大気効果
+<div style={{
+  background: isStorm 
+    ? 'rgba(25, 25, 112, 0.1)'    // 嵐: 濃紺
+    : isHeavyRain 
+    ? 'rgba(105, 105, 105, 0.08)' // 大雨: グレー
+    : 'rgba(176, 196, 222, 0.05)' // 雨: 薄青
+}} />
+```
+
+#### CSS最適化とGPU加速
+```css
+.rain-drop {
+  will-change: transform, opacity; /* GPU加速明示 */
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10px) rotate(10deg); opacity: 0; }
+  5% { opacity: var(--opacity); }
+  95% { opacity: var(--opacity); }
+  100% { transform: translateY(100vh) rotate(10deg); opacity: 0; }
+}
+```
+
+#### 強化された雷エフェクト
+```css
+@keyframes lightning {
+  0%, 88%, 92%, 96%, 100% { background: rgba(255, 255, 255, 0); }
+  90%, 94% { background: rgba(255, 255, 255, 0.3); }
+  91%, 95% { background: rgba(255, 255, 255, 0.6); }
+  93% { background: rgba(255, 255, 255, 0.8); }
+}
+```
+
+### 機能改善
+
+#### 高度なランダム化システム
+- **位置ランダム化**: 水平位置の完全ランダム分散
+- **タイミング変動**: アニメーション開始時刻の2秒範囲分散
+- **サイズ変動**: 雨粒高さの動的変更（嵐時は大型化）
+- **速度変動**: 天候に応じた落下速度のランダム変化
+
+#### React Hooks準拠最適化
+- **Hooks順序適正化**: 条件付きreturnより前のHooks配置
+- **依存配列最適化**: 必要最小限の依存関係指定
+- **メモリリーク防止**: 適切なクリーンアップ実装
+
+### 実装品質向上
+
+#### TypeScript警告解消
+- 未使用変数の除去
+- 型安全性の向上
+- ESLint準拠コードの維持
+
+#### パフォーマンス指標
+- **Build時間**: 警告のみで正常ビルド完了
+- **メモリ使用量**: useMemoによる削減
+- **レンダリング効率**: 不要な再計算防止
+
+これらの改善により、調査結果で示されたシンプルかつ効果的な実装パターンを踏襲しつつ、エンタープライズレベルのパフォーマンスと保守性を実現しています。
+
 ## タグ
-#RainEffect #WeatherSystem #Animation #VisualEffect #UI #Performance #CSS3
+#RainEffect #WeatherSystem #Animation #VisualEffect #UI #Performance #CSS3 #Optimization #ReactMemo

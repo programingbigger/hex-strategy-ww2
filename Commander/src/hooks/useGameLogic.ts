@@ -88,7 +88,7 @@ export const useGameLogic = () => {
   const [enabledVictoryConditions, setEnabledVictoryConditions] = useState<VictoryCondition[]>([
     'unit_elimination', 'capital_capture', 'city_capture'
   ]);
-  const [weather, setWeather] = useState<WeatherType>('Clear');
+  const [weather, setWeather] = useState<WeatherType>('Rain'); // Start with Rain for immediate visual feedback
   const [weatherDuration, setWeatherDuration] = useState(0);
   const [history, setHistory] = useState<GameStateSnapshot[]>([]);
   const [weaponSelectionState, setWeaponSelectionState] = useState<{
@@ -488,14 +488,16 @@ export const useGameLogic = () => {
         return;
       }
       
-      // Weather update logic
-      const weathers: WeatherType[] = ['Clear', 'Rain', 'HeavyRain'];
+      // Weather update logic - Enhanced to include Storm and bias toward weather effects
+      const weathers: WeatherType[] = ['Clear', 'Rain', 'HeavyRain', 'Storm', 'Rain', 'HeavyRain'];
       const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
       let newDuration = weatherDuration;
       if (nextWeather === 'Rain') {
         newDuration++;
       } else if (nextWeather === 'HeavyRain') {
         newDuration += 2;
+      } else if (nextWeather === 'Storm') {
+        newDuration += 3;
       } else {
         newDuration = 0;
       }
@@ -504,7 +506,7 @@ export const useGameLogic = () => {
       
       // Terrain change logic
       let changed = false;
-      if (['Rain', 'HeavyRain'].includes(nextWeather) && newDuration >= 3) {
+      if (['Rain', 'HeavyRain', 'Storm'].includes(nextWeather) && newDuration >= 3) {
         newBoardLayout.forEach((tile, key) => {
           if (tile.terrain === 'Plains') {
             newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
