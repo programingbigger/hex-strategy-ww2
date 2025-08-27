@@ -6,34 +6,33 @@ interface RainEffectProps {
 }
 
 const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
-  // Memoize weather configuration to prevent unnecessary recalculations
+  // Memoize weather configuration - using Storm settings for all weather types
   const weatherConfig = useMemo(() => {
+    const isRain = weather === 'Rain';
     const isHeavyRain = weather === 'HeavyRain';
     const isStorm = weather === 'Storm';
     
+    // Simplified: Use Storm's working animation settings for all weather types
     return {
-      dropCount: isStorm ? 200 : isHeavyRain ? 150 : 100,
-      opacity: isStorm ? 0.8 : isHeavyRain ? 0.6 : 0.4,
-      animationSpeed: isStorm ? '0.3s' : isHeavyRain ? '0.5s' : '0.8s',
+      dropCount: 200,          // Storm's working count for all
+      opacity: 0.8,            // Storm's working opacity for all  
+      animationSpeed: '0.3s',  // Storm's working speed for all
+      isRain,
       isHeavyRain,
       isStorm
     };
   }, [weather]);
 
-  const { dropCount, opacity, isHeavyRain, isStorm } = weatherConfig;
+  const { dropCount, opacity, isRain, isHeavyRain, isStorm } = weatherConfig;
 
   // Memoize rain drops to prevent recreation on every render
   const rainDrops = useMemo(() => 
     Array.from({ length: dropCount }, (_, i) => {
-      // Enhanced randomization based on investigation findings
+      // Enhanced randomization - using Storm's working settings for all
       const left = Math.random() * 100;
       const animationDelay = Math.random() * 2;
-      const height = Math.random() * 15 + (isStorm ? 15 : 10);
-      const duration = isStorm 
-        ? 0.3 + Math.random() * 0.2 
-        : isHeavyRain 
-        ? 0.5 + Math.random() * 0.3
-        : 0.8 + Math.random() * 0.4;
+      const height = Math.random() * 15 + 15;  // Storm's working height for all
+      const duration = 0.3 + Math.random() * 0.2;  // Storm's working duration for all
       
       return {
         id: i,
@@ -42,7 +41,7 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
         height,
         duration: `${duration}s`
       };
-    }), [dropCount, isStorm, isHeavyRain]
+    }), [dropCount]
   );
 
   // Check if weather animation should be displayed
@@ -78,12 +77,14 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
             ? 'rgba(25, 25, 112, 0.2)' 
             : isHeavyRain 
             ? 'rgba(105, 105, 105, 0.15)' 
-            : 'rgba(176, 196, 222, 0.1)',
+            : isRain
+            ? 'rgba(176, 196, 222, 0.08)'
+            : 'rgba(255, 255, 255, 0)',
           pointerEvents: 'none'
         }}
       />
       
-      {/* Rain drops */}
+      {/* Rain drops - using Storm's working settings for all weather types */}
       {rainDrops.map((drop) => (
         <div
           key={drop.id}
@@ -91,13 +92,15 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
           style={{
             position: 'absolute',
             left: `${drop.left}%`,
-            width: isStorm ? '3px' : '2px',
+            width: '3px',  // Storm's working width for all
             height: `${drop.height}px`,
             background: isStorm 
               ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(135, 206, 235, ${opacity}))` 
               : isHeavyRain
               ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(169, 169, 169, ${opacity}))`
-              : `linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(173, 216, 230, ${opacity}))`,
+              : isRain
+              ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(173, 216, 230, ${opacity}))`
+              : `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(173, 216, 230, 0.2))`,
             borderRadius: '1px',
             animation: `rainDrop ${drop.duration} infinite linear`,
             animationDelay: `${drop.animationDelay}s`,
