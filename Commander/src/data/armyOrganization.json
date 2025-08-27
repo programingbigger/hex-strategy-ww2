@@ -30,7 +30,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 50
+                    "maxFuel": 50,
+                    "reconnaissance": 2
                   },
                   "weapons": [
                     {
@@ -64,7 +65,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 3
                   },
                   "weapons": [
                     {
@@ -102,7 +104,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 60
+                    "maxFuel": 60,
+                    "reconnaissance": 3
                   },
                   "weapons": [
                     {
@@ -136,7 +139,8 @@
                     "attackRange": { "min": 2, "max": 5 },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
-                    "maxFuel": 30
+                    "maxFuel": 30,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -179,7 +183,8 @@
                     "attackRange": { "min": 1, "max": 2 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -222,7 +227,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -260,7 +266,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 60
+                    "maxFuel": 60,
+                    "reconnaissance": 2
                   },
                   "transport": {
                     "capacity": 2,
@@ -348,7 +355,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 50
+                    "maxFuel": 50,
+                    "reconnaissance": 2
                   },
                   "weapons": [
                     {
@@ -382,7 +390,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 3
                   },
                   "weapons": [
                     {
@@ -420,7 +429,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 60
+                    "maxFuel": 60,
+                    "reconnaissance": 3
                   },
                   "weapons": [
                     {
@@ -454,7 +464,8 @@
                     "attackRange": { "min": 2, "max": 5 },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
-                    "maxFuel": 30
+                    "maxFuel": 30,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -497,7 +508,8 @@
                     "attackRange": { "min": 1, "max": 2 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -540,7 +552,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 40
+                    "maxFuel": 40,
+                    "reconnaissance": 1
                   },
                   "weapons": [
                     {
@@ -578,7 +591,8 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 60
+                    "maxFuel": 60,
+                    "reconnaissance": 2
                   },
                   "transport": {
                     "capacity": 2,

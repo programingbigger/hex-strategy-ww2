@@ -42,6 +42,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 10, attack: 4, defense: 2, movement: 3,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Infantry', maxFuel: 60,
+        reconnaissance: 2,
         attackVs: { Vehicle: 4, Infantry: 4 },
         defenseVs: { Vehicle: 2, Infantry: 2 }
       };
@@ -50,6 +51,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 20, attack: 7, defense: 5, movement: 4,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Vehicle', maxFuel: 40,
+        reconnaissance: 3,
         attackVs: { Vehicle: 7, Infantry: 7 },
         defenseVs: { Vehicle: 5, Infantry: 5 }
       };
@@ -58,6 +60,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 15, attack: 5, defense: 4, movement: 6,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Vehicle', maxFuel: 60,
+        reconnaissance: 3,
         attackVs: { Vehicle: 5, Infantry: 5 },
         defenseVs: { Vehicle: 4, Infantry: 4 }
       };
@@ -66,6 +69,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 10, attack: 8, defense: 6, movement: 1,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Infantry', maxFuel: 40,
+        reconnaissance: 1,
         attackVs: { Vehicle: 8, Infantry: 4 },
         defenseVs: { Vehicle: 6, Infantry: 2 }
       };
@@ -74,6 +78,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 12, attack: 8, defense: 3, movement: 1,
         attackRange: { min: 2, max: 5 }, canCounterAttack: false,
         unitClass: 'Infantry', maxFuel: 40,
+        reconnaissance: 1,
         attackVs: { Vehicle: 8, Infantry: 8 },
         defenseVs: { Vehicle: 3, Infantry: 3 },
         isArtillery: true
@@ -83,6 +88,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 10, attack: 3, defense: 1, movement: 4,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Vehicle', maxFuel: 40,
+        reconnaissance: 1,
         attackVs: { Vehicle: 3, Infantry: 3 },
         defenseVs: { Vehicle: 1, Infantry: 1 }
       };
@@ -91,6 +97,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         maxHp: 15, attack: 5, defense: 4, movement: 8,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Vehicle', maxFuel: 60,
+        reconnaissance: 2,
         attackVs: { Vehicle: 5, Infantry: 5 },
         defenseVs: { Vehicle: 4, Infantry: 4 }
       };

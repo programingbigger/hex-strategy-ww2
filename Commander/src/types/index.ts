@@ -149,6 +149,7 @@ export interface UnitStats {
   attackVs?: { [key in UnitClass]?: number };
   defenseVs?: { [key in UnitClass]?: number };
   isArtillery?: boolean;
+  reconnaissance: number; // 索敵能力（範囲）
 }
 
 // Victory condition types

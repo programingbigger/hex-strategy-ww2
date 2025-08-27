@@ -19,7 +19,6 @@ export const UNIT_STATS = {
     range: 1,        // 攻撃射程
     fuel: 40,        // 燃料容量
     cost: 100,       // 生産コスト
-    reconnaissance: 2, // 索敵能力
   },
   Tank: {
     hp: 20,
@@ -29,7 +28,6 @@ export const UNIT_STATS = {
     range: 1,
     fuel: 60,
     cost: 300,
-    reconnaissance: 3, // 索敵能力
   },
   Artillery: {
     hp: 12,
@@ -39,7 +37,6 @@ export const UNIT_STATS = {
     range: [2, 5],   // 最小-最大射程
     fuel: 30,
     cost: 250,
-    reconnaissance: 1, // 索敵能力
   },
   ArmoredCar: {
     hp: 8,
@@ -49,7 +46,6 @@ export const UNIT_STATS = {
     range: 1,
     fuel: 50,
     cost: 150,
-    reconnaissance: 3, // 索敵能力
   },
   AntiTank: {
     hp: 8,
@@ -59,44 +55,6 @@ export const UNIT_STATS = {
     range: 1,
     fuel: 25,
     cost: 200,
-    reconnaissance: 1, // 索敵能力
-  }
-}
-```
-
-
-
-### 索敵能力設定
-```typescript
-export const RECONNAISSANCE_SETTINGS = {
-  // 基本索敵範囲（ヘクス数）
-  BASE_RECONNAISSANCE_RANGE: {
-    Infantry: 2,     // 歩兵：標準的な索敵能力
-    Tank: 3,         // 戦車：高い機動力による広範囲索敵
-    ArmoredCar: 3,   // 装甲車：偵察特化の高い索敵能力
-    Artillery: 1,    // 砲兵：限定的な索敵能力
-    AntiTank: 1,     // 対戦車砲：防御的配置での限定視界
-    Engineer: 1,     // 工兵：作業集中による限定視界
-    Transport: 2     // 輸送：移動中の情報収集能力
-  },
-  
-  // 地形による索敵修正
-  TERRAIN_RECONNAISSANCE_MODIFIER: {
-    Plains: 1.0,     // 平原：標準視界
-    Forest: 0.7,     // 森林：視界制限
-    Mountain: 1.3,   // 山岳：高所による視界向上
-    City: 0.8,       // 都市：建物による視界制限
-    River: 0.9,      // 河川：わずかな視界制限
-    Sea: 1.2,        // 海洋：広い視界
-  },
-  
-  // 天候による索敵修正
-  WEATHER_RECONNAISSANCE_MODIFIER: {
-    Clear: 1.0,      // 晴天：標準視界
-    Rain: 0.8,       // 雨：視界低下
-    HeavyRain: 0.6,  // 大雨：大幅な視界低下
-    Snow: 0.7,       // 雪：視界低下
-    Fog: 0.5         // 霧：著しい視界低下
   }
 }
 ```
@@ -403,23 +361,6 @@ export const WEATHER_EFFECTS = {
 - **難易度調整**: AI思考レベルや初期配置の変更
 - **ゲーム時間**: ターン数やユニット能力による試合時間調整
 - **戦術多様性**: 各兵種の役割分担明確化
-
-
-### 索敵システムの戦術的影響
-- **情報戦**: 各ユニットの索敵能力による情報優位性の確保
-- **偵察戦術**: 高索敵ユニット（戦車・装甲車）を前線に配置した情報収集
-- **隠蔽戦術**: 低索敵ユニットの接近による奇襲攻撃の実現
-- **地形活用**: 地形と天候による索敵修正を活用した戦術的配置
-
-### 索敵能力による戦術的役割分担
-- **索敵3**: Tank, ArmoredCar - 主力偵察・前線情報収集
-- **索敵2**: Infantry, Transport - 中距離警戒・補助偵察
-- **索敵1**: Artillery, AntiTank, Engineer - 限定視界・専門任務集中
-
-### 環境要素との相互作用
-- **地形効果**: 山岳（+30%）vs 森林（-30%）による視界差
-- **天候効果**: 晴天（標準）vs 霧（-50%）による戦術変化
-- **複合効果**: 地形と天候の組み合わせによる戦術的深度
 
 ### 設定変更の影響範囲
 - **歩兵強化**: 都市占領能力により戦略的価値上昇

@@ -133,46 +133,46 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
       return {
         maxHp: 10, attack: 4, defense: 2, movement: 3,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
-        unitClass: 'Infantry', maxFuel: 50
+        unitClass: 'Infantry', maxFuel: 50, reconnaissance: 2
       };
     case 'Tank':
       return {
         maxHp: 20, attack: 8, defense: 6, movement: 4,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
-        unitClass: 'Vehicle', maxFuel: 40
+        unitClass: 'Vehicle', maxFuel: 40, reconnaissance: 3
       };
     case 'ArmoredCar':
       return {
         maxHp: 15, attack: 6, defense: 4, movement: 6,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
-        unitClass: 'Vehicle', maxFuel: 60
+        unitClass: 'Vehicle', maxFuel: 60, reconnaissance: 3
       };
     case 'Artillery':
       return {
         maxHp: 12, attack: 10, defense: 2, movement: 1,
         attackRange: { min: 2, max: 5 }, canCounterAttack: false,
-        unitClass: 'Vehicle', maxFuel: 30
+        unitClass: 'Vehicle', maxFuel: 30, reconnaissance: 1
       };
     case 'AntiTank':
       return {
         maxHp: 8, attack: 6, defense: 3, movement: 1,
         attackRange: { min: 1, max: 2 }, canCounterAttack: true,
-        unitClass: 'Infantry', maxFuel: 40
+        unitClass: 'Infantry', maxFuel: 40, reconnaissance: 1
       };
     case 'Engineer':
       return {
         maxHp: 10, attack: 3, defense: 1, movement: 4,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
-        unitClass: 'Vehicle', maxFuel: 40
+        unitClass: 'Vehicle', maxFuel: 40, reconnaissance: 1
       };
     case 'Transport':
       return {
         maxHp: 15, attack: 5, defense: 4, movement: 8,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
-        unitClass: 'Vehicle', maxFuel: 60
+        unitClass: 'Vehicle', maxFuel: 60, reconnaissance: 2
       };
   }
-};
+};;
 
 const createUnitFallback = (
   id: string,
