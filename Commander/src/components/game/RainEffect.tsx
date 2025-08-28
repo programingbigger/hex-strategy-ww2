@@ -9,7 +9,6 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
   // Memoize weather configuration - using Storm settings for all weather types
   const weatherConfig = useMemo(() => {
     const isRain = weather === 'Rain';
-    const isHeavyRain = weather === 'HeavyRain';
     const isStorm = weather === 'Storm';
     
     // Simplified: Use Storm's working animation settings for all weather types
@@ -18,12 +17,11 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
       opacity: 0.8,            // Storm's working opacity for all  
       animationSpeed: '0.3s',  // Storm's working speed for all
       isRain,
-      isHeavyRain,
       isStorm
     };
   }, [weather]);
 
-  const { dropCount, opacity, isRain, isHeavyRain, isStorm } = weatherConfig;
+  const { dropCount, opacity, isRain, isStorm } = weatherConfig;
 
   // Memoize rain drops to prevent recreation on every render
   const rainDrops = useMemo(() => 
@@ -45,7 +43,7 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
   );
 
   // Check if weather animation should be displayed
-  if (!['Rain', 'HeavyRain', 'Storm'].includes(weather)) {
+  if (!['Rain', 'Storm'].includes(weather)) {
     return null;
   }
 
@@ -75,8 +73,6 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
           height: '100%',
           background: isStorm 
             ? 'rgba(25, 25, 112, 0.2)' 
-            : isHeavyRain 
-            ? 'rgba(105, 105, 105, 0.15)' 
             : isRain
             ? 'rgba(176, 196, 222, 0.08)'
             : 'rgba(255, 255, 255, 0)',
@@ -96,8 +92,6 @@ const RainEffect: React.FC<RainEffectProps> = ({ weather }) => {
             height: `${drop.height}px`,
             background: isStorm 
               ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.2), rgba(135, 206, 235, ${opacity}))` 
-              : isHeavyRain
-              ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(169, 169, 169, ${opacity}))`
               : isRain
               ? `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(173, 216, 230, ${opacity}))`
               : `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(173, 216, 230, 0.2))`,

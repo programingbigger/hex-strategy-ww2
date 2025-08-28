@@ -238,8 +238,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         return 'linear-gradient(135deg, #87CEEB 0%, #E0F6FF 50%, #B0E0E6 100%)';
       case 'Rain':
         return 'linear-gradient(135deg, #708090 0%, #A9A9A9 50%, #C0C0C0 100%)';
-      case 'HeavyRain':
-        return 'linear-gradient(135deg, #556B2F 0%, #696969 50%, #808080 100%)';
       case 'Storm':
         return 'linear-gradient(135deg, #2F4F4F 0%, #4B0082 30%, #191970 60%, #000000 100%)';
       default:

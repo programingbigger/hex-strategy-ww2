@@ -489,31 +489,31 @@ export const useGameLogic = () => {
       }
       
       // Weather update logic - Enhanced to include Storm and bias toward weather effects
-      const weathers: WeatherType[] = ['Clear', 'Rain', 'HeavyRain', 'Storm', 'Rain', 'HeavyRain'];
+      const weathers: WeatherType[] = ['Clear', 'Rain', 'Storm', 'Rain', 'Storm'];
       const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
       let newDuration = weatherDuration;
       if (nextWeather === 'Rain') {
         newDuration++;
-      } else if (nextWeather === 'HeavyRain') {
-        newDuration += 2;
       } else if (nextWeather === 'Storm') {
         newDuration += 3;
       } else {
-        newDuration = 0;
+        // Clear weather: subtract 2 instead of resetting
+        newDuration = Math.max(0, newDuration - 2);
       }
       setWeather(nextWeather);
       setWeatherDuration(newDuration);
       
       // Terrain change logic
       let changed = false;
-      if (['Rain', 'HeavyRain', 'Storm'].includes(nextWeather) && newDuration >= 3) {
+      if (['Rain', 'Storm'].includes(nextWeather) && newDuration >= 3) {
         newBoardLayout.forEach((tile, key) => {
           if (tile.terrain === 'Plains') {
             newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
             changed = true;
           }
         });
-      } else if (nextWeather === 'Clear') {
+      } else if (newDuration <= 1) {
+        // Convert Mud back to Plains when duration is 1 or 0
         newBoardLayout.forEach((tile, key) => {
           if (tile.terrain === 'Mud') {
             newBoardLayout.set(key, { ...tile, terrain: 'Plains' });

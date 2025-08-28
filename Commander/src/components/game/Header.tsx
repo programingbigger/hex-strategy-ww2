@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({
     switch (weather) {
       case 'Clear': return '☀️';
       case 'Rain': return '🌧️';
-      case 'HeavyRain': return '⛈️';
+      case 'Storm': return '⛈️';
       default: return '☀️';
     }
   };
