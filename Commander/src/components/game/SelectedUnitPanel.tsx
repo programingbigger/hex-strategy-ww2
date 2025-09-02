@@ -173,9 +173,17 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     return !unitAtFront && frontTile.terrain !== 'Sea'; // Can't unload on sea
   };
 
-  // Transport loading conditions - only for Infantry units
-  const isInfantry = selectedUnit?.unitClass === 'Infantry';
-  const canLoad = isInfantry && hasTransportNearby();
+  // Helper function to check if unit can be loaded into transport
+  const canUnitBeLoaded = (): boolean => {
+    if (!selectedUnit) return false;
+    
+    // Check if unit type can be loaded (Infantry, AntiTank, Artillery)
+    const loadableUnitTypes = ['Infantry', 'AntiTank', 'Artillery'];
+    return loadableUnitTypes.includes(selectedUnit.type);
+  };
+
+  // Transport loading conditions - for Infantry, AntiTank, and Artillery units
+  const canLoad = canUnitBeLoaded() && hasTransportNearby();
 
   // Transport unloading conditions - only for Transport units with loaded units
   const isTransport = selectedUnit?.type === 'Transport';

@@ -1731,8 +1731,9 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         setSelectedUnitId(null);
       }
     } else if (action === 'load') {
-      // Handle infantry loading into transport
-      if (selectedUnit.unitClass === 'Infantry') {
+      // Handle loading Infantry, AntiTank, and Artillery units into transport
+      const loadableUnitTypes = ['Infantry', 'AntiTank', 'Artillery'];
+      if (loadableUnitTypes.includes(selectedUnit.type)) {
         saveStateToHistory();
         
         // Find a nearby transport unit
@@ -1757,7 +1758,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
             operation: 'load'
           });
 
-          // Log the infantry action
+          // Log the unit action (keep using infantry action for compatibility)
           logInfantryAction({
             infantryId: selectedUnit.id,
             infantryName: selectedUnit.name || selectedUnit.type,
@@ -1767,7 +1768,7 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
             target: { x: nearbyTransport.x, y: nearbyTransport.y, type: nearbyTransport.type }
           });
 
-          // Remove the infantry unit from the map and mark as loaded
+          // Remove the unit from the map and mark as loaded
           const updatedUnits = units.map(u => {
             if (u.id === selectedUnit.id) {
               return { ...u, loaded: true, transportId: nearbyTransport.id, moved: true, attacked: true };
@@ -1779,17 +1780,17 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         }
       }
     } else if (action === 'unload') {
-      // Handle unloading infantry from transport
+      // Handle unloading units from transport
       if (selectedUnit.type === 'Transport') {
         saveStateToHistory();
         
-        // Find loaded infantry in this transport
-        const loadedInfantry = units.find(unit => 
+        // Find any loaded unit in this transport (not just infantry)
+        const loadedUnit = units.find(unit => 
           unit.loaded && 
           unit.transportId === selectedUnit.id
         );
         
-        if (loadedInfantry) {
+        if (loadedUnit) {
           // Calculate front position for unloading
           const frontPosition = { x: selectedUnit.x + 1, y: selectedUnit.y };
           
@@ -1804,8 +1805,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
           if (frontTile && !unitAtFront && frontTile.terrain !== 'Sea') {
             // Log the transport operation
             logTransportOperation({
-              infantryId: loadedInfantry.id,
-              infantryName: loadedInfantry.name || loadedInfantry.type,
+              infantryId: loadedUnit.id,
+              infantryName: loadedUnit.name || loadedUnit.type,
               transportId: selectedUnit.id,
               transportName: selectedUnit.name || selectedUnit.type,
               position: frontPosition,
@@ -1813,9 +1814,9 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
               operation: 'unload'
             });
 
-            // Unload the infantry unit at front position
+            // Unload the unit at front position
             const updatedUnits = units.map(u => {
-              if (u.id === loadedInfantry.id) {
+              if (u.id === loadedUnit.id) {
                 return { 
                   ...u, 
                   loaded: false, 
