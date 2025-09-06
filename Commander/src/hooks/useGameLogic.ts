@@ -106,10 +106,11 @@ export const useGameLogic = () => {
 
   // Transport unload action selection state
   const [transportActionState, setTransportActionState] = useState<{
-    mode: 'none' | 'selecting_unload_position';
+    mode: 'none' | 'selecting_unit' | 'selecting_unload_position';
     unit: Unit | null;
     availableTargets: Coordinate[];
-  }>({ mode: 'none', unit: null, availableTargets: [] });
+    selectedUnitToUnload: Unit | null;
+  }>({ mode: 'none', unit: null, availableTargets: [], selectedUnitToUnload: null });
 
   // Transport unload action confirmation state
   const [transportConfirmState, setTransportConfirmState] = useState<{
@@ -1332,25 +1333,59 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     if (!selectedUnit || selectedUnit.type !== 'Transport') return;
     
     // Check if transport has loaded units
-    const loadedUnit = units.find(unit => 
+    const loadedUnits = units.filter(unit => 
       unit.loaded && 
       unit.transportId === selectedUnit.id
     );
     
-    if (!loadedUnit) return; // No loaded units
+    if (loadedUnits.length === 0) return; // No loaded units
     
-    const targets = getAvailableUnloadTargets(selectedUnit);
-    if (targets.length === 0) return; // No valid unload targets
+    // Start with unit selection first
+    setTransportActionState({
+      mode: 'selecting_unit',
+      unit: selectedUnit,
+      availableTargets: [],
+      selectedUnitToUnload: null
+    });
+  }, [selectedUnit, units]);
+
+  // Handle unit selection for transport unloading
+  const handleUnitSelection = useCallback((selectedUnit: Unit) => {
+    if (transportActionState.mode !== 'selecting_unit' || !transportActionState.unit) return;
     
+    const targets = getAvailableUnloadTargets(transportActionState.unit);
+    if (targets.length === 0) {
+      // No valid targets, cancel the action
+      setTransportActionState({ 
+        mode: 'none', 
+        unit: null, 
+        availableTargets: [], 
+        selectedUnitToUnload: null 
+      });
+      return;
+    }
+    
+    // Move to position selection phase
     setTransportActionState({
       mode: 'selecting_unload_position',
-      unit: selectedUnit,
-      availableTargets: targets
+      unit: transportActionState.unit,
+      availableTargets: targets,
+      selectedUnitToUnload: selectedUnit
     });
-  }, [selectedUnit, units, getAvailableUnloadTargets]);
+  }, [transportActionState, getAvailableUnloadTargets]);
+
+  // Cancel unit selection
+  const cancelUnitSelection = useCallback(() => {
+    setTransportActionState({ 
+      mode: 'none', 
+      unit: null, 
+      availableTargets: [], 
+      selectedUnitToUnload: null 
+    });
+  }, []);
 
   const handleTransportTargetSelect = useCallback((coord: Coordinate) => {
-    if (transportActionState.mode === 'none' || !transportActionState.unit) return;
+    if (transportActionState.mode !== 'selecting_unload_position' || !transportActionState.unit || !transportActionState.selectedUnitToUnload) return;
     
     // Check if the clicked coordinate is a valid target
     const isValidTarget = transportActionState.availableTargets.some(
@@ -1359,34 +1394,31 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     
     if (!isValidTarget) {
       // Cancel selection if clicked outside valid targets
-      setTransportActionState({ mode: 'none', unit: null, availableTargets: [] });
+      setTransportActionState({ mode: 'none', unit: null, availableTargets: [], selectedUnitToUnload: null });
       return;
     }
     
-    // Get the target tile and loaded unit
+    // Get the target tile - use the pre-selected unit
     const targetTile = boardLayout.get(coordToString(coord));
-    const loadedUnit = units.find(unit => 
-      unit.loaded && 
-      unit.transportId === transportActionState.unit!.id
-    );
+    const selectedUnit = transportActionState.selectedUnitToUnload;
     
     // Always clear selection mode first to prevent double-click requirement
-    setTransportActionState({ mode: 'none', unit: null, availableTargets: [] });
+    setTransportActionState({ mode: 'none', unit: null, availableTargets: [], selectedUnitToUnload: null });
     
-    if (!targetTile || !loadedUnit) {
+    if (!targetTile || !selectedUnit) {
       // If data is invalid, just clear selection mode (already done above)
       return;
     }
     
-    // Open confirmation dialog immediately
+    // Open confirmation dialog immediately with the pre-selected unit
     setTransportConfirmState({
       isOpen: true,
       actionType: 'unload',
       targetCoord: coord,
       targetTile,
-      loadedUnit
+      loadedUnit: selectedUnit
     });
-  }, [transportActionState, boardLayout, units]);
+  }, [transportActionState, boardLayout]);
 
   const confirmTransportAction = useCallback(() => {
     if (!transportConfirmState.isOpen || !transportConfirmState.targetCoord || !transportConfirmState.loadedUnit) return;
@@ -1450,7 +1482,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     setTransportActionState({ 
       mode: 'none', 
       unit: null, 
-      availableTargets: [] 
+      availableTargets: [],
+      selectedUnitToUnload: null
     });
   }, []);
 
@@ -1458,7 +1491,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     setTransportActionState({ 
       mode: 'none', 
       unit: null, 
-      availableTargets: [] 
+      availableTargets: [],
+      selectedUnitToUnload: null
     });
   }, []);
 
@@ -1955,6 +1989,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     transportActionState,
     transportConfirmState,
     startTransportAction,
+    handleUnitSelection,
+    cancelUnitSelection,
     handleTransportTargetSelect,
     confirmTransportAction,
     cancelTransportAction,

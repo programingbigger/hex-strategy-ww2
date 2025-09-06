@@ -9,6 +9,13 @@ export const availableMaps: GameMap[] = [
     deploymentCenter: { q: -4, r: -2 }
   },
   {
+    id: 'short_case_map',
+    name: 'ShortCase',
+    description: 'ショートマップ',
+    difficulty: 'Normal',
+    deploymentCenter: { q: -4, r: -2 }
+  },
+  {
     id: 'alpha_ver_stage',
     name: 'Stage 1',
     description: 'Advanced battlefield with varied terrain and strategic positions.',

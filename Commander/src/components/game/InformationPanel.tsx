@@ -67,7 +67,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
       Snow: '#F0F8FF',
       Desert: '#F4A460',
       Reef: '#20B2AA',
-      Fortress: '#2F4F4F',
+      Fortress: '#A0A0A0',
       Port: '#1E90FF'
     };
     return colorMap[terrain] || '#808080';

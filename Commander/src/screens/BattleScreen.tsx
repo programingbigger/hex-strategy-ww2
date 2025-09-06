@@ -17,6 +17,7 @@ import BattleLogPanel from '../components/game/BattleLogPanel';
 import { LogPanel } from '../components/debug/LogPanel';
 import EngineerActionConfirmModal from '../components/game/EngineerActionConfirmModal';
 import TransportActionConfirmModal from '../components/game/TransportActionConfirmModal';
+import UnitSelectionModal from '../components/game/UnitSelectionModal';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -62,7 +63,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     transportActionState,
     transportConfirmState,
     startTransportAction,
-    handleTransportTargetSelect,
+    handleUnitSelection,
+    cancelUnitSelection,
     confirmTransportAction,
     cancelTransportAction,
     cancelTransportSelectionMode,
@@ -381,6 +383,18 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         materialCost={engineerConfirmState.materialCost}
         onConfirm={confirmEngineerAction}
         onCancel={cancelEngineerAction}
+      />
+
+      {/* Unit Selection Modal for Transport */}
+      <UnitSelectionModal
+        isOpen={transportActionState.mode === 'selecting_unit'}
+        transportUnit={transportActionState.unit}
+        loadedUnits={transportActionState.unit ? units.filter(unit => 
+          unit.loaded && 
+          unit.transportId === transportActionState.unit!.id
+        ) : []}
+        onUnitSelect={handleUnitSelection}
+        onCancel={cancelUnitSelection}
       />
 
       {/* Transport Action Confirmation Modal */}
