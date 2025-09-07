@@ -30,7 +30,7 @@
       {"x": 0,"y": -2, "terrain": "River"},
       {"x": 1,"y": -2, "terrain": "Plains"},
       {"x": 2,"y": -2, "terrain": "Plains"},
-      {"x": 3,"y": -2, "terrain": "City", "hp": 10, "maxHp": 10},
+      {"x": 3,"y": -2, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
       {"x": 4,"y": -2, "terrain": "Plains"},
       {"x": 5,"y": -2, "terrain": "Sea"},
       {"x": -4,"y": -1,"terrain": "Bocage"},

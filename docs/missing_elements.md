@@ -20,6 +20,9 @@
     * Deployment Phase
         * 範囲外でもユニットが配置できるので、そこを修正
     * BattleScreen 
+        * 首都から5マスにあるCity or Capitalでは、ユニットを生産できるという設定をしたい
+            * Commander/src/data/armyOrganization.jsonから選択できる様にする
+        * ある地点から、増援が出てくるという設定をする
         * 索敵機能の追加
             * **一番最後にする**
         * ZOCの概念を修復

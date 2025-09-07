@@ -16,7 +16,7 @@ export const availableMaps: GameMap[] = [
     deploymentCenter: { q: -4, r: -2 }
   },
     {
-    id: 'large_map copy',
+    id: 'large_map',
     name: 'Stage 2',
     description: 'Large Map x: -18_18 y: -6〜6',
     difficulty: 'Normal',
