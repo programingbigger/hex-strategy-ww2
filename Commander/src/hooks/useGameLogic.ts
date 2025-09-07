@@ -27,7 +27,7 @@ import {
   getDistance,
   findPath,
   getNeighbors,
-  hasCitiesOrCapitalsNearCapitals
+  hasSupplySourceInRange
 } from '../utils/map';
 import { ProducibleUnit } from '../components/game/ProductionModal';
 import {
@@ -1152,8 +1152,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         setSelectedUnitId(unitOnHex.id);
       } else {
         const clickedTile = boardLayout.get(coordToString(coord));
-        if (clickedTile && clickedTile.terrain === 'Capital' && clickedTile.owner === activeTeam && !unitOnHex) {
-          if (hasCitiesOrCapitalsNearCapitals(boardLayout, activeTeam, 5)) {
+        if (clickedTile && (clickedTile.terrain === 'Capital' || clickedTile.terrain === 'City') && clickedTile.owner === activeTeam && !unitOnHex) {
+          if (hasSupplySourceInRange(boardLayout, coord, 5)) {
             const faction = activeTeam === 'Blue' ? 'Blue' : 'Red';
             const producibleUnits = armyManager.getUnitTemplatesBy(faction);
             setProductionState({

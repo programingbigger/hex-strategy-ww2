@@ -485,3 +485,33 @@ export function hasCitiesOrCapitalsNearCapitals(
   
   return false;
 }
+
+/**
+ * Checks if a specific coordinate has a supply source (City or Capital) within a given radius.
+ * @param board The game board layout
+ * @param checkCoord The coordinate to check from
+ * @param radius The search radius (default: 5)
+ * @returns True if a supply source is found within the radius
+ */
+export function hasSupplySourceInRange(
+  board: BoardLayout,
+  checkCoord: Coordinate,
+  radius: number = 5
+): boolean {
+  for (const [, tile] of board.entries()) {
+    // Only consider City or Capital terrains as supply sources
+    if (tile.terrain === 'City' || tile.terrain === 'Capital') {
+      const tileCoord = { x: tile.x, y: tile.y };
+
+      // Don't check the source tile against itself
+      if (tileCoord.x === checkCoord.x && tileCoord.y === checkCoord.y) {
+        continue;
+      }
+
+      if (getDistance(checkCoord, tileCoord) <= radius) {
+        return true; // Found a supply source within range
+      }
+    }
+  }
+  return false; // No supply sources found
+}
