@@ -13,7 +13,7 @@
   },
   "board": {
     "tiles": [
-      {"x": -4,"y": -2,"terrain": "Plains"},
+      {"x": -4,"y": -2,"terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
       {"x": -3,"y": -2,"terrain": "Forest"},
       {"x": -2,"y": -2,"terrain": "Road"},
       {"x": -1,"y": -2,"terrain": "Bridge"},
@@ -46,7 +46,7 @@
       {"x": 5,"y": 0, "terrain": "Sea"},
       {"x": -5,"y": 1,"terrain": "Plains"},
       {"x": -4,"y": 1,"terrain": "Snow"},
-      {"x": -3,"y": 1,"terrain": "Plains"},
+      {"x": -3,"y": 1,"terrain": "Capital", "hp": 10, "maxHp": 10, "owner": "Red"},
       {"x": -2,"y": 1,"terrain": "Airport", "hp": 10, "maxHp": 10},
       {"x": -1,"y": 1, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Blue"},
       {"x": 0,"y": 1, "terrain": "Plains"},
