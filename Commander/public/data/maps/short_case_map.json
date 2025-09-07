@@ -22,7 +22,7 @@
       {"x": 2,"y": -3,"terrain": "Plains"},
       {"x": 3,"y": -3,"terrain": "Plains"},
       {"x": 4,"y": -3,"terrain": "Plains"},
-      {"x": 5,"y": -3,"terrain": "Plains"},
+      {"x": 5,"y": -3,"terrain": "Sea"},
       {"x": -4,"y": -2,"terrain": "Forest"},
       {"x": -3,"y": -2,"terrain": "Forest"},
       {"x": -2,"y": -2,"terrain": "Road"},

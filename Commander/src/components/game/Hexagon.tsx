@@ -35,7 +35,7 @@ const Hexagon: React.FC<HexagonProps> = ({
     switch (terrain) {
       case 'Plains': return '#90EE90';
       case 'Forest': return '#228B22';
-      case 'Mountain': return '#8B4513';
+      case 'Mountain': return '#BDB76B';
       case 'River': return '#4169E1';
       case 'Road': return '#808080'; // 道路は灰色
       case 'Bridge': return '#808080'; // 橋は灰色
@@ -43,7 +43,7 @@ const Hexagon: React.FC<HexagonProps> = ({
       case 'Capital': return tile.owner === 'Blue' ? '#87CEEB' : tile.owner === 'Red' ? '#F08080' : '#D3D3D3'; // 首都：青軍=空色、赤軍=薄赤、中立=灰色
       case 'Airport': return tile.owner === 'Blue' ? '#B0E0E6' : tile.owner === 'Red' ? '#FFA07A' : '#F0F0F0'; // 空港：青軍=薄青、赤軍=サーモン、中立=薄灰色
       case 'Port': return tile.owner === 'Blue' ? '#AFEEEE' : tile.owner === 'Red' ? '#FF6347' : '#DCDCDC'; // 港：青軍=薄水色、赤軍=トマト色、中立=薄灰色
-      case 'Mud': return '#8B4513';
+      case 'Mud': return '#CD853F';
       case 'Bocage': return '#32CD32'; // ボカージュは森林より薄い色
       case 'Snow': return '#F0F8FF';
       case 'Desert': return '#F4A460';

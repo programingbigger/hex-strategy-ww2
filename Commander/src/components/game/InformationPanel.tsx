@@ -54,7 +54,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
     const colorMap: { [key: string]: string } = {
       Plains: '#90EE90',
       Forest: '#228B22',
-      Mountain: '#8B4513',
+      Mountain: '#BDB76B',
       River: '#4682B4',
       Road: '#696969',
       Bridge: '#8FBC8F',

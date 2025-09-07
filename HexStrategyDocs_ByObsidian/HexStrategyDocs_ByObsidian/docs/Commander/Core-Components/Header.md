@@ -12,7 +12,7 @@
 | ------------ | --------------------- | ---------------------------------------------- |
 | `turn`       | `number`              | 現在のターン数。                               |
 | `activeTeam` | `Team`                | 現在行動中のチーム（'Blue' または 'Red'）。     |
-| `weather`    | `WeatherType`         | 現在の天気（'Clear', 'Rain', 'HeavyRain'）。   |
+| `weather`    | `WeatherType`         | 現在の天気（'Clear', 'Rain', 'Storm'）。   |
 | `blueUnits`  | `number`              | 青チームの残存ユニット数。                     |
 | `redUnits`   | `number`              | 赤チームの残存ユニット数。                     |
 | `onSave`     | `() => void` (optional) | セーブボタンがクリックされたときのコールバック。 |

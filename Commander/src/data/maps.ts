@@ -15,15 +15,8 @@ export const availableMaps: GameMap[] = [
     difficulty: 'Normal',
     deploymentCenter: { q: -4, r: -2 }
   },
-  {
-    id: 'alpha_ver_stage',
-    name: 'Stage 1',
-    description: 'Advanced battlefield with varied terrain and strategic positions.',
-    difficulty: 'Normal',
-    deploymentCenter: { q: -4, r: -2 }
-  },
     {
-    id: 'large_map',
+    id: 'large_map copy',
     name: 'Stage 2',
     description: 'Large Map x: -18_18 y: -6〜6',
     difficulty: 'Normal',
