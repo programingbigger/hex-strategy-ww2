@@ -11,7 +11,6 @@ import {
   coordToString,
   getDistance,
   findPath,
-  hasSupplySourceInRange
 } from '../../utils/map';
 import {
   getWeaponsInRange,
@@ -22,6 +21,12 @@ import { TERRAIN_STATS } from '../../config/constants';
 import { armyManager } from '../../data/units';
 import { ProducibleUnit } from '../../components/game/ProductionModal';
 import { logError } from '../../utils/logger';
+import { 
+  canProduceUnitsAtLocation,
+  getActiveProductionCapital,
+  getActiveProductionCapitalCoord,
+  getProductionCapitals
+} from '../../utils/productionOrder';
 
 import { useGameState } from './gameState';
 import { useUIStates } from './uiStates';
@@ -364,16 +369,8 @@ export const useGameLogic = () => {
       } else {
         const clickedTile = gameState.boardLayout.get(coordToString(coord));
         if (clickedTile && clickedTile.owner === gameState.activeTeam && !unitOnHex) {
-          let canProduce = false;
-          if (clickedTile.terrain === 'City') {
-            if (hasSupplySourceInRange(gameState.boardLayout, coord, 5)) {
-              canProduce = true;
-            }
-          } else if (clickedTile.terrain === 'Capital') {
-            if (hasSupplySourceInRange(gameState.boardLayout, coord, 5)) {
-              canProduce = true;
-            }
-          }
+          // Use the new production order system to determine if production is allowed
+          const canProduce = canProduceUnitsAtLocation(gameState.boardLayout, coord, gameState.activeTeam);
 
           if (canProduce) {
             const faction = gameState.activeTeam === 'Blue' ? 'Blue' : 'Red';
@@ -497,5 +494,11 @@ export const useGameLogic = () => {
     isCapitalTerrain,
     getCapitals,
     getCapitalsForTeam,
+    
+    // Production order system
+    getActiveProductionCapital: (team: Team) => getActiveProductionCapital(gameState.boardLayout, team),
+    getActiveProductionCapitalCoord: (team: Team) => getActiveProductionCapitalCoord(gameState.boardLayout, team),
+    getProductionCapitals: (team: Team) => getProductionCapitals(gameState.boardLayout, team),
+    canProduceUnitsAtLocation: (coord: Coordinate, team: Team) => canProduceUnitsAtLocation(gameState.boardLayout, coord, team),
   };
 };
