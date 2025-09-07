@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "version": "1.0.0",
-    "description": "Military unit organization by branch and faction",
-    "lastUpdated": "2025-08-04"
+    "version": "1.1.0",
+    "description": "Military unit organization by branch and faction. Blue=Axis, Red=Allies.",
+    "lastUpdated": "2025-09-07"
   },
   "factions": {
     "Blue": {
-      "name": "連合軍",
-      "description": "Allied Forces - Western Front",
+      "name": "枢軸軍",
+      "description": "German forces on the offensive.",
       "branches": {
         "陸": {
           "name": "陸軍",
@@ -17,14 +17,14 @@
               "units": [
                 {
                   "id": "blue-infantry-standard",
-                  "name": "歩兵小隊",
+                  "name": "擲弾兵分隊",
                   "type": "Infantry",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "infantry",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 4,
+                    "attack": 5,
                     "defense": 2,
                     "movement": 3,
                     "attackRange": { "min": 1, "max": 1 },
@@ -36,12 +36,12 @@
                   "weapons": [
                     {
                       "id": "blue-infantry-mg",
-                      "name": "BAR機銃",
-                      "type": "BAR機銃",
+                      "name": "MG42",
+                      "type": "MG42",
                       "ammunition": 10,
                       "maxAmmunition": 10,
                       "range": { "min": 1, "max": 1 },
-                      "attack": 5
+                      "attack": 6
                     }
                   ]
                 }
@@ -52,15 +52,15 @@
               "units": [
                 {
                   "id": "blue-tank-medium",
-                  "name": "中戦車",
+                  "name": "IV号戦車",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
                   "stats": {
                     "maxHp": 20,
-                    "attack": 8,
-                    "defense": 6,
+                    "attack": 9,
+                    "defense": 7,
                     "movement": 4,
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
@@ -71,17 +71,17 @@
                   "weapons": [
                     {
                       "id": "blue-tank-main-gun",
-                      "name": "50mm主砲",
-                      "type": "50mm主砲",
+                      "name": "75mm主砲",
+                      "type": "75mm主砲",
                       "ammunition": 12,
                       "maxAmmunition": 12,
                       "range": { "min": 1, "max": 1 },
-                      "attack": 9
+                      "attack": 10
                     },
                     {
                       "id": "blue-tank-mg",
-                      "name": "30cal機銃",
-                      "type": "30cal機銃",
+                      "name": "MG34",
+                      "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
                       "range": { "min": 1, "max": 1 },
@@ -110,8 +110,8 @@
                   "weapons": [
                     {
                       "id": "blue-armored-mg",
-                      "name": "30cal機銃",
-                      "type": "30cal機銃",
+                      "name": "MG34",
+                      "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
                       "range": { "min": 1, "max": 1 },
@@ -126,17 +126,17 @@
               "units": [
                 {
                   "id": "blue-artillery-howitzer",
-                  "name": "榴弾砲中隊",
+                  "name": "leFH 18",
                   "type": "Artillery",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "artillery",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 10,
+                    "attack": 12,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 2, "max": 5 },
+                    "attackRange": { "min": 2, "max": 6 },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
@@ -145,21 +145,12 @@
                   "weapons": [
                     {
                       "id": "blue-artillery-howitzer",
-                      "name": "155mm榴弾砲",
-                      "type": "155mm榴弾砲",
+                      "name": "105mm榴弾砲",
+                      "type": "105mm榴弾砲",
                       "ammunition": 5,
                       "maxAmmunition": 5,
                       "range": { "min": 2, "max": 6 },
-                      "attack": 12
-                    },
-                    {
-                      "id": "blue-artillery-rifle",
-                      "name": "M1ライフル",
-                      "type": "M1ライフル",
-                      "ammunition": 4,
-                      "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 5
+                      "attack": 13
                     }
                   ]
                 }
@@ -170,14 +161,14 @@
               "units": [
                 {
                   "id": "blue-antitank-gun",
-                  "name": "対戦車砲小隊",
+                  "name": "PaK 40",
                   "type": "AntiTank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "antitank",
                   "stats": {
                     "maxHp": 8,
-                    "attack": 6,
+                    "attack": 7,
                     "defense": 3,
                     "movement": 1,
                     "attackRange": { "min": 1, "max": 2 },
@@ -189,21 +180,12 @@
                   "weapons": [
                     {
                       "id": "blue-antitank-gun",
-                      "name": "57mm対戦車砲",
-                      "type": "57mm対戦車砲",
+                      "name": "75mm対戦車砲",
+                      "type": "75mm対戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
                       "range": { "min": 1, "max": 2 },
-                      "attack": 8
-                    },
-                    {
-                      "id": "blue-antitank-rifle",
-                      "name": "M1ライフル",
-                      "type": "M1ライフル",
-                      "ammunition": 4,
-                      "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 5
+                      "attack": 9
                     }
                   ]
                 }
@@ -214,7 +196,7 @@
               "units": [
                 {
                   "id": "blue-engineer",
-                  "name": "工作車",
+                  "name": "工兵",
                   "type": "Engineer",
                   "faction": "Blue",
                   "branch": "陸",
@@ -230,26 +212,7 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
-                  "weapons": [
-                    {
-                      "id": "blue-engineer-rifle",
-                      "name": "9mmライフル",
-                      "type": "9mmライフル",
-                      "ammunition": 6,
-                      "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
-                    },
-                    {
-                      "id": "blue-engineer-material",
-                      "name": "資材",
-                      "type": "資材",
-                      "ammunition": 4,
-                      "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 0
-                    }
-                  ]
+                  "weapons": []
                 },
                 {
                   "id": "blue-transport",
@@ -281,8 +244,8 @@
                   "weapons": [
                     {
                       "id": "blue-transport-mg",
-                      "name": "7.92mm機銃",
-                      "type": "7.92mm機銃",
+                      "name": "MG34",
+                      "type": "MG34",
                       "ammunition": 8,
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
@@ -297,42 +260,24 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": {
-              "name": "駆逐艦",
-              "units": []
-            },
-            "cruiser": {
-              "name": "巡洋艦",
-              "units": []
-            },
-            "battleship": {
-              "name": "戦艦",
-              "units": []
-            }
+            "destroyer": { "name": "駆逐艦", "units": [] },
+            "cruiser": { "name": "巡洋艦", "units": [] },
+            "battleship": { "name": "戦艦", "units": [] }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": {
-              "name": "戦闘機",
-              "units": []
-            },
-            "bomber": {
-              "name": "爆撃機",
-              "units": []
-            },
-            "transport": {
-              "name": "輸送機",
-              "units": []
-            }
+            "fighter": { "name": "戦闘機", "units": [] },
+            "bomber": { "name": "爆撃機", "units": [] },
+            "transport": { "name": "輸送機", "units": [] }
           }
         }
       }
     },
     "Red": {
-      "name": "枢軸軍",
-      "description": "Axis Forces - Eastern Front",
+      "name": "連合軍",
+      "description": "The resilient Portland Expeditionary Force.",
       "branches": {
         "陸": {
           "name": "陸軍",
@@ -342,7 +287,7 @@
               "units": [
                 {
                   "id": "red-infantry-standard",
-                  "name": "歩兵小隊",
+                  "name": "ライフル分隊",
                   "type": "Infantry",
                   "faction": "Red",
                   "branch": "陸",
@@ -350,7 +295,7 @@
                   "stats": {
                     "maxHp": 10,
                     "attack": 4,
-                    "defense": 2,
+                    "defense": 3,
                     "movement": 3,
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
@@ -360,9 +305,9 @@
                   },
                   "weapons": [
                     {
-                      "id": "red-infantry-mg",
-                      "name": "99式軽機銃",
-                      "type": "99式軽機銃",
+                      "id": "red-infantry-rifle",
+                      "name": "Service Rifle No.4",
+                      "type": "Service Rifle No.4",
                       "ammunition": 8,
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
@@ -377,14 +322,14 @@
               "units": [
                 {
                   "id": "red-tank-medium",
-                  "name": "中戦車",
+                  "name": "Valiant中戦車",
                   "type": "Tank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
                   "stats": {
-                    "maxHp": 20,
-                    "attack": 8,
+                    "maxHp": 22,
+                    "attack": 7,
                     "defense": 6,
                     "movement": 4,
                     "attackRange": { "min": 1, "max": 1 },
@@ -396,8 +341,8 @@
                   "weapons": [
                     {
                       "id": "red-tank-main-gun",
-                      "name": "37mm主砲",
-                      "type": "37mm主砲",
+                      "name": "75mm砲",
+                      "type": "75mm砲",
                       "ammunition": 11,
                       "maxAmmunition": 11,
                       "range": { "min": 1, "max": 1 },
@@ -405,8 +350,8 @@
                     },
                     {
                       "id": "red-tank-mg",
-                      "name": "7.7mm機銃",
-                      "type": "7.7mm機銃",
+                      "name": "同軸機銃",
+                      "type": "同軸機銃",
                       "ammunition": 5,
                       "maxAmmunition": 5,
                       "range": { "min": 1, "max": 1 },
@@ -416,7 +361,7 @@
                 },
                 {
                   "id": "red-armored-car",
-                  "name": "装甲車",
+                  "name": "偵察車",
                   "type": "ArmoredCar",
                   "faction": "Red",
                   "branch": "陸",
@@ -435,8 +380,8 @@
                   "weapons": [
                     {
                       "id": "red-armored-mg",
-                      "name": "7.7mm機銃",
-                      "type": "7.7mm機銃",
+                      "name": "車載機銃",
+                      "type": "車載機銃",
                       "ammunition": 5,
                       "maxAmmunition": 5,
                       "range": { "min": 1, "max": 1 },
@@ -451,14 +396,14 @@
               "units": [
                 {
                   "id": "red-artillery-howitzer",
-                  "name": "野砲中隊",
+                  "name": "105mm野砲",
                   "type": "Artillery",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "artillery",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 10,
+                    "attack": 9,
                     "defense": 2,
                     "movement": 1,
                     "attackRange": { "min": 2, "max": 5 },
@@ -470,21 +415,12 @@
                   "weapons": [
                     {
                       "id": "red-artillery-howitzer",
-                      "name": "105mm野砲",
-                      "type": "105mm野砲",
-                      "ammunition": 4,
-                      "maxAmmunition": 4,
+                      "name": "Field Gun 105mm",
+                      "type": "Field Gun 105mm",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
                       "range": { "min": 2, "max": 5 },
                       "attack": 10
-                    },
-                    {
-                      "id": "red-artillery-rifle",
-                      "name": "6.5mmライフル",
-                      "type": "6.5mmライフル",
-                      "ammunition": 3,
-                      "maxAmmunition": 3,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4
                     }
                   ]
                 }
@@ -495,15 +431,15 @@
               "units": [
                 {
                   "id": "red-antitank-gun",
-                  "name": "対戦車砲小隊",
+                  "name": "6ポンド対戦車砲",
                   "type": "AntiTank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "antitank",
                   "stats": {
                     "maxHp": 8,
-                    "attack": 6,
-                    "defense": 3,
+                    "attack": 5,
+                    "defense": 4,
                     "movement": 1,
                     "attackRange": { "min": 1, "max": 2 },
                     "canCounterAttack": true,
@@ -514,21 +450,12 @@
                   "weapons": [
                     {
                       "id": "red-antitank-gun",
-                      "name": "47mm対戦車砲",
-                      "type": "47mm対戦車砲",
+                      "name": "6-pounder AT Gun",
+                      "type": "6-pounder AT Gun",
                       "ammunition": 9,
                       "maxAmmunition": 9,
                       "range": { "min": 1, "max": 1 },
                       "attack": 7
-                    },
-                    {
-                      "id": "red-antitank-rifle",
-                      "name": "6.5mmライフル",
-                      "type": "6.5mmライフル",
-                      "ammunition": 3,
-                      "maxAmmunition": 3,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4
                     }
                   ]
                 }
@@ -539,7 +466,7 @@
               "units": [
                 {
                   "id": "red-engineer",
-                  "name": "工作車",
+                  "name": "工兵",
                   "type": "Engineer",
                   "faction": "Red",
                   "branch": "陸",
@@ -555,26 +482,7 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
-                  "weapons": [
-                    {
-                      "id": "red-engineer-rifle",
-                      "name": "9mmライフル",
-                      "type": "9mmライフル",
-                      "ammunition": 6,
-                      "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
-                    },
-                    {
-                      "id": "red-engineer-material",
-                      "name": "資材",
-                      "type": "資材",
-                      "ammunition": 4,
-                      "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 0
-                    }
-                  ]
+                  "weapons": []
                 },
                 {
                   "id": "red-transport",
@@ -612,35 +520,17 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": {
-              "name": "駆逐艦",
-              "units": []
-            },
-            "cruiser": {
-              "name": "巡洋艦",
-              "units": []
-            },
-            "battleship": {
-              "name": "戦艦",
-              "units": []
-            }
+            "destroyer": { "name": "駆逐艦", "units": [] },
+            "cruiser": { "name": "巡洋艦", "units": [] },
+            "battleship": { "name": "戦艦", "units": [] }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": {
-              "name": "戦闘機",
-              "units": []
-            },
-            "bomber": {
-              "name": "爆撃機",
-              "units": []
-            },
-            "transport": {
-              "name": "輸送機",
-              "units": []
-            }
+            "fighter": { "name": "戦闘機", "units": [] },
+            "bomber": { "name": "爆撃機", "units": [] },
+            "transport": { "name": "輸送機", "units": [] }
           }
         }
       }
