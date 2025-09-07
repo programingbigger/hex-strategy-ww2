@@ -4,6 +4,13 @@
 
 # 実装リスト
 ## マスト
+* コードリファクタリング
+    * useGameLogic.tsxを分解する
+        * useGameLogic.tsxの各種ロジックを関数化する
+        * useGameLogicというフォルダを作成する
+        * その配下に各種ロジックを適当なファイル名で格納する
+        * この改修によって、useGameLogic.tsxに依存しているファイルたちを洗い出す
+        * 上記の依存関係をもとに、
 * UIの改善
     * Commander
         * ~~映像が流れるようにしたい。具体的には、3~5秒くらいの映像をランダムで流す~~
@@ -20,8 +27,9 @@
     * Deployment Phase
         * 範囲外でもユニットが配置できるので、そこを修正
     * BattleScreen 
-        * 首都から5マスにあるCity or Capitalでは、ユニットを生産できるという設定をしたい
-            * Commander/src/data/armyOrganization.jsonから選択できる様にする
+        * ~~CityとCapitalでユニットが生産できるというロジックを組みたい~~
+            * ~~Commander/src/data/armyOrganization.jsonから選択できる様にする~~
+        * 首都から5マスにあるCity or Capitalでは、ユニットを生産できるという設定にする
         * ある地点から、増援が出てくるという設定をする
         * 索敵機能の追加
             * **一番最後にする**

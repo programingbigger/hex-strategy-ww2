@@ -48,7 +48,7 @@
       {"x": -4,"y": 1,"terrain": "Snow"},
       {"x": -3,"y": 1,"terrain": "Capital", "hp": 10, "maxHp": 10, "owner": "Red", "order": 1},
       {"x": -2,"y": 1,"terrain": "Airport", "hp": 10, "maxHp": 10},
-      {"x": -1,"y": 1, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Blue"},
+      {"x": -1,"y": 1, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Blue", "order": 2},
       {"x": 0,"y": 1, "terrain": "Plains"},
       {"x": 1,"y": 1, "terrain": "Plains"},
       {"x": 2,"y": 1, "terrain": "Plains"},
