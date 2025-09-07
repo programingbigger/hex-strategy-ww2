@@ -73,18 +73,8 @@ const getCapitalsForTeam = (board: BoardLayout, team: Team): Tile[] => {
   return getCapitals(board).filter(c => c.owner === team);
 };
 
-const getActiveProductionCapital = (board: BoardLayout, team: Team): Tile | null => {
-  const teamCapitals = Array.from(board.values()).filter(
-    tile => tile.terrain === 'Capital' && tile.owner === team && tile.order !== undefined
-  );
-
-  if (teamCapitals.length === 0) {
-    return null;
-  }
-
-  teamCapitals.sort((a, b) => a.order! - b.order!);
-  return teamCapitals[0];
-};
+// Removed getActiveProductionCapital function as it's no longer needed
+// Capitals can now produce units if they have supply sources within 5 tiles
 
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
@@ -1172,8 +1162,8 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
               canProduce = true;
             }
           } else if (clickedTile.terrain === 'Capital') {
-            const activeCapital = getActiveProductionCapital(boardLayout, activeTeam);
-            if (activeCapital && activeCapital.x === coord.x && activeCapital.y === coord.y) {
+            // Modified logic: Allow any Capital to produce if there's a supply source within range
+            if (hasSupplySourceInRange(boardLayout, coord, 5)) {
               canProduce = true;
             }
           }
