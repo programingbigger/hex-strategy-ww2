@@ -445,3 +445,43 @@ export function findPotentialCapitalLocations(
   
   return potentialLocations;
 }
+
+/**
+ * Check if Cities or Capitals exist within specified radius of any team's Capital
+ * Used for unit production logic validation
+ * @param board The game board
+ * @param team The team whose capitals to check from
+ * @param radius The search radius (default: 5)
+ * @returns True if at least one City or Capital is found within radius
+ */
+export function hasCitiesOrCapitalsNearCapitals(
+  board: BoardLayout,
+  team: Team,
+  radius: number = 5
+): boolean {
+  const capitals = findCapitalsForTeam(board, team);
+  
+  // If no capitals found, return false
+  if (capitals.length === 0) {
+    return false;
+  }
+  
+  // Check all tiles on the board
+  for (const [, tile] of board.entries()) {
+    // Only consider City or Capital terrains
+    if (tile.terrain === 'City' || tile.terrain === 'Capital') {
+      const tileCoord = { x: tile.x, y: tile.y };
+      
+      // Check if this tile is within radius of any capital
+      const isWithinRange = capitals.some(capital => 
+        getDistance(capital, tileCoord) <= radius
+      );
+      
+      if (isWithinRange) {
+        return true;
+      }
+    }
+  }
+  
+  return false;
+}

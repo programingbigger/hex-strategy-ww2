@@ -18,6 +18,7 @@ import { LogPanel } from '../components/debug/LogPanel';
 import EngineerActionConfirmModal from '../components/game/EngineerActionConfirmModal';
 import TransportActionConfirmModal from '../components/game/TransportActionConfirmModal';
 import UnitSelectionModal from '../components/game/UnitSelectionModal';
+import { ProductionModal } from '../components/game/ProductionModal';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -68,6 +69,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     confirmTransportAction,
     cancelTransportAction,
     cancelTransportSelectionMode,
+
+    // Production
+    productionState,
+    handleUnitProduction,
+    handleProductionClose,
   } = useGameLogic();
 
   // Log panel state
@@ -406,6 +412,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         loadedUnit={transportConfirmState.loadedUnit}
         onConfirm={confirmTransportAction}
         onCancel={cancelTransportAction}
+      />
+
+      {/* Production Modal */}
+      <ProductionModal
+        isOpen={productionState.isOpen}
+        producibleUnits={productionState.producibleUnits}
+        onUnitSelect={handleUnitProduction}
+        onClose={handleProductionClose}
       />
 
       {/* Debug Log Panel */}

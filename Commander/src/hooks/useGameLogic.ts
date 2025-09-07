@@ -26,8 +26,10 @@ import {
   coordToString,
   getDistance,
   findPath,
-  getNeighbors
+  getNeighbors,
+  hasCitiesOrCapitalsNearCapitals
 } from '../utils/map';
+import { ProducibleUnit } from '../components/game/ProductionModal';
 import {
   getWeaponsInRange,
   selectCounterAttackWeapon,
@@ -96,6 +98,13 @@ export const useGameLogic = () => {
     attacker: Unit | null;
     target: Unit | null;
   }>({ isOpen: false, attacker: null, target: null });
+
+  // Unit production state
+  const [productionState, setProductionState] = useState<{
+    isOpen: boolean;
+    capital: Coordinate | null;
+    producibleUnits: ProducibleUnit[];
+  }>({ isOpen: false, capital: null, producibleUnits: [] });
 
   // Engineer action selection state
   const [engineerActionState, setEngineerActionState] = useState<{
@@ -1141,6 +1150,21 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     } else {
       if (unitOnHex && unitOnHex.team === activeTeam && !unitOnHex.moved && !unitOnHex.attacked) {
         setSelectedUnitId(unitOnHex.id);
+      } else {
+        const clickedTile = boardLayout.get(coordToString(coord));
+        if (clickedTile && clickedTile.terrain === 'Capital' && clickedTile.owner === activeTeam && !unitOnHex) {
+          if (hasCitiesOrCapitalsNearCapitals(boardLayout, activeTeam, 5)) {
+            const faction = activeTeam === 'Blue' ? 'Blue' : 'Red';
+            const producibleUnits = armyManager.getUnitTemplatesBy(faction);
+            setProductionState({
+              isOpen: true,
+              capital: coord,
+              producibleUnits: producibleUnits as ProducibleUnit[],
+            });
+          }
+        } else {
+          setSelectedUnitId(null);
+        }
       }
     }
   }, [gameState, units, selectedUnit, activeTeam, reachableTiles, attackableTiles, handleAttack, handleAttackWithWeapon, saveStateToHistory, boardLayout]);
@@ -1949,6 +1973,30 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     return { attack: attackBonus, defense: defenseBonus };
   }, [units, getCommandStructure]);
 
+  const handleUnitProduction = useCallback((unitTemplate: ProducibleUnit) => {
+    if (!productionState.capital) return;
+
+    const newUnitId = `${unitTemplate.id}-${Date.now()}`;
+    const newUnit = armyManager.createUnitFromTemplate(
+      unitTemplate.id,
+      newUnitId,
+      productionState.capital.x,
+      productionState.capital.y
+    );
+
+    if (newUnit) {
+      // Mark the new unit as having moved and attacked so it cannot be used this turn
+      const producedUnit = { ...newUnit, moved: true, attacked: true };
+      setUnits(prevUnits => [...prevUnits, producedUnit]);
+    }
+
+    setProductionState({ isOpen: false, capital: null, producibleUnits: [] });
+  }, [productionState.capital]);
+
+  const handleProductionClose = useCallback(() => {
+    setProductionState({ isOpen: false, capital: null, producibleUnits: [] });
+  }, []);
+
   return {
     // Existing properties
     gameState,
@@ -1998,6 +2046,11 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
     
     // 🎯 Battle Log System
     battleLog,
+
+    // Unit Production
+    productionState,
+    handleUnitProduction,
+    handleProductionClose,
     setBattleLog,
     
     // New army organization features
