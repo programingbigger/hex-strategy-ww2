@@ -90,6 +90,7 @@ export interface Tile {
   owner?: Team;
   hp?: number;
   maxHp?: number;
+  order?: number; // For production order
 }
 
 export type BoardLayout = Map<string, Tile>;

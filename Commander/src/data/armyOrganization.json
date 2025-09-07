@@ -212,7 +212,26 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
-                  "weapons": []
+                  "weapons": [
+                    {
+                      "id": "blue-engineer-rifle",
+                      "name": "Kar98k",
+                      "type": "Kar98k",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 3
+                    },
+                    {
+                      "id": "blue-engineer-material",
+                      "name": "資材",
+                      "type": "資材",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 0
+                    }
+                  ]
                 },
                 {
                   "id": "blue-transport",
@@ -482,7 +501,26 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
-                  "weapons": []
+                  "weapons": [
+                    {
+                      "id": "red-engineer-rifle",
+                      "name": "M1 Garand",
+                      "type": "M1 Garand",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 3
+                    },
+                    {
+                      "id": "red-engineer-material",
+                      "name": "資材",
+                      "type": "資材",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 0
+                    }
+                  ]
                 },
                 {
                   "id": "red-transport",

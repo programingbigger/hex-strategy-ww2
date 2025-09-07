@@ -73,6 +73,19 @@ const getCapitalsForTeam = (board: BoardLayout, team: Team): Tile[] => {
   return getCapitals(board).filter(c => c.owner === team);
 };
 
+const getActiveProductionCapital = (board: BoardLayout, team: Team): Tile | null => {
+  const teamCapitals = Array.from(board.values()).filter(
+    tile => tile.terrain === 'Capital' && tile.owner === team && tile.order !== undefined
+  );
+
+  if (teamCapitals.length === 0) {
+    return null;
+  }
+
+  teamCapitals.sort((a, b) => a.order! - b.order!);
+  return teamCapitals[0];
+};
+
 export const useGameLogic = () => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
   const [turn, setTurn] = useState<number>(1);
@@ -1152,15 +1165,29 @@ Counter-attack! ${currentDefender.type} attacks ${attacker.type} for ${counterDa
         setSelectedUnitId(unitOnHex.id);
       } else {
         const clickedTile = boardLayout.get(coordToString(coord));
-        if (clickedTile && (clickedTile.terrain === 'Capital' || clickedTile.terrain === 'City') && clickedTile.owner === activeTeam && !unitOnHex) {
-          if (hasSupplySourceInRange(boardLayout, coord, 5)) {
+        if (clickedTile && clickedTile.owner === activeTeam && !unitOnHex) {
+          let canProduce = false;
+          if (clickedTile.terrain === 'City') {
+            if (hasSupplySourceInRange(boardLayout, coord, 5)) {
+              canProduce = true;
+            }
+          } else if (clickedTile.terrain === 'Capital') {
+            const activeCapital = getActiveProductionCapital(boardLayout, activeTeam);
+            if (activeCapital && activeCapital.x === coord.x && activeCapital.y === coord.y) {
+              canProduce = true;
+            }
+          }
+
+          if (canProduce) {
             const faction = activeTeam === 'Blue' ? 'Blue' : 'Red';
             const producibleUnits = armyManager.getUnitTemplatesBy(faction);
             setProductionState({
               isOpen: true,
-              capital: coord,
+              capital: coord, // 'capital' here just means production coordinate
               producibleUnits: producibleUnits as ProducibleUnit[],
             });
+          } else {
+            setSelectedUnitId(null);
           }
         } else {
           setSelectedUnitId(null);
