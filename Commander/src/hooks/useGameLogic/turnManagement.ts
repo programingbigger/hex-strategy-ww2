@@ -268,29 +268,22 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
           continue;
         }
 
-        // Create the new unit based on reinforcement data
-        // Note: This is a basic implementation - you may need to adjust based on your unit creation system
-        const newUnit: Unit = {
-          id: `reinforcement-${reinforcement.id}-turn-${currentTurn}`,
-          type: reinforcement.unitId as any, // You may need to map this to proper unit types
-          team: reinforcement.team,
-          x: reinforcement.spawnLocation.x,
-          y: reinforcement.spawnLocation.y,
-          hp: 100, // Default values - should be based on unit stats
-          maxHp: 100,
-          attack: 50, // Default attack value
-          defense: 40, // Default defense value
-          fuel: 60,
-          maxFuel: 60,
-          moved: false,
-          attacked: false,
-          canCounterAttack: true,
-          unitClass: 'Infantry', // Default - should be determined from unitId
-          attackRange: { min: 1, max: 1 },
-          movement: 3,
-          xp: 0,
-          weapons: [] // Empty weapons array for now
-        };
+        // Create the new unit using army organization data
+        const { createUnitFromArmy } = await import('../../data/armyLoader');
+        const newUnit = createUnitFromArmy(
+          reinforcement.unitId,
+          `reinforcement-${reinforcement.id}-turn-${currentTurn}`,
+          reinforcement.spawnLocation.x,
+          reinforcement.spawnLocation.y
+        );
+
+        if (!newUnit) {
+          console.error(`❌ Failed to create reinforcement unit with ID: ${reinforcement.unitId}`);
+          continue;
+        }
+
+        // Ensure unit is assigned to correct team from reinforcement config
+        newUnit.team = reinforcement.team;
 
         newUnits.push(newUnit);
         console.log(`✅ Spawned reinforcement: ${reinforcement.description} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
