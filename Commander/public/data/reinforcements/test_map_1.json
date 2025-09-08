@@ -5,7 +5,7 @@
     {
       "id": "reinforcement-1",
       "unitId": "red-infantry-standard",
-      "spawnTurn": 3,
+      "spawnTurn": 2,
       "spawnLocation": {
         "x": 3,
         "y": 2

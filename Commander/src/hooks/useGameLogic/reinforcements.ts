@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { ReinforcementConfig, ReinforcementData } from '../../types/reinforcements';
 import { loadReinforcementConfig, getSpawnLocations, hasReinforcementAtLocation } from '../../utils/reinforcements';
 import { Coordinate } from '../../types';
@@ -37,15 +37,15 @@ export const useReinforcements = (deps: ReinforcementDeps): ReinforcementHook =>
     return getSpawnLocations(reinforcementConfig.reinforcements);
   }, [reinforcementConfig]);
 
-  const isReinforcementSpawnLocation = (x: number, y: number): boolean => {
+  const isReinforcementSpawnLocation = useCallback((x: number, y: number): boolean => {
     if (!reinforcementConfig) return false;
     return hasReinforcementAtLocation(reinforcementConfig.reinforcements, x, y);
-  };
+  }, [reinforcementConfig]);
 
-  const getReinforcementsForPreview = (): ReinforcementData[] => {
+  const getReinforcementsForPreview = useCallback((): ReinforcementData[] => {
     if (!reinforcementConfig) return [];
     return reinforcementConfig.reinforcements;
-  };
+  }, [reinforcementConfig]);
 
   return {
     reinforcementSpawnLocations,

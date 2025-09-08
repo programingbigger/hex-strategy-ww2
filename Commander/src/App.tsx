@@ -6,10 +6,10 @@ import ScenarioSelectScreen from './screens/ScenarioSelectScreen';
 import BattlePrepScreen from './screens/BattlePrepScreen';
 import UnitDeploymentScreen from './screens/UnitDeploymentScreen';
 import BattleScreen from './screens/BattleScreen';
+import './styles/App.css';
 
 import { TestRunner } from './components/test/TestRunner';
 import { loadCompleteMap } from './utils/mapLoader';
-import './styles/App.css';
 
 const App: React.FC = () => {
   const [gameState, setGameState] = useState<GameState>({
