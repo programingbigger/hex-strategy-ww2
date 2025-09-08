@@ -11,6 +11,7 @@ interface HexagonProps {
   isAttackable?: boolean;
   isEngineerTarget?: boolean;
   isTransportTarget?: boolean;
+  isReinforcementSpawn?: boolean;
   onClick: (coord: Coordinate) => void;
   onMouseEnter: (coord: Coordinate) => void;
   onMouseLeave: () => void;
@@ -25,6 +26,7 @@ const Hexagon: React.FC<HexagonProps> = ({
   isAttackable = false,
   isEngineerTarget = false,
   isTransportTarget = false,
+  isReinforcementSpawn = false,
   onClick,
   onMouseEnter,
   onMouseLeave
@@ -279,6 +281,7 @@ const Hexagon: React.FC<HexagonProps> = ({
   
   let strokeColor = '#000';
   let strokeWidth = 1;
+  let fillOpacity = 0.8;
   
   if (isSelected) {
     strokeColor = '#FFD700';
@@ -289,6 +292,9 @@ const Hexagon: React.FC<HexagonProps> = ({
   } else if (isTransportTarget) {
     strokeColor = '#00BFFF'; // Deep sky blue for transport targets
     strokeWidth = 3;
+  } else if (isReinforcementSpawn) {
+    strokeColor = '#FFD700'; // Yellow for reinforcement spawn points
+    strokeWidth = 8;
   } else if (isReachable) {
     strokeColor = '#00FF00';
     strokeWidth = 2;
@@ -310,7 +316,6 @@ const Hexagon: React.FC<HexagonProps> = ({
         fill={getTerrainColor(tile.terrain)}
         stroke={strokeColor}
         strokeWidth={strokeWidth}
-        opacity={0.8}
       />
       
       {/* 兵科式マッピング: 地形シンボル表示 */}
