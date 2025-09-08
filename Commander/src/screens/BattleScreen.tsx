@@ -19,6 +19,8 @@ import EngineerActionConfirmModal from '../components/game/EngineerActionConfirm
 import TransportActionConfirmModal from '../components/game/TransportActionConfirmModal';
 import UnitSelectionModal from '../components/game/UnitSelectionModal';
 import { ProductionModal } from '../components/game/ProductionModal';
+import ReinforcementNotificationModal from '../components/game/ReinforcementNotificationModal';
+import { ReinforcementData } from '../types/reinforcements';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -74,6 +76,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     productionState,
     handleUnitProduction,
     handleProductionClose,
+    
+    // Reinforcement system
+    isReinforcementSpawnLocation,
+    getReinforcementsForPreview,
   } = useGameLogic();
 
   // Log panel state
@@ -86,6 +92,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const [victoryInfo, setVictoryInfo] = useState<{defeatedArmy?: string; winnerArmy?: string}>({});
   const [lastTurn, setLastTurn] = useState(0);
   const [lastActiveTeam, setLastActiveTeam] = useState<'Blue' | 'Red'>('Blue');
+  
+  // Reinforcement notification state
+  const [isReinforcementNotificationOpen, setIsReinforcementNotificationOpen] = useState(false);
+  const [currentReinforcements, setCurrentReinforcements] = useState<ReinforcementData[]>([]);
 
   // Handle keyboard shortcuts
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
@@ -133,6 +143,26 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       setLastActiveTeam(activeTeam);
     }
   }, [turn, activeTeam, lastTurn, lastActiveTeam]);
+  
+  // Detect reinforcement spawns and show notifications
+  useEffect(() => {
+    const checkForReinforcements = async () => {
+      if (turn > 0) { // Only check after first turn
+        const reinforcementPreview = getReinforcementsForPreview();
+        const currentTurnReinforcements = reinforcementPreview.filter(r => r.spawnTurn === turn);
+        
+        if (currentTurnReinforcements.length > 0) {
+          setCurrentReinforcements(currentTurnReinforcements);
+          // Delay notification to show after turn change modal
+          setTimeout(() => {
+            setIsReinforcementNotificationOpen(true);
+          }, 1500);
+        }
+      }
+    };
+
+    checkForReinforcements();
+  }, [turn, getReinforcementsForPreview]);
 
   // Handle end turn confirmation
   const handleEndTurnConfirm = useCallback(() => {
@@ -152,6 +182,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setIsVictoryModalOpen(false);
     onNavigate('title');
   }, [onNavigate]);
+  
+  const handleReinforcementNotificationClose = useCallback(() => {
+    setIsReinforcementNotificationOpen(false);
+    setCurrentReinforcements([]);
+  }, []);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -297,6 +332,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             attackableTiles={attackableTiles}
             engineerTargetTiles={engineerTargetTiles}
             transportTargetTiles={transportTargetTiles}
+            isReinforcementSpawnLocation={isReinforcementSpawnLocation}
             onHexClick={handleHexClick}
             onHexHover={setHoveredHex}
             onHexLeave={() => setHoveredHex(null)}
@@ -450,6 +486,13 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         defeatedArmy={victoryInfo.defeatedArmy}
         winnerArmy={victoryInfo.winnerArmy}
         onClose={handleVictoryModalClose}
+      />
+
+      {/* Reinforcement Notification Modal */}
+      <ReinforcementNotificationModal
+        isOpen={isReinforcementNotificationOpen}
+        reinforcements={currentReinforcements}
+        onClose={handleReinforcementNotificationClose}
       />
     </div>
   );

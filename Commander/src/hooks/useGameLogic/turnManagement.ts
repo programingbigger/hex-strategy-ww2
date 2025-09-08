@@ -1,17 +1,16 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Unit,
   BoardLayout,
   Team,
   WeatherType,
-  VictoryResult,
-  VictoryCondition
+  VictoryResult
 } from '../../types';
-import { coordToString, getNeighbors } from '../../utils/map';
-import { TERRAIN_STATS, CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/constants';
+import { coordToString } from '../../utils/map';
+import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/constants';
 import { log } from '../../utils/logger';
-
-// Helper functions
+import { loadReinforcementConfig, getReinforcementsForTurn } from '../../utils/reinforcements';
+import { ReinforcementConfig } from '../../types/reinforcements';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
 };
@@ -145,6 +144,10 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setVictoryResult
   } = deps;
 
+  // Store reinforcement config to avoid repeated loading
+  const reinforcementConfigRef = useRef<ReinforcementConfig | null>(null);
+  const mapIdRef = useRef<string>('test_map_1'); // TODO: Get this from props/context
+
   const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
     const blueUnits = currentUnits.filter(u => u.team === 'Blue');
     const redUnits = currentUnits.filter(u => u.team === 'Red');
@@ -228,7 +231,79 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     }
   }, [turn, setGameState, setWinner, setVictoryResult]);
 
-  const handleEndTurn = useCallback(() => {
+  // Function to spawn reinforcements
+  const spawnReinforcements = useCallback(async (currentTurn: number, currentUnits: Unit[]): Promise<Unit[]> => {
+    try {
+      // Load reinforcement config if not already loaded
+      if (!reinforcementConfigRef.current) {
+        reinforcementConfigRef.current = await loadReinforcementConfig(mapIdRef.current);
+        if (!reinforcementConfigRef.current) {
+          console.log('🪖 No reinforcement config found, skipping reinforcement spawn');
+          return currentUnits;
+        }
+        console.log('🪖 Loaded reinforcement config:', reinforcementConfigRef.current);
+      }
+
+      const reinforcementsToSpawn = getReinforcementsForTurn(
+        reinforcementConfigRef.current.reinforcements, 
+        currentTurn
+      );
+
+      if (reinforcementsToSpawn.length === 0) {
+        return currentUnits;
+      }
+
+      console.log(`🪖 Spawning ${reinforcementsToSpawn.length} reinforcement(s) on turn ${currentTurn}:`);
+      
+      const newUnits = [...currentUnits];
+      
+      for (const reinforcement of reinforcementsToSpawn) {
+        // Check if spawn location is occupied
+        const isOccupied = currentUnits.some(u => 
+          u.x === reinforcement.spawnLocation.x && u.y === reinforcement.spawnLocation.y
+        );
+
+        if (isOccupied) {
+          console.warn(`⚠️ Reinforcement spawn location (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y}) is occupied, skipping reinforcement ${reinforcement.id}`);
+          continue;
+        }
+
+        // Create the new unit based on reinforcement data
+        // Note: This is a basic implementation - you may need to adjust based on your unit creation system
+        const newUnit: Unit = {
+          id: `reinforcement-${reinforcement.id}-turn-${currentTurn}`,
+          type: reinforcement.unitId as any, // You may need to map this to proper unit types
+          team: reinforcement.team,
+          x: reinforcement.spawnLocation.x,
+          y: reinforcement.spawnLocation.y,
+          hp: 100, // Default values - should be based on unit stats
+          maxHp: 100,
+          attack: 50, // Default attack value
+          defense: 40, // Default defense value
+          fuel: 60,
+          maxFuel: 60,
+          moved: false,
+          attacked: false,
+          canCounterAttack: true,
+          unitClass: 'Infantry', // Default - should be determined from unitId
+          attackRange: { min: 1, max: 1 },
+          movement: 3,
+          xp: 0,
+          weapons: [] // Empty weapons array for now
+        };
+
+        newUnits.push(newUnit);
+        console.log(`✅ Spawned reinforcement: ${reinforcement.description} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
+      }
+
+      return newUnits;
+    } catch (error) {
+      console.error('❌ Error spawning reinforcements:', error);
+      return currentUnits;
+    }
+  }, []);
+
+  const handleEndTurn = useCallback(async () => {
     const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
     console.log(`🔄 Turn ending: ${activeTeam} -> ${nextTeam}. Checking healing for ${nextTeam} team units...`);
     
@@ -262,6 +337,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       }
     });
 
+    let finalUnits = unitsWithHealing;
+
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
@@ -277,6 +354,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
           turnsElapsed: newTurn
         });
         return;
+      }
+      
+      // Check for reinforcements at the start of Blue's turn (beginning of new turn)
+      finalUnits = await spawnReinforcements(newTurn, unitsWithHealing);
+      if (finalUnits !== unitsWithHealing) {
+        setUnits(finalUnits);
       }
       
       const weathers: WeatherType[] = ['Clear', 'Rain', 'Storm', 'Rain', 'Storm'];
@@ -311,11 +394,18 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       if (changed) {
         setBoardLayout(newBoardLayout);
       }
+    } else {
+      // Check for reinforcements at the start of Red's turn (enemy turn)
+      finalUnits = await spawnReinforcements(turn, unitsWithHealing);
+      if (finalUnits !== unitsWithHealing) {
+        setUnits(finalUnits);
+      }
     }
+    
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
-    checkWinCondition(unitsWithHealing, newBoardLayout);
-  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setWeatherDuration, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult]);
+    checkWinCondition(finalUnits, newBoardLayout);
+  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setWeatherDuration, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, spawnReinforcements]);
 
   return {
     handleEndTurn,

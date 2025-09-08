@@ -13,6 +13,7 @@ interface GameBoardProps {
   attackableTiles: Coordinate[];
   engineerTargetTiles: Coordinate[];
   transportTargetTiles: Coordinate[];
+  isReinforcementSpawnLocation?: (x: number, y: number) => boolean;
   onHexClick: (coord: Coordinate) => void;
   onHexHover: (coord: Coordinate) => void;
   onHexLeave: () => void;
@@ -26,6 +27,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
   attackableTiles,
   engineerTargetTiles,
   transportTargetTiles,
+  isReinforcementSpawnLocation,
   onHexClick,
   onHexHover,
   onHexLeave
@@ -43,6 +45,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
       const isAttackable = attackableTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       const isEngineerTarget = engineerTargetTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
       const isTransportTarget = transportTargetTiles.some(coord => coord.x === tile.x && coord.y === tile.y);
+      const isReinforcementSpawn = isReinforcementSpawnLocation ? isReinforcementSpawnLocation(tile.x, tile.y) : false;
       
       hexes.push(
         <Hexagon
@@ -55,6 +58,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
           isAttackable={isAttackable}
           isEngineerTarget={isEngineerTarget}
           isTransportTarget={isTransportTarget}
+          isReinforcementSpawn={isReinforcementSpawn}
           onClick={onHexClick}
           onMouseEnter={onHexHover}
           onMouseLeave={onHexLeave}

@@ -36,6 +36,7 @@ import { useUnitActions } from './unitActions';
 import { useEngineerActions } from './engineerActions';
 import { useTransportActions } from './transportActions';
 import { useArmyManagement } from './armyManagement';
+import { useReinforcements } from './reinforcements';
 
 // Helper functions
 const isCapitalTerrain = (terrain: string): boolean => {
@@ -54,6 +55,9 @@ export const useGameLogic = () => {
   // Initialize all sub-hooks
   const gameState = useGameState();
   const uiStates = useUIStates();
+  
+  // Initialize reinforcement system
+  const reinforcements = useReinforcements({ mapId: 'test_map_1' }); // TODO: Get mapId from props/context
   
   const battleSystem = useBattleSystem({
     boardLayout: gameState.boardLayout,
@@ -435,6 +439,11 @@ export const useGameLogic = () => {
     attackableTiles,
     engineerTargetTiles,
     transportTargetTiles,
+    
+    // Reinforcement system
+    reinforcementSpawnLocations: reinforcements.reinforcementSpawnLocations,
+    isReinforcementSpawnLocation: reinforcements.isReinforcementSpawnLocation,
+    getReinforcementsForPreview: reinforcements.getReinforcementsForPreview,
     
     // Game state methods
     loadGame: gameState.loadGame,

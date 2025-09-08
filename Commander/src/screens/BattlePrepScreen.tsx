@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
+import ReinforcementPreview from '../components/game/ReinforcementPreview';
 
 interface BattlePrepScreenProps {
   gameState: GameState;
@@ -65,6 +66,9 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           <p>{gameState.selectedMap.description}</p>
         </div>
       )}
+
+      {/* Reinforcement Preview */}
+      <ReinforcementPreview mapId="test_map_1" />
       
       <div className="prep-container">
         <div className="prep-map">
