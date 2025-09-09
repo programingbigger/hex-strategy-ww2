@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 import {
   Unit,
   BoardLayout,
@@ -102,6 +102,7 @@ export interface TurnManagementHook {
 }
 
 interface TurnManagementDeps {
+  mapId: string; // Add mapId parameter
   activeTeam: Team;
   units: Unit[];
   weather: WeatherType;
@@ -124,6 +125,7 @@ interface TurnManagementDeps {
 
 export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook => {
   const {
+    mapId, // Extract mapId from deps
     activeTeam,
     units,
     weather,
@@ -146,7 +148,16 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
 
   // Store reinforcement config to avoid repeated loading
   const reinforcementConfigRef = useRef<ReinforcementConfig | null>(null);
-  const mapIdRef = useRef<string>('test_map_1'); // TODO: Get this from props/context
+  const mapIdRef = useRef<string>(mapId); // Use mapId from props instead of hardcoded value
+
+  // Update mapIdRef when mapId changes
+  useEffect(() => {
+    if (mapIdRef.current !== mapId) {
+      mapIdRef.current = mapId;
+      // Reset reinforcement config when map changes
+      reinforcementConfigRef.current = null;
+    }
+  }, [mapId]);
 
   const checkWinCondition = useCallback((currentUnits: Unit[], currentBoard: BoardLayout) => {
     const blueUnits = currentUnits.filter(u => u.team === 'Blue');
@@ -238,10 +249,10 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       if (!reinforcementConfigRef.current) {
         reinforcementConfigRef.current = await loadReinforcementConfig(mapIdRef.current);
         if (!reinforcementConfigRef.current) {
-          console.log('🪖 No reinforcement config found, skipping reinforcement spawn');
+          console.log('🪖 No reinforcement config found for map:', mapIdRef.current, '- skipping reinforcement spawn');
           return currentUnits;
         }
-        console.log('🪖 Loaded reinforcement config:', reinforcementConfigRef.current);
+        console.log('🪖 Loaded reinforcement config for map:', mapIdRef.current, reinforcementConfigRef.current);
       }
 
       const reinforcementsToSpawn = getReinforcementsForTurn(
@@ -253,7 +264,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         return currentUnits;
       }
 
-      console.log(`🪖 Spawning ${reinforcementsToSpawn.length} reinforcement(s) on turn ${currentTurn}:`);
+      console.log(`🪖 Spawning ${reinforcementsToSpawn.length} reinforcement(s) on turn ${currentTurn} for map ${mapIdRef.current}:`);
       
       const newUnits = [...currentUnits];
       
@@ -404,4 +415,4 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     handleEndTurn,
     checkWinCondition,
   };
-};
+};;

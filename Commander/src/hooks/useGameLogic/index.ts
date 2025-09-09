@@ -51,13 +51,13 @@ const getCapitalsForTeam = (board: BoardLayout, team: Team): Tile[] => {
   return getCapitals(board).filter(c => c.owner === team);
 };
 
-export const useGameLogic = () => {
+export const useGameLogic = (mapId: string = 'test_map_1') => {
   // Initialize all sub-hooks
   const gameState = useGameState();
   const uiStates = useUIStates();
   
-  // Initialize reinforcement system
-  const reinforcements = useReinforcements({ mapId: 'test_map_1' }); // TODO: Get mapId from props/context
+  // Initialize reinforcement system with dynamic mapId
+  const reinforcements = useReinforcements({ mapId });
   
   const battleSystem = useBattleSystem({
     boardLayout: gameState.boardLayout,
@@ -74,6 +74,7 @@ export const useGameLogic = () => {
   });
 
   const turnManagement = useTurnManagement({
+    mapId, // Pass mapId to turnManagement
     activeTeam: gameState.activeTeam,
     units: gameState.units,
     weather: gameState.weather,
@@ -510,4 +511,4 @@ export const useGameLogic = () => {
     getProductionCapitals: (team: Team) => getProductionCapitals(gameState.boardLayout, team),
     canProduceUnitsAtLocation: (coord: Coordinate, team: Team) => canProduceUnitsAtLocation(gameState.boardLayout, coord, team),
   };
-};
+};;

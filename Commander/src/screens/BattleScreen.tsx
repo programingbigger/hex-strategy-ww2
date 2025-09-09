@@ -80,7 +80,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     // Reinforcement system
     isReinforcementSpawnLocation,
     getReinforcementsForPreview,
-  } = useGameLogic();
+  } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
 
   // Log panel state
   const [isLogPanelVisible, setIsLogPanelVisible] = useState(false);

@@ -68,7 +68,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
       )}
 
       {/* Reinforcement Preview */}
-      <ReinforcementPreview mapId="test_map_1" />
+      <ReinforcementPreview mapId={gameState.selectedMap?.id || 'test_map_1'} />
       
       <div className="prep-container">
         <div className="prep-map">
