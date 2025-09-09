@@ -22,4 +22,11 @@ export const availableMaps: GameMap[] = [
     difficulty: 'Normal',
     deploymentCenter: { q: -4, r: -2 }
   }
+  // ,{
+  //   id: 'large_map_only_Plains',
+  //   name: 'Plains Battlefield',
+  //   description: 'Large plains-only map for open warfare tactics',
+  //   difficulty: 'Normal',
+  //   deploymentCenter: { q: -4, r: -2 }
+  // }
 ];

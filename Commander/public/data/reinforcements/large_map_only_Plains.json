@@ -1,0 +1,59 @@
+{
+  "mapId": "large_map_only_Plains",
+  "description": "Large plains map reinforcement configuration",
+  "reinforcements": [
+    {
+      "id": "reinforcement-1",
+      "unitId": "red-infantry-standard",
+      "spawnTurn": 3,
+      "spawnLocation": {
+        "x": 15,
+        "y": 5
+      },
+      "team": "Red",
+      "description": "Enemy infantry reinforcement from the east"
+    },
+    {
+      "id": "reinforcement-2",
+      "unitId": "red-tank-light",
+      "spawnTurn": 6,
+      "spawnLocation": {
+        "x": 16,
+        "y": 5
+      },
+      "team": "Red",
+      "description": "Enemy light tank reinforcement"
+    },
+    {
+      "id": "reinforcement-3",
+      "unitId": "red-infantry-standard",
+      "spawnTurn": 8,
+      "spawnLocation": {
+        "x": 15,
+        "y": 4
+      },
+      "team": "Red",
+      "description": "Additional enemy infantry wave"
+    }
+  ],
+  "spawnLocations": [
+    {
+      "x": 15,
+      "y": 5,
+      "description": "Eastern reinforcement spawn point",
+      "allowedTeam": "Red"
+    },
+    {
+      "x": 16,
+      "y": 5,
+      "description": "Eastern reinforcement spawn point",
+      "allowedTeam": "Red"
+    },
+    {
+      "x": 15,
+      "y": 4,
+      "description": "Eastern reinforcement spawn point",
+      "allowedTeam": "Red"
+    }
+  ]
+}

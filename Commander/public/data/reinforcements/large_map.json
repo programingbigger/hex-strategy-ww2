@@ -1,14 +1,14 @@
 {
   "mapId": "large_map.json",
-  "description": "large map reinforcement configuration",
+  "description": "Test map reinforcement configuration",
   "reinforcements": [
     {
         "id": "reinforcement-1",
         "unitId": "red-infantry-standard",
-        "spawnTurn": 5,
+        "spawnTurn": 2,
         "spawnLocation": {
         "x": -15,
-        "y": 9
+        "y": -9
         },
         "team": "Red",
         "description": "Enemy infantry reinforcement from the east"
@@ -16,10 +16,10 @@
         {
         "id": "reinforcement-2",
         "unitId": "red-infantry-standard",
-        "spawnTurn": 5,
+        "spawnTurn": 2,
         "spawnLocation": {
         "x": -14,
-        "y": 9
+        "y": -9
         },
         "team": "Red",
         "description": "Enemy infantry reinforcement from the east"
@@ -27,10 +27,10 @@
         {
         "id": "reinforcement-3",
         "unitId": "red-infantry-standard",
-        "spawnTurn": 5,
+        "spawnTurn": 2,
         "spawnLocation": {
         "x": -13,
-        "y": 9
+        "y": -9
         },
         "team": "Red",
         "description": "Enemy infantry reinforcement from the east"
@@ -38,7 +38,7 @@
         {
         "id": "reinforcement-4",
         "unitId": "red-infantry-standard",
-        "spawnTurn": 10,
+        "spawnTurn": 2,
         "spawnLocation": {
         "x": 25,
         "y": -8
@@ -49,7 +49,7 @@
         {
         "id": "reinforcement-5",
         "unitId": "red-infantry-standard",
-        "spawnTurn": 10,
+        "spawnTurn": 2,
         "spawnLocation": {
         "x": 25,
         "y": -9
@@ -60,7 +60,7 @@
     {
         "id": "reinforcement-6", 
         "unitId": "red-tank-medium",
-        "spawnTurn": 10,
+        "spawnTurn": 5,
         "spawnLocation": {
         "x": 24,
         "y": -8
@@ -71,8 +71,38 @@
     ],
     "spawnLocations": [
         {
-        "x": 3,
-        "y": 2,
+        "x": -15,
+        "y": -9,
+        "description": "Western reinforcement spawn point",
+        "allowedTeam": "Red"
+        },
+        {
+        "x": -14,
+        "y": -9,
+        "description": "Western reinforcement spawn point",
+        "allowedTeam": "Red"
+        },
+        {
+        "x": -13,
+        "y": -9,
+        "description": "Western reinforcement spawn point",
+        "allowedTeam": "Red"
+        },
+        {
+        "x": 25,
+        "y": -8,
+        "description": "Eastern reinforcement spawn point",
+        "allowedTeam": "Red"
+        },
+        {
+        "x": 25,
+        "y": -9,
+        "description": "Eastern reinforcement spawn point",
+        "allowedTeam": "Red"
+        },
+        {
+        "x": 24,
+        "y": -8,
         "description": "Eastern reinforcement spawn point",
         "allowedTeam": "Red"
         }

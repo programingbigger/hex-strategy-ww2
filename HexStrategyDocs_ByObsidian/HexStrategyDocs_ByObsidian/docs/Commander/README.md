@@ -10,40 +10,12 @@ Commander は TypeScript/React で構築された第二次世界大戦をテー�
 
 ## ドキュメント構造
 
-### [[Core-Components]] - コアコンポーネント
-ゲームの核となるUI要素とボード描画機能。最新の天候・輸送・工作システム対応
-- [[GameBoard]] - ヘックスマップの描画とユーザー操作
-- [[Hexagon]] - 個別ヘックスタイルの表示
-- [[InformationPanel]] - ゲーム情報表示パネル
-- [[RainEffect]] - 天候視覚エフェクト（新機能）
-- [[TransportActionConfirmModal]] - 輸送アクション確認（新機能）
-- [[EngineerActionConfirmModal]] - 工作アクション確認（新機能）
-- [[EndTurnConfirmModal]] - ターン終了確認（新機能）
-- [[TurnChangeModal]] - ターン切替通知（新機能）
-- [[ShortcutsPanel]] - ショートカット表示（新機能）
-
-### [[Game-Logic]] - ゲームロジック  
-戦闘システムと状態管理の中核。地形システム、天候システム、輸送・工作システムを統合
-- [[useGameLogic]] - メインゲームロジックフック（天候・輸送・工作機能統合）
-- [[constants]] - ゲームバランス設定（17種類の地形効果定義）
-- [[terrain-types]] - 地形タイプ詳細仕様と戦術的価値の参照表
-
-### [[Screen-Components]] - 画面コンポーネント
-各ゲーム画面の実装
-- [[TitleScreen]] - タイトル画面
-- [[BattleScreen]] - 戦闘画面（天候エフェクト・各種モーダル統合）
-- [[UnitDeploymentScreen]] - ユニット配置画面
-
-### [[Types-Configuration]] - 型定義・設定
-TypeScript型定義とゲーム設定。天候・輸送・工作システム対応
-- [[types-index]] - 全型定義（WeatherType, TransportState, EngineerActionなど）
-- [[game-constants]] - ゲーム定数
-
-### [[Utils-Helpers]] - ユーティリティ・ヘルパー
-汎用的な機能とヘルパー関数
-- map.ts - 地形計算とパスファインディング
-- battleLogger.ts - 戦闘ログ管理
-- weapons.ts - 武器システム
+- [[Core-Components]] - ゲームの核となるUI要素とボード描画機能。
+- [[Game-Logic]] - 戦闘システムと状態管理の中核。
+- [[Screens]] - 各ゲーム画面の実装。
+- [[Types-Configuration]] - TypeScriptの型定義とゲーム設定。
+- [[Utils-Helpers]] - 汎用的な機能とヘルパー関数。
+- [[Data-Schema]] - `armyOrganization.json`などのデータ構造。
 
 ## ゲームシステムの特徴
 
@@ -113,8 +85,6 @@ TypeScript型定義とゲーム設定。天候・輸送・工作システム対�
    - 季節システムとの連携
 
 2. **輸送・工作システム拡張**
-   - 複数ユニット同時輸送
-   - 工作車の専門化（架橋専用、破壊専用等）
    - 海上輸送システム
 
 3. **UI/UX更なる改善**
