@@ -97,6 +97,19 @@ export function calculateReachableTiles(
   const unitAtStart = units.find(u => u.x === start.x && u.y === start.y);
   if (!unitAtStart) return [];
 
+  // Create unit position map for better performance
+  const unitPositionMap = new Map<string, Unit>();
+  units.forEach(unit => {
+    unitPositionMap.set(coordToString({x: unit.x, y: unit.y}), unit);
+  });
+
+  const findUnitAtPosition = (coord: Coordinate): Unit | undefined => {
+    const key = coordToString(coord);
+    const unit = unitPositionMap.get(key);
+    // Exclude the starting unit from blocking logic
+    return unit && !(unit.x === start.x && unit.y === start.y) ? unit : undefined;
+  };
+
   // Calculate ZOC for enemy units
   const zocTiles: Map<string, Team> = new Map();
   units.forEach(unit => {
@@ -117,8 +130,13 @@ export function calculateReachableTiles(
     if (!currentNode) break;
 
     const currentCoord = stringToCoord(currentNode.key);
+    
+    // Add to reachable if not starting position and no unit occupies the tile
     if (currentNode.key !== startNodeKey) {
-      reachable.push(currentCoord);
+      const unitOnDestination = findUnitAtPosition(currentCoord);
+      if (!unitOnDestination) {
+        reachable.push(currentCoord);
+      }
     }
     
     const neighbors = getNeighbors(currentCoord);
@@ -128,8 +146,13 @@ export function calculateReachableTiles(
       const tile = board.get(neighborKey);
       if (!tile) continue;
 
-      const unitOnTile = units.some(u => u.x === neighborCoord.x && u.y === neighborCoord.y && !(u.x === start.x && u.y === start.y));
-      if (unitOnTile) continue;
+      // Check for units on the tile - Allow movement through friendly units, block enemy units
+      const unitOnTile = findUnitAtPosition(neighborCoord);
+      if (unitOnTile && unitOnTile.team !== currentTeam) {
+        // Block movement through enemy units
+        continue;
+      }
+      // Allow movement through friendly units or empty tiles
 
       const terrainStats = TERRAIN_STATS[tile.terrain];
       let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
@@ -176,10 +199,16 @@ export function calculateReachableTiles(
       if (newCost <= movement && newCost <= fuel) {
         if (!costs.has(neighborKey) || newCost < costs.get(neighborKey)!) {
           costs.set(neighborKey, newCost);
+          
           if (!isZocHex) {
             frontier.push({ key: neighborKey, cost: newCost });
           } else {
-            reachable.push(neighborCoord);
+            // ZOC hexes can be reached but stop further movement
+            // Only add if no unit occupies the destination
+            const unitOnZocDestination = findUnitAtPosition(neighborCoord);
+            if (!unitOnZocDestination) {
+              reachable.push(neighborCoord);
+            }
           }
         }
       }
