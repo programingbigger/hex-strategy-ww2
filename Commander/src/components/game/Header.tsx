@@ -1,5 +1,6 @@
 import React from 'react';
 import { Team, WeatherType } from '../../types';
+import '../../styles/military-museum-theme.css';
 
 interface HeaderProps {
   turn: number;
@@ -31,8 +32,7 @@ const Header: React.FC<HeaderProps> = ({
   };;
   
   return (
-    <div style={{
-      color: 'white',
+    <div className="military-header" style={{
       padding: '15px 30px',
       display: 'flex',
       justifyContent: 'center',
@@ -41,32 +41,52 @@ const Header: React.FC<HeaderProps> = ({
       boxSizing: 'border-box',
       position: 'relative'
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-        <div style={{ fontSize: '24px', fontWeight: 'bold' }}>
-          Turn {turn}
-        </div>
-        
-        <div style={{
-          padding: '8px 16px',
-          background: activeTeam === 'Blue' ? '#0066cc' : '#cc0000',
-          borderRadius: '20px',
-          fontSize: '16px',
-          fontWeight: 'bold'
+      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+        <div className="military-stencil" style={{ 
+          fontSize: '16px', 
+          fontWeight: 'bold',
+          padding: '6px 12px'
         }}>
-          {activeTeam} Team's Turn
+          TURN {turn}
         </div>
         
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <span style={{ fontSize: '20px' }}>{getWeatherEmoji(weather)}</span>
-          <span style={{ fontSize: '16px' }}>{weather}</span>
+        <div className="military-stencil" style={{
+          padding: '6px 12px',
+          background: activeTeam === 'Blue' ? 'var(--museum-brass)' : 'var(--museum-rust)',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          color: 'var(--museum-wood-dark)'
+        }}>
+          {activeTeam.toUpperCase()} PHASE
         </div>
         
-        <div style={{ display: 'flex', gap: '20px', fontSize: '16px' }}>
-          <div style={{ color: '#87ceeb' }}>
-            🔵 Blue: {blueUnits}
+        <div className="military-stencil" style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px',
+          padding: '4px 8px',
+          fontSize: '12px'
+        }}>
+          <span style={{ fontSize: '16px' }}>{getWeatherEmoji(weather)}</span>
+          <span>{weather.toUpperCase()}</span>
+        </div>
+        
+        <div style={{ display: 'flex', gap: '15px', fontSize: '14px' }}>
+          <div className="military-stencil" style={{ 
+            color: 'var(--museum-wood-dark)',
+            background: 'var(--museum-brass)',
+            padding: '3px 8px',
+            fontSize: '11px'
+          }}>
+            🔵 BLUE: {blueUnits}
           </div>
-          <div style={{ color: '#ffb6c1' }}>
-            🔴 Red: {redUnits}
+          <div className="military-stencil" style={{ 
+            color: 'var(--museum-wood-dark)',
+            background: 'var(--museum-rust)',
+            padding: '3px 8px',
+            fontSize: '11px'
+          }}>
+            🔴 RED: {redUnits}
           </div>
         </div>
       </div>
@@ -80,34 +100,26 @@ const Header: React.FC<HeaderProps> = ({
         {onSave && (
           <button
             onClick={onSave}
+            className="military-button"
             style={{
-              padding: '10px 20px',
-              background: 'rgba(255, 255, 255, 0.2)',
-              color: 'white',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px'
+              fontSize: '12px',
+              padding: '6px 12px'
             }}
           >
-            Save
+            SAVE
           </button>
         )}
         
         {onLoad && (
           <button
             onClick={onLoad}
+            className="military-button"
             style={{
-              padding: '10px 20px',
-              background: 'rgba(255, 255, 255, 0.2)',
-              color: 'white',
-              border: '1px solid rgba(255, 255, 255, 0.3)',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px'
+              fontSize: '12px',
+              padding: '6px 12px'
             }}
           >
-            Load
+            LOAD
           </button>
         )}
         

@@ -1,0 +1,413 @@
+/* =============================================================================
+   MILITARY MUSEUM UI THEME
+   「司令官が博物館から持ち出した、油の染みた『六角形ボルト留めの兵器図鑑』を、
+   埃っぽいブラウン管の戦術モニターで表示し、ステンシルフォントでマーキングされた
+   木製の補給箱のようなUIフレームの中で、物理的な駒を動かしながら閲覧・操作する。」
+   ============================================================================= */
+
+/* 統一日本語対応フォント */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700;900&family=Roboto+Mono:wght@400;700;900&display=swap');
+
+/* ===== 統一アースカラーパレット ===== */
+:root {
+  /* 基本アースカラー（オリーブ・カーキ・サンド系） */
+  --earth-olive-dark: #3c3d1f;   /* ダークオリーブ（メイン背景） */
+  --earth-olive: #5a5d33;        /* オリーブ（セカンダリ） */
+  --earth-olive-light: #7a7d53;  /* ライトオリーブ（ハイライト） */
+  
+  --earth-khaki-dark: #4a453b;   /* ダークカーキ（フレーム） */
+  --earth-khaki: #6b6452;        /* カーキ（ボーダー） */
+  --earth-khaki-light: #8b8472;  /* ライトカーキ（テキスト） */
+  
+  --earth-sand-dark: #5d5442;    /* ダークサンド（アクセント） */
+  --earth-sand: #7d7462;         /* サンド（ボタン） */
+  --earth-sand-light: #9d9482;   /* ライトサンド（ボタンホバー） */
+  
+  /* コントラスト色 */
+  --earth-contrast-dark: #2a2520; /* 最暗色（テキスト） */
+  --earth-contrast-light: #e5e2d5; /* 最明色（背景） */
+  
+  /* 機能的カラー */
+  --earth-warning: #8b6914;      /* 警告（アンバー系） */
+  --earth-danger: #8b4513;       /* 危険（ラスト系） */
+  --earth-success: #556b2f;      /* 成功（オリーブグリーン） */
+  
+  /* エフェクト */
+  --earth-dust: rgba(109, 100, 82, 0.3);     /* 埃エフェクト */
+  --earth-shadow: rgba(42, 37, 32, 0.6);     /* 影エフェクト */
+  --earth-glow: rgba(125, 116, 98, 0.4);     /* グローエフェクト */
+  
+  /* CRTエフェクト（アースカラー対応） */
+  --earth-crt-scanline: rgba(42, 37, 32, 0.1);  /* スキャンライン */
+}
+
+/* ===== BASE THEME CLASSES ===== */
+
+/* 統一アースカラー 木製補給箱スタイル */
+.military-wooden-frame {
+  background: 
+    linear-gradient(135deg, var(--earth-khaki-light) 0%, var(--earth-khaki) 50%, var(--earth-khaki-dark) 100%),
+    radial-gradient(ellipse at top left, var(--earth-dust), transparent 70%);
+  border: 3px solid var(--earth-olive);
+  border-radius: 8px;
+  box-shadow: 
+    inset 0 2px 4px var(--earth-shadow),
+    inset 0 -2px 4px rgba(42, 37, 32, 0.3),
+    0 4px 8px var(--earth-shadow);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  color: var(--earth-contrast-light);
+}
+
+.military-wooden-frame::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--earth-dust);
+  pointer-events: none;
+}
+
+/* Hexagonal Bolt Details */
+.military-wooden-frame::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--earth-sand-dark);
+  clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+  top: 8px;
+  left: 8px;
+  box-shadow: 
+    calc(100% - 16px) 0 0 var(--earth-sand-dark),
+    0 calc(100% - 16px) 0 var(--earth-sand-dark),
+    calc(100% - 16px) calc(100% - 16px) 0 var(--earth-sand-dark);
+}
+
+/* 統一アースカラー タクティカルモニター */
+.military-crt-monitor {
+  background: var(--earth-olive-dark);
+  border: 4px solid var(--earth-khaki);
+  border-radius: 8px;
+  color: var(--earth-contrast-light);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    inset 0 0 20px var(--earth-shadow),
+    0 0 15px var(--earth-glow);
+}
+
+/* CRT Scanlines Effect */
+.military-crt-monitor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--earth-crt-scanline) 2px,
+    var(--earth-crt-scanline) 4px
+  );
+  pointer-events: none;
+}
+
+/* CRT Phosphor Glow（アースカラー対応） */
+.military-crt-monitor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, 
+    var(--earth-glow) 0%, 
+    transparent 70%);
+  pointer-events: none;
+}
+
+/* 統一アースカラー タクティカルテキスト */
+.military-crt-text {
+  color: var(--earth-contrast-light);
+  text-shadow: 0 0 3px var(--earth-glow);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
+
+.military-crt-text.amber {
+  color: var(--earth-warning);
+}
+
+.military-crt-text.dim {
+  color: var(--earth-khaki-light);
+}
+
+/* 統一アースカラー ステンシルスタイル */
+.military-stencil {
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-weight: 700;
+  color: var(--earth-contrast-dark);
+  background: var(--earth-contrast-light);
+  border: 2px solid var(--earth-khaki-dark);
+  padding: 8px 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  box-shadow: 
+    inset 0 1px 3px var(--earth-shadow),
+    0 2px 4px var(--earth-dust);
+}
+
+.military-stencil::before {
+  content: attr(data-stencil);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+}
+
+/* 統一アースカラー 兵器カタログスタイル */
+.military-catalog {
+  background: 
+    linear-gradient(45deg, var(--earth-contrast-light) 25%, transparent 25%, transparent 75%, var(--earth-contrast-light) 75%),
+    linear-gradient(-45deg, var(--earth-contrast-light) 25%, transparent 25%, transparent 75%, var(--earth-contrast-light) 75%);
+  background-size: 20px 20px;
+  background-color: var(--earth-contrast-light);
+  border: 1px solid var(--earth-khaki);
+  padding: 20px;
+  position: relative;
+  box-shadow: 
+    0 4px 8px var(--earth-shadow),
+    inset 0 0 0 1px var(--earth-dust);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  color: var(--earth-contrast-dark);
+}
+
+/* Oil Stains */
+.military-catalog::before {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 40px;
+  background: radial-gradient(ellipse, var(--earth-dust), transparent 70%);
+  top: 20%;
+  right: 15%;
+  border-radius: 50%;
+}
+
+.military-catalog::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 20px;
+  background: radial-gradient(ellipse, rgba(109, 100, 82, 0.2), transparent 70%);
+  bottom: 30%;
+  left: 10%;
+  border-radius: 50%;
+}
+
+/* 統一アースカラー タクティカルディスプレイ */
+.military-tactical-display {
+  background: var(--earth-olive-dark);
+  border: 2px solid var(--earth-sand);
+  color: var(--earth-contrast-light);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  padding: 12px;
+  position: relative;
+  box-shadow: 
+    inset 0 0 15px var(--earth-shadow),
+    0 0 10px var(--earth-glow);
+}
+
+.military-tactical-display::before {
+  content: '█ TACTICAL DATA █';
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background: var(--earth-olive-dark);
+  padding: 0 8px;
+  font-size: 0.8em;
+  color: var(--earth-warning);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+}
+
+/* 統一アースカラー ボタンスタイル */
+.military-button {
+  background: linear-gradient(135deg, var(--earth-sand), var(--earth-sand-dark));
+  border: 2px solid var(--earth-olive-dark);
+  color: var(--earth-contrast-dark);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-weight: 700;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px var(--earth-shadow);
+}
+
+.military-button:hover {
+  background: linear-gradient(135deg, var(--earth-sand-light), var(--earth-sand));
+  box-shadow: 0 4px 8px var(--earth-shadow);
+  transform: translateY(-1px);
+}
+
+.military-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--earth-shadow);
+}
+
+/* 統一アースカラー ダイアログスタイル */
+.military-dialog {
+  background: var(--earth-contrast-light);
+  border: 4px solid var(--earth-khaki-dark);
+  border-radius: 0;
+  box-shadow: 
+    0 8px 32px var(--earth-shadow),
+    inset 0 2px 4px var(--earth-glow);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  position: relative;
+  color: var(--earth-contrast-dark);
+}
+
+.military-dialog::before {
+  content: '⬢ コマンド認証 ⬢';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--earth-sand);
+  color: var(--earth-contrast-dark);
+  padding: 4px 16px;
+  font-weight: 900;
+  font-size: 0.8em;
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+}
+
+/* 統一アースカラー ヘッダースタイル */
+.military-header {
+  background: 
+    linear-gradient(90deg, var(--earth-olive-dark), var(--earth-olive), var(--earth-olive-dark)),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="20" viewBox="0 0 100 20"><rect width="100" height="20" fill="%23e5e2d5" opacity="0.1"/><polygon points="10,0 30,0 25,20 5,20" fill="%235d5442" opacity="0.3"/><polygon points="70,0 90,0 85,20 65,20" fill="%235d5442" opacity="0.3"/></svg>');
+  border-bottom: 3px solid var(--earth-sand);
+  padding: 12px 24px;
+  position: relative;
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+}
+
+.military-header h1 {
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-weight: 900;
+  color: var(--earth-contrast-light);
+  text-shadow: 2px 2px 4px var(--earth-shadow);
+  margin: 0;
+  letter-spacing: 3px;
+}
+
+/* 統一アースカラー バトルログスタイル */
+.military-battle-log {
+  background: var(--earth-olive-dark);
+  border: 3px inset var(--earth-khaki-dark);
+  color: var(--earth-contrast-light);
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 12px;
+  position: relative;
+}
+
+.military-battle-log::before {
+  content: '>> 戦闘ログターミナル <<';
+  position: absolute;
+  top: -12px;
+  left: 12px;
+  background: var(--earth-olive-dark);
+  color: var(--earth-warning);
+  padding: 0 8px;
+  font-size: 0.7em;
+  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+}
+
+.military-battle-log-entry {
+  margin: 4px 0;
+  opacity: 0;
+  animation: fadeInTerminal 0.5s ease-in forwards;
+}
+
+.military-battle-log-entry.damage {
+  color: var(--earth-danger);
+}
+
+.military-battle-log-entry.heal {
+  color: var(--earth-success);
+}
+
+.military-battle-log-entry.info {
+  color: var(--earth-warning);
+}
+
+@keyframes fadeInTerminal {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scrollbar Styling */
+.military-battle-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.military-battle-log::-webkit-scrollbar-track {
+  background: var(--earth-olive-dark);
+}
+
+.military-battle-log::-webkit-scrollbar-thumb {
+  background: var(--earth-sand);
+  border-radius: 4px;
+}
+
+.military-battle-log::-webkit-scrollbar-thumb:hover {
+  background: var(--earth-sand-light);
+}
+
+/* Utility Classes */
+.military-text-glow {
+  text-shadow: 0 0 8px currentColor, 0 0 12px currentColor;
+}
+
+.military-border-hexagon {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
+}
+
+.military-weathered {
+  position: relative;
+}
+
+.military-weathered::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, var(--earth-dust) 10%, transparent 20%),
+    radial-gradient(circle at 80% 70%, var(--earth-shadow) 5%, transparent 15%);
+  pointer-events: none;
+}

@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../styles/military-museum-theme.css';
 
 interface EndTurnConfirmModalProps {
   isOpen: boolean;
@@ -26,28 +27,24 @@ const EndTurnConfirmModal: React.FC<EndTurnConfirmModalProps> = ({
       justifyContent: 'center',
       zIndex: 2000
     }}>
-      <div style={{
-        background: 'white',
-        borderRadius: '12px',
+      <div className="military-dialog" style={{
         padding: '30px',
         minWidth: '400px',
-        textAlign: 'center',
-        boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
-        border: '2px solid #3498db'
+        textAlign: 'center'
       }}>
         <h2 style={{
           margin: '0 0 20px 0',
-          color: '#2c3e50',
-          fontSize: '24px',
+          color: 'var(--museum-wood-dark)',
+          fontSize: '18px',
           fontWeight: 'bold'
         }}>
-          🔄 End Turn Confirmation
+          🔄 END TURN CONFIRMATION
         </h2>
         
         <p style={{
           margin: '0 0 30px 0',
-          fontSize: '18px',
-          color: '#34495e',
+          fontSize: '14px',
+          color: 'var(--stencil-text)',
           lineHeight: '1.5'
         }}>
           Are you sure you want to end your turn?
@@ -60,63 +57,34 @@ const EndTurnConfirmModal: React.FC<EndTurnConfirmModalProps> = ({
         }}>
           <button
             onClick={onConfirm}
+            className="military-button"
             style={{
-              padding: '12px 30px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              border: '2px solid #27ae60',
-              borderRadius: '8px',
-              background: '#27ae60',
-              color: 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              minWidth: '100px'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#219a52';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = '#27ae60';
-              e.currentTarget.style.transform = 'translateY(0)';
+              fontSize: '14px',
+              minWidth: '120px'
             }}
           >
-            Yes
+            AFFIRMATIVE
           </button>
           
           <button
             onClick={onCancel}
+            className="military-button"
             style={{
-              padding: '12px 30px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              border: '2px solid #e74c3c',
-              borderRadius: '8px',
-              background: '#e74c3c',
-              color: 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              minWidth: '100px'
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = '#c0392b';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = '#e74c3c';
-              e.currentTarget.style.transform = 'translateY(0)';
+              fontSize: '14px',
+              minWidth: '120px'
             }}
           >
-            No
+            NEGATIVE
           </button>
         </div>
         
         <div style={{
           marginTop: '20px',
-          fontSize: '14px',
-          color: '#7f8c8d'
+          fontSize: '11px',
+          color: 'var(--museum-rust)',
+          fontFamily: 'monospace'
         }}>
-          Tip: Press Cmd+E to open this dialog
+          TIP: PRESS CMD+E TO OPEN THIS DIALOG
         </div>
       </div>
     </div>

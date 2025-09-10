@@ -4,6 +4,7 @@ import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { getNeighbors } from '../../utils/map';
 import { coordToString } from '../../utils/map';
 import { armyManager } from '../../data/armyLoader';
+import '../../styles/military-museum-theme.css';
 
 interface SelectedUnitPanelProps {
   selectedUnit: Unit | null;
@@ -214,101 +215,95 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   };
 
   return (
-    <div style={{
+    <div className="military-crt-monitor" style={{
       width: '320px',
-      background: 'rgba(255, 255, 255, 0.95)',
-      border: '2px solid #333',
-      borderRadius: '8px',
-      fontSize: '18px',
-      color: '#333',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+      fontSize: '16px',
       overflow: 'hidden'
     }}>
       {/* Header */}
-      <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
+      <div className="military-tactical-display" style={{
         padding: '12px 15px',
-        fontWeight: 'bold',
         textAlign: 'center',
-        fontSize: '18px'
+        fontSize: '16px',
+        fontWeight: 'bold',
+        marginBottom: '10px'
       }}>
-        Selected Unit
+        <span className="military-crt-text amber">SELECTED UNIT</span>
       </div>
 
       {/* SELECTED UNIT Section */}
       {selectedUnit ? (
         <div style={{ padding: '15px' }}>
           <div style={{
-            background: '#e8f4f8',
-            borderRadius: '6px',
+            background: 'rgba(0, 255, 65, 0.05)',
+            border: '1px solid var(--crt-green-dim)',
+            borderRadius: '4px',
             padding: '12px',
             marginBottom: '15px'
           }}>
-            <h4 style={{
+            <h4 className="military-crt-text" style={{
               margin: '0 0 10px 0',
-              color: '#0066cc',
-              borderBottom: '1px solid #ccc',
+              borderBottom: '1px solid var(--crt-green-dim)',
               paddingBottom: '5px',
-              fontSize: '18px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}>
-              [SELECTED UNIT]
+              [UNIT DATA]
             </h4>
             
             {/* Unit Name */}
-            <div style={{ 
-              fontSize: '18px', 
+            <div className="military-crt-text" style={{ 
+              fontSize: '16px', 
               fontWeight: 'bold', 
               marginBottom: '10px',
-              color: selectedUnit.team === 'Blue' ? '#0066cc' : '#cc0000'
+              color: selectedUnit.team === 'Blue' ? 'var(--crt-green)' : 'var(--crt-amber)'
             }}>
               {selectedUnit.name || selectedUnit.type} ({selectedUnit.team})
               {selectedUnit.branch && selectedUnit.category && (
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="military-crt-text dim" style={{ fontSize: '14px', marginTop: '4px' }}>
                   {selectedUnit.branch} • {selectedUnit.category}
                 </div>
               )}
             </div>
             
             {/* Separator */}
-            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid var(--crt-green-dim)' }} />
             
             {/* Vital Information */}
-            <div style={{ marginBottom: '10px' }}>
+            <div className="military-crt-text" style={{ marginBottom: '10px' }}>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>✚ HP</span>
-                <ProgressBar current={selectedUnit.hp} max={selectedUnit.maxHp} color="#28a745" />
-                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
+                <ProgressBar current={selectedUnit.hp} max={selectedUnit.maxHp} color="var(--crt-green)" />
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.hp}/{selectedUnit.maxHp}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⛽ Fuel</span>
-                <ProgressBar current={selectedUnit.fuel} max={selectedUnit.maxFuel} color="#ffc107" />
-                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
+                <ProgressBar current={selectedUnit.fuel} max={selectedUnit.maxFuel} color="var(--crt-amber)" />
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.fuel}/{selectedUnit.maxFuel}
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                 <span>⭐ XP</span>
-                <ProgressBar current={selectedUnit.xp} max={100} color="#17a2b8" />
-                <span style={{ marginLeft: '8px', fontSize: '16px' }}>
+                <ProgressBar current={selectedUnit.xp} max={100} color="var(--crt-green-dim)" />
+                <span style={{ marginLeft: '8px', fontSize: '14px' }}>
                   {selectedUnit.xp}/100
                 </span>
               </div>
             </div>
             
             {/* Separator */}
-            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid var(--crt-green-dim)' }} />
             
             {/* Combat Stats */}
-            <div style={{ 
+            <div className="military-crt-text" style={{ 
               display: 'grid', 
               gridTemplateColumns: '1fr 1fr', 
               gap: '5px',
               marginBottom: '10px',
-              fontSize: '17px'
+              fontSize: '14px'
             }}>
               <div>💥 Attack: {selectedUnit.attack}</div>
               <div>🛡️ Defense: {selectedUnit.defense}</div>
@@ -317,10 +312,10 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             </div>
             
             {/* Separator */}
-            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+            <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid var(--crt-green-dim)' }} />
             
             {/* Position and Status */}
-            <div style={{ fontSize: '17px' }}>
+            <div className="military-crt-text" style={{ fontSize: '14px' }}>
               <div style={{ marginBottom: '3px' }}>
                 📍 Position: ({selectedUnit.x}, {selectedUnit.y})
               </div>
@@ -336,12 +331,12 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             {/* Transport Capacity Information - Only for Transport units */}
             {selectedUnit.type === 'Transport' && (
               <>
-                <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid #ccc' }} />
-                <div style={{ marginBottom: '10px' }}>
+                <hr style={{ margin: '10px 0', border: 'none', borderTop: '1px solid var(--crt-green-dim)' }} />
+                <div className="military-crt-text" style={{ marginBottom: '10px' }}>
                   <h5 style={{
                     margin: '0 0 8px 0',
-                    color: '#0066cc',
-                    fontSize: '16px',
+                    color: 'var(--crt-amber)',
+                    fontSize: '14px',
                     fontWeight: 'bold'
                   }}>
                     🚛 Transport Capacity
@@ -353,12 +348,12 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                     const maxCapacity = capacity?.capacity || 2;
                     
                     return (
-                      <div style={{ fontSize: '16px', marginBottom: '8px' }}>
+                      <div style={{ fontSize: '14px', marginBottom: '8px' }}>
                         <span>Capacity: {currentUsage}/{maxCapacity}</span>
                         <ProgressBar 
                           current={currentUsage} 
                           max={maxCapacity} 
-                          color={currentUsage >= maxCapacity ? '#dc3545' : '#28a745'} 
+                          color={currentUsage >= maxCapacity ? 'var(--crt-amber)' : 'var(--crt-green)'} 
                         />
                       </div>
                     );
@@ -422,16 +417,16 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
 
           {/* ACTIONS Section */}
           <div style={{
-            background: '#f8f9fa',
-            borderRadius: '6px',
+            background: 'rgba(0, 255, 65, 0.05)',
+            border: '1px solid var(--crt-green-dim)',
+            borderRadius: '4px',
             padding: '12px',
             marginBottom: '15px'
           }}>
-            <h4 style={{
+            <h4 className="military-crt-text amber" style={{
               margin: '0 0 10px 0',
-              color: '#333',
               textAlign: 'center',
-              fontSize: '18px',
+              fontSize: '16px',
               fontWeight: 'bold'
             }}>
               [ ACTIONS ]
@@ -440,15 +435,10 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button
                 onClick={() => onAction('wait')}
+                className="military-button"
                 style={{
-                  padding: '10px 15px',
-                  background: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                  fontSize: '18px',
-                  fontWeight: '500'
+                  width: '100%',
+                  fontSize: '14px'
                 }}
               >
                 Wait
@@ -457,16 +447,12 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               <button
                 onClick={() => onAction('undo')}
                 disabled={!canUndo}
+                className="military-button"
                 style={{
-                  padding: '10px 15px',
-                  background: canUndo ? '#dc3545' : '#ccc',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: canUndo ? 'pointer' : 'not-allowed',
-                  fontSize: '18px',
-                  fontWeight: '500',
-                  opacity: canUndo ? 1 : 0.6
+                  width: '100%',
+                  fontSize: '14px',
+                  opacity: canUndo ? 1 : 0.6,
+                  cursor: canUndo ? 'pointer' : 'not-allowed'
                 }}
               >
                 Undo
@@ -475,15 +461,10 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               {canCapture && (
                 <button
                   onClick={() => onAction('capture')}
+                  className="military-button"
                   style={{
-                    padding: '10px 15px',
-                    background: '#fd7e14',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontSize: '18px',
-                    fontWeight: '500'
+                    width: '100%',
+                    fontSize: '14px'
                   }}
                 >
                   Capture
@@ -493,15 +474,10 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               {canLoad && (
                 <button
                   onClick={() => onAction('load')}
+                  className="military-button"
                   style={{
-                    padding: '10px 15px',
-                    background: '#20c997',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontSize: '18px',
-                    fontWeight: '500'
+                    width: '100%',
+                    fontSize: '14px'
                   }}
                 >
                   📦 搭載
@@ -519,15 +495,10 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                       onAction('unload');
                     }
                   }}
+                  className="military-button"
                   style={{
-                    padding: '10px 15px',
-                    background: '#fd7e14',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer',
-                    fontSize: '18px',
-                    fontWeight: '500'
+                    width: '100%',
+                    fontSize: '14px'
                   }}
                 >
                   📤 降車
@@ -641,12 +612,12 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
           padding: '30px 15px',
           textAlign: 'center'
         }}>
-          <div style={{ 
+          <div className="military-crt-text dim" style={{ 
             padding: '20px', 
-            background: '#f5f5f5', 
-            borderRadius: '5px',
-            color: '#666',
-            fontSize: '18px'
+            background: 'rgba(0, 255, 65, 0.05)', 
+            border: '1px solid var(--crt-green-dim)',
+            borderRadius: '4px',
+            fontSize: '16px'
           }}>
             No selected Unit
           </div>
@@ -655,16 +626,15 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
 
       {/* SHORTCUTS Section - Always present in lower half */}
       <div style={{
-        background: '#f8f9fa',
-        borderTop: '2px solid #ddd',
+        background: 'rgba(0, 255, 65, 0.03)',
+        borderTop: '2px solid var(--crt-green-dim)',
         padding: '15px'
       }}>
-        <h4 style={{
+        <h4 className="military-crt-text amber" style={{
           margin: '0 0 12px 0',
-          color: '#333',
-          fontSize: '16px',
+          fontSize: '14px',
           fontWeight: 'bold',
-          borderBottom: '1px solid #ddd',
+          borderBottom: '1px solid var(--crt-green-dim)',
           paddingBottom: '8px'
         }}>
           ⌨️ Keyboard Shortcuts
@@ -676,9 +646,9 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '6px 0',
-            borderBottom: '1px solid #e0e0e0'
+            borderBottom: '1px solid var(--crt-green-dim)'
           }}>
-            <span style={{ fontSize: '14px', color: '#666' }}>End Turn</span>
+            <span className="military-crt-text" style={{ fontSize: '12px' }}>End Turn</span>
             <kbd style={{
               background: '#34495e',
               color: '#ecf0f1',
@@ -698,9 +668,9 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             padding: '6px 0',
-            borderBottom: '1px solid #e0e0e0'
+            borderBottom: '1px solid var(--crt-green-dim)'
           }}>
-            <span style={{ fontSize: '14px', color: '#666' }}>Cancel Selection</span>
+            <span className="military-crt-text" style={{ fontSize: '12px' }}>Cancel Selection</span>
             <kbd style={{
               background: '#34495e',
               color: '#ecf0f1',
@@ -721,7 +691,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             alignItems: 'center',
             padding: '6px 0'
           }}>
-            <span style={{ fontSize: '14px', color: '#666' }}>Center on Selected</span>
+            <span className="military-crt-text" style={{ fontSize: '12px' }}>Center on Selected</span>
             <kbd style={{
               background: '#34495e',
               color: '#ecf0f1',

@@ -2,6 +2,7 @@ import React from 'react';
 import { Unit, Tile, Coordinate } from '../../types';
 import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { TERRAIN_STATS } from '../../config/constants';
+import '../../styles/military-museum-theme.css';
 
 interface InformationPanelProps {
   selectedUnit?: Unit;
@@ -120,26 +121,22 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
   };
 
   return (
-    <div style={{
+    <div className="military-wooden-frame" style={{
       width: '300px',
-      background: 'rgba(255, 255, 255, 0.95)',
-      border: '2px solid #333',
-      borderRadius: '8px',
-      fontSize: '18px',
-      color: '#333',
-      boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+      fontSize: '16px',
+      color: 'var(--stencil-text)',
       overflow: 'hidden'
     }}>
       {/* Header */}
-      <div style={{
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        padding: '12px 15px',
-        fontWeight: 'bold',
+      <div className="military-stencil" style={{
+        padding: '10px 15px',
         textAlign: 'center',
-        fontSize: '18px'
+        fontSize: '14px',
+        fontWeight: 'bold',
+        margin: '8px',
+        borderRadius: '4px'
       }}>
-        Information Panel
+        TERRAIN INTELLIGENCE
       </div>
 
       {/* HOVERED HEX Section */}
@@ -148,17 +145,15 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
           padding: '15px',
           borderTop: 'none'
         }}>
-          <div style={{
-            background: '#f0f8e8',
-            borderRadius: '6px',
+          <div className="military-catalog" style={{
             padding: '12px',
             marginBottom: '15px'
           }}>
-            <h4 style={{
+            <h4 className="military-stencil" style={{
               margin: '0 0 10px 0',
-              color: '#228b22',
-              fontSize: '18px',
-              fontWeight: 'bold'
+              fontSize: '12px',
+              fontWeight: 'bold',
+              padding: '4px 8px'
             }}>
               🌍 [HOVERED HEX]
             </h4>
@@ -178,28 +173,28 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                 marginRight: '10px'
               }} />
               <div style={{ 
-                fontSize: '18px', 
+                fontSize: '16px', 
                 fontWeight: 'bold',
-                color: '#333'
+                color: 'var(--stencil-text)'
               }}>
                 {hoveredTile.terrain}
               </div>
             </div>
             
-            <div style={{ fontSize: '17px', marginBottom: '8px' }}>
+            <div style={{ fontSize: '14px', marginBottom: '8px', color: 'var(--stencil-text)' }}>
               📍 Position: ({hoveredHex?.x}, {hoveredHex?.y})
             </div>
             
             {/* Basic Effects */}
             {getTerrainBasicEffects(hoveredTile.terrain).length > 0 && (
               <div style={{ marginBottom: '10px' }}>
-                <div style={{ fontSize: '16px', marginBottom: '5px', fontWeight: 'bold' }}>
+                <div style={{ fontSize: '14px', marginBottom: '5px', fontWeight: 'bold', color: 'var(--stencil-text)' }}>
                   Basic Effects:
                 </div>
                 {getTerrainBasicEffects(hoveredTile.terrain).map((effect, index) => (
                   <div key={index} style={{ 
-                    fontSize: '15px',
-                    color: '#666',
+                    fontSize: '12px',
+                    color: 'var(--museum-rust)',
                     marginLeft: '15px',
                     marginBottom: '2px'
                   }}>
@@ -212,9 +207,9 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             {/* Unit Movement Costs - Always visible */}
             <div style={{ marginBottom: '10px' }}>
               <div style={{
-                fontSize: '16px',
+                fontSize: '14px',
                 fontWeight: 'bold',
-                color: '#0066cc',
+                color: 'var(--stencil-text)',
                 marginBottom: '8px'
               }}>
                 🚶 Unit Movement Costs:
@@ -223,15 +218,15 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                 <div key={index} style={{
                   display: 'flex',
                   justifyContent: 'space-between',
-                  fontSize: '15px',
+                  fontSize: '12px',
                   padding: '2px 0',
-                  color: '#333',
+                  color: 'var(--stencil-text)',
                   marginLeft: '15px'
                 }}>
                   <span>{costInfo.unitType}:</span>
                   <span style={{ 
                     fontWeight: 'bold',
-                    color: costInfo.cost === 'Impassable' ? '#cc0000' : '#228b22'
+                    color: costInfo.cost === 'Impassable' ? 'var(--museum-rust)' : 'var(--museum-brass)'
                   }}>
                     {costInfo.cost}
                   </span>
@@ -241,13 +236,13 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
             
             {/* Terrain ownership and HP if applicable */}
             {hoveredTile.owner && (
-              <div style={{ fontSize: '17px', marginBottom: '5px' }}>
+              <div style={{ fontSize: '14px', marginBottom: '5px', color: 'var(--stencil-text)' }}>
                 👑 Owner: <strong>{hoveredTile.owner}</strong>
               </div>
             )}
             
             {hoveredTile.hp !== undefined && (
-              <div style={{ fontSize: '17px', marginBottom: '5px' }}>
+              <div style={{ fontSize: '14px', marginBottom: '5px', color: 'var(--stencil-text)' }}>
                 ❤️ HP: <strong>{hoveredTile.hp}/{hoveredTile.maxHp}</strong>
               </div>
             )}
@@ -257,67 +252,67 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
               <div style={{
                 marginTop: '15px',
                 paddingTop: '12px',
-                borderTop: '1px solid #ccc',
-                background: '#e8f4f8',
+                borderTop: '2px solid var(--museum-brass)',
+                background: 'var(--dust-overlay)',
                 borderRadius: '6px',
                 padding: '12px'
               }}>
-                <h4 style={{
+                <h4 className="military-stencil" style={{
                   margin: '0 0 10px 0',
-                  color: '#0066cc',
-                  borderBottom: '1px solid #ccc',
+                  borderBottom: '1px solid var(--stencil-border)',
                   paddingBottom: '5px',
-                  fontSize: '17px',
-                  fontWeight: 'bold'
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  padding: '3px 6px'
                 }}>
                   [HOVERED UNIT]
                 </h4>
                 
                 {/* Unit Name */}
                 <div style={{ 
-                  fontSize: '16px', 
+                  fontSize: '14px', 
                   fontWeight: 'bold', 
                   marginBottom: '8px',
-                  color: hoveredUnit.team === 'Blue' ? '#0066cc' : '#cc0000'
+                  color: hoveredUnit.team === 'Blue' ? 'var(--museum-brass)' : 'var(--museum-rust)'
                 }}>
                   {hoveredUnit.name || hoveredUnit.type} ({hoveredUnit.team})
                   {hoveredUnit.branch && hoveredUnit.category && (
-                    <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
+                    <div style={{ fontSize: '10px', color: 'var(--museum-wood-dark)', marginTop: '2px' }}>
                       {hoveredUnit.branch} • {hoveredUnit.category}
                     </div>
                   )}
                 </div>
                 
                 {/* Separator */}
-                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid var(--museum-brass-dark)' }} />
                 
                 {/* Vital Information */}
                 <div style={{ marginBottom: '8px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '14px' }}>✚ HP</span>
-                    <ProgressBar current={hoveredUnit.hp} max={hoveredUnit.maxHp} color="#28a745" />
-                    <span style={{ marginLeft: '6px', fontSize: '13px' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--stencil-text)' }}>✚ HP</span>
+                    <ProgressBar current={hoveredUnit.hp} max={hoveredUnit.maxHp} color="var(--museum-brass)" />
+                    <span style={{ marginLeft: '6px', fontSize: '11px', color: 'var(--stencil-text)' }}>
                       {hoveredUnit.hp}/{hoveredUnit.maxHp}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '14px' }}>⛽ Fuel</span>
-                    <ProgressBar current={hoveredUnit.fuel} max={hoveredUnit.maxFuel} color="#ffc107" />
-                    <span style={{ marginLeft: '6px', fontSize: '13px' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--stencil-text)' }}>⛽ Fuel</span>
+                    <ProgressBar current={hoveredUnit.fuel} max={hoveredUnit.maxFuel} color="var(--museum-rust)" />
+                    <span style={{ marginLeft: '6px', fontSize: '11px', color: 'var(--stencil-text)' }}>
                       {hoveredUnit.fuel}/{hoveredUnit.maxFuel}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '14px' }}>⭐ XP</span>
-                    <ProgressBar current={hoveredUnit.xp} max={100} color="#17a2b8" />
-                    <span style={{ marginLeft: '6px', fontSize: '13px' }}>
+                    <span style={{ fontSize: '12px', color: 'var(--stencil-text)' }}>⭐ XP</span>
+                    <ProgressBar current={hoveredUnit.xp} max={100} color="var(--museum-wood)" />
+                    <span style={{ marginLeft: '6px', fontSize: '11px', color: 'var(--stencil-text)' }}>
                       {hoveredUnit.xp}/100
                     </span>
                   </div>
                 </div>
                 
                 {/* Separator */}
-                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid var(--museum-brass-dark)' }} />
                 
                 {/* Combat Stats */}
                 <div style={{ 
@@ -325,7 +320,8 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                   gridTemplateColumns: '1fr 1fr', 
                   gap: '4px',
                   marginBottom: '8px',
-                  fontSize: '13px'
+                  fontSize: '11px',
+                  color: 'var(--stencil-text)'
                 }}>
                   <div>💥 Attack: {hoveredUnit.attack}</div>
                   <div>🛡️ Defense: {hoveredUnit.defense}</div>
@@ -334,10 +330,10 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
                 </div>
                 
                 {/* Separator */}
-                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid #ccc' }} />
+                <hr style={{ margin: '8px 0', border: 'none', borderTop: '1px solid var(--museum-brass-dark)' }} />
                 
                 {/* Position and Status */}
-                <div style={{ fontSize: '13px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--stencil-text)' }}>
                   <div style={{ marginBottom: '3px' }}>
                     📍 Position: ({hoveredUnit.x}, {hoveredUnit.y})
                   </div>
@@ -366,11 +362,10 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
           padding: '30px 15px',
           textAlign: 'center'
         }}>
-          <div style={{ 
-            padding: '20px', 
-            background: '#f5f5f5', 
-            borderRadius: '5px',
-            color: '#666'
+          <div className="military-stencil" style={{ 
+            padding: '15px', 
+            borderRadius: '4px',
+            fontSize: '12px'
           }}>
             Select a unit or hover over a hex for details
           </div>

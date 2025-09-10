@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { BattleLogEntry, BattleLogState, Team, Coordinate } from '../../types';
 import { logBattle } from '../../utils/battleLogger';
+import '../../styles/military-museum-theme.css';
 
 interface BattleLogPanelProps {
   battleLog: BattleLogState;
@@ -36,9 +37,9 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
 
   const getTeamColor = (team: Team): string => {
     switch (team) {
-      case 'Blue': return '#4a90e2';  // Blue team color
-      case 'Red': return '#e24a4a';   // Red team color
-      default: return '#666';
+      case 'Blue': return 'var(--crt-green)';  // Blue team color
+      case 'Red': return 'var(--crt-amber)';   // Red team color
+      default: return 'var(--crt-green-dim)';
     }
   };
 
@@ -63,17 +64,17 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
         <span style={{ color: attackerColor, fontWeight: 'bold' }}>
           {attackerFlag} {entry.attacker.unitName}
         </span>
-        <span style={{ color: '#888' }}>
+        <span style={{ color: 'var(--crt-green-dim)' }}>
           {' '}(HP: {entry.attacker.hpBefore} → {entry.attacker.hpAfter})
         </span>
-        <span style={{ color: '#fff' }}> attacks </span>
+        <span style={{ color: 'var(--crt-green)' }}> ENGAGES </span>
         <span style={{ color: defenderColor, fontWeight: 'bold' }}>
           {defenderFlag} {entry.defender.unitName}
         </span>
-        <span style={{ color: '#888' }}>
+        <span style={{ color: 'var(--crt-green-dim)' }}>
           {' '}(HP: {entry.defender.hpBefore} → {entry.defender.hpAfter})
         </span>
-        <span style={{ color: '#bbb' }}>
+        <span style={{ color: 'var(--crt-green-dim)' }}>
           {' '}at {formatCoordinate(entry.location.hex)} in {entry.location.terrain}
           {formatTerrainEffect(entry.location.defenseBonus)}
         </span>
@@ -84,23 +85,23 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
     const weaponLine = (
       <div style={{ 
         marginLeft: '16px', 
-        color: '#aaa', 
-        fontSize: '13px',
+        color: 'var(--crt-green-dim)', 
+        fontSize: '10px',
         marginBottom: entry.counterAttack ? '2px' : '8px'
       }}>
-        <span style={{ color: '#ff9500' }}>↳</span>
+        <span style={{ color: 'var(--crt-amber)' }}>↳</span>
         <span> {entry.attacker.unitName} used {entry.weapon.name}. </span>
-        <span style={{ color: '#e74c3c' }}>
-          Dealt {entry.result.damageDealt} dmg
+        <span style={{ color: 'var(--crt-amber)' }}>
+          DMG: {entry.result.damageDealt}
         </span>
         {entry.result.damageTaken > 0 && (
-          <span style={{ color: '#f39c12' }}>
-            , Took {entry.result.damageTaken} dmg
+          <span style={{ color: 'var(--crt-amber)' }}>
+            / TOOK: {entry.result.damageTaken}
           </span>
         )}
         {entry.result.unitDestroyed && (
-          <span style={{ color: '#c0392b', fontWeight: 'bold' }}>
-            . Unit destroyed!
+          <span style={{ color: 'var(--crt-amber)', fontWeight: 'bold' }}>
+            [DESTROYED]
           </span>
         )}
         <span>.</span>
@@ -111,23 +112,23 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
     const counterLine = entry.counterAttack && (
       <div style={{ 
         marginLeft: '16px', 
-        color: '#aaa', 
-        fontSize: '13px',
+        color: 'var(--crt-green-dim)', 
+        fontSize: '10px',
         marginBottom: '8px'
       }}>
-        <span style={{ color: '#ff9500' }}>↳</span>
-        <span> Counter-attack! {entry.defender.unitName} used {entry.counterAttack.weapon.name}. </span>
-        <span style={{ color: '#e74c3c' }}>
-          Dealt {entry.counterAttack.damageDealt} dmg
+        <span style={{ color: 'var(--crt-amber)' }}>↳</span>
+        <span> COUNTER! {entry.defender.unitName} used {entry.counterAttack.weapon.name}. </span>
+        <span style={{ color: 'var(--crt-amber)' }}>
+          DMG: {entry.counterAttack.damageDealt}
         </span>
         {entry.counterAttack.damageTaken > 0 && (
-          <span style={{ color: '#f39c12' }}>
-            , Took {entry.counterAttack.damageTaken} dmg
+          <span style={{ color: 'var(--crt-amber)' }}>
+            / TOOK: {entry.counterAttack.damageTaken}
           </span>
         )}
         {entry.counterAttack.unitDestroyed && (
-          <span style={{ color: '#c0392b', fontWeight: 'bold' }}>
-            . Unit destroyed!
+          <span style={{ color: 'var(--crt-amber)', fontWeight: 'bold' }}>
+            [DESTROYED]
           </span>
         )}
         <span>.</span>
@@ -149,6 +150,7 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
 
   return (
     <div 
+      className="military-battle-log"
       style={{
         position: 'fixed',
         bottom: 0,
@@ -156,9 +158,6 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
         right: '350px', // Account for right information panel
         height: '20%',
         zIndex: 500,
-        background: 'rgba(52, 73, 94, 0.95)',
-        backdropFilter: 'blur(5px)',
-        borderTop: '2px solid #3498db',
         display: 'flex',
         flexDirection: 'column'
       }}
@@ -171,22 +170,20 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          borderBottom: '1px solid #3498db',
-          background: 'rgba(52, 73, 94, 0.9)'
+          borderBottom: '1px solid var(--crt-green-dim)',
+          background: 'var(--crt-background)'
         }}
       >
-        <div style={{ 
-          color: '#fff', 
+        <div className="military-crt-text amber" style={{ 
           fontWeight: 'bold', 
-          fontSize: '14px' 
-        }}>
-          🎯 BATTLE LOG
-        </div>
-        <div style={{ 
-          color: '#bbb', 
           fontSize: '12px' 
         }}>
-          [ Turn: {currentTurn} / {currentPhase} ]
+          🎯 BATTLE LOG TERMINAL
+        </div>
+        <div className="military-crt-text dim" style={{ 
+          fontSize: '10px' 
+        }}>
+          [ T:{currentTurn} / {currentPhase.replace(' Phase', '').toUpperCase()} ]
         </div>
         <div style={{
           display: 'flex',
@@ -194,14 +191,11 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
           gap: '8px'
         }}>
           <button
+            className="military-button"
             style={{
-              background: 'none',
-              border: '1px solid #3498db',
-              color: '#3498db',
-              padding: '4px 8px',
-              fontSize: '12px',
-              borderRadius: '3px',
-              cursor: 'pointer'
+              padding: '2px 6px',
+              fontSize: '10px',
+              minWidth: 'auto'
             }}
             onClick={() => {
               if (scrollRef.current) {
@@ -217,24 +211,22 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
       {/* 📜 Scrollable Log Content */}
       <div
         ref={scrollRef}
+        className="military-crt-text"
         style={{
           flex: 1,
           padding: '12px 16px',
           overflowY: 'auto',
-          color: '#fff',
-          fontSize: '12px',
-          fontFamily: 'monospace',
+          fontSize: '11px',
           lineHeight: '1.4'
         }}
       >
         {battleLog.entries.length === 0 ? (
-          <div style={{ 
-            color: '#888', 
+          <div className="military-crt-text dim" style={{ 
             fontStyle: 'italic',
             textAlign: 'center',
             marginTop: '20px'
           }}>
-            🔍 No battle events yet. Start attacking to see combat logs here.
+            🔍 NO BATTLE EVENTS YET. INITIATE COMBAT TO LOG ENGAGEMENT DATA.
           </div>
         ) : (
           battleLog.entries.map(renderBattleLogEntry)
