@@ -5,87 +5,31 @@ interface EndTurnConfirmModalProps {
   isOpen: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  title?: string;
+  confirmText?: string;
+  cancelText?: string;
 }
 
 const EndTurnConfirmModal: React.FC<EndTurnConfirmModalProps> = ({
   isOpen,
   onConfirm,
-  onCancel
+  onCancel,
+  title = '確認',
+  confirmText = 'はい',
+  cancelText = 'いいえ'
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.7)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 2000
-    }}>
-      <div className="military-dialog" style={{
-        padding: '30px',
-        minWidth: '400px',
-        textAlign: 'center'
-      }}>
-        <h2 style={{
-          margin: '0 0 20px 0',
-          color: 'var(--museum-wood-dark)',
-          fontSize: '18px',
-          fontWeight: 'bold'
-        }}>
-          🔄 END TURN CONFIRMATION
-        </h2>
-        
-        <p style={{
-          margin: '0 0 30px 0',
-          fontSize: '14px',
-          color: 'var(--stencil-text)',
-          lineHeight: '1.5'
-        }}>
-          Are you sure you want to end your turn?
-        </p>
-        
-        <div style={{
-          display: 'flex',
-          gap: '20px',
-          justifyContent: 'center'
-        }}>
-          <button
-            onClick={onConfirm}
-            className="military-button"
-            style={{
-              fontSize: '14px',
-              minWidth: '120px'
-            }}
-          >
-            AFFIRMATIVE
-          </button>
-          
-          <button
-            onClick={onCancel}
-            className="military-button"
-            style={{
-              fontSize: '14px',
-              minWidth: '120px'
-            }}
-          >
-            NEGATIVE
-          </button>
+    <div className="modal-overlay">
+      <div className="military-dialog">
+        <h2 className="dialog-title">{title}</h2>
+        <p className="dialog-message">ターンを終了しますか？</p>
+        <div className="dialog-actions">
+          <button onClick={onConfirm} className="military-button">{confirmText}</button>
+          <button onClick={onCancel} className="military-button">{cancelText}</button>
         </div>
-        
-        <div style={{
-          marginTop: '20px',
-          fontSize: '11px',
-          color: 'var(--museum-rust)',
-          fontFamily: 'monospace'
-        }}>
-          TIP: PRESS CMD+E TO OPEN THIS DIALOG
-        </div>
+        <div className="dialog-tip">ヒント: Cmd+Eキーでこのダイアログを開けます</div>
       </div>
     </div>
   );

@@ -291,24 +291,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   };;
 
   return (
-    <div className="screen battle-screen" style={{ 
-      height: '100vh', 
-      width: '100vw', 
-      position: 'relative',
-      background: getWeatherBackground()
-    }}>
-      {/* Fixed Header at top of window */}
-      <div style={{ 
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '60px',
-        zIndex: 1000,
-        background: 'rgba(52, 73, 94, 0.9)',
-        backdropFilter: 'blur(5px)',
-        borderBottom: '1px solid #3498db'
-      }}>
+    <div className="battle-screen-grid">
+      <div className="header-area military-header">
         <Header 
           turn={turn} 
           activeTeam={activeTeam} 
@@ -318,88 +302,54 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       </div>
 
-      {/* Main game area with top margin for header */}
-      <div style={{ 
-        height: '100vh', 
-        display: 'flex',
-        paddingTop: '60px' 
-      }}>
-        {/* Game Board - with left margin for SelectedUnitPanel */}
-        <div style={{ flex: 1, minWidth: 0, marginLeft: '320px', marginRight: '350px' }}>
-          <GameBoard
-            boardLayout={boardLayout}
-            units={units}
-            selectedUnitId={selectedUnitId}
-            reachableTiles={reachableTiles}
-            attackableTiles={attackableTiles}
-            engineerTargetTiles={engineerTargetTiles}
-            transportTargetTiles={transportTargetTiles}
-            isReinforcementSpawnLocation={isReinforcementSpawnLocation}
-            onHexClick={handleHexClick}
-            onHexHover={setHoveredHex}
-            onHexLeave={() => setHoveredHex(null)}
-          />
-        </div>
-
-        {/* Fixed Selected Unit Panel on the left */}
-        <div style={{ 
-          position: 'fixed',
-          left: 0,
-          top: '60px',
-          width: '320px',
-          height: 'calc(100vh - 60px)',
-          zIndex: 1000,
-          background: 'rgba(52, 73, 94, 0.9)',
-          backdropFilter: 'blur(5px)',
-          borderRight: '1px solid #3498db',
-          overflowY: 'auto'
-        }}>
-          <SelectedUnitPanel
-            selectedUnit={selectedUnit}
-            selectedUnitTile={selectedUnitTile}
-            onAction={handleAction}
-            boardLayout={boardLayout}
-            units={units}
-            onStartTransportAction={startTransportAction}
-          />
-        </div>
-
-        {/* Fixed Information Panel on the right */}
-        <div style={{ 
-          position: 'fixed',
-          right: 0,
-          top: '60px',
-          width: '350px',
-          height: 'calc(100vh - 60px)',
-          zIndex: 1000,
-          background: 'rgba(52, 73, 94, 0.9)',
-          backdropFilter: 'blur(5px)',
-          borderLeft: '1px solid #3498db',
-          overflowY: 'auto'
-        }}>
-          <InformationPanel
-            selectedUnit={undefined}
-            selectedUnitTile={null}
-            hoveredHex={hoveredHex}
-            boardLayout={boardLayout}
-            units={units}
-            onAction={handleAction}
-          />
-        </div>
+      <div className="left-panel-area">
+        <SelectedUnitPanel
+          className="military-crt-monitor"
+          selectedUnit={selectedUnit}
+          selectedUnitTile={selectedUnitTile}
+          onAction={handleAction}
+          boardLayout={boardLayout}
+          units={units}
+          onStartTransportAction={startTransportAction}
+        />
       </div>
 
+      <div className="game-board-area">
+        <GameBoard
+          boardLayout={boardLayout}
+          units={units}
+          selectedUnitId={selectedUnitId}
+          reachableTiles={reachableTiles}
+          attackableTiles={attackableTiles}
+          engineerTargetTiles={engineerTargetTiles}
+          transportTargetTiles={transportTargetTiles}
+          isReinforcementSpawnLocation={isReinforcementSpawnLocation}
+          onHexClick={handleHexClick}
+          onHexHover={setHoveredHex}
+          onHexLeave={() => setHoveredHex(null)}
+        />
+      </div>
 
-      {/* 🎯 Battle Log Panel */}
-      <BattleLogPanel
-        battleLog={battleLog}
-        currentTurn={turn}
-        currentPhase={activeTeam === 'Blue' ? 'Player Phase' : 'Enemy Phase'}
-      />
-
-      {/* Rain Effect */}
+      <div className="right-panel-area">
+        <InformationPanel
+          className="military-crt-monitor"
+          selectedUnit={undefined}
+          selectedUnitTile={null}
+          hoveredHex={hoveredHex}
+          boardLayout={boardLayout}
+          units={units}
+          onAction={handleAction}
+        />
+        <BattleLogPanel
+          className="military-battle-log"
+          battleLog={battleLog}
+          currentTurn={turn}
+          currentPhase={activeTeam === 'Blue' ? 'プレイヤー フェーズ' : '敵 フェーズ'}
+        />
+      </div>
+      
       <RainEffect weather={weather} />
 
-      {/* Battle Report Modal */}
       {battleReport && (
         <BattleReportModal
           battleReport={battleReport}
@@ -407,7 +357,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       )}
 
-      {/* Weapon Selection Modal */}
       {weaponSelectionState.attacker && weaponSelectionState.target && (
         <WeaponSelectorModal
           isOpen={weaponSelectionState.isOpen}
@@ -418,7 +367,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       )}
 
-      {/* Engineer Action Confirmation Modal */}
       <EngineerActionConfirmModal
         isOpen={engineerConfirmState.isOpen}
         actionType={engineerConfirmState.actionType}
@@ -429,7 +377,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onCancel={cancelEngineerAction}
       />
 
-      {/* Unit Selection Modal for Transport */}
       <UnitSelectionModal
         isOpen={transportActionState.mode === 'selecting_unit'}
         transportUnit={transportActionState.unit}
@@ -441,7 +388,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onCancel={cancelUnitSelection}
       />
 
-      {/* Transport Action Confirmation Modal */}
       <TransportActionConfirmModal
         isOpen={transportConfirmState.isOpen}
         actionType={transportConfirmState.actionType}
@@ -452,7 +398,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onCancel={cancelTransportAction}
       />
 
-      {/* Production Modal */}
       <ProductionModal
         isOpen={productionState.isOpen}
         producibleUnits={productionState.producibleUnits}
@@ -460,20 +405,20 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onClose={handleProductionClose}
       />
 
-      {/* Debug Log Panel */}
       <LogPanel
         isVisible={isLogPanelVisible}
         onToggle={() => setIsLogPanelVisible(!isLogPanelVisible)}
       />
 
-      {/* End Turn Confirmation Modal */}
       <EndTurnConfirmModal
         isOpen={isEndTurnConfirmOpen}
         onConfirm={handleEndTurnConfirm}
         onCancel={handleEndTurnCancel}
+        title="ターン終了"
+        confirmText="はい"
+        cancelText="いいえ"
       />
 
-      {/* Turn Change Notification Modal */}
       <TurnChangeModal
         isOpen={isTurnChangeModalOpen}
         turn={turn}
@@ -482,7 +427,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onClose={handleTurnChangeClose}
       />
 
-      {/* Victory Modal */}
       <VictoryModal
         isOpen={isVictoryModalOpen}
         defeatedArmy={victoryInfo.defeatedArmy}
@@ -490,7 +434,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         onClose={handleVictoryModalClose}
       />
 
-      {/* Reinforcement Notification Modal */}
       <ReinforcementNotificationModal
         isOpen={isReinforcementNotificationOpen}
         reinforcements={currentReinforcements}

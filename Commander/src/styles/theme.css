@@ -1,0 +1,40 @@
+/* :root でCSS変数をグローバルに定義 */
+:root {
+  /* フォント定義 */
+  --font-primary: 'Stardos Stencil', sans-serif; /* 見出しや強調したい部分に使うステンシルフォント */
+  --font-secondary: 'Helvetica', 'Arial', sans-serif; /* 本文や細かい説明に使う可読性の高いフォント */
+
+  /* カラーパレット: アースカラー */
+  --color-earth-darkest: #3E362E;  /* 最も暗い茶色: 背景や深い影 */
+  --color-earth-dark: #5A4D41;     /* 暗い茶色: パネルの背景 */
+  --color-earth-medium: #8C785D;   /* 中間の茶色: ボーダーやアクセント */
+  --color-earth-light: #BFA98E;    /* 明るい茶色: ホバー時の色など */
+  --color-earth-lightest: #F2EADF; /* 最も明るいベージュ: テキストの色 */
+
+  /* 意味的な色の定義 */
+  --color-background: var(--color-earth-darkest);
+  --color-panel-background: var(--color-earth-dark);
+  --color-text-primary: var(--color-earth-lightest);
+  --color-text-secondary: var(--color-earth-light);
+  --color-border: var(--color-earth-medium);
+  --color-accent: var(--color-earth-light);
+
+  /* UI要素のスタイル */
+  --border-radius: 4px; /* 角の丸み */
+}
+
+/* グローバルスタイルの適用 */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-secondary);
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  color: var(--color-text-primary);
+  margin-top: 0;
+}

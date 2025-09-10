@@ -4,52 +4,41 @@ import { logBattle } from '../../utils/battleLogger';
 import '../../styles/military-museum-theme.css';
 
 interface BattleLogPanelProps {
+  className?: string;
   battleLog: BattleLogState;
   currentTurn: number;
-  currentPhase: 'Player Phase' | 'Enemy Phase';
+  currentPhase: string;
 }
 
 export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
+  className,
   battleLog,
   currentTurn,
   currentPhase
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 🔄 新しいエントリが追加されたら自動スクロール
   useEffect(() => {
     if (battleLog.autoScroll && scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      logBattle('Auto-scrolled battle log to bottom', {
-        entriesCount: battleLog.entries.length,
-        scrollHeight: scrollRef.current.scrollHeight
-      });
     }
-  }, [battleLog.entries.length, battleLog.autoScroll]);
+  }, [battleLog.entries, battleLog.autoScroll]);
 
   const getTeamFlag = (team: Team): string => {
-    switch (team) {
-      case 'Blue': return '[SOV]';  // Soviet Union
-      case 'Red': return '[GER]';   // Germany
-      default: return `[${team}]`;
-    }
+    return team === 'Blue' ? '[青軍]' : '[赤軍]';
   };
 
   const getTeamColor = (team: Team): string => {
-    switch (team) {
-      case 'Blue': return 'var(--crt-green)';  // Blue team color
-      case 'Red': return 'var(--crt-amber)';   // Red team color
-      default: return 'var(--crt-green-dim)';
-    }
+    return team === 'Blue' ? 'var(--earth-success)' : 'var(--earth-danger)';
   };
 
   const formatCoordinate = (coord: Coordinate): string => {
-    return `Hex(${coord.x},${coord.y})`;
+    return `座標(${coord.x},${coord.y})`;
   };
 
   const formatTerrainEffect = (defenseBonus?: number): string => {
     if (!defenseBonus || defenseBonus === 0) return '';
-    return ` (+${defenseBonus}% Def)`;
+    return ` (防御効果+${defenseBonus}%)`;
   };
 
   const renderBattleLogEntry = (entry: BattleLogEntry) => {
@@ -58,88 +47,35 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
     const attackerColor = getTeamColor(entry.attacker.team);
     const defenderColor = getTeamColor(entry.defender.team);
 
-    // 🎯 Main battle line
-    const mainLine = (
-      <div style={{ marginBottom: '4px' }}>
-        <span style={{ color: attackerColor, fontWeight: 'bold' }}>
-          {attackerFlag} {entry.attacker.unitName}
-        </span>
-        <span style={{ color: 'var(--crt-green-dim)' }}>
-          {' '}(HP: {entry.attacker.hpBefore} → {entry.attacker.hpAfter})
-        </span>
-        <span style={{ color: 'var(--crt-green)' }}> ENGAGES </span>
-        <span style={{ color: defenderColor, fontWeight: 'bold' }}>
-          {defenderFlag} {entry.defender.unitName}
-        </span>
-        <span style={{ color: 'var(--crt-green-dim)' }}>
-          {' '}(HP: {entry.defender.hpBefore} → {entry.defender.hpAfter})
-        </span>
-        <span style={{ color: 'var(--crt-green-dim)' }}>
-          {' '}at {formatCoordinate(entry.location.hex)} in {entry.location.terrain}
-          {formatTerrainEffect(entry.location.defenseBonus)}
-        </span>
-      </div>
-    );
-
-    // 🔫 Weapon details line
-    const weaponLine = (
-      <div style={{ 
-        marginLeft: '16px', 
-        color: 'var(--crt-green-dim)', 
-        fontSize: '10px',
-        marginBottom: entry.counterAttack ? '2px' : '8px'
-      }}>
-        <span style={{ color: 'var(--crt-amber)' }}>↳</span>
-        <span> {entry.attacker.unitName} used {entry.weapon.name}. </span>
-        <span style={{ color: 'var(--crt-amber)' }}>
-          DMG: {entry.result.damageDealt}
-        </span>
-        {entry.result.damageTaken > 0 && (
-          <span style={{ color: 'var(--crt-amber)' }}>
-            / TOOK: {entry.result.damageTaken}
-          </span>
-        )}
-        {entry.result.unitDestroyed && (
-          <span style={{ color: 'var(--crt-amber)', fontWeight: 'bold' }}>
-            [DESTROYED]
-          </span>
-        )}
-        <span>.</span>
-      </div>
-    );
-
-    // ⚔️ Counter-attack line (if exists)
-    const counterLine = entry.counterAttack && (
-      <div style={{ 
-        marginLeft: '16px', 
-        color: 'var(--crt-green-dim)', 
-        fontSize: '10px',
-        marginBottom: '8px'
-      }}>
-        <span style={{ color: 'var(--crt-amber)' }}>↳</span>
-        <span> COUNTER! {entry.defender.unitName} used {entry.counterAttack.weapon.name}. </span>
-        <span style={{ color: 'var(--crt-amber)' }}>
-          DMG: {entry.counterAttack.damageDealt}
-        </span>
-        {entry.counterAttack.damageTaken > 0 && (
-          <span style={{ color: 'var(--crt-amber)' }}>
-            / TOOK: {entry.counterAttack.damageTaken}
-          </span>
-        )}
-        {entry.counterAttack.unitDestroyed && (
-          <span style={{ color: 'var(--crt-amber)', fontWeight: 'bold' }}>
-            [DESTROYED]
-          </span>
-        )}
-        <span>.</span>
-      </div>
-    );
-
     return (
-      <div key={entry.id} style={{ marginBottom: '12px' }}>
-        {mainLine}
-        {weaponLine}
-        {counterLine}
+      <div key={entry.id} className="log-entry">
+        <div className="log-line main">
+          <span style={{ color: attackerColor }}>{attackerFlag} {entry.attacker.unitName}</span>
+          <span className="log-hp-change">(耐久: {entry.attacker.hpBefore} → {entry.attacker.hpAfter})</span>
+          <span>が</span>
+          <span style={{ color: defenderColor }}>{defenderFlag} {entry.defender.unitName}</span>
+          <span className="log-hp-change">(耐久: {entry.defender.hpBefore} → {entry.defender.hpAfter})</span>
+          <span>と交戦</span>
+          <span className="log-location">@{formatCoordinate(entry.location.hex)} {entry.location.terrain}{formatTerrainEffect(entry.location.defenseBonus)}</span>
+        </div>
+
+        <div className="log-line sub">
+          <span>↳</span>
+          <span> {entry.attacker.unitName} は {entry.weapon.name} を使用。</span>
+          <span className="log-damage">損害: {entry.result.damageDealt}</span>
+          {entry.result.damageTaken > 0 && <span className="log-damage">/ 被損害: {entry.result.damageTaken}</span>}
+          {entry.result.unitDestroyed && <span className="log-destroyed">[撃破]</span>}
+        </div>
+
+        {entry.counterAttack && (
+          <div className="log-line sub counter">
+            <span>↳</span>
+            <span>反撃！ {entry.defender.unitName} は {entry.counterAttack.weapon.name} を使用。</span>
+            <span className="log-damage">損害: {entry.counterAttack.damageDealt}</span>
+            {entry.counterAttack.damageTaken > 0 && <span className="log-damage">/ 被損害: {entry.counterAttack.damageTaken}</span>}
+            {entry.counterAttack.unitDestroyed && <span className="log-destroyed">[撃破]</span>}
+          </div>
+        )}
       </div>
     );
   };
@@ -149,84 +85,18 @@ export const BattleLogPanel: React.FC<BattleLogPanelProps> = ({
   }
 
   return (
-    <div 
-      className="military-battle-log"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: '350px', // Account for right information panel
-        height: '20%',
-        zIndex: 500,
-        display: 'flex',
-        flexDirection: 'column'
-      }}
-    >
-      {/* 📊 Header */}
-      <div
-        style={{
-          height: '40px',
-          padding: '0 16px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '1px solid var(--crt-green-dim)',
-          background: 'var(--crt-background)'
-        }}
-      >
-        <div className="military-crt-text amber" style={{ 
-          fontWeight: 'bold', 
-          fontSize: '12px' 
-        }}>
-          🎯 BATTLE LOG TERMINAL
-        </div>
-        <div className="military-crt-text dim" style={{ 
-          fontSize: '10px' 
-        }}>
-          [ T:{currentTurn} / {currentPhase.replace(' Phase', '').toUpperCase()} ]
-        </div>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px'
-        }}>
-          <button
-            className="military-button"
-            style={{
-              padding: '2px 6px',
-              fontSize: '10px',
-              minWidth: 'auto'
-            }}
-            onClick={() => {
-              if (scrollRef.current) {
-                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-              }
-            }}
-          >
-            ▼
-          </button>
+    <div className={className}>
+      <div className="panel-header">
+        <h3 className="panel-title">戦闘ログ</h3>
+        <div className="log-header-info">
+          [ T:{currentTurn} / {currentPhase} ]
         </div>
       </div>
 
-      {/* 📜 Scrollable Log Content */}
-      <div
-        ref={scrollRef}
-        className="military-crt-text"
-        style={{
-          flex: 1,
-          padding: '12px 16px',
-          overflowY: 'auto',
-          fontSize: '11px',
-          lineHeight: '1.4'
-        }}
-      >
+      <div ref={scrollRef} className="log-content">
         {battleLog.entries.length === 0 ? (
-          <div className="military-crt-text dim" style={{ 
-            fontStyle: 'italic',
-            textAlign: 'center',
-            marginTop: '20px'
-          }}>
-            🔍 NO BATTLE EVENTS YET. INITIATE COMBAT TO LOG ENGAGEMENT DATA.
+          <div className="log-empty-message">
+            戦闘イベントはまだありません。
           </div>
         ) : (
           battleLog.entries.map(renderBattleLogEntry)

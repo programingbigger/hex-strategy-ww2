@@ -3,6 +3,7 @@ import { Team, WeatherType } from '../../types';
 import '../../styles/military-museum-theme.css';
 
 interface HeaderProps {
+  className?: string;
   turn: number;
   activeTeam: Team;
   weather: WeatherType;
@@ -19,7 +20,8 @@ const Header: React.FC<HeaderProps> = ({
   blueUnits,
   redUnits,
   onSave,
-  onLoad
+  onLoad,
+  className
 }) => {
   const getWeatherEmoji = (weather: WeatherType) => {
     switch (weather) {
@@ -29,101 +31,20 @@ const Header: React.FC<HeaderProps> = ({
       case 'Cloudy': return '☁️';
       default: return '☀️';
     }
-  };;
-  
-  return (
-    <div className="military-header" style={{
-      padding: '15px 30px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '70px',
-      boxSizing: 'border-box',
-      position: 'relative'
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-        <div className="military-stencil" style={{ 
-          fontSize: '16px', 
-          fontWeight: 'bold',
-          padding: '6px 12px'
-        }}>
-          TURN {turn}
-        </div>
-        
-        <div className="military-stencil" style={{
-          padding: '6px 12px',
-          background: activeTeam === 'Blue' ? 'var(--museum-brass)' : 'var(--museum-rust)',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          color: 'var(--museum-wood-dark)'
-        }}>
-          {activeTeam.toUpperCase()} PHASE
-        </div>
-        
-        <div className="military-stencil" style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '8px',
-          padding: '4px 8px',
-          fontSize: '12px'
-        }}>
-          <span style={{ fontSize: '16px' }}>{getWeatherEmoji(weather)}</span>
-          <span>{weather.toUpperCase()}</span>
-        </div>
-        
-        <div style={{ display: 'flex', gap: '15px', fontSize: '14px' }}>
-          <div className="military-stencil" style={{ 
-            color: 'var(--museum-wood-dark)',
-            background: 'var(--museum-brass)',
-            padding: '3px 8px',
-            fontSize: '11px'
-          }}>
-            🔵 BLUE: {blueUnits}
-          </div>
-          <div className="military-stencil" style={{ 
-            color: 'var(--museum-wood-dark)',
-            background: 'var(--museum-rust)',
-            padding: '3px 8px',
-            fontSize: '11px'
-          }}>
-            🔴 RED: {redUnits}
-          </div>
-        </div>
-      </div>
-      
-      <div style={{ 
-        position: 'absolute', 
-        right: '30px',
-        display: 'flex', 
-        gap: '10px' 
-      }}>
-        {onSave && (
-          <button
-            onClick={onSave}
-            className="military-button"
-            style={{
-              fontSize: '12px',
-              padding: '6px 12px'
-            }}
-          >
-            SAVE
-          </button>
-        )}
-        
-        {onLoad && (
-          <button
-            onClick={onLoad}
-            className="military-button"
-            style={{
-              fontSize: '12px',
-              padding: '6px 12px'
-            }}
-          >
-            LOAD
-          </button>
-        )}
-        
+  };
 
+  return (
+    <div className={className}>
+      <div className="header-left">
+        <span className="header-item">ターン: {turn}</span>
+        <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
+        <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
+      </div>
+      <div className="header-right">
+        <span className="header-item-small blue">青軍: {blueUnits}</span>
+        <span className="header-item-small red">赤軍: {redUnits}</span>
+        {onSave && <button onClick={onSave} className="military-button">セーブ</button>}
+        {onLoad && <button onClick={onLoad} className="military-button">ロード</button>}
       </div>
     </div>
   );

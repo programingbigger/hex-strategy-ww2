@@ -5,11 +5,12 @@
    木製の補給箱のようなUIフレームの中で、物理的な駒を動かしながら閲覧・操作する。」
    ============================================================================= */
 
-/* 統一日本語対応フォント */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@400;700;900&family=Roboto+Mono:wght@400;700;900&display=swap');
-
 /* ===== 統一アースカラーパレット ===== */
 :root {
+  /* フォント定義 */
+  --font-stencil: 'Stardos Stencil', sans-serif;
+  --font-sans-jp: 'Noto Sans JP', sans-serif;
+
   /* 基本アースカラー（オリーブ・カーキ・サンド系） */
   --earth-olive-dark: #3c3d1f;   /* ダークオリーブ（メイン背景） */
   --earth-olive: #5a5d33;        /* オリーブ（セカンダリ） */
@@ -56,7 +57,7 @@
     0 4px 8px var(--earth-shadow);
   position: relative;
   overflow: hidden;
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   color: var(--earth-contrast-light);
 }
 
@@ -93,7 +94,7 @@
   border: 4px solid var(--earth-khaki);
   border-radius: 8px;
   color: var(--earth-contrast-light);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   padding: 16px;
   position: relative;
   overflow: hidden;
@@ -138,7 +139,7 @@
 .military-crt-text {
   color: var(--earth-contrast-light);
   text-shadow: 0 0 3px var(--earth-glow);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   font-size: 0.9em;
   letter-spacing: 0.5px;
   line-height: 1.4;
@@ -154,7 +155,7 @@
 
 /* 統一アースカラー ステンシルスタイル */
 .military-stencil {
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   font-weight: 700;
   color: var(--earth-contrast-dark);
   background: var(--earth-contrast-light);
@@ -190,7 +191,7 @@
   box-shadow: 
     0 4px 8px var(--earth-shadow),
     inset 0 0 0 1px var(--earth-dust);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   color: var(--earth-contrast-dark);
 }
 
@@ -222,7 +223,7 @@
   background: var(--earth-olive-dark);
   border: 2px solid var(--earth-sand);
   color: var(--earth-contrast-light);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   padding: 12px;
   position: relative;
   box-shadow: 
@@ -239,7 +240,7 @@
   padding: 0 8px;
   font-size: 0.8em;
   color: var(--earth-warning);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
 }
 
 /* 統一アースカラー ボタンスタイル */
@@ -247,7 +248,7 @@
   background: linear-gradient(135deg, var(--earth-sand), var(--earth-sand-dark));
   border: 2px solid var(--earth-olive-dark);
   color: var(--earth-contrast-dark);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   font-weight: 700;
   padding: 8px 16px;
   text-transform: uppercase;
@@ -276,7 +277,7 @@
   box-shadow: 
     0 8px 32px var(--earth-shadow),
     inset 0 2px 4px var(--earth-glow);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   position: relative;
   color: var(--earth-contrast-dark);
 }
@@ -292,7 +293,7 @@
   padding: 4px 16px;
   font-weight: 900;
   font-size: 0.8em;
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
 }
 
 /* 統一アースカラー ヘッダースタイル */
@@ -303,11 +304,11 @@
   border-bottom: 3px solid var(--earth-sand);
   padding: 12px 24px;
   position: relative;
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
 }
 
 .military-header h1 {
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   font-weight: 900;
   color: var(--earth-contrast-light);
   text-shadow: 2px 2px 4px var(--earth-shadow);
@@ -320,7 +321,7 @@
   background: var(--earth-olive-dark);
   border: 3px inset var(--earth-khaki-dark);
   color: var(--earth-contrast-light);
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
   max-height: 200px;
   overflow-y: auto;
   padding: 12px;
@@ -336,7 +337,7 @@
   color: var(--earth-warning);
   padding: 0 8px;
   font-size: 0.7em;
-  font-family: 'Roboto Mono', 'Noto Sans Mono', monospace;
+  font-family: var(--font-sans-jp);
 }
 
 .military-battle-log-entry {
@@ -411,3 +412,458 @@
     radial-gradient(circle at 80% 70%, var(--earth-shadow) 5%, transparent 15%);
   pointer-events: none;
 }
+/* Header component layout */
+.military-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  height: 60px;
+  box-sizing: border-box;
+}
+
+.header-left, .header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-item {
+  font-family: var(--font-stencil);
+  font-size: 1.2rem;
+  color: var(--earth-contrast-light);
+  text-transform: uppercase;
+}
+
+.header-item.weather {
+  font-size: 1rem;
+}
+
+.header-item.team-blue {
+  color: #87CEEB;
+}
+
+.header-item.team-red {
+  color: #F08080;
+}
+
+.header-item-small {
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  padding: 4px 8px;
+  border-radius: var(--border-radius);
+}
+
+.header-item-small.blue {
+  background-color: rgba(135, 206, 235, 0.2);
+  color: #87CEEB;
+}
+
+.header-item-small.red {
+  background-color: rgba(240, 128, 128, 0.2);
+  color: #F08080;
+}
+
+.military-header .military-button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+
+/* Panel Header */
+.panel-header {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 2px solid var(--earth-khaki);
+  background-color: rgba(0,0,0, 0.2);
+}
+
+.panel-title {
+  font-family: var(--font-stencil);
+  font-size: 1.4rem;
+  color: var(--earth-warning);
+  text-shadow: 0 0 5px var(--earth-glow);
+  margin: 0;
+}
+
+
+/* Panel Content Layout */
+.panel-content {
+  padding: 15px;
+}
+
+.panel-section {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--earth-khaki-dark);
+  border-radius: var(--border-radius);
+  padding: 12px;
+  margin-bottom: 15px;
+}
+
+.section-title {
+  font-family: var(--font-stencil);
+  font-size: 1.1rem;
+  color: var(--earth-warning);
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--earth-khaki);
+}
+
+.section-subtitle {
+  font-family: var(--font-stencil);
+  font-size: 1rem;
+  color: var(--earth-khaki-light);
+  margin: 10px 0 8px 0;
+}
+
+.unit-name-plate {
+  margin-bottom: 10px;
+}
+
+.unit-name-plate .team-blue { color: #87CEEB; }
+.unit-name-plate .team-red { color: #F08080; }
+.unit-name-plate .unit-category {
+  font-family: var(--font-sans-jp);
+  font-size: 0.8rem;
+  color: var(--earth-khaki-light);
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.unit-status {
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  color: var(--earth-khaki-light);
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.actions-grid .military-button {
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 8px 0;
+}
+
+.military-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--earth-khaki-dark);
+}
+
+
+
+/* No Unit Selected State */
+.no-unit-selected {
+  padding: 40px 20px;
+  text-align: center;
+  font-family: var(--font-sans-jp);
+  font-size: 1rem;
+  color: var(--earth-khaki-light);
+  background: rgba(0,0,0, 0.1);
+  border-radius: var(--border-radius);
+}
+
+/* Shortcuts List */
+.shortcuts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shortcut-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--earth-khaki-dark);
+}
+
+.shortcut-item:last-child {
+  border-bottom: none;
+}
+
+.shortcut-item kbd {
+  background: var(--earth-khaki-dark);
+  color: var(--earth-contrast-light);
+  padding: 3px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  border: 1px solid var(--earth-contrast-dark);
+}
+
+
+/* Information Panel Specifics */
+.terrain-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.terrain-swatch {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--earth-khaki-dark);
+  border-radius: var(--border-radius);
+  margin-right: 10px;
+}
+
+.terrain-name {
+  font-family: var(--font-stencil);
+  font-size: 1.2rem;
+  color: var(--earth-contrast-light);
+}
+
+.stat-list {
+  margin-top: 15px;
+}
+
+.stat-list-item {
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  color: var(--earth-khaki-light);
+  margin-left: 15px;
+  margin-bottom: 2px;
+}
+
+.stat-list-item.spread {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cost-impassable {
+  font-weight: bold;
+  color: var(--earth-danger);
+}
+
+
+/* Battle Log Panel Specifics */
+.log-header-info {
+  font-family: var(--font-sans-jp);
+  font-size: 0.8rem;
+  color: var(--earth-khaki-light);
+}
+
+.log-content {
+  flex: 1;
+  padding: 12px 16px;
+  overflow-y: auto;
+  font-family: var(--font-sans-jp);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.log-empty-message {
+  font-style: italic;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--earth-khaki-light);
+}
+
+.log-entry {
+  margin-bottom: 12px;
+}
+
+.log-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.log-line.sub {
+  margin-left: 16px;
+  font-size: 0.8rem;
+  color: var(--earth-khaki-light);
+}
+
+.log-line.counter {
+  color: var(--earth-warning);
+}
+
+.log-hp-change {
+  color: var(--earth-khaki-light);
+  font-size: 0.8rem;
+}
+
+.log-location {
+  color: var(--earth-khaki-light);
+  font-style: italic;
+}
+
+.log-damage {
+  font-weight: bold;
+  color: var(--earth-warning);
+}
+
+.log-destroyed {
+  font-weight: bold;
+  color: var(--earth-danger);
+  text-shadow: 0 0 5px var(--earth-danger);
+}
+
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+.military-dialog {
+  padding: 30px;
+  min-width: 400px;
+  text-align: center;
+}
+
+.dialog-title {
+  font-family: var(--font-stencil);
+  font-size: 1.5rem;
+  color: var(--earth-warning);
+  margin: 0 0 20px 0;
+}
+
+.dialog-message {
+  font-family: var(--font-sans-jp);
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 30px 0;
+  color: var(--earth-contrast-light);
+}
+
+.dialog-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.dialog-actions .military-button {
+  min-width: 120px;
+}
+
+.dialog-tip {
+  margin-top: 20px;
+  font-family: var(--font-sans-jp);
+  font-size: 0.8rem;
+  color: var(--earth-khaki-light);
+}
+
+
+/* Turn Change Modal Specifics */
+.turn-change-dialog {
+  border-top: 5px solid var(--earth-warning);
+}
+
+.turn-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  background: rgba(0,0,0,0.2);
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+}
+
+.turn-info-item {
+  text-align: center;
+}
+
+.turn-info-label {
+  font-family: var(--font-sans-jp);
+  font-size: 1rem;
+  color: var(--earth-khaki-light);
+  margin-bottom: 8px;
+}
+
+.turn-info-value {
+  font-family: var(--font-stencil);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.turn-info-value.turn-number {
+  color: var(--earth-warning);
+}
+
+.turn-info-value.team-blue {
+  color: #87CEEB;
+}
+
+.turn-info-value.team-red {
+  color: #F08080;
+}
+
+.turn-info-value.weather {
+  font-size: 1.5rem;
+}
+
+
+/* Victory/Defeat Modal Specifics */
+.dialog-victory {
+  border-top: 5px solid var(--earth-success);
+}
+
+.dialog-defeat {
+  border-top: 5px solid var(--earth-danger);
+}
+
+.dialog-victory .dialog-title {
+  color: var(--earth-success);
+}
+
+.dialog-defeat .dialog-title {
+  color: var(--earth-danger);
+}
+
+
+/* ProgressBar Styles */
+.progress-bar {
+  width: 100px;
+  height: 8px;
+  background-color: var(--earth-khaki-dark);
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
