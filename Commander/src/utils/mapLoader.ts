@@ -39,6 +39,7 @@ export const loadCompleteMap = async (mapId: string): Promise<{
   mapData: MapData;
   boardLayout: BoardLayout;
   deploymentCenter: { q: number; r: number };
+  initialCameraPosition?: { x: number; y: number };
 }> => {
   const mapData = await loadMapData(mapId);
   const boardLayout = createBoardLayout(mapData);
@@ -47,6 +48,7 @@ export const loadCompleteMap = async (mapId: string): Promise<{
   return {
     mapData,
     boardLayout,
-    deploymentCenter
+    deploymentCenter,
+    initialCameraPosition: mapData.initialCameraPosition
   };
-};
+};;

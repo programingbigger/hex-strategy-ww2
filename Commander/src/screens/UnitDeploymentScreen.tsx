@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState, Coordinate } from '../types';
 import GameBoard from '../components/game/GameBoard';
-import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable } from '../utils/map';
+import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable, getInitialCameraPosition } from '../utils/map';
+import { useCamera } from '../hooks/useCamera';
 
 interface UnitDeploymentScreenProps {
   gameState: GameState;
@@ -23,6 +24,24 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   const [hoveredUnit, setHoveredUnit] = useState<Unit | null>(null);
   const [hoveredTerrain, setHoveredTerrain] = useState<{terrain: string, coord: Coordinate} | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Camera hook for automatic positioning
+  const { setCameraPosition } = useCamera();
+
+  // Automatically position camera using initial camera position from map or order=1 fallback
+  useEffect(() => {
+    const focusCoordinate = getInitialCameraPosition(gameState);
+    if (focusCoordinate) {
+      // Convert hex coordinates to world coordinates for camera positioning
+      // Hex coordinates use a different coordinate system, so we need to convert them
+      const worldX = focusCoordinate.x * 86.6; // Approximate hex width conversion
+      const worldY = focusCoordinate.y * 75;   // Approximate hex height conversion
+      setCameraPosition(worldX, worldY);
+      console.log(`🎯 Camera positioned at initial coordinate: (${focusCoordinate.x}, ${focusCoordinate.y}) -> world (${worldX}, ${worldY})`);
+    } else {
+      console.warn('⚠️ No initial camera position found');
+    }
+  }, [gameState, setCameraPosition]);
 
   const selectedUnits = gameState.battlePrep?.selectedUnits || [];
   

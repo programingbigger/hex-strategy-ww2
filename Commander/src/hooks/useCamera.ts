@@ -11,6 +11,7 @@ interface CameraControls {
   panCamera: (deltaX: number, deltaY: number) => void;
   zoomCamera: (zoomDelta: number) => void;
   resetCamera: () => void;
+  setCameraPosition: (x: number, y: number) => void;
 }
 
 const INITIAL_CAMERA: CameraState = {
@@ -44,6 +45,14 @@ export const useCamera = (): CameraControls => {
 
   const resetCamera = useCallback(() => {
     setCamera(INITIAL_CAMERA);
+  }, []);
+
+  const setCameraPosition = useCallback((x: number, y: number) => {
+    setCamera(prev => ({
+      ...prev,
+      x,
+      y
+    }));
   }, []);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -100,6 +109,7 @@ export const useCamera = (): CameraControls => {
     camera,
     panCamera,
     zoomCamera,
-    resetCamera
+    resetCamera,
+    setCameraPosition
   };
-};
+};;

@@ -24,14 +24,15 @@ const App: React.FC = () => {
     if (selectedMap) {
       try {
         // Load the complete map data including board layout
-        const { boardLayout, deploymentCenter } = await loadCompleteMap(selectedMap.id);
+        const { boardLayout, deploymentCenter, initialCameraPosition } = await loadCompleteMap(selectedMap.id);
         
         setGameState(prev => ({
           ...prev,
           currentScreen: screen,
           selectedMap: {
             ...selectedMap,
-            deploymentCenter
+            deploymentCenter,
+            initialCameraPosition
           },
           board: boardLayout
         }));
@@ -50,7 +51,7 @@ const App: React.FC = () => {
         currentScreen: screen
       }));
     }
-  };
+  };;
 
   const updateBattlePrep = (battlePrep: BattlePrepState) => {
     setGameState(prev => ({

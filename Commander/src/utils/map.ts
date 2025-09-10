@@ -544,3 +544,41 @@ export function hasSupplySourceInRange(
   }
   return false; // No supply sources found
 }
+
+/**
+ * Find coordinates with order=1 from the board layout for camera positioning
+ * @param board The game board layout
+ * @returns Array of coordinates that have order=1 attribute
+ */
+export function findOrder1Coordinates(board: BoardLayout): Coordinate[] {
+  const order1Coords: Coordinate[] = [];
+  
+  for (const [, tile] of board.entries()) {
+    if (tile.order === 1) {
+      order1Coords.push({ x: tile.x, y: tile.y });
+    }
+  }
+  
+  return order1Coords;
+}
+
+/**
+ * Get the primary deployment focus coordinate (first order=1 coordinate found)
+ * @param board The game board layout
+ * @returns The coordinate to focus camera on, or null if none found
+ */
+export function getDeploymentFocusCoordinate(board: BoardLayout): Coordinate | null {
+  const order1Coords = findOrder1Coordinates(board);
+  return order1Coords.length > 0 ? order1Coords[0] : null;
+}
+
+export function getInitialCameraPosition(gameState: any): Coordinate | null {
+  // Try to get from selected map first
+  if (gameState.selectedMap?.initialCameraPosition) {
+    return gameState.selectedMap.initialCameraPosition;
+  }
+  
+  // Fallback to order=1 coordinates for backward compatibility
+  const order1Coords = findOrder1Coordinates(gameState.board);
+  return order1Coords.length > 0 ? order1Coords[0] : null;
+}

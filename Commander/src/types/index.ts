@@ -13,6 +13,7 @@ export interface GameMap {
   difficulty: 'Easy' | 'Normal' | 'Hard';
   thumbnail?: string;
   deploymentCenter?: { q: number; r: number };
+  initialCameraPosition?: { x: number; y: number };
 }
 
 export type Team = 'Blue' | 'Red';
@@ -187,6 +188,7 @@ export interface MapData {
   };
   units: Unit[];
   deploymentCenter?: { q: number; r: number };
+  initialCameraPosition?: { x: number; y: number };
 }
 
 export interface BattlePrepState {
