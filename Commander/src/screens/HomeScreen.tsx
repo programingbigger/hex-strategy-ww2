@@ -8,43 +8,58 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   return (
     <div className="screen home-screen">
-      <h1 className="screen-title">Mode Select</h1>
-      
-      <div className="menu-container">
-        <button 
-          className="menu-button"
-          disabled
-        >
-          Story Mode (Coming Soon)
-        </button>
+      <div className="home-content-container">
+        <div className="home-header">
+          <h1 className="screen-title-home">MODE SELECT</h1>
+          <p className="home-subtitle">Choose your battle experience</p>
+        </div>
         
-        <button 
-          className="menu-button"
-          onClick={() => onNavigate('scenario-select')}
-        >
-          Scenario Mode
-        </button>
+        <div className="home-menu-grid">
+          <button 
+            className="home-mode-button military-button"
+            disabled
+          >
+            <div className="mode-button-icon">📚</div>
+            <div className="mode-button-title">Story Mode</div>
+            <div className="mode-button-desc">Coming Soon</div>
+          </button>
+          
+          <button 
+            className="home-mode-button military-button"
+            onClick={() => onNavigate('scenario-select')}
+          >
+            <div className="mode-button-icon">⚔️</div>
+            <div className="mode-button-title">Scenario Mode</div>
+            <div className="mode-button-desc">Custom Battles</div>
+          </button>
+          
+          <button 
+            className="home-mode-button military-button"
+            disabled
+          >
+            <div className="mode-button-icon">🎓</div>
+            <div className="mode-button-title">Tutorial</div>
+            <div className="mode-button-desc">Coming Soon</div>
+          </button>
+          
+          <button 
+            className="home-mode-button military-button"
+            disabled
+          >
+            <div className="mode-button-icon">⚙️</div>
+            <div className="mode-button-title">Settings</div>
+            <div className="mode-button-desc">Coming Soon</div>
+          </button>
+        </div>
         
-        <button 
-          className="menu-button"
-          disabled
-        >
-          Tutorial (Coming Soon)
-        </button>
-        
-        <button 
-          className="menu-button"
-          disabled
-        >
-          Settings (Coming Soon)
-        </button>
-        
-        <button 
-          className="menu-button menu-button-back"
-          onClick={() => onNavigate('title')}
-        >
-          Back to Title
-        </button>
+        <div className="home-footer">
+          <button 
+            className="menu-button-large military-button menu-button-back"
+            onClick={() => onNavigate('title')}
+          >
+            Back to Title
+          </button>
+        </div>
       </div>
     </div>
   );

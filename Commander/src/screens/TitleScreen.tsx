@@ -9,95 +9,99 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
   const [modeSelectExpanded, setModeSelectExpanded] = useState(false);
   return (
     <div className="screen title-screen">
-      {/* Title Section (Top) */}
-      <div className="title-header">
-        <h1 className="screen-title">COMMANDER</h1>
-        <p style={{ fontSize: '1.2em', opacity: 0.8 }}>
-          Strategic Warfare Simulation
-        </p>
-      </div>
+      <div className="title-content-container">
+        {/* Title Section (Center Top) */}
+        <div className="title-header-centered">
+          <h1 className="screen-title-large">COMMANDER</h1>
+          <p className="subtitle-text">
+            Strategic Warfare Simulation
+          </p>
+        </div>
 
-      {/* Background Video (Center) */}
-      <video 
-        className="title-background-video"
-        autoPlay 
-        loop 
-        muted 
-        playsInline
-      >
-        <source src="/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      
-      {/* Button Section (Bottom) */}
-      <div className="title-footer">
-        <div className="menu-container">
-        {!modeSelectExpanded ? (
-          <>
-            <button 
-              className="menu-button"
-              onClick={() => setModeSelectExpanded(true)}
-            >
-              Mode Select
-            </button>
-            
-            <button 
-              className="menu-button"
-              disabled
-            >
-              Continue (Not Available)
-            </button>
-            
-            <button 
-              className="menu-button"
-              disabled
-            >
-              Settings (Not Available)
-            </button>
-          </>
-        ) : (
-          <>
-            <button 
-              className="menu-button"
-              disabled
-            >
-              Tutorial (Coming Soon)
-            </button>
-            
-            <button 
-              className="menu-button"
-              disabled
-            >
-              Story Mode (Coming Soon)
-            </button>
-            
-            <button 
-              className="menu-button"
-              onClick={() => onNavigate('scenario-select')}
-            >
-              Scenario Mode
-            </button>
-            
-            <button 
-              className="menu-button"
-              disabled
-            >
-              Settings (Coming Soon)
-            </button>
-            
-            <button 
-              className="menu-button menu-button-back"
-              onClick={() => setModeSelectExpanded(false)}
-            >
-              Back to Title
-            </button>
-          </>
-        )}
+        {/* Background Video (Center) */}
+        <div className="title-video-container">
+          <video 
+            className="title-background-video"
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
         
-        <div className="copyright-text">
-          <p>© 2025 Commander Strategy Game</p>
+        {/* Button Section (Center Bottom) */}
+        <div className="title-menu-centered">
+          <div className="menu-container-large">
+          {!modeSelectExpanded ? (
+            <>
+              <button 
+                className="menu-button-large military-button"
+                onClick={() => setModeSelectExpanded(true)}
+              >
+                ゲーム開始
+              </button>
+              
+              <button 
+                className="menu-button-large military-button"
+                disabled
+              >
+                Continue (Not Available)
+              </button>
+              
+              <button 
+                className="menu-button-large military-button"
+                disabled
+              >
+                Settings (Not Available)
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                className="menu-button-large military-button"
+                disabled
+              >
+                Tutorial (Coming Soon)
+              </button>
+              
+              <button 
+                className="menu-button-large military-button"
+                disabled
+              >
+                Story Mode (Coming Soon)
+              </button>
+              
+              <button 
+                className="menu-button-large military-button"
+                onClick={() => onNavigate('scenario-select')}
+              >
+                Scenario Mode
+              </button>
+              
+              <button 
+                className="menu-button-large military-button"
+                disabled
+              >
+                Settings (Coming Soon)
+              </button>
+              
+              <button 
+                className="menu-button-large military-button menu-button-back"
+                onClick={() => setModeSelectExpanded(false)}
+              >
+                Back to Title
+              </button>
+            </>
+          )}
+          </div>
         </div>
+      </div>
+      
+      <div className="copyright-text">
+        <p>© 2025 Commander Strategy Game</p>
       </div>
     </div>
   );
