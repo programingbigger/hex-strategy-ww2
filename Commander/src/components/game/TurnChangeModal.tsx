@@ -21,11 +21,13 @@ const TurnChangeModal: React.FC<TurnChangeModalProps> = ({
     switch (weather) {
       case 'Clear': return '☀️';
       case 'Rain': return '🌧️';
+      case 'Storm': return '⛈️';
+      case 'Cloudy': return '☁️';
       case 'Snow': return '❄️';
       case 'Fog': return '🌫️';
       default: return '🌤️';
     }
-  };
+  };;
 
   const getTeamColor = (team: 'Blue' | 'Red') => {
     return team === 'Blue' ? '#3498db' : '#e74c3c';

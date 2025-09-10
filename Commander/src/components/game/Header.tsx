@@ -25,9 +25,10 @@ const Header: React.FC<HeaderProps> = ({
       case 'Clear': return '☀️';
       case 'Rain': return '🌧️';
       case 'Storm': return '⛈️';
+      case 'Cloudy': return '☁️';
       default: return '☀️';
     }
-  };
+  };;
   
   return (
     <div style={{

@@ -502,13 +502,15 @@ export const useGameLogic = () => {
       }
       
       // Weather update logic - Enhanced to include Storm and bias toward weather effects
-      const weathers: WeatherType[] = ['Clear', 'Rain', 'Storm', 'Rain', 'Storm'];
+      const weathers: WeatherType[] = ['Clear', 'Rain', 'Storm', 'Cloudy', 'Rain', 'Storm'];
       const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
       let newDuration = weatherDuration;
       if (nextWeather === 'Rain') {
         newDuration++;
       } else if (nextWeather === 'Storm') {
         newDuration += 3;
+      } else if (nextWeather === 'Cloudy') {
+        newDuration = 0; // Cloudy weather resets duration to 0
       } else {
         // Clear weather: subtract 2 instead of resetting
         newDuration = Math.max(0, newDuration - 2);
