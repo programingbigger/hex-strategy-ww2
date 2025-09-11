@@ -21,7 +21,6 @@
   },
   "board": {
     "tiles": [
-      {"x": -4,"y": -3,"terrain": "Forest"},
       {"x": -3,"y": -3,"terrain": "Forest"},
       {"x": -2,"y": -3,"terrain": "Plains"},
       {"x": -1,"y": -3,"terrain": "Plains"},
@@ -31,6 +30,8 @@
       {"x": 3,"y": -3,"terrain": "Plains"},
       {"x": 4,"y": -3,"terrain": "Plains"},
       {"x": 5,"y": -3,"terrain": "Sea"},
+      {"x": 6,"y": -3,"terrain": "Sea"},
+      {"x": 7,"y": -3,"terrain": "Sea"},
       {"x": -4,"y": -2,"terrain": "Forest"},
       {"x": -3,"y": -2,"terrain": "Forest"},
       {"x": -2,"y": -2,"terrain": "Road"},
@@ -41,6 +42,7 @@
       {"x": 3,"y": -2, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
       {"x": 4,"y": -2, "terrain": "Plains"},
       {"x": 5,"y": -2, "terrain": "Sea"},
+      {"x": 6,"y": -2, "terrain": "Sea"},
       {"x": -4,"y": -1,"terrain": "Bocage"},
       {"x": -3,"y": -1,"terrain": "Plains"},
       {"x": -2,"y": -1,"terrain": "Road"},
@@ -51,6 +53,7 @@
       {"x": 3,"y": -1, "terrain": "Forest"},
       {"x": 4,"y": -1, "terrain": "Plains"},
       {"x": 5,"y": -1, "terrain": "Sea"},
+      {"x": 6,"y": -1, "terrain": "Sea"},
       {"x": -5,"y": 0,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Blue"},
       {"x": -4,"y": 0,"terrain": "Plains"},
       {"x": -3,"y": 0,"terrain": "Forest"},
@@ -83,8 +86,7 @@
       {"x": 1,"y": 2, "terrain": "Plains"},
       {"x": 2,"y": 2, "terrain": "Plains"},
       {"x": 3,"y": 2, "terrain": "Plains"},
-      {"x": 4,"y": 2, "terrain": "Sea"},
-      {"x": 5,"y": 2, "terrain": "Sea"}
+      {"x": 4,"y": 2, "terrain": "Sea"}
     ]
   },
   "deploymentCenter": {
