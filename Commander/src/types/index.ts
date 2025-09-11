@@ -183,6 +183,7 @@ export interface MapData {
     defendingTeam?: Team;         // Which team is defending (wins on timeout)
     enabledVictoryConditions?: VictoryCondition[]; // Active victory conditions
   };
+  armyFunds?: { [team: string]: number };
   board: {
     tiles: Tile[];
   };

@@ -83,6 +83,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     turn: gameState.turn,
     turnLimit: gameState.turnLimit,
     defendingTeam: gameState.defendingTeam,
+    armyFunds: gameState.armyFunds,
     setUnits: gameState.setUnits,
     setActiveTeam: gameState.setActiveTeam,
     setBoardLayout: gameState.setBoardLayout,
@@ -93,6 +94,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setGameState: gameState.setGameState,
     setWinner: gameState.setWinner,
     setVictoryResult: gameState.setVictoryResult,
+    setArmyFunds: gameState.setArmyFunds,
   });
 
   // Update battleSystem with checkWinCondition reference
@@ -423,6 +425,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     defendingTeam: gameState.defendingTeam,
     enabledVictoryConditions: gameState.enabledVictoryConditions,
     victoryResult: gameState.victoryResult,
+    armyFunds: gameState.armyFunds,
     
     // UI states
     hoveredHex: uiStates.hoveredHex,
@@ -511,4 +514,4 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     getProductionCapitals: (team: Team) => getProductionCapitals(gameState.boardLayout, team),
     canProduceUnitsAtLocation: (coord: Coordinate, team: Team) => canProduceUnitsAtLocation(gameState.boardLayout, coord, team),
   };
-};;
+};;;

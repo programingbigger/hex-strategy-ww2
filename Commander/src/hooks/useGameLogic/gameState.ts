@@ -28,6 +28,7 @@ export interface GameStateHook {
   defendingTeam: Team;
   enabledVictoryConditions: VictoryCondition[];
   history: GameStateSnapshot[];
+  armyFunds: { [team: string]: number };
   
   setGameState: (state: 'playing' | 'gameOver') => void;
   setTurn: (turn: number) => void;
@@ -40,6 +41,7 @@ export interface GameStateHook {
   setWinner: (winner: Team | null) => void;
   setVictoryResult: (result: VictoryResult | null) => void;
   setHistory: (history: GameStateSnapshot[] | ((prevHistory: GameStateSnapshot[]) => GameStateSnapshot[])) => void;
+  setArmyFunds: (funds: { [team: string]: number }) => void;
   
   loadGame: (mapData: MapData) => void;
   saveStateToHistory: () => void;
@@ -63,6 +65,7 @@ export const useGameState = (): GameStateHook => {
     'unit_elimination', 'capital_capture', 'city_capture'
   ]);
   const [history, setHistory] = useState<GameStateSnapshot[]>([]);
+  const [armyFunds, setArmyFunds] = useState<{ [team: string]: number }>({ Blue: 0, Red: 0 });
 
   const loadGame = useCallback((mapData: MapData) => {
     const { board, units: loadedUnits } = loadMapFromJSON(mapData);
@@ -81,6 +84,8 @@ export const useGameState = (): GameStateHook => {
     setEnabledVictoryConditions(mapData.gameStatus.enabledVictoryConditions || [
       'unit_elimination', 'capital_capture', 'city_capture'
     ]);
+    
+    setArmyFunds(mapData.armyFunds || { Blue: 0, Red: 0 });
     
     setSelectedUnitId(null);
     setVictoryResult(null);
@@ -115,6 +120,7 @@ export const useGameState = (): GameStateHook => {
     defendingTeam,
     enabledVictoryConditions,
     history,
+    armyFunds,
     
     setGameState,
     setTurn,
@@ -127,8 +133,9 @@ export const useGameState = (): GameStateHook => {
     setWinner,
     setVictoryResult,
     setHistory,
+    setArmyFunds,
     
     loadGame,
     saveStateToHistory,
   };
-};
+};;

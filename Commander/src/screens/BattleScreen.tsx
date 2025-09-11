@@ -41,6 +41,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     battleReport,
     winner,
     weather,
+    armyFunds,
     reachableTiles,
     attackableTiles,
     engineerTargetTiles,
@@ -299,6 +300,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           weather={weather} 
           blueUnits={blueUnits}
           redUnits={redUnits}
+          blueFunds={armyFunds?.Blue || 0}
+          redFunds={armyFunds?.Red || 0}
         />
       </div>
 

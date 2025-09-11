@@ -9,6 +9,8 @@ interface HeaderProps {
   weather: WeatherType;
   blueUnits: number;
   redUnits: number;
+  blueFunds?: number;
+  redFunds?: number;
   onSave?: () => void;
   onLoad?: () => void;
 }
@@ -19,6 +21,8 @@ const Header: React.FC<HeaderProps> = ({
   weather,
   blueUnits,
   redUnits,
+  blueFunds,
+  redFunds,
   onSave,
   onLoad,
   className
@@ -33,12 +37,18 @@ const Header: React.FC<HeaderProps> = ({
     }
   };
 
+  const formatFunds = (funds?: number): string => {
+    if (funds === undefined) return '0';
+    return funds.toLocaleString();
+  };
+
   return (
     <div className={className}>
       <div className="header-left">
         <span className="header-item">ターン: {turn}</span>
         <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
         <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
+        <span className="header-item funds">軍資金：{formatFunds(activeTeam === 'Blue' ? blueFunds : redFunds)}</span>
       </div>
       <div className="header-right">
         <span className="header-item-small blue">青軍: {blueUnits}</span>

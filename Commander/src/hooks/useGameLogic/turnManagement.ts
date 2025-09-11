@@ -11,6 +11,7 @@ import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/
 import { log } from '../../utils/logger';
 import { loadReinforcementConfig, getReinforcementsForTurn } from '../../utils/reinforcements';
 import { ReinforcementConfig } from '../../types/reinforcements';
+import { calculateIncomeForAllTeams } from '../../utils/incomeManager';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
 };
@@ -111,6 +112,7 @@ interface TurnManagementDeps {
   turn: number;
   turnLimit?: number;
   defendingTeam: Team;
+  armyFunds: { [team: string]: number };
   setUnits: (units: Unit[]) => void;
   setActiveTeam: (team: Team) => void;
   setBoardLayout: (layout: BoardLayout) => void;
@@ -121,6 +123,7 @@ interface TurnManagementDeps {
   setGameState: (state: 'playing' | 'gameOver') => void;
   setWinner: (winner: Team | null) => void;
   setVictoryResult: (result: VictoryResult | null) => void;
+  setArmyFunds: (funds: { [team: string]: number }) => void;
 }
 
 export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook => {
@@ -134,6 +137,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     turn,
     turnLimit,
     defendingTeam,
+    armyFunds,
     setUnits,
     setActiveTeam,
     setBoardLayout,
@@ -143,7 +147,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setSelectedUnitId,
     setGameState,
     setWinner,
-    setVictoryResult
+    setVictoryResult,
+    setArmyFunds
   } = deps;
 
   // Store reinforcement config to avoid repeated loading
@@ -360,6 +365,15 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         return;
       }
       
+      // Calculate and apply income at the start of new turn
+      try {
+        const updatedFunds = await calculateIncomeForAllTeams(newBoardLayout, armyFunds);
+        setArmyFunds(updatedFunds);
+        console.log('💰 Income calculated and applied for new turn:', newTurn);
+      } catch (error) {
+        console.error('❌ Error calculating income:', error);
+      }
+      
       // Check for reinforcements at the start of Blue's turn (beginning of new turn)
       finalUnits = await spawnReinforcements(newTurn, unitsWithHealing);
       if (finalUnits !== unitsWithHealing) {
@@ -374,7 +388,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       } else if (nextWeather === 'Storm') {
         newDuration += 3;
       } else if (nextWeather === 'Cloudy') {
-        newDuration = 0; // Cloudy weather resets duration to 0
+        newDuration += 0; // Cloudy weather resets duration to 0
       } else {
         newDuration = Math.max(0, newDuration - 2);
       }
@@ -411,7 +425,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(finalUnits, newBoardLayout);
-  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setWeatherDuration, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, spawnReinforcements]);
+  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setWeatherDuration, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
 
   return {
     handleEndTurn,
