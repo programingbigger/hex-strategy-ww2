@@ -17,6 +17,10 @@
     ],
     "description": "戦略性のあるマップを作成する"
   },
+  "armyFunds": {
+    "Blue": 1500,
+    "Red": 1500
+  },
   "board": {
     "tiles": [
       {"x": -16, "y": -9, "terrain": "Forest"},

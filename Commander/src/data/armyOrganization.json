@@ -33,6 +33,14 @@
                     "maxFuel": 50,
                     "reconnaissance": 2
                   },
+                  "cost": {
+                    "production": 100,
+                    "supply": {
+                      "ammunition": 5,
+                      "fuel": 3,
+                      "repair": 8
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "blue-infantry-mg",
@@ -67,6 +75,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
                     "reconnaissance": 3
+                  },
+                  "cost": {
+                    "production": 300,
+                    "supply": {
+                      "ammunition": 15,
+                      "fuel": 10,
+                      "repair": 20
+                    }
                   },
                   "weapons": [
                     {
@@ -107,6 +123,14 @@
                     "maxFuel": 60,
                     "reconnaissance": 3
                   },
+                  "cost": {
+                    "production": 180,
+                    "supply": {
+                      "ammunition": 8,
+                      "fuel": 7,
+                      "repair": 12
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "blue-armored-mg",
@@ -141,6 +165,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
                     "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 250,
+                    "supply": {
+                      "ammunition": 20,
+                      "fuel": 5,
+                      "repair": 15
+                    }
                   },
                   "weapons": [
                     {
@@ -177,6 +209,14 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
+                  "cost": {
+                    "production": 150,
+                    "supply": {
+                      "ammunition": 12,
+                      "fuel": 3,
+                      "repair": 10
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "blue-antitank-gun",
@@ -211,6 +251,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
                     "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 120,
+                    "supply": {
+                      "ammunition": 4,
+                      "fuel": 6,
+                      "repair": 8
+                    }
                   },
                   "weapons": [
                     {
@@ -250,6 +298,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
                     "reconnaissance": 2
+                  },
+                  "cost": {
+                    "production": 140,
+                    "supply": {
+                      "ammunition": 6,
+                      "fuel": 8,
+                      "repair": 10
+                    }
                   },
                   "transport": {
                     "capacity": 2,
@@ -322,6 +378,14 @@
                     "maxFuel": 50,
                     "reconnaissance": 2
                   },
+                  "cost": {
+                    "production": 100,
+                    "supply": {
+                      "ammunition": 5,
+                      "fuel": 3,
+                      "repair": 8
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "red-infantry-rifle",
@@ -356,6 +420,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
                     "reconnaissance": 3
+                  },
+                  "cost": {
+                    "production": 320,
+                    "supply": {
+                      "ammunition": 14,
+                      "fuel": 10,
+                      "repair": 22
+                    }
                   },
                   "weapons": [
                     {
@@ -396,6 +468,14 @@
                     "maxFuel": 60,
                     "reconnaissance": 3
                   },
+                  "cost": {
+                    "production": 180,
+                    "supply": {
+                      "ammunition": 8,
+                      "fuel": 7,
+                      "repair": 12
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "red-armored-mg",
@@ -430,6 +510,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
                     "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 240,
+                    "supply": {
+                      "ammunition": 18,
+                      "fuel": 5,
+                      "repair": 15
+                    }
                   },
                   "weapons": [
                     {
@@ -466,6 +554,14 @@
                     "maxFuel": 40,
                     "reconnaissance": 1
                   },
+                  "cost": {
+                    "production": 140,
+                    "supply": {
+                      "ammunition": 10,
+                      "fuel": 3,
+                      "repair": 9
+                    }
+                  },
                   "weapons": [
                     {
                       "id": "red-antitank-gun",
@@ -500,6 +596,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
                     "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 120,
+                    "supply": {
+                      "ammunition": 4,
+                      "fuel": 6,
+                      "repair": 8
+                    }
                   },
                   "weapons": [
                     {
@@ -539,6 +643,14 @@
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
                     "reconnaissance": 2
+                  },
+                  "cost": {
+                    "production": 140,
+                    "supply": {
+                      "ammunition": 6,
+                      "fuel": 8,
+                      "repair": 10
+                    }
                   },
                   "transport": {
                     "capacity": 2,

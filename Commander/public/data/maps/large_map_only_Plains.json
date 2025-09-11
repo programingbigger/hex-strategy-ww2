@@ -11,6 +11,10 @@
     "defendingTeam": "Red",
     "enabledVictoryConditions": ["unit_elimination", "capital_capture", "city_capture", "turn_limit"]
   },
+  "armyFunds": {
+    "Blue": 1200,
+    "Red": 1200
+  },
   "initialCameraPosition": {
     "x": 0,
     "y": 0
