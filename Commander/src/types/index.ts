@@ -203,6 +203,16 @@ export interface DeploymentCoordinate {
   r: number;
 }
 
+// Cost structure for units
+export interface UnitCost {
+  production: number;
+  supply: {
+    ammunition: number;
+    fuel: number;
+    repair: number;
+  };
+}
+
 // New: Army Organization Types
 export interface ArmyUnitTemplate {
   id: string;
@@ -213,6 +223,7 @@ export interface ArmyUnitTemplate {
   category: UnitCategory;
   stats: UnitStats;
   weapons: Weapon[];
+  cost: UnitCost;
 }
 
 export interface UnitCategoryData {

@@ -1,4 +1,5 @@
 import { Unit, Team } from '../types';
+import { armyManager } from '../data/units';
 
 // Cost calculation interfaces
 export interface SupplyCost {
@@ -20,48 +21,19 @@ export interface CostCalculationResult {
   remainingFunds: number;
 }
 
-// Load army organization data
-let armyData: any = null;
-
-const loadArmyDataIfNeeded = async () => {
-  if (!armyData) {
-    try {
-      const response = await fetch('/data/armyOrganization.json');
-      if (!response.ok) {
-        throw new Error(`Failed to load army organization data: ${response.statusText}`);
-      }
-      armyData = await response.json();
-      console.log('📊 Army organization data loaded successfully');
-    } catch (error) {
-      console.error('❌ Failed to load army organization data:', error);
-      armyData = null;
-    }
-  }
-  return armyData;
-};
+// Use the same army manager as the rest of the application
 
 /**
  * Get unit template by ID from army organization data
  */
-export const getUnitTemplate = async (unitId: string, faction: Team) => {
-  const data = await loadArmyDataIfNeeded();
-  if (!data || !data.factions[faction]) return null;
-
-  const factionData = data.factions[faction];
+export const getUnitTemplate = (unitId: string, faction: Team) => {
+  // Get all unit templates for the faction
+  const allTemplates = armyManager.getUnitTemplatesBy(faction);
   
-  // Search through all branches and categories
-  for (const branchKey of Object.keys(factionData.branches)) {
-    const branch = factionData.branches[branchKey];
-    for (const categoryKey of Object.keys(branch.unitCategories)) {
-      const category = branch.unitCategories[categoryKey];
-      if (category.units) {
-        const unit = category.units.find((u: any) => u.id === unitId || u.type === unitId);
-        if (unit) return unit;
-      }
-    }
-  }
-  
-  return null;
+  // Find the template by ID or type
+  return allTemplates.find(template => 
+    template.id === unitId || template.type === unitId
+  ) || null;
 };
 
 /**
@@ -113,17 +85,20 @@ export const calculateSupplyCost = async (unit: Unit): Promise<SupplyCost> => {
 /**
  * Calculate production cost for a unit
  */
-export const calculateProductionCost = async (unitId: string, faction: Team): Promise<ProductionCost> => {
-  const template = await getUnitTemplate(unitId, faction);
-  if (!template || !template.cost || typeof template.cost.production !== 'number') {
-    console.warn(`No production cost data found for unit ${unitId}`);
-    return { unitId, cost: 0 };
-  }
+export const calculateProductionCost = (unitId: string, faction: Team): Promise<ProductionCost> => {
+  return new Promise((resolve) => {
+    const template = getUnitTemplate(unitId, faction);
+    if (!template || !template.cost || typeof template.cost.production !== 'number') {
+      console.warn(`No production cost data found for unit ${unitId}, using default cost 0`);
+      resolve({ unitId, cost: 0 });
+      return;
+    }
 
-  return {
-    unitId,
-    cost: template.cost.production
-  };
+    resolve({
+      unitId,
+      cost: template.cost.production
+    });
+  });
 };
 
 /**
