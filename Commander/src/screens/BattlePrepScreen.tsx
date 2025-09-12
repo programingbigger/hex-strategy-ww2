@@ -49,42 +49,159 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   };
 
   return (
-    <div className="screen battle-prep-screen">
-      <h1 className="screen-title">Battle Preparation</h1>
+    <div className="screen battle-prep-screen" style={{ 
+      fontFamily: '"Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif',
+      fontSize: '18px',
+      padding: '20px'
+    }}>
+      <h1 className="screen-title" style={{ 
+        textAlign: 'center', 
+        marginBottom: '30px',
+        fontSize: '32px',
+        fontWeight: 'bold'
+      }}>Battle Preparation</h1>
       
-      {/* Victory Conditions Display */}
-      <div style={{ marginBottom: '20px', textAlign: 'center', padding: '15px', background: 'rgba(52, 73, 94, 0.2)', borderRadius: '8px' }}>
-        <h3>Victory Conditions</h3>
-        <p>• Eliminate all enemy units OR capture all cities</p>
-        <h4>Defeat Conditions</h4>
-        <p>• All your units are eliminated</p>
-      </div>
-      
-      {gameState.selectedMap && (
-        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-          <h2>{gameState.selectedMap.name}</h2>
-          <p>{gameState.selectedMap.description}</p>
-        </div>
-      )}
+      {/* 3-Column Layout */}
+      <div style={{ 
+        display: 'flex', 
+        height: '80vh', 
+        gap: '30px',
+        maxWidth: '1600px',
+        margin: '0 auto'
+      }}>
+        
+        {/* Left Section: Map Information */}
+        <div style={{ 
+          flex: '1',
+          padding: '25px',
+          background: 'rgba(52, 73, 94, 0.15)',
+          borderRadius: '12px',
+          border: '2px solid #3498db'
+        }}>
+          <h2 style={{ 
+            fontSize: '24px', 
+            marginBottom: '20px', 
+            textAlign: 'center',
+            color: '#3498db'
+          }}>Map Information</h2>
+          
+          {gameState.selectedMap && (
+            <div style={{ marginBottom: '25px' }}>
+              <h3 style={{ fontSize: '20px', marginBottom: '15px' }}>{gameState.selectedMap.name}</h3>
+              <p style={{ fontSize: '16px', lineHeight: '1.5', marginBottom: '20px' }}>
+                {gameState.selectedMap.description}
+              </p>
+            </div>
+          )}
+          
+          {/* Battle Information */}
+          <div style={{ marginBottom: '25px' }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#e74c3c' }}>Battle Details</h4>
+            <div style={{ fontSize: '16px', lineHeight: '1.8' }}>
+              <p><strong>攻撃側:</strong> プレイヤー部隊 (Blue Team)</p>
+              <p><strong>守備側:</strong> 敵軍部隊 (Red Team)</p>
+              <p><strong>増援:</strong> 戦闘開始後、条件により追加部隊が投入される場合があります</p>
+            </div>
+          </div>
 
-      {/* Reinforcement Preview */}
-      <ReinforcementPreview mapId={gameState.selectedMap?.id || 'test_map_1'} />
-      
-      <div className="prep-container">
-        <div className="prep-map">
-          <h3>Available Units</h3>
-          <div className="unit-list">
+          {/* Victory Conditions */}
+          <div style={{ 
+            padding: '20px', 
+            background: 'rgba(39, 174, 96, 0.1)', 
+            borderRadius: '8px',
+            border: '1px solid #27ae60'
+          }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#27ae60' }}>Victory Conditions</h4>
+            <p style={{ fontSize: '16px', marginBottom: '10px' }}>• 敵軍ユニットを全滅させる</p>
+            <p style={{ fontSize: '16px', marginBottom: '15px' }}>• または全ての都市を占領する</p>
+            <h4 style={{ fontSize: '18px', marginBottom: '10px', color: '#e74c3c' }}>Defeat Conditions</h4>
+            <p style={{ fontSize: '16px' }}>• 自軍ユニットが全滅する</p>
+          </div>
+
+          {/* Reinforcement Preview */}
+          <div style={{ marginTop: '25px' }}>
+            <ReinforcementPreview mapId={gameState.selectedMap?.id || 'test_map_1'} />
+          </div>
+        </div>
+        
+        {/* Center Section: Unit Selection */}
+        <div style={{ 
+          flex: '1',
+          padding: '25px',
+          background: 'rgba(52, 73, 94, 0.1)',
+          borderRadius: '12px'
+        }}>
+          <h2 style={{ 
+            fontSize: '24px', 
+            textAlign: 'center', 
+            marginBottom: '25px',
+            color: '#f39c12'
+          }}>Available Units</h2>
+          <p style={{ 
+            textAlign: 'center', 
+            fontSize: '16px', 
+            marginBottom: '25px',
+            opacity: 0.8 
+          }}>クリックしてユニットを選択/解除</p>
+          
+          <div style={{ 
+            display: 'grid',
+            gridTemplateColumns: '1fr',
+            gap: '15px',
+            maxHeight: '60vh',
+            overflowY: 'auto',
+            paddingRight: '10px'
+          }}>
             {availableUnits.map(unit => (
               <div 
                 key={unit.id}
                 className={`unit-item ${selectedUnits.find(u => u.id === unit.id) ? 'selected' : ''}`}
                 onClick={() => handleUnitSelect(unit)}
+                style={{
+                  padding: '20px',
+                  border: selectedUnits.find(u => u.id === unit.id) 
+                    ? '3px solid #f39c12' 
+                    : '2px solid rgba(243, 156, 18, 0.3)',
+                  borderRadius: '12px',
+                  background: selectedUnits.find(u => u.id === unit.id)
+                    ? 'rgba(243, 156, 18, 0.2)'
+                    : 'rgba(52, 73, 94, 0.2)',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  transform: selectedUnits.find(u => u.id === unit.id) ? 'scale(1.02)' : 'scale(1)',
+                  boxShadow: selectedUnits.find(u => u.id === unit.id) 
+                    ? '0 6px 16px rgba(243, 156, 18, 0.4)' 
+                    : '0 3px 8px rgba(0, 0, 0, 0.2)'
+                }}
               >
-                <div style={{ fontWeight: 'bold' }}>{unit.type}</div>
-                <div style={{ fontSize: '0.9em', opacity: 0.8 }}>
+                <div style={{ 
+                  fontWeight: 'bold', 
+                  fontSize: '20px', 
+                  marginBottom: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  {unit.type}
+                  {selectedUnits.find(u => u.id === unit.id) && (
+                    <span style={{ 
+                      background: '#27ae60', 
+                      color: 'white', 
+                      borderRadius: '50%', 
+                      width: '28px', 
+                      height: '28px', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      fontSize: '16px',
+                      fontWeight: 'bold'
+                    }}>✓</span>
+                  )}
+                </div>
+                <div style={{ fontSize: '16px', opacity: 0.9, marginBottom: '8px' }}>
                   HP: {unit.hp} | ATK: {unit.attack} | DEF: {unit.defense} | MOV: {unit.movement}
                 </div>
-                <div style={{ fontSize: '0.8em', opacity: 0.6 }}>
+                <div style={{ fontSize: '14px', opacity: 0.7 }}>
                   Range: {unit.attackRange.min}-{unit.attackRange.max} | Fuel: {unit.fuel}
                 </div>
               </div>
@@ -92,70 +209,136 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           </div>
         </div>
         
-        <div className="prep-sidebar">
-          <h3>Selected Units</h3>
-          <div style={{ marginBottom: '10px' }}>
-            <strong>Selected: {selectedUnits.length}/10</strong>
+        {/* Right Section: Selected Units */}
+        <div style={{ 
+          flex: '1',
+          padding: '25px',
+          background: 'rgba(52, 73, 94, 0.15)',
+          borderRadius: '12px',
+          border: '2px solid #8e44ad'
+        }}>
+          <h2 style={{ 
+            fontSize: '24px', 
+            textAlign: 'center', 
+            marginBottom: '20px',
+            color: '#8e44ad'
+          }}>Selected Units</h2>
+          
+          <div style={{ 
+            marginBottom: '20px', 
+            textAlign: 'center',
+            fontSize: '18px',
+            fontWeight: 'bold'
+          }}>
+            選択済み: {selectedUnits.length}/10
           </div>
           
           <div style={{ 
-            background: 'rgba(52, 73, 94, 0.5)', 
-            border: '2px dashed #3498db',
-            borderRadius: '8px',
-            padding: '20px',
-            minHeight: '200px',
+            background: 'rgba(142, 68, 173, 0.1)', 
+            border: '2px dashed #8e44ad',
+            borderRadius: '12px',
+            padding: '25px',
+            minHeight: '50vh',
+            maxHeight: '55vh',
+            overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
-            gap: '10px'
+            gap: '15px'
           }}>
             {selectedUnits.length === 0 ? (
-              <p style={{ opacity: 0.8 }}>No units selected</p>
+              <div style={{ 
+                textAlign: 'center', 
+                opacity: 0.8, 
+                fontSize: '18px',
+                padding: '60px 20px'
+              }}>
+                <p style={{ marginBottom: '15px' }}>ユニットが選択されていません</p>
+                <p style={{ fontSize: '16px', opacity: 0.6 }}>中央からユニットを選択してください</p>
+              </div>
             ) : (
               selectedUnits.map(unit => (
                 <div 
                   key={unit.id}
                   style={{
-                    background: 'rgba(52, 152, 219, 0.3)',
-                    border: '1px solid #3498db',
-                    borderRadius: '4px',
-                    padding: '8px'
+                    background: 'rgba(142, 68, 173, 0.2)',
+                    border: '2px solid #8e44ad',
+                    borderRadius: '10px',
+                    padding: '18px',
+                    boxShadow: '0 4px 10px rgba(142, 68, 173, 0.3)'
                   }}
                 >
-                  {unit.type} (HP: {unit.hp}, ATK: {unit.attack}, DEF: {unit.defense})
+                  <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '8px' }}>
+                    {unit.type}
+                  </div>
+                  <div style={{ fontSize: '16px', opacity: 0.9 }}>
+                    HP: {unit.hp} | ATK: {unit.attack} | DEF: {unit.defense}
+                  </div>
                 </div>
               ))
             )}
           </div>
-          
-          <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <button 
-              className="menu-button"
-              onClick={proceedToDeployment}
-              style={{ 
-                width: '100%',
-                background: selectedUnits.length > 0 ? 'rgba(39, 174, 96, 0.3)' : 'rgba(127, 140, 141, 0.3)'
-              }}
-            >
-              Proceed to Deployment Phase
-            </button>
-            
-            <button 
-              className="menu-button"
-              onClick={resetSelection}
-              style={{ width: '100%', background: 'rgba(241, 196, 15, 0.2)' }}
-            >
-              Reset Selection
-            </button>
-            
-            <button 
-              className="menu-button"
-              onClick={() => onNavigate('scenario-select')}
-              style={{ width: '100%', background: 'rgba(231, 76, 60, 0.2)' }}
-            >
-              Map Selection
-            </button>
-          </div>
         </div>
+      </div>
+      
+      {/* Bottom Action Buttons with UX-focused placement */}
+      <div style={{ 
+        marginTop: '30px',
+        display: 'flex', 
+        gap: '25px', 
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+      }}>
+        <button 
+          className="menu-button"
+          onClick={() => onNavigate('scenario-select')}
+          style={{ 
+            padding: '16px 32px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            background: 'rgba(231, 76, 60, 0.3)', 
+            border: '3px solid #e74c3c',
+            borderRadius: '10px',
+            minWidth: '180px',
+            cursor: 'pointer'
+          }}
+        >
+          マップ選択へ戻る
+        </button>
+        
+        <button 
+          className="menu-button"
+          onClick={resetSelection}
+          style={{ 
+            padding: '16px 32px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            background: 'rgba(241, 196, 15, 0.3)', 
+            border: '3px solid #f1c40f',
+            borderRadius: '10px',
+            minWidth: '180px',
+            cursor: 'pointer'
+          }}
+        >
+          ユニットの選択リセット
+        </button>
+        
+        <button 
+          className="menu-button"
+          onClick={proceedToDeployment}
+          style={{ 
+            padding: '16px 32px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            background: selectedUnits.length > 0 ? 'rgba(39, 174, 96, 0.4)' : 'rgba(127, 140, 141, 0.3)',
+            border: selectedUnits.length > 0 ? '3px solid #27ae60' : '3px solid #7f8c8d',
+            borderRadius: '10px',
+            minWidth: '220px',
+            cursor: selectedUnits.length > 0 ? 'pointer' : 'not-allowed',
+            opacity: selectedUnits.length > 0 ? 1 : 0.6
+          }}
+        >
+          配置フェーズへ進む
+        </button>
       </div>
     </div>
   );

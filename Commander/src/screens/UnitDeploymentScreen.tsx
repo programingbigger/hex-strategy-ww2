@@ -175,18 +175,46 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   const allUnitsDeployed = deployedUnits.size === selectedUnits.length;
 
   return (
-    <div className="screen deployment-screen">
+    <div className="screen deployment-screen" style={{ 
+      fontFamily: '"Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif',
+      fontSize: '18px'
+    }}>
       <div className="deployment-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <h1>Deployment Phase</h1>
+        <div style={{ textAlign: 'center', marginBottom: '15px' }}>
+          <h1 style={{ 
+            fontSize: '32px',
+            fontWeight: 'bold',
+            margin: '0',
+            color: '#3498db'
+          }}>配置フェーズ (Deployment Phase)</h1>
         </div>
-        <p>{headerText}</p>
+        <p style={{ 
+          textAlign: 'center', 
+          fontSize: '18px',
+          marginBottom: '20px' 
+        }}>{headerText}</p>
         
-        <div style={{ display: 'flex', gap: '10px', marginTop: '10px', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ 
+          display: 'flex', 
+          gap: '20px', 
+          marginTop: '15px', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          flexWrap: 'wrap'
+        }}>
           <button
             className="menu-button"
             onClick={returnToUnitSelection}
-            style={{ background: 'rgba(231, 76, 60, 0.2)' }}
+            style={{ 
+              background: 'rgba(231, 76, 60, 0.3)',
+              border: '2px solid #e74c3c',
+              padding: '15px 30px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              minWidth: '200px',
+              cursor: 'pointer'
+            }}
           >
             Return to Unit Selection
           </button>
@@ -196,8 +224,18 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             disabled={!allUnitsDeployed}
             style={{
               background: allUnitsDeployed 
-                ? 'rgba(39, 174, 96, 0.3)' 
-                : 'rgba(127, 140, 141, 0.3)'
+                ? 'rgba(39, 174, 96, 0.4)' 
+                : 'rgba(127, 140, 141, 0.3)',
+              border: allUnitsDeployed
+                ? '2px solid #27ae60'
+                : '2px solid #7f8c8d',
+              padding: '15px 30px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              borderRadius: '8px',
+              minWidth: '200px',
+              cursor: allUnitsDeployed ? 'pointer' : 'not-allowed',
+              opacity: allUnitsDeployed ? 1 : 0.6
             }}
           >
             Start Battle
@@ -238,13 +276,18 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
 
         <div className="deployment-sidebar" style={{ 
           width: '300px', 
-          padding: '20px',
+          padding: '25px',
           background: 'rgba(52, 73, 94, 0.1)',
-          borderLeft: '1px solid #3498db'
+          borderLeft: '2px solid #3498db'
         }}>
-          <h3>Selected Units</h3>
-          <div style={{ marginBottom: '10px' }}>
-            <strong>Deployed: {deployedUnits.size}/{selectedUnits.length}</strong>
+          <h3 style={{ fontSize: '22px', marginBottom: '15px' }}>選択されたユニット</h3>
+          <div style={{ 
+            marginBottom: '15px', 
+            fontSize: '18px',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}>
+            配置済み: {deployedUnits.size}/{selectedUnits.length}
           </div>
           
           <div className="unit-list" style={{ marginBottom: '20px' }}>
@@ -258,92 +301,142 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
                   className={`unit-item ${isSelectedForDeployment ? 'selected' : ''}`}
                   onClick={() => handleUnitListClick(unit)}
                   style={{
-                    padding: '10px',
-                    margin: '5px 0',
-                    border: '1px solid #3498db',
-                    borderRadius: '4px',
+                    padding: '15px',
+                    margin: '8px 0',
+                    border: '2px solid #3498db',
+                    borderRadius: '8px',
                     background: isDeployed 
-                      ? 'rgba(39, 174, 96, 0.2)' 
+                      ? 'rgba(39, 174, 96, 0.3)' 
                       : 'rgba(52, 152, 219, 0.2)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    fontSize: '16px'
                   }}
                 >
-                  <div style={{ fontWeight: 'bold' }}>
-                    {unit.type} {isDeployed ? '(Deployed)' : '(Ready)'}
+                  <div style={{ 
+                    fontWeight: 'bold',
+                    fontSize: '18px',
+                    marginBottom: '8px'
+                  }}>
+                    {unit.type} {isDeployed ? '(配置済み)' : '(準備中)'}
                   </div>
-                  <div style={{ fontSize: '0.9em', opacity: 0.8 }}>
+                  <div style={{ fontSize: '16px', opacity: 0.9 }}>
                     HP: {unit.hp} | ATK: {unit.attack} | DEF: {unit.defense}
                   </div>
                   {isDeployed && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleUnitRedeploy(unit);
-                      }}
-                      style={{
-                        marginTop: '5px',
-                        padding: '2px 6px',
-                        fontSize: '0.8em',
-                        background: 'rgba(231, 76, 60, 0.3)',
-                        border: '1px solid #e74c3c',
-                        borderRadius: '3px',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      Redeploy
-                    </button>
+                    <div style={{ 
+                      marginTop: '12px',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleUnitRedeploy(unit);
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          background: 'linear-gradient(135deg, rgba(231, 76, 60, 0.4), rgba(192, 57, 43, 0.6))',
+                          border: '2px solid #e74c3c',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          color: 'white',
+                          textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
+                          boxShadow: '0 3px 8px rgba(231, 76, 60, 0.3)',
+                          transition: 'all 0.2s ease',
+                          minWidth: '90px',
+                          transform: 'scale(1)',
+                          position: 'relative'
+                        }}
+                        onMouseEnter={(e) => {
+                          const target = e.target as HTMLButtonElement;
+                          target.style.transform = 'scale(1.05)';
+                          target.style.boxShadow = '0 4px 12px rgba(231, 76, 60, 0.5)';
+                          target.style.background = 'linear-gradient(135deg, rgba(231, 76, 60, 0.6), rgba(192, 57, 43, 0.8))';
+                        }}
+                        onMouseLeave={(e) => {
+                          const target = e.target as HTMLButtonElement;
+                          target.style.transform = 'scale(1)';
+                          target.style.boxShadow = '0 3px 8px rgba(231, 76, 60, 0.3)';
+                          target.style.background = 'linear-gradient(135deg, rgba(231, 76, 60, 0.4), rgba(192, 57, 43, 0.6))';
+                        }}
+                      >
+                        再配置
+                      </button>
+                    </div>
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* Terrain Information Panel - positioned at 1/4 from top */}
-          <div className="terrain-info-panel" style={{ 
-            position: 'absolute',
-            top: '25%',
-            right: '20px',
-            width: '280px',
-            padding: '15px',
-            background: 'rgba(52, 73, 94, 0.9)',
-            borderRadius: '8px',
-            border: '1px solid #3498db',
-            zIndex: 100
-          }}>
-            <h4>Terrain Information</h4>
-            {hoveredTerrain ? (
-              <div>
-                <div><strong>Terrain: {hoveredTerrain.terrain}</strong></div>
-                <div>Position: ({hoveredTerrain.coord.x}, {hoveredTerrain.coord.y})</div>
-                {/* Display terrain stats if available */}
-              </div>
-            ) : (
-              <div>Hover over terrain to see details</div>
-            )}
-          </div>
 
           {/* Information Panel */}
           <div className="info-panel" style={{ 
-            padding: '15px',
+            padding: '20px',
             background: 'rgba(52, 73, 94, 0.2)',
-            borderRadius: '8px'
+            borderRadius: '10px',
+            fontSize: '16px'
           }}>
-            <h4>Unit Information</h4>
+            <h4 style={{ fontSize: '20px', marginBottom: '15px' }}>ユニット情報</h4>
             {hoveredUnit ? (
-              <div>
-                <div><strong>{hoveredUnit.type}</strong></div>
+              <div style={{ lineHeight: '1.8' }}>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>{hoveredUnit.type}</div>
                 <div>HP: {hoveredUnit.hp}/{hoveredUnit.maxHp}</div>
-                <div>Attack: {hoveredUnit.attack}</div>
-                <div>Defense: {hoveredUnit.defense}</div>
-                <div>Movement: {hoveredUnit.movement}</div>
-                <div>Range: {hoveredUnit.attackRange.min}-{hoveredUnit.attackRange.max}</div>
-                <div>Fuel: {hoveredUnit.fuel}/{hoveredUnit.maxFuel}</div>
+                <div>攻撃力: {hoveredUnit.attack}</div>
+                <div>防御力: {hoveredUnit.defense}</div>
+                <div>移動力: {hoveredUnit.movement}</div>
+                <div>射程: {hoveredUnit.attackRange.min}-{hoveredUnit.attackRange.max}</div>
+                <div>燃料: {hoveredUnit.fuel}/{hoveredUnit.maxFuel}</div>
               </div>
             ) : (
-              <div>Hover over a unit to see details</div>
+              <div style={{ opacity: 0.7 }}>ユニットにカーソルを合わせると詳細が表示されます</div>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Terrain Information Panel - positioned at bottom */}
+      <div className="terrain-info-panel" style={{ 
+        position: 'fixed',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '400px',
+        maxWidth: '90vw',
+        padding: '20px',
+        background: 'rgba(52, 73, 94, 0.95)',
+        borderRadius: '12px',
+        border: '2px solid #3498db',
+        zIndex: 100,
+        fontSize: '16px',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)'
+      }}>
+        <h4 style={{ 
+          fontSize: '20px', 
+          marginBottom: '15px',
+          textAlign: 'center',
+          color: '#3498db'
+        }}>地形情報</h4>
+        {hoveredTerrain ? (
+          <div style={{ lineHeight: '1.6', textAlign: 'center' }}>
+            <div style={{ 
+              fontSize: '18px', 
+              fontWeight: 'bold', 
+              marginBottom: '8px',
+              color: '#f39c12'
+            }}>地形: {hoveredTerrain.terrain}</div>
+            <div style={{ fontSize: '16px', opacity: 0.9 }}>位置: ({hoveredTerrain.coord.x}, {hoveredTerrain.coord.y})</div>
+            {/* Display terrain stats if available */}
+          </div>
+        ) : (
+          <div style={{ 
+            opacity: 0.7, 
+            textAlign: 'center',
+            fontStyle: 'italic'
+          }}>地形にカーソルを合わせると詳細が表示されます</div>
+        )}
       </div>
 
       {/* Confirmation Modal */}
@@ -367,33 +460,37 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             textAlign: 'center',
             border: '1px solid #3498db'
           }}>
-            <h3>Are you sure you want to start the battle?</h3>
+            <h3 style={{ fontSize: '24px' }}>本当に戦闘を開始しますか？</h3>
             <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
               <button
                 onClick={confirmStartBattle}
                 style={{
-                  padding: '10px 20px',
-                  background: 'rgba(39, 174, 96, 0.3)',
-                  border: '1px solid #27ae60',
-                  borderRadius: '4px',
+                  padding: '15px 30px',
+                  background: 'rgba(39, 174, 96, 0.4)',
+                  border: '2px solid #27ae60',
+                  borderRadius: '8px',
                   color: 'white',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  fontWeight: 'bold'
                 }}
               >
-                Yes
+                はい
               </button>
               <button
                 onClick={cancelStartBattle}
                 style={{
-                  padding: '10px 20px',
-                  background: 'rgba(231, 76, 60, 0.3)',
-                  border: '1px solid #e74c3c',
-                  borderRadius: '4px',
+                  padding: '15px 30px',
+                  background: 'rgba(231, 76, 60, 0.4)',
+                  border: '2px solid #e74c3c',
+                  borderRadius: '8px',
                   color: 'white',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  fontWeight: 'bold'
                 }}
               >
-                No
+                いいえ
               </button>
             </div>
           </div>
