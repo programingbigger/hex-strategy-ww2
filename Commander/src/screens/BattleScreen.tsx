@@ -314,6 +314,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           boardLayout={boardLayout}
           units={units}
           onStartTransportAction={startTransportAction}
+          currentFunds={armyFunds}
+          activeTeam={activeTeam}
         />
       </div>
 
@@ -406,6 +408,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         producibleUnits={productionState.producibleUnits}
         onUnitSelect={handleUnitProduction}
         onClose={handleProductionClose}
+        currentFunds={armyFunds?.[activeTeam] || 0}
+        activeTeam={activeTeam}
       />
 
       <LogPanel

@@ -125,6 +125,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setBoardLayout: gameState.setBoardLayout,
     setHistory: gameState.setHistory,
     saveStateToHistory: gameState.saveStateToHistory,
+    armyFunds: gameState.armyFunds,
+    setArmyFunds: gameState.setArmyFunds,
   });
 
   const engineerActions = useEngineerActions({
@@ -159,7 +161,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     productionState: uiStates.productionState,
     setUnits: gameState.setUnits,
     setProductionState: uiStates.setProductionState,
-  });
+    armyFunds: gameState.armyFunds,
+    setArmyFunds: gameState.setArmyFunds,
+  });;
 
   // Computed values
   const selectedUnit = useMemo(() => 

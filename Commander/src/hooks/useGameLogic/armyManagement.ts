@@ -4,7 +4,8 @@ import {
   Faction,
   MilitaryBranch,
   UnitCategory,
-  Coordinate
+  Coordinate,
+  Team
 } from '../../types';
 import { ProducibleUnit } from '../../components/game/ProductionModal';
 import { armyManager } from '../../data/units';
@@ -19,7 +20,7 @@ export interface ArmyManagementHook {
   getCategoriesFor: (faction: Faction, branch: MilitaryBranch) => UnitCategory[];
   getCommandStructure: () => any;
   calculateCommandBonus: (unit: Unit) => { attack: number; defense: number };
-  handleUnitProduction: (unitTemplate: ProducibleUnit) => void;
+  handleUnitProduction: (unitTemplate: ProducibleUnit) => Promise<void>;
   handleProductionClose: () => void;
 }
 
@@ -36,6 +37,8 @@ interface ArmyManagementDeps {
     capital: Coordinate | null;
     producibleUnits: ProducibleUnit[];
   }) => void;
+  armyFunds: { [team: string]: number };
+  setArmyFunds: (funds: { [team: string]: number }) => void;
 }
 
 export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook => {
@@ -43,7 +46,9 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
     units,
     productionState,
     setUnits,
-    setProductionState
+    setProductionState,
+    armyFunds,
+    setArmyFunds
   } = deps;
 
   const getUnitsByBranch = useCallback((faction: Faction, branch: MilitaryBranch): Unit[] => {
@@ -102,24 +107,57 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
     return { attack: attackBonus, defense: defenseBonus };
   }, [units, getCommandStructure]);
 
-  const handleUnitProduction = useCallback((unitTemplate: ProducibleUnit) => {
+  const handleUnitProduction = useCallback(async (unitTemplate: ProducibleUnit) => {
     if (!productionState.capital) return;
 
-    const newUnitId = `${unitTemplate.id}-${Date.now()}`;
-    const newUnit = armyManager.createUnitFromTemplate(
-      unitTemplate.id,
-      newUnitId,
-      productionState.capital.x,
-      productionState.capital.y
-    );
+    // Import the production cost manager dynamically
+    const { processSingleProductionRequest } = await import('../../utils/productionCostManager');
+    
+    // Determine the team from the unit template
+    const team = unitTemplate.faction === 'Blue' ? 'Blue' as Team : 'Red' as Team;
+    
+    // Create production request
+    const productionRequest = {
+      unitId: unitTemplate.id,
+      faction: team,
+      x: productionState.capital.x,
+      y: productionState.capital.y,
+      quantity: 1
+    };
 
-    if (newUnit) {
-      const producedUnit = { ...newUnit, moved: true, attacked: true };
-      setUnits(prevUnits => [...prevUnits, producedUnit]);
+    try {
+      // Process production with cost
+      const result = await processSingleProductionRequest(
+        productionRequest, 
+        armyFunds, 
+        false // Don't force production
+      );
+
+      if (result.success && result.units.length > 0) {
+        // Production successful - add units and deduct funds
+        const producedUnits = result.units.map(unit => ({ 
+          ...unit, 
+          moved: true, 
+          attacked: true 
+        }));
+        
+        setUnits(prevUnits => [...prevUnits, ...producedUnits]);
+        setArmyFunds({
+          ...armyFunds,
+          [team]: result.remainingFunds
+        });
+        
+        setProductionState({ isOpen: false, capital: null, producibleUnits: [] });
+      } else {
+        // Production failed - show error
+        console.error('Production failed:', result.errors);
+        alert(`生産に失敗しました: ${result.errors.join(', ')}`);
+      }
+    } catch (error) {
+      console.error('Production error:', error);
+      alert('生産エラーが発生しました。');
     }
-
-    setProductionState({ isOpen: false, capital: null, producibleUnits: [] });
-  }, [productionState.capital, setUnits, setProductionState]);
+  }, [productionState.capital, setUnits, setProductionState, armyFunds, setArmyFunds]);
 
   const handleProductionClose = useCallback(() => {
     setProductionState({ isOpen: false, capital: null, producibleUnits: [] });
@@ -137,4 +175,4 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
     handleUnitProduction,
     handleProductionClose,
   };
-};
+};;

@@ -1,9 +1,16 @@
 import React from 'react';
-import { Unit, Tile } from '../../types';
+import { Unit, Tile, Team } from '../../types';
 import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { getNeighbors } from '../../utils/map';
 import { coordToString } from '../../utils/map';
 import { armyManager } from '../../data/armyLoader';
+import { 
+  EngineerActionType, 
+  getEngineerActionCost, 
+  getMaterialCostForAction,
+  validateEngineerAction,
+  DEFAULT_ENGINEER_COST_CONFIG 
+} from '../../utils/engineerActionCostManager';
 import '../../styles/military-museum-theme.css';
 
 interface SelectedUnitPanelProps {
@@ -14,6 +21,9 @@ interface SelectedUnitPanelProps {
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onStartTransportAction?: () => void;
+  // Add fund information for engineer action costs
+  currentFunds?: { [team: string]: number };
+  activeTeam?: Team;
 }
 
 const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
@@ -23,6 +33,8 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   onAction,
   boardLayout,
   units,
+  currentFunds,
+  activeTeam,
   onStartTransportAction
 }) => {
   // Helper function to check if terrain is capturable
@@ -96,6 +108,46 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     selectedUnitTile.terrain === 'Fortress' && availableMaterials >= 2;
     
   const canDestroyBridge = isEngineer && hasTerrainNearby('Bridge') && availableMaterials >= 2;
+
+  // Engineer action cost helpers
+  const getEngineerActionInfo = (actionType: EngineerActionType) => {
+    if (!selectedUnit || !currentFunds) {
+      return {
+        fundsCost: 0,
+        materialCost: 0,
+        canAfford: false,
+        buttonLabel: `${actionType} (0資材/0資金)`,
+        validation: { errors: [], canPerform: false, fundsCost: 0, materialCost: 0 }
+      };
+    }
+
+    const fundsCost = getEngineerActionCost(actionType, DEFAULT_ENGINEER_COST_CONFIG);
+    const materialCost = getMaterialCostForAction(actionType);
+    const validation = validateEngineerAction(actionType, selectedUnit, currentFunds, DEFAULT_ENGINEER_COST_CONFIG);
+
+    const actionLabels: { [key in EngineerActionType]: string } = {
+      enhance_city: '🏗️ 増築',
+      build_bridge: '🌉 架橋',
+      build_fortress: '🏰 要塞化',
+      destroy_fortress: '💥 要塞無力化',
+      destroy_bridge: '⛏️ 橋破壊'
+    };
+
+    return {
+      fundsCost,
+      materialCost,
+      canAfford: validation.canPerform,
+      buttonLabel: `${actionLabels[actionType]} (${materialCost}資材/${fundsCost}資金)`,
+      validation
+    };
+  };
+
+  // Enhanced engineer action availability checks
+  const enhancedCanEnhanceCity = canEnhanceCity && getEngineerActionInfo('enhance_city').canAfford;
+  const enhancedCanBuildBridge = canBuildBridge && getEngineerActionInfo('build_bridge').canAfford;
+  const enhancedCanBuildFortress = canBuildFortress && getEngineerActionInfo('build_fortress').canAfford;
+  const enhancedCanDestroyFortress = canDestroyFortress && getEngineerActionInfo('destroy_fortress').canAfford;
+  const enhancedCanDestroyBridge = canDestroyBridge && getEngineerActionInfo('destroy_bridge').canAfford;
 
   // Helper function to get transport capacity info
   const getTransportCapacity = (): { capacity: number; unitCapacityCosts: Record<string, number> } | null => {
@@ -294,11 +346,21 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               
               {isEngineer && (
                 <>
-                  <button onClick={() => onAction('enhance_city')} disabled={!canEnhanceCity} className="military-button">🏗️ 増築 (1資材)</button>
-                  <button onClick={() => onAction('build_bridge')} disabled={!canBuildBridge} className="military-button">🌉 架橋 (2資材)</button>
-                  <button onClick={() => onAction('build_fortress')} disabled={!canBuildFortress} className="military-button">🏰 要塞化 (1資材)</button>
-                  <button onClick={() => onAction('destroy_fortress')} disabled={!canDestroyFortress} className="military-button">💥 要塞無力化 (2資材)</button>
-                  <button onClick={() => onAction('destroy_bridge')} disabled={!canDestroyBridge} className="military-button">⛏️ 橋破壊 (2資材)</button>
+                  <button onClick={() => onAction('enhance_city')} disabled={!enhancedCanEnhanceCity} className="military-button" title={enhancedCanEnhanceCity ? '' : getEngineerActionInfo('enhance_city').validation.errors.join(', ')}>
+                    {getEngineerActionInfo('enhance_city').buttonLabel}
+                  </button>
+                  <button onClick={() => onAction('build_bridge')} disabled={!enhancedCanBuildBridge} className="military-button" title={enhancedCanBuildBridge ? '' : getEngineerActionInfo('build_bridge').validation.errors.join(', ')}>
+                    {getEngineerActionInfo('build_bridge').buttonLabel}
+                  </button>
+                  <button onClick={() => onAction('build_fortress')} disabled={!enhancedCanBuildFortress} className="military-button" title={enhancedCanBuildFortress ? '' : getEngineerActionInfo('build_fortress').validation.errors.join(', ')}>
+                    {getEngineerActionInfo('build_fortress').buttonLabel}
+                  </button>
+                  <button onClick={() => onAction('destroy_fortress')} disabled={!enhancedCanDestroyFortress} className="military-button" title={enhancedCanDestroyFortress ? '' : getEngineerActionInfo('destroy_fortress').validation.errors.join(', ')}>
+                    {getEngineerActionInfo('destroy_fortress').buttonLabel}
+                  </button>
+                  <button onClick={() => onAction('destroy_bridge')} disabled={!enhancedCanDestroyBridge} className="military-button" title={enhancedCanDestroyBridge ? '' : getEngineerActionInfo('destroy_bridge').validation.errors.join(', ')}>
+                    {getEngineerActionInfo('destroy_bridge').buttonLabel}
+                  </button>
                 </>
               )}
             </div>

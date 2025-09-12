@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import {
   Unit,
   BoardLayout,
-  GameStateSnapshot
+  GameStateSnapshot,
+  Team
 } from '../../types';
 import { 
   coordToString,
@@ -10,6 +11,11 @@ import {
 } from '../../utils/map';
 import { CITY_HP, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP } from '../../config/constants';
 import { logInfantryAction, logTransportOperation } from '../../utils/logger';
+import { 
+  processEngineerActionWithCost,
+  EngineerActionType,
+  DEFAULT_ENGINEER_COST_CONFIG 
+} from '../../utils/engineerActionCostManager';
 
 // Helper functions
 const isCapturableTerrain = (terrain: string): boolean => {
@@ -37,6 +43,9 @@ interface UnitActionsDeps {
   setBoardLayout: (layout: BoardLayout) => void;
   setHistory: (history: GameStateSnapshot[] | ((prevHistory: GameStateSnapshot[]) => GameStateSnapshot[])) => void;
   saveStateToHistory: () => void;
+  // Add fund management for engineer action costs
+  armyFunds: { [team: string]: number };
+  setArmyFunds: (funds: { [team: string]: number }) => void;
 }
 
 export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
@@ -50,7 +59,9 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     setSelectedUnitId,
     setBoardLayout,
     setHistory,
-    saveStateToHistory
+    saveStateToHistory,
+    armyFunds,
+    setArmyFunds
   } = deps;
 
   const consumeMaterial = useCallback((unit: Unit, amount: number): Unit | null => {
@@ -72,6 +83,27 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge'
   ) => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
+
+    // Process engineer action costs first
+    const costResult = processEngineerActionWithCost(
+      action as EngineerActionType,
+      selectedUnit,
+      { x: selectedUnit.x, y: selectedUnit.y },
+      { x: selectedUnit.x, y: selectedUnit.y, terrain: 'Plains' } as any,
+      armyFunds,
+      DEFAULT_ENGINEER_COST_CONFIG
+    );
+
+    if (!costResult.success) {
+      console.warn(`Engineer action ${action} failed due to insufficient resources:`, costResult.errors);
+      return;
+    }
+
+    // Update funds if cost was applied
+    if (costResult.fundsCost > 0) {
+      setArmyFunds(costResult.updatedFunds);
+      console.log(`💰 Engineer Action Cost Applied: ${action} (-${costResult.fundsCost} funds)`);
+    }
     
     const currentTile = boardLayout.get(coordToString(selectedUnit));
     if (!currentTile) return;
@@ -201,7 +233,7 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
       { ...updatedUnit, moved: true, attacked: true } : u
     ));
     setSelectedUnitId(null);
-  }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial, setBoardLayout, setUnits, setSelectedUnitId]);
+  }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial, setBoardLayout, setUnits, setSelectedUnitId, armyFunds, setArmyFunds]);
 
   const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload') => {
     if (!selectedUnit) return;
