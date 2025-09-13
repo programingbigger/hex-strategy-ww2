@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Unit, Tile, Coordinate } from '../../types';
 import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { TERRAIN_STATS } from '../../config/constants';
@@ -77,6 +77,55 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
     return costs;
   };
 
+  // Available terrain images in the assets folder
+  const availableTerrainImages = [
+    'Bocage', 'Forest', 'Fortress', 'Mountain', 'Mud', 'Plains', 'River', 'Road', 'Sea'
+  ];
+
+  const TerrainImage: React.FC<{ terrain: string }> = ({ terrain }) => {
+    const [imageError, setImageError] = useState(false);
+    const imagePath = `/assets/images/maps/${terrain}.png`;
+    const hasImage = availableTerrainImages.includes(terrain);
+
+    if (!hasImage || imageError) {
+      return (
+        <div style={{
+          width: '100px',
+          height: '100px',
+          backgroundColor: 'rgba(128, 128, 128, 0.2)',
+          border: '2px dashed #666',
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '12px',
+          color: '#666',
+          textAlign: 'center',
+          marginBottom: '10px'
+        }}>
+          No Image
+        </div>
+      );
+    }
+
+    return (
+      <img
+        src={imagePath}
+        alt={terrain}
+        onError={() => setImageError(true)}
+        style={{
+          width: '200px',
+          height: '200px',
+          objectFit: 'cover',
+          borderRadius: '8px',
+          border: '2px solid #3498db',
+          marginBottom: '10px',
+          boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
+        }}
+      />
+    );
+  };
+
   return (
     <div className={className}>
       {/* Header */}
@@ -89,14 +138,20 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
         <div className="panel-content">
           <div className="panel-section">
             <h4 className="section-title">🌍 カーソル位置</h4>
+            
+            {/* Terrain Image Display */}
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '22px' }}>
+              <TerrainImage terrain={hoveredTile.terrain} />
+            </div>
+            
             <div className="terrain-info">
               <div className="terrain-swatch" style={{ backgroundColor: getTerrainSwatchColor(hoveredTile.terrain) }} />
-              <span className="terrain-name">{hoveredTile.terrain}</span>
+              <span className="terrain-name" style={{ fontSize: '18px', fontWeight: 'bold' }}>{hoveredTile.terrain}</span>
             </div>
             <div className="unit-status">
-              <div>📍 座標: ({hoveredHex?.x}, {hoveredHex?.y})</div>
-              {hoveredTile.owner && <div>👑 所有: <strong>{hoveredTile.owner}</strong></div>}
-              {hoveredTile.hp !== undefined && <div>❤️ 耐久: <strong>{hoveredTile.hp}/{hoveredTile.maxHp}</strong></div>}
+              <div style={{ fontSize: '22px' }}>📍 座標: ({hoveredHex?.x}, {hoveredHex?.y})</div>
+              {hoveredTile.owner && <div style={{ fontSize: '22px' }}>👑 所有: <strong>{hoveredTile.owner}</strong></div>}
+              {hoveredTile.hp !== undefined && <div style={{ fontSize: '22px' }}>❤️ 耐久: <strong>{hoveredTile.hp}/{hoveredTile.maxHp}</strong></div>}
             </div>
 
             <div className="stat-list">

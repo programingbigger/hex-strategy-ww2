@@ -166,6 +166,8 @@
   },
   "active": "85db564fb9d1c224",
   "lastOpenFiles": [
+    "02_ゲーム仕様/システム仕様/戦闘システム.md",
+    "02_ゲーム仕様/システム仕様/経済システム.md",
     "99_開発資料/開発計画・実装リスト.md",
     "99_開発資料/画像・動画素材管理システム.md",
     "99_開発資料/UI改善計画.md",
@@ -192,8 +194,6 @@
     "docs/Commander/Core-Components/TurnChangeModal.md",
     "docs/Commander/Core-Components/TransportActionConfirmModal.md",
     "docs/Commander/Core-Components/ShortcutsPanel.md",
-    "docs/Commander/Core-Components/SelectedUnitPanel.md",
-    "docs/Commander/Core-Components/RainEffect.md",
     "docs/Commander/Utils-Helpers",
     "docs/Commander/Types-Configuration",
     "docs/Commander/Screens",
