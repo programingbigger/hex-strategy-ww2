@@ -8,22 +8,9 @@
 * UIの改善
     * BattleScreen
         * infomationPanelについて
-            * 地形情報の表示をCommander/public/assets/images/maps配下に格納している画像を元に実装したい
-                * 現在の実装：
-                * ユーザーの要望：カーソルを合わせると、Commander/public/assets/images/maps配下にある画像がいい感じのサイズで、infomationPanel→地形情報のところに表示される。
-                    * 前提
-                        * Commander/public/assets/images/maps配下にあるファイル名と、Commander/public/data/maps/*.jsonファイル内の"terrain":xxxのxxxとの名前は統一している。
-                    * ロジック
-                        * ファイル名とxxxとが一緒のとき、infomationPanel→地形情報コンポーネント内に画像を表示する
-                        * 画像は正方形
-                        * 画像の配置感としては、カーソル位置コンポーネントの上。
-                    * 例外
-                        * ファイル名とxxxとが一致していない、つまり、該当する画像が存在しない場合は、一旦No imageと表示して下さい。
     * 全体的なUIについて
         * 文字のフォントやダイアログボックス、コメントなどが小さい・・・
         * 60代男性が操作するつもりで、もう少しみやすいフォントにする
-
-* Commander
     * Mode Select
         * ~~下部コンポーネントをもっといい感じに収める~~
         * もう少しフォントサイズを大きくする
@@ -43,6 +30,8 @@
             * 配置の開始位置を、Commander/public/data/maps配下にあるjson形式のファイルについて、order=1の座標に視点があっている状態にしたい
     * BattleScreen 
         * カーソルを合わせた時にユニットの情報が表示されるようにする
+    * ユニット
+        * 輸送車をNato軍隊式マップの兵科記号をつける
 
 * ユニット
     * ユニットの武装の充実化

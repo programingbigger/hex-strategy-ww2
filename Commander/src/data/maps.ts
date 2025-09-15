@@ -18,6 +18,12 @@ export const availableMaps: GameMap[] = [
     name: 'Stage 2',
     description: 'Large Map x: -18_18 y: -6〜6',
     difficulty: 'Normal'
+  },
+    {
+    id: 'large_map_2',
+    name: 'Stage 3',
+    description: 'マップ第二弾',
+    difficulty: 'Normal'
   }
   // ,{
   //   id: 'large_map_only_Plains',
