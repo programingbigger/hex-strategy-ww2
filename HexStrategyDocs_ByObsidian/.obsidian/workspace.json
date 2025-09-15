@@ -166,6 +166,14 @@
   },
   "active": "85db564fb9d1c224",
   "lastOpenFiles": [
+    "graph/unit_effectiveness.pu",
+    "graph/team_relationship.pu",
+    "graph/game_flow.pu",
+    "graph",
+    "pu/unit_effectiveness.pu",
+    "pu/team_relationship.pu",
+    "pu/game_flow.pu",
+    "pu",
     "02_ゲーム仕様/システム仕様/戦闘システム.md",
     "02_ゲーム仕様/システム仕様/経済システム.md",
     "99_開発資料/開発計画・実装リスト.md",
@@ -193,15 +201,7 @@
     "docs/Commander/Core-Components/VictoryModal.md",
     "docs/Commander/Core-Components/TurnChangeModal.md",
     "docs/Commander/Core-Components/TransportActionConfirmModal.md",
-    "docs/Commander/Core-Components/ShortcutsPanel.md",
     "docs/Commander/Utils-Helpers",
-    "docs/Commander/Types-Configuration",
-    "docs/Commander/Screens",
-    "docs/Commander/Game-Logic",
-    "docs/Commander/Core-Components",
-    "docs/Commander",
-    "docs",
-    "02_ゲーム仕様/システム仕様",
     "無題のファイル.canvas"
   ]
 }
