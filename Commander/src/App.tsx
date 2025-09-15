@@ -8,7 +8,6 @@ import UnitDeploymentScreen from './screens/UnitDeploymentScreen';
 import BattleScreen from './screens/BattleScreen';
 import './styles/App.css';
 
-import { TestRunner } from './components/test/TestRunner';
 import { loadCompleteMap } from './utils/mapLoader';
 
 const App: React.FC = () => {
