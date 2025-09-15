@@ -45,7 +45,7 @@ export interface Weapon {
   effectiveness?: { [key in UnitClass]?: number };
 }
 
-export type WeatherType = 'Clear' | 'Rain' | 'Storm' | 'Cloudy' | 'Snow' | 'Blizzard';
+export type WeatherType = 'Clear' | 'Rain' | 'Storm' | 'Cloudy' | 'Snow' | 'Blizzard' | 'Fog';
 // Environmental levels system to track weather accumulation effects
 export interface EnvironmentalLevels {
   wetness: number;  // Ground wetness level (replaces weatherDuration for rain/storm)
@@ -108,6 +108,7 @@ export interface GameState {
   board: BoardLayout;
   activeTeam: Team;
   turn: number;
+  month?: number; // Month of the year (1-12) for weather probability
   winner?: Team;
   gameState?: 'playing' | 'gameOver';
   weather?: WeatherType;

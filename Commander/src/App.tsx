@@ -53,10 +53,11 @@ const App: React.FC = () => {
     }
   };;
 
-  const updateBattlePrep = (battlePrep: BattlePrepState) => {
+  const updateBattlePrep = (battlePrep: BattlePrepState, startingMonth?: number) => {
     setGameState(prev => ({
       ...prev,
-      battlePrep
+      battlePrep,
+      month: startingMonth || prev.month || 1
     }));
   };
 

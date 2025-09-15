@@ -25,6 +25,7 @@ const TurnChangeModal: React.FC<TurnChangeModalProps> = ({
       case 'Cloudy': return '☁️';
       case 'Snow': return '🌨️';
       case 'Blizzard': return '❄️';
+      case 'Fog': return '🌫️';
       default: return '🌤️';
     }
   };;

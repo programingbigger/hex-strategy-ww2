@@ -111,6 +111,7 @@ interface TurnManagementDeps {
   environmentalLevels: EnvironmentalLevels;
   boardLayout: BoardLayout;
   turn: number;
+  month: number;
   turnLimit?: number;
   defendingTeam: Team;
   armyFunds: { [team: string]: number };
@@ -118,6 +119,7 @@ interface TurnManagementDeps {
   setActiveTeam: (team: Team) => void;
   setBoardLayout: (layout: BoardLayout) => void;
   setTurn: (turn: number) => void;
+  setMonth: (month: number) => void;
   setWeather: (weather: WeatherType) => void;
   setEnvironmentalLevels: (levels: EnvironmentalLevels) => void;
   setSelectedUnitId: (id: string | null) => void;
@@ -136,6 +138,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     environmentalLevels,
     boardLayout,
     turn,
+    month,
     turnLimit,
     defendingTeam,
     armyFunds,
@@ -143,6 +146,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setActiveTeam,
     setBoardLayout,
     setTurn,
+    setMonth,
     setWeather,
     setEnvironmentalLevels,
     setSelectedUnitId,
@@ -381,9 +385,15 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         setUnits(finalUnits);
       }
       
-      // New environmental levels weather system
-      const weathers: WeatherType[] = ['Clear', 'Cloudy', 'Rain', 'Storm', 'Snow', 'Blizzard'];
-      const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
+      // Monthly weather probability system
+      const { generateWeatherForMonth, getMonthFromTurn } = await import('../../data/weatherConfig');
+      const currentMonth = getMonthFromTurn(newTurn);
+      const nextWeather = generateWeatherForMonth(currentMonth);
+      
+      // Update month if it changed
+      if (currentMonth !== month) {
+        setMonth(currentMonth);
+      }
       
       // Calculate new environmental levels based on weather (with null safety)
       const newEnvironmentalLevels = environmentalLevels 
@@ -399,6 +409,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         newEnvironmentalLevels.wetness = Math.max(0, newEnvironmentalLevels.wetness - 2);
       } else if (nextWeather === 'Cloudy') {
         // Cloudy weather doesn't change wetness
+      } else if (nextWeather === 'Fog') {
+        // Fog weather doesn't change wetness (placeholder weather)
       }
       
       // Update snow levels  
@@ -562,7 +574,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(finalUnits, newBoardLayout);
-  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
+  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, month, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setMonth, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
 
   return {
     handleEndTurn,

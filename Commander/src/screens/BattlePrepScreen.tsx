@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
 import ReinforcementPreview from '../components/game/ReinforcementPreview';
+import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext } from '../utils/operationDates';
 
 interface BattlePrepScreenProps {
   gameState: GameState;
   onNavigate: (screen: GameScreen) => void;
-  onUpdateBattlePrep: (battlePrep: BattlePrepState) => void;
+  onUpdateBattlePrep: (battlePrep: BattlePrepState, startingMonth?: number) => void;
 }
 
 const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep }) => {
@@ -14,6 +15,11 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
     gameState.battlePrep?.selectedUnits || []
   );
+  const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || 1);
+  
+  // Get operation details for selected month
+  const operationPeriod = getOperationPeriod(selectedMonth);
+  const strategicContext = getMonthlyStrategicContext(selectedMonth);
 
   const handleUnitSelect = (unit: Unit) => {
     if (selectedUnits.find(u => u.id === unit.id)) {
@@ -44,7 +50,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
       ]
     };
     
-    onUpdateBattlePrep(battlePrep);
+    onUpdateBattlePrep(battlePrep, selectedMonth);
     onNavigate('deployment');
   };
 
@@ -101,6 +107,67 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
               <p><strong>攻撃側:</strong> プレイヤー部隊 (Blue Team)</p>
               <p><strong>守備側:</strong> 敵軍部隊 (Red Team)</p>
               <p><strong>増援:</strong> 戦闘開始後、条件により追加部隊が投入される場合があります</p>
+            </div>
+          </div>
+
+          {/* Operation Schedule */}
+          <div style={{ 
+            marginBottom: '25px', 
+            padding: '20px', 
+            background: 'rgba(52, 152, 219, 0.1)', 
+            borderRadius: '8px',
+            border: '1px solid #3498db'
+          }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#3498db' }}>
+              📅 作戦期間設定
+            </h4>
+            
+            {/* Month Selection */}
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ 
+                display: 'block', 
+                fontSize: '16px', 
+                marginBottom: '8px', 
+                fontWeight: 'bold' 
+              }}>
+                作戦開始月:
+              </label>
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  fontSize: '16px',
+                  borderRadius: '6px',
+                  border: '2px solid #3498db',
+                  background: 'white',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >
+                {getMonthNames().map((monthName, index) => {
+                  const monthPeriod = getOperationPeriod(index + 1);
+                  return (
+                    <option key={index + 1} value={index + 1}>
+                      {monthName} ({monthPeriod.season}季)
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            {/* Operation Period Display */}
+            <div style={{ 
+              fontSize: '16px', 
+              lineHeight: '1.6',
+              background: 'rgba(255, 255, 255, 0.3)',
+              padding: '15px',
+              borderRadius: '6px',
+              border: '1px solid rgba(52, 152, 219, 0.3)'
+            }}>
+              <p><strong>📅 作戦期間:</strong> {operationPeriod.startDate} ～ {operationPeriod.endDate}</p>
+              <p><strong>🌤️ 戦術環境:</strong> {strategicContext}</p>
             </div>
           </div>
 

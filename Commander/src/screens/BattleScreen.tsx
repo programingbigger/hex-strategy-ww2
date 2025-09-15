@@ -32,6 +32,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const {
     gameState: battleGameState,
     turn,
+    month,
     activeTeam,
     boardLayout,
     units,
@@ -290,16 +291,19 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         return 'linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 30%, #D8BFD8 60%, #C0C0C0 100%)';
       case 'Blizzard':
         return 'linear-gradient(135deg, #B0C4DE 0%, #778899 30%, #2F4F4F 60%, #191970 100%)';
+      case 'Fog':
+        return 'linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 30%, #D3D3D3 60%, #A9A9A9 100%)';
       default:
         return 'linear-gradient(135deg, #2a2a2a, #3a3a3a)';
     }
-  };;;
+  };
 
   return (
     <div className="battle-screen-grid">
       <div className="header-area military-header">
         <Header 
           turn={turn} 
+          month={month}
           activeTeam={activeTeam} 
           weather={weather} 
           blueUnits={blueUnits}

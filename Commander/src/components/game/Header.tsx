@@ -5,6 +5,7 @@ import '../../styles/military-museum-theme.css';
 interface HeaderProps {
   className?: string;
   turn: number;
+  month: number;
   activeTeam: Team;
   weather: WeatherType;
   blueUnits: number;
@@ -17,6 +18,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({
   turn,
+  month,
   activeTeam,
   weather,
   blueUnits,
@@ -35,8 +37,17 @@ const Header: React.FC<HeaderProps> = ({
       case 'Cloudy': return '☁️';
       case 'Snow': return '🌨️';
       case 'Blizzard': return '❄️';
+      case 'Fog': return '🌫️';
       default: return '☀️';
     }
+  };
+
+  const getMonthName = (month: number): string => {
+    const monthNames = [
+      '1月', '2月', '3月', '4月', '5月', '6月',
+      '7月', '8月', '9月', '10月', '11月', '12月'
+    ];
+    return monthNames[month - 1] || '1月';
   };;
 
   const formatFunds = (funds?: number): string => {
@@ -48,6 +59,7 @@ const Header: React.FC<HeaderProps> = ({
     <div className={className}>
       <div className="header-left">
         <span className="header-item">ターン: {turn}</span>
+        <span className="header-item">📅 {getMonthName(month)}</span>
         <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
         <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
         <span className="header-item funds">軍資金：{formatFunds(activeTeam === 'Blue' ? blueFunds : redFunds)}</span>

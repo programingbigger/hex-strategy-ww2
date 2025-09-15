@@ -81,6 +81,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     environmentalLevels: gameState.environmentalLevels,
     boardLayout: gameState.boardLayout,
     turn: gameState.turn,
+    month: gameState.month,
     turnLimit: gameState.turnLimit,
     defendingTeam: gameState.defendingTeam,
     armyFunds: gameState.armyFunds,
@@ -88,6 +89,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setActiveTeam: gameState.setActiveTeam,
     setBoardLayout: gameState.setBoardLayout,
     setTurn: gameState.setTurn,
+    setMonth: gameState.setMonth,
     setWeather: gameState.setWeather,
     setEnvironmentalLevels: gameState.setEnvironmentalLevels,
     setSelectedUnitId: gameState.setSelectedUnitId,
@@ -415,6 +417,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     // Game state
     gameState: gameState.gameState,
     turn: gameState.turn,
+    month: gameState.month,
     activeTeam: gameState.activeTeam,
     boardLayout: gameState.boardLayout,
     units: gameState.units,

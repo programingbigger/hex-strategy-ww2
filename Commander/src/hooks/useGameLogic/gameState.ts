@@ -16,6 +16,7 @@ import { logBattle } from '../../utils/battleLogger';
 export interface GameStateHook {
   gameState: 'playing' | 'gameOver';
   turn: number;
+  month: number;
   activeTeam: Team;
   boardLayout: BoardLayout;
   units: Unit[];
@@ -33,6 +34,7 @@ export interface GameStateHook {
   
   setGameState: (state: 'playing' | 'gameOver') => void;
   setTurn: (turn: number) => void;
+  setMonth: (month: number) => void;
   setActiveTeam: (team: Team) => void;
   setBoardLayout: (layout: BoardLayout) => void;
   setUnits: (units: Unit[] | ((prev: Unit[]) => Unit[])) => void;
@@ -51,6 +53,7 @@ export interface GameStateHook {
 export const useGameState = (): GameStateHook => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
   const [turn, setTurn] = useState<number>(1);
+  const [month, setMonth] = useState<number>(1); // Start with January
   const [activeTeam, setActiveTeam] = useState<Team>('Blue');
   const [boardLayout, setBoardLayout] = useState<BoardLayout>(new Map());
   const [units, setUnits] = useState<Unit[]>([]);
@@ -108,6 +111,7 @@ export const useGameState = (): GameStateHook => {
   return {
     gameState,
     turn,
+    month,
     activeTeam,
     boardLayout,
     units,
@@ -125,6 +129,7 @@ export const useGameState = (): GameStateHook => {
     
     setGameState,
     setTurn,
+    setMonth,
     setActiveTeam,
     setBoardLayout,
     setUnits,
