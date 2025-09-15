@@ -254,6 +254,18 @@ const Hexagon: React.FC<HexagonProps> = ({
             />
           </g>
         );
+      case 'Transport':
+        return (
+          <line
+            x1={-symbolSize * 0.4}
+            y1={-symbolSize * 0.4}
+            x2={symbolSize * 0.4}
+            y2={symbolSize * 0.4}
+            stroke={symbolColor}
+            strokeWidth={strokeWidth}
+            strokeLinecap="round"
+          />
+        );
       default:
         return (
           <text

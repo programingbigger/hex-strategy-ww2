@@ -45,9 +45,14 @@ export interface Weapon {
   effectiveness?: { [key in UnitClass]?: number };
 }
 
-export type WeatherType = 'Clear' | 'Rain' | 'Storm' | 'Cloudy';
+export type WeatherType = 'Clear' | 'Rain' | 'Storm' | 'Cloudy' | 'Snow' | 'Blizzard';
+// Environmental levels system to track weather accumulation effects
+export interface EnvironmentalLevels {
+  wetness: number;  // Ground wetness level (replaces weatherDuration for rain/storm)
+  snow: number;     // Snow accumulation level (for snow/blizzard weather)
+}
 
-export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea' | 'Capital' | 'Airport' | 'Bocage' | 'Snow' | 'Desert' | 'Reef' | 'Fortress' | 'Port';
+export type TerrainType = 'Plains' | 'Forest' | 'Mountain' | 'River' | 'Road' | 'Bridge' | 'City' | 'Mud' | 'Sea' | 'Capital' | 'Airport' | 'Bocage' | 'Snow' | 'Desert' | 'Reef' | 'Fortress' | 'Port' | 'FrozenRiver' | 'FrozenSea';
 
 export interface Coordinate {
   x: number;
@@ -106,7 +111,7 @@ export interface GameState {
   winner?: Team;
   gameState?: 'playing' | 'gameOver';
   weather?: WeatherType;
-  weatherDuration?: number;
+  environmentalLevels?: EnvironmentalLevels;
   battlePrep?: BattlePrepState;
 }
 
@@ -176,7 +181,7 @@ export interface MapData {
     activeTeam: Team;
     winner: Team | null;
     weather: WeatherType;
-    weatherDuration: number;
+    environmentalLevels: EnvironmentalLevels;
     // New victory system fields
     turnLimit?: number;           // Maximum turns (undefined = no limit)
     attackingTeam?: Team;         // Which team is attacking (loses on timeout)

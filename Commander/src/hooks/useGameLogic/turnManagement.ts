@@ -4,6 +4,7 @@ import {
   BoardLayout,
   Team,
   WeatherType,
+  EnvironmentalLevels,
   VictoryResult
 } from '../../types';
 import { coordToString } from '../../utils/map';
@@ -107,7 +108,7 @@ interface TurnManagementDeps {
   activeTeam: Team;
   units: Unit[];
   weather: WeatherType;
-  weatherDuration: number;
+  environmentalLevels: EnvironmentalLevels;
   boardLayout: BoardLayout;
   turn: number;
   turnLimit?: number;
@@ -118,7 +119,7 @@ interface TurnManagementDeps {
   setBoardLayout: (layout: BoardLayout) => void;
   setTurn: (turn: number) => void;
   setWeather: (weather: WeatherType) => void;
-  setWeatherDuration: (duration: number) => void;
+  setEnvironmentalLevels: (levels: EnvironmentalLevels) => void;
   setSelectedUnitId: (id: string | null) => void;
   setGameState: (state: 'playing' | 'gameOver') => void;
   setWinner: (winner: Team | null) => void;
@@ -132,7 +133,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     activeTeam,
     units,
     weather,
-    weatherDuration,
+    environmentalLevels,
     boardLayout,
     turn,
     turnLimit,
@@ -143,7 +144,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout,
     setTurn,
     setWeather,
-    setWeatherDuration,
+    setEnvironmentalLevels,
     setSelectedUnitId,
     setGameState,
     setWinner,
@@ -380,39 +381,175 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         setUnits(finalUnits);
       }
       
-      const weathers: WeatherType[] = ['Clear', 'Cloudy', 'Rain', 'Storm'];
+      // New environmental levels weather system
+      const weathers: WeatherType[] = ['Clear', 'Cloudy', 'Rain', 'Storm', 'Snow', 'Blizzard'];
       const nextWeather = weathers[Math.floor(Math.random() * weathers.length)];
-      let newDuration = weatherDuration;
-      if (nextWeather === 'Rain') {
-        newDuration++;
-      } else if (nextWeather === 'Storm') {
-        newDuration += 3;
-      } else if (nextWeather === 'Cloudy') {
-        newDuration += 0; // Cloudy weather resets duration to 0
-      } else {
-        newDuration = Math.max(0, newDuration - 2);
-      }
-      setWeather(nextWeather);
-      setWeatherDuration(newDuration);
       
+      // Calculate new environmental levels based on weather (with null safety)
+      const newEnvironmentalLevels = environmentalLevels 
+        ? { ...environmentalLevels } 
+        : { wetness: 0, snow: 0 };
+      
+      // Update wetness levels
+      if (nextWeather === 'Rain') {
+        newEnvironmentalLevels.wetness++;
+      } else if (nextWeather === 'Storm') {
+        newEnvironmentalLevels.wetness += 3;
+      } else if (nextWeather === 'Clear') {
+        newEnvironmentalLevels.wetness = Math.max(0, newEnvironmentalLevels.wetness - 2);
+      } else if (nextWeather === 'Cloudy') {
+        // Cloudy weather doesn't change wetness
+      }
+      
+      // Update snow levels  
+      if (nextWeather === 'Snow') {
+        newEnvironmentalLevels.snow++;
+      } else if (nextWeather === 'Blizzard') {
+        newEnvironmentalLevels.snow += 3;
+      } else if (nextWeather === 'Clear') {
+        // Clear weather reduces snow gradually
+        newEnvironmentalLevels.snow = Math.max(0, newEnvironmentalLevels.snow - 1);
+      }
+      
+      setWeather(nextWeather);
+      setEnvironmentalLevels(newEnvironmentalLevels);
+      
+      // Debug: Log environmental levels for terrain change debugging (with null safety)
+      log(`🌡️ ENVIRONMENTAL LEVELS DEBUG - Turn ${turn + 1}:`);
+      log(`   📅 Weather: ${weather} → ${nextWeather}`);
+      
+      // Null safety checks for environmental levels
+      const currentWetness = environmentalLevels?.wetness ?? 0;
+      const currentSnow = environmentalLevels?.snow ?? 0;
+      const newWetness = newEnvironmentalLevels?.wetness ?? 0;
+      const newSnow = newEnvironmentalLevels?.snow ?? 0;
+      
+      log(`   💧 Wetness: ${currentWetness} → ${newWetness} (change: ${newWetness - currentWetness})`);
+      log(`   ❄️ Snow: ${currentSnow} → ${newSnow} (change: ${newSnow - currentSnow})`);
+      log(`   🗺️ Terrain changes triggered: Wetness≥3=${newWetness >= 3}, Snow≥3=${newSnow >= 3}, Snow≥5=${newSnow >= 5}, Snow≥8=${newSnow >= 8}`);
+      
+      // Apply terrain changes based on environmental levels
       let changed = false;
-      if (['Rain', 'Storm'].includes(nextWeather) && newDuration >= 3) {
+      
+      // Priority system: Snow effects override wetness effects
+      // Phase 2-B: Snow accumulation terrain changes (highest priority)
+      if (newEnvironmentalLevels.snow >= 8) {
+        log(`🧊 FREEZING SEAS: Snow level ${newEnvironmentalLevels.snow} ≥ 8, converting Sea → FrozenSea`);
+        // Snow level 8+: Sea → FrozenSea
+        let seaCount = 0;
+        newBoardLayout.forEach((tile, key) => {
+          if (tile.terrain === 'Sea') {
+            newBoardLayout.set(key, { ...tile, terrain: 'FrozenSea' });
+            changed = true;
+            seaCount++;
+          }
+        });
+        log(`   ✅ Converted ${seaCount} Sea tiles to FrozenSea`);
+      }
+      
+      if (newEnvironmentalLevels.snow >= 5) {
+        log(`🧊 FREEZING RIVERS: Snow level ${newEnvironmentalLevels.snow} ≥ 5, converting River → FrozenRiver`);
+        // Snow level 5+: River → FrozenRiver
+        let riverCount = 0;
+        newBoardLayout.forEach((tile, key) => {
+          if (tile.terrain === 'River') {
+            newBoardLayout.set(key, { ...tile, terrain: 'FrozenRiver' });
+            changed = true;
+            riverCount++;
+          }
+        });
+        log(`   ✅ Converted ${riverCount} River tiles to FrozenRiver`);
+      }
+      
+      if (newEnvironmentalLevels.snow >= 3) {
+        log(`❄️ HEAVY SNOW: Snow level ${newEnvironmentalLevels.snow} ≥ 3, converting Plains/Mud → Snow`);
+        // Snow level 3+: Plains → Snow, Mud → Snow (snow overrides wetness)
+        let plainsCount = 0;
+        let mudCount = 0;
         newBoardLayout.forEach((tile, key) => {
           if (tile.terrain === 'Plains') {
+            newBoardLayout.set(key, { ...tile, terrain: 'Snow' });
+            changed = true;
+            plainsCount++;
+          } else if (tile.terrain === 'Mud') {
+            newBoardLayout.set(key, { ...tile, terrain: 'Snow' });
+            changed = true;
+            mudCount++;
+          }
+        });
+        log(`   ✅ Converted ${plainsCount} Plains + ${mudCount} Mud tiles to Snow`);
+      }
+      
+      // Phase 2-C: Snow melting terrain changes 
+      if (newEnvironmentalLevels.snow <= 2) {
+        // Snow level 2 or lower: FrozenSea → Sea
+        newBoardLayout.forEach((tile, key) => {
+          if (tile.terrain === 'FrozenSea') {
+            newBoardLayout.set(key, { ...tile, terrain: 'Sea' });
+            changed = true;
+          }
+        });
+      }
+      
+      if (newEnvironmentalLevels.snow <= 1) {
+        // Snow level 1 or lower: FrozenRiver → River
+        newBoardLayout.forEach((tile, key) => {
+          if (tile.terrain === 'FrozenRiver') {
+            newBoardLayout.set(key, { ...tile, terrain: 'River' });
+            changed = true;
+          }
+        });
+      }
+      
+      if (newEnvironmentalLevels.snow === 0) {
+        // Snow level 0: Snow → Mud (intermediate step)
+        newBoardLayout.forEach((tile, key) => {
+          if (tile.terrain === 'Snow') {
             newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
             changed = true;
           }
         });
-      } else if (newDuration <= 1) {
-        newBoardLayout.forEach((tile, key) => {
-          if (tile.terrain === 'Mud') {
-            newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
-            changed = true;
-          }
-        });
       }
+      
+      // Rain/Storm effects - only apply if snow level is low (< 3)
+      if (newEnvironmentalLevels.snow < 3) {
+        log(`🌧️ RAIN/STORM EFFECTS: Snow level ${newEnvironmentalLevels.snow} < 3, wetness effects can apply`);
+        if (newEnvironmentalLevels.wetness >= 3) {
+          log(`💧 WET GROUND: Wetness level ${newEnvironmentalLevels.wetness} ≥ 3, converting Plains → Mud`);
+          // Wetness level 3+: Plains → Mud (only if not frozen)
+          let plainsToMudCount = 0;
+          newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Plains') {
+              newBoardLayout.set(key, { ...tile, terrain: 'Mud' });
+              changed = true;
+              plainsToMudCount++;
+            }
+          });
+          log(`   ✅ Converted ${plainsToMudCount} Plains tiles to Mud`);
+        } else if (newEnvironmentalLevels.wetness <= 1) {
+          log(`☀️ DRY GROUND: Wetness level ${newEnvironmentalLevels.wetness} ≤ 1, converting Mud → Plains`);
+          // Low wetness: Mud → Plains (only if not frozen)
+          let mudToPlainsCount = 0;
+          newBoardLayout.forEach((tile, key) => {
+            if (tile.terrain === 'Mud') {
+              newBoardLayout.set(key, { ...tile, terrain: 'Plains' });
+              changed = true;
+              mudToPlainsCount++;
+            }
+          });
+          log(`   ✅ Converted ${mudToPlainsCount} Mud tiles to Plains`);
+        } else {
+          log(`🌤️ STABLE WETNESS: Wetness level ${newEnvironmentalLevels.wetness} in stable range (2), no wetness terrain changes`);
+        }
+      } else {
+        log(`❄️ FROZEN CONDITIONS: Snow level ${newEnvironmentalLevels.snow} ≥ 3, rain/storm wetness effects suppressed`);
+      }
+      
       if (changed) {
         setBoardLayout(newBoardLayout);
+        log(`🗺️ TERRAIN CHANGES APPLIED: Board layout updated due to environmental effects`);
+      } else {
+        log(`🗺️ NO TERRAIN CHANGES: Environmental levels did not trigger any terrain modifications`);
       }
     } else {
       // Check for reinforcements at the start of Red's turn (enemy turn)
@@ -425,7 +562,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(finalUnits, newBoardLayout);
-  }, [activeTeam, units, weather, weatherDuration, boardLayout, turn, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setWeatherDuration, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
+  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
 
   return {
     handleEndTurn,

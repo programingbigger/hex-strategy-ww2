@@ -235,7 +235,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           activeTeam: 'Blue',
           winner: null,
           weather: 'Clear',
-          weatherDuration: 0
+          environmentalLevels: { wetness: 0, snow: 0 }
         },
         board: {
           tiles: Array.from({ length: 25 }, (_, i) => {
@@ -286,10 +286,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         return 'linear-gradient(135deg, #2F4F4F 0%, #4B0082 30%, #191970 60%, #000000 100%)';
       case 'Cloudy':
         return 'linear-gradient(135deg, #D3D3D3 0%, #C0C0C0 30%, #A9A9A9 60%, #808080 100%)';
+      case 'Snow':
+        return 'linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 30%, #D8BFD8 60%, #C0C0C0 100%)';
+      case 'Blizzard':
+        return 'linear-gradient(135deg, #B0C4DE 0%, #778899 30%, #2F4F4F 60%, #191970 100%)';
       default:
         return 'linear-gradient(135deg, #2a2a2a, #3a3a3a)';
     }
-  };;
+  };;;
 
   return (
     <div className="battle-screen-grid">

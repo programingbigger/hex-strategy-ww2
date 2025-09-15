@@ -23,11 +23,11 @@ const TurnChangeModal: React.FC<TurnChangeModalProps> = ({
       case 'Rain': return '🌧️';
       case 'Storm': return '⛈️';
       case 'Cloudy': return '☁️';
-      case 'Snow': return '❄️';
-      case 'Fog': return '🌫️';
+      case 'Snow': return '🌨️';
+      case 'Blizzard': return '❄️';
       default: return '🌤️';
     }
-  };
+  };;
 
   return (
     <div className="modal-overlay" onClick={onClose}>

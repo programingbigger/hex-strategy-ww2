@@ -33,9 +33,11 @@ const Header: React.FC<HeaderProps> = ({
       case 'Rain': return '🌧️';
       case 'Storm': return '⛈️';
       case 'Cloudy': return '☁️';
+      case 'Snow': return '🌨️';
+      case 'Blizzard': return '❄️';
       default: return '☀️';
     }
-  };
+  };;
 
   const formatFunds = (funds?: number): string => {
     if (funds === undefined) return '0';

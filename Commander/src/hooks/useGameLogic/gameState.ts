@@ -4,6 +4,7 @@ import {
   BoardLayout,
   Team,
   WeatherType,
+  EnvironmentalLevels,
   GameStateSnapshot,
   MapData,
   VictoryCondition,
@@ -20,7 +21,7 @@ export interface GameStateHook {
   units: Unit[];
   selectedUnitId: string | null;
   weather: WeatherType;
-  weatherDuration: number;
+  environmentalLevels: EnvironmentalLevels;
   winner: Team | null;
   victoryResult: VictoryResult | null;
   turnLimit: number | undefined;
@@ -37,7 +38,7 @@ export interface GameStateHook {
   setUnits: (units: Unit[] | ((prev: Unit[]) => Unit[])) => void;
   setSelectedUnitId: (id: string | null) => void;
   setWeather: (weather: WeatherType) => void;
-  setWeatherDuration: (duration: number) => void;
+  setEnvironmentalLevels: (levels: EnvironmentalLevels) => void;
   setWinner: (winner: Team | null) => void;
   setVictoryResult: (result: VictoryResult | null) => void;
   setHistory: (history: GameStateSnapshot[] | ((prevHistory: GameStateSnapshot[]) => GameStateSnapshot[])) => void;
@@ -55,7 +56,7 @@ export const useGameState = (): GameStateHook => {
   const [units, setUnits] = useState<Unit[]>([]);
   const [selectedUnitId, setSelectedUnitId] = useState<string | null>(null);
   const [weather, setWeather] = useState<WeatherType>('Rain');
-  const [weatherDuration, setWeatherDuration] = useState(0);
+  const [environmentalLevels, setEnvironmentalLevels] = useState<EnvironmentalLevels>({ wetness: 0, snow: 0 });
   const [winner, setWinner] = useState<Team | null>(null);
   const [victoryResult, setVictoryResult] = useState<VictoryResult | null>(null);
   const [turnLimit, setTurnLimit] = useState<number | undefined>(undefined);
@@ -76,7 +77,7 @@ export const useGameState = (): GameStateHook => {
     setGameState(mapData.gameStatus.gameState as 'playing' | 'gameOver');
     setWinner(mapData.gameStatus.winner);
     setWeather(mapData.gameStatus.weather);
-    setWeatherDuration(mapData.gameStatus.weatherDuration);
+    setEnvironmentalLevels(mapData.gameStatus.environmentalLevels);
     
     setTurnLimit(mapData.gameStatus.turnLimit);
     setAttackingTeam(mapData.gameStatus.attackingTeam || 'Blue');
@@ -112,7 +113,7 @@ export const useGameState = (): GameStateHook => {
     units,
     selectedUnitId,
     weather,
-    weatherDuration,
+    environmentalLevels,
     winner,
     victoryResult,
     turnLimit,
@@ -129,7 +130,7 @@ export const useGameState = (): GameStateHook => {
     setUnits,
     setSelectedUnitId,
     setWeather,
-    setWeatherDuration,
+    setEnvironmentalLevels,
     setWinner,
     setVictoryResult,
     setHistory,
