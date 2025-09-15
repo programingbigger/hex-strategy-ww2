@@ -347,7 +347,7 @@ const Hexagon: React.FC<HexagonProps> = ({
       )}
       
       {unit && (
-        <>
+        <g opacity={(unit.moved || unit.attacked) ? 0.5 : 1}>
           <rect
             x={-size * 0.6}
             y={-size * 0.4}
@@ -368,7 +368,7 @@ const Hexagon: React.FC<HexagonProps> = ({
           >
             {unit.hp}
           </text>
-        </>
+        </g>
       )}
       
       {(isReachable || isAttackable) && (
