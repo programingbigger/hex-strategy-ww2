@@ -6,6 +6,8 @@
 ## マスト
 * コードリファクタリング
 * UIの改善
+    * tutorialの作成
+        * 
     * BattleScreen
         * infomationPanelについて
     * 全体的なUIについて

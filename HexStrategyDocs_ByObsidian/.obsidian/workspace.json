@@ -166,6 +166,7 @@
   },
   "active": "85db564fb9d1c224",
   "lastOpenFiles": [
+    "03_技術仕様/ロギングシステム.md",
     "graph/unit_effectiveness.pu",
     "graph/team_relationship.pu",
     "graph/game_flow.pu",
@@ -201,7 +202,6 @@
     "docs/Commander/Core-Components/VictoryModal.md",
     "docs/Commander/Core-Components/TurnChangeModal.md",
     "docs/Commander/Core-Components/TransportActionConfirmModal.md",
-    "docs/Commander/Utils-Helpers",
     "無題のファイル.canvas"
   ]
 }
