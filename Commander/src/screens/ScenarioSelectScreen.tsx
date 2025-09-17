@@ -42,7 +42,6 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
               >
                 <div className="map-item-header">
                   <div className="map-item-name">{map.name}</div>
-                  <div className="map-item-difficulty">{map.difficulty}</div>
                 </div>
                 <div className="map-item-description">{map.description}</div>
               </div>

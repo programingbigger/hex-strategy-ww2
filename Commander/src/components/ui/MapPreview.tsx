@@ -138,9 +138,6 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     <div className="map-preview-container">
       <div className="map-preview-header">
         <h3 className="map-preview-title">{selectedMap.name}</h3>
-        <div className="map-preview-difficulty">
-          Difficulty: {selectedMap.difficulty}
-        </div>
       </div>
       
       <div className="map-preview-content">

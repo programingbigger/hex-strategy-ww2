@@ -42,7 +42,6 @@ const TutorialSelectScreen: React.FC<TutorialSelectScreenProps> = ({ onNavigate 
               >
                 <div className="map-item-header">
                   <div className="map-item-name">{map.name}</div>
-                  <div className="map-item-difficulty">{map.difficulty}</div>
                 </div>
                 <div className="map-item-description">{map.description}</div>
               </div>
@@ -71,7 +70,6 @@ const TutorialSelectScreen: React.FC<TutorialSelectScreenProps> = ({ onNavigate 
                 <div className="selected-mission-info">
                   <h4>選択されたチュートリアル:</h4>
                   <div className="mission-name">{selectedMap.name}</div>
-                  <div className="mission-id">レベル: {selectedMap.difficulty}</div>
                 </div>
 
                 <div className="tutorial-objectives">
