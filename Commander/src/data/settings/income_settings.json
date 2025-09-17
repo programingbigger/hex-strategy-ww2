@@ -1,0 +1,23 @@
+{
+  "incomeSettings": {
+    "Capital": {
+      "baseIncome": 100,
+      "hpIncomeMultiplier": 20,
+      "description": "Capital generates base income + (HP / hpIncomeMultiplier) * baseIncome"
+    },
+    "City": {
+      "baseIncome": 50,
+      "hpIncomeMultiplier": 20,
+      "description": "City generates base income + (HP / hpIncomeMultiplier) * baseIncome"
+    }
+  },
+  "calculationMethod": {
+    "description": "Income = baseIncome + Math.floor(currentHP / hpIncomeMultiplier) * baseIncome",
+    "example": {
+      "Capital_HP_100": "100 + Math.floor(100 / 20) * 100 = 100 + 5 * 100 = 600",
+      "Capital_HP_20": "100 + Math.floor(20 / 20) * 100 = 100 + 1 * 100 = 200",
+      "City_HP_100": "50 + Math.floor(100 / 20) * 50 = 50 + 5 * 50 = 300",
+      "City_HP_20": "50 + Math.floor(20 / 20) * 50 = 50 + 1 * 50 = 100"
+    }
+  }
+}

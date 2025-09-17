@@ -1,0 +1,42 @@
+{
+  "mapId": "short_case_map",
+  "description": "Short case map reinforcement configuration",
+  "reinforcements": [
+    {
+      "id": "reinforcement-1",
+      "unitId": "red-infantry-standard",
+      "spawnTurn": 4,
+      "spawnLocation": {
+        "x": 5,
+        "y": 3
+      },
+      "team": "Red",
+      "description": "Enemy infantry reinforcement"
+    },
+    {
+      "id": "reinforcement-2",
+      "unitId": "red-tank-medium",
+      "spawnTurn": 7,
+      "spawnLocation": {
+        "x": 5,
+        "y": 2
+      },
+      "team": "Red",
+      "description": "Enemy tank reinforcement"
+    }
+  ],
+  "spawnLocations": [
+    {
+      "x": 5,
+      "y": 3,
+      "description": "Eastern reinforcement spawn point",
+      "allowedTeam": "Red"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "description": "Eastern reinforcement spawn point",
+      "allowedTeam": "Red"
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
 import ReinforcementPreview from '../components/game/ReinforcementPreview';
@@ -214,12 +214,32 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 // =================================================================
 const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep }) => {
   const [page, setPage] = useState<1 | 2>(1);
-
-  const availableUnits = getPlayerStartingUnits(gameState.selectedMap?.id);
+  const [availableUnits, setAvailableUnits] = useState<Unit[]>([]);
+  const [isLoadingUnits, setIsLoadingUnits] = useState(false);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
     gameState.battlePrep?.selectedUnits || []
   );
   const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || new Date().getMonth() + 1);
+
+  // Load available units asynchronously
+  useEffect(() => {
+    const loadUnits = async () => {
+      if (gameState.selectedMap?.id) {
+        setIsLoadingUnits(true);
+        try {
+          const units = await getPlayerStartingUnits(gameState.selectedMap.id);
+          setAvailableUnits(units);
+        } catch (error) {
+          console.error('Failed to load available units:', error);
+          setAvailableUnits([]);
+        } finally {
+          setIsLoadingUnits(false);
+        }
+      }
+    };
+
+    loadUnits();
+  }, [gameState.selectedMap?.id]);
 
   const handleUnitSelect = (unit: Unit) => {
     if (selectedUnits.find(u => u.id === unit.id)) {
@@ -264,6 +284,10 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           onProceed={() => setPage(2)}
           onBack={() => onNavigate('scenario-select')}
         />
+      ) : isLoadingUnits ? (
+        <div style={{ textAlign: 'center', padding: '50px' }}>
+          <h2>Loading available units...</h2>
+        </div>
       ) : (
         <UnitSelectionPage
           availableUnits={availableUnits}

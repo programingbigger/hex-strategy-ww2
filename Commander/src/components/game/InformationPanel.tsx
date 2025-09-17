@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Unit, Tile, Coordinate } from '../../types';
-import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { TERRAIN_STATS } from '../../config/constants';
 import '../../styles/military-museum-theme.css';
 
@@ -28,14 +27,6 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
   const hoveredTile = hoveredHex ? boardLayout.get(coordToString(hoveredHex)) : null;
   const hoveredUnit = hoveredHex ? units.find(u => u.x === hoveredHex.x && u.y === hoveredHex.y) : null;
 
-  const ProgressBar: React.FC<{ current: number; max: number; color: string }> = ({ current, max, color }) => {
-    const percentage = Math.max(0, Math.min(100, (current / max) * 100));
-    return (
-      <div className="progress-bar">
-        <div style={{ width: `${percentage}%`, backgroundColor: color }} className="progress-bar-inner" />
-      </div>
-    );
-  };
 
   const getTerrainSwatchColor = (terrain: string): string => {
     const colorMap: { [key: string]: string } = {
@@ -84,7 +75,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
 
   const TerrainImage: React.FC<{ terrain: string }> = ({ terrain }) => {
     const [imageError, setImageError] = useState(false);
-    const imagePath = `/assets/images/maps/${terrain}.png`;
+    const imagePath = `/data/assets/images/maps/${terrain}.png`;
     const hasImage = availableTerrainImages.includes(terrain);
 
     if (!hasImage || imageError) {

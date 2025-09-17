@@ -40,7 +40,7 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     const loadMapData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/data/maps/${selectedMap.id}.json`);
+        const response = await fetch(`/data/maps/scenario/${selectedMap.id}.json`);
         if (response.ok) {
           const data = await response.json();
           setMapData(data);

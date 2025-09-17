@@ -1,5 +1,5 @@
 import { Unit, UnitType, Weapon, UnitStats, UnitCategory } from '../types';
-import { armyManager, getPlayerStartingUnits as getPlayerStartingUnitsFromArmy, getEnemyStartingUnits as getEnemyStartingUnitsFromArmy } from './armyLoader';
+import { armyManager, getEnemyStartingUnits as getEnemyStartingUnitsFromArmy } from './armyLoader';
 
 // JSON-based unit and weapon creation functions
 const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
@@ -201,16 +201,17 @@ export const getUnitStats = (type: UnitType, team: 'Blue' | 'Red' = 'Blue'): Uni
 };
 
 // Legacy unit creation functions - kept for backward compatibility
-export const getPlayerStartingUnits = (mapId?: string): Unit[] => {
+export const getPlayerStartingUnits = async (mapId?: string): Promise<Unit[]> => {
   // If mapId is provided, try to load map-specific unit configuration
   if (mapId) {
     try {
-      // Check for map-specific unit configurations
-      if (mapId === 'test_map_1') {
-        return getUnitsForTestMap1();
+      // Use generic map loader for any map ID
+      const mapUnits = await getUnitsForMap(mapId);
+      if (mapUnits.length > 0) {
+        return mapUnits;
       }
       
-      // Fallback to default if map-specific config not found
+      // Fallback to default if map-specific config not found or empty
       console.log(`Map-specific units not configured for ${mapId}, using default`);
     } catch (error) {
       console.error(`Failed to load units for map ${mapId}:`, error);
@@ -221,61 +222,86 @@ export const getPlayerStartingUnits = (mapId?: string): Unit[] => {
   return [
     createUnit('player-infantry-1', 'Infantry', 'Blue'),
   ];
-};;;
+};;
 
-const getUnitsForTestMap1 = (): Unit[] => {
-  // Load test_map_1 specific unit configuration
-  const mapConfig = {
-    "mode": "scenario",
-    "map_name": "test_map_1",
-    "units": [
-      {
-        "id": "blue-infantry-standard",
-        "faction": "Blue",
-        "count": 2,
-        "unitId": "player-infantry"
-      },
-      {
-        "id": "blue-tank-medium",
-        "faction": "Blue",
-        "count": 2,
-        "unitId": "player-tank"
-      },
-      {
-        "id": "blue-armored-car",
-        "faction": "Blue",
-        "count": 2,
-        "unitId": "player-armored"
-      },
-      {
-        "id": "blue-artillery-howitzer",
-        "faction": "Blue",
-        "count": 1,
-        "unitId": "player-artillery"
-      },
-      {
-        "id": "blue-antitank-gun",
-        "faction": "Blue",
-        "count": 1,
-        "unitId": "player-antitank"
-      },
-      {
-        "id": "blue-engineer",
-        "faction": "Blue",
-        "count": 1,
-        "unitId": "player-engineer"
-      },
-      {
-        "id": "blue-transport",
-        "faction": "Blue",
-        "count": 1,
-        "unitId": "player-transport"
-      }
-    ]
-  };
+// Cache for available map IDs to improve performance
+let cachedMapIds: string[] | null = null;
 
-  return createUnitsFromConfig(mapConfig.units);
+// Helper function to dynamically discover available map IDs
+const getAvailableMapIds = async (): Promise<string[]> => {
+  // Return cached result if available
+  if (cachedMapIds) {
+    return cachedMapIds;
+  }
+
+  try {
+    // Import maps data to get all available maps
+    const { availableMaps, tutorialMaps } = await import('./maps');
+
+    // Combine all map IDs from different sources
+    const allMapIds: string[] = [];
+
+    // Add scenario maps
+    if (availableMaps && Array.isArray(availableMaps)) {
+      allMapIds.push(...availableMaps.map(map => map.id));
+    }
+
+    // Add tutorial maps
+    if (tutorialMaps && Array.isArray(tutorialMaps)) {
+      allMapIds.push(...tutorialMaps.map(map => map.id));
+    }
+
+    // Remove duplicates, cache, and return
+    cachedMapIds = [...new Set(allMapIds)];
+    return cachedMapIds;
+  } catch (error) {
+    console.warn('Failed to dynamically load map IDs, using fallback:', error);
+    // Fallback to known maps based on actual file structure
+    const fallbackMaps = [
+      'tutorial_1',
+      'test_map_1',
+      'large_map',
+      'large_map_2',
+      'large_map_only_Plains',
+      'short_case_map'
+    ];
+    cachedMapIds = fallbackMaps;
+    return fallbackMaps;
+  }
 };
+
+// Export the generic map unit loader for external use
+export const getUnitsForMap = async (mapId: string): Promise<Unit[]> => {
+  try {
+    // Dynamically discover available maps instead of hardcoded allowedMapIds
+    const availableMaps = await getAvailableMapIds();
+    
+    if (!availableMaps.includes(mapId)) {
+      console.error(`Invalid mapId: ${mapId}. Available maps: ${availableMaps.join(', ')}`);
+      return [];
+    }
+
+    // Load map data using the map loader to get availableUnits from embedded data
+    const { loadMapData } = await import('../utils/mapLoader');
+    const mapData = await loadMapData(mapId);
+    
+    // Check if map has embedded availableUnits
+    if (mapData.availableUnits && Array.isArray(mapData.availableUnits)) {
+      console.log(`✅ Using embedded availableUnits from map: ${mapId}`);
+      return createUnitsFromConfig(mapData.availableUnits);
+    }
+
+    // If no embedded units, return empty array with warning
+    console.warn(`⚠️ Map ${mapId} doesn't have embedded availableUnits. Please add availableUnits field to the map JSON file.`);
+    return [];
+  } catch (error) {
+    console.error(`Failed to load unit configuration for ${mapId}:`, error);
+    
+    // Return empty array if map config not found
+    console.warn(`Unit configuration not found for ${mapId}, returning empty unit array`);
+    return [];
+  }
+};;;
 
 const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
   const units: Unit[] = [];
@@ -313,11 +339,10 @@ const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
 export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[]> => {
   if (mapId) {
     try {
-      // Try to fetch the map-specific configuration file
-      const response = await fetch(`/src/data/PrepAvailableUnitsByMaps/${mapId}.json`);
-      if (response.ok) {
-        const mapConfig = await response.json();
-        return createUnitsFromConfig(mapConfig.units);
+      // Use the new embedded availableUnits approach first
+      const mapUnits = await getUnitsForMap(mapId);
+      if (mapUnits.length > 0) {
+        return mapUnits;
       }
     } catch (error) {
       console.log(`Map-specific config for ${mapId} not found, using fallback`);
@@ -325,8 +350,8 @@ export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[
   }
   
   // Return the synchronous version as fallback
-  return getPlayerStartingUnits(mapId);
-};
+  return await getPlayerStartingUnits(mapId);
+};;
 
 export const getEnemyStartingUnits = (): Unit[] => {
   // Try to use new army system first, fallback to legacy if needed

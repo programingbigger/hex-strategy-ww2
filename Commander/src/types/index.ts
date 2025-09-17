@@ -11,10 +11,6 @@ export interface GameMap {
   id: string;
   name: string;
   description: string;
-  difficulty: 'Easy' | 'Normal' | 'Hard';
-  thumbnail?: string;
-  deploymentCenter?: { q: number; r: number };
-  initialCameraPosition?: { x: number; y: number };
 }
 
 export type Team = 'Blue' | 'Red';
@@ -176,6 +172,14 @@ export interface VictoryResult {
   turnsElapsed: number;
 }
 
+// Unit configuration for available units on each map
+export interface UnitConfig {
+  id: string;
+  faction: Team;
+  count: number;
+  unitId: string;
+}
+
 export interface MapData {
   gameStatus: {
     gameState: string;
@@ -191,6 +195,7 @@ export interface MapData {
     enabledVictoryConditions?: VictoryCondition[]; // Active victory conditions
   };
   armyFunds?: { [team: string]: number };
+  availableUnits?: UnitConfig[];  // Units available for deployment on this map
   board: {
     tiles: Tile[];
   };

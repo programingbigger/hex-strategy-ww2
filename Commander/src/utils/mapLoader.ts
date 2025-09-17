@@ -6,7 +6,7 @@ import { coordToString } from './map';
  */
 export const loadMapData = async (mapId: string): Promise<MapData> => {
   try {
-    const response = await fetch(`/data/maps/${mapId}.json`);
+    const response = await fetch(`/data/maps/scenario/${mapId}.json`);
     if (!response.ok) {
       throw new Error(`Failed to load map ${mapId}: ${response.statusText}`);
     }

@@ -195,7 +195,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       if (gameState.selectedMap) {
         try {
           // Use the selected map from gameState instead of hardcoded map
-          const response = await fetch(`data/maps/${gameState.selectedMap.id}.json`);
+          const response = await fetch(`/data/maps/scenario/${gameState.selectedMap.id}.json`);
           if (!response.ok) {
             throw new Error(`Failed to load map ${gameState.selectedMap.id}`);
           }
@@ -276,27 +276,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const blueUnits = units.filter(u => u.team === 'Blue').length;
   const redUnits = units.filter(u => u.team === 'Red').length;
 
-  // Get weather-based background gradient 天候による背景グラデーション
-  const getWeatherBackground = (): string => {
-    switch (weather) {
-      case 'Clear':
-        return 'linear-gradient(135deg, #87CEEB 0%, #E0F6FF 50%, #B0E0E6 100%)';
-      case 'Rain':
-        return 'linear-gradient(135deg, #708090 0%, #A9A9A9 50%, #C0C0C0 100%)';
-      case 'Storm':
-        return 'linear-gradient(135deg, #2F4F4F 0%, #4B0082 30%, #191970 60%, #000000 100%)';
-      case 'Cloudy':
-        return 'linear-gradient(135deg, #D3D3D3 0%, #C0C0C0 30%, #A9A9A9 60%, #808080 100%)';
-      case 'Snow':
-        return 'linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 30%, #D8BFD8 60%, #C0C0C0 100%)';
-      case 'Blizzard':
-        return 'linear-gradient(135deg, #B0C4DE 0%, #778899 30%, #2F4F4F 60%, #191970 100%)';
-      case 'Fog':
-        return 'linear-gradient(135deg, #F5F5F5 0%, #E8E8E8 30%, #D3D3D3 60%, #A9A9A9 100%)';
-      default:
-        return 'linear-gradient(135deg, #2a2a2a, #3a3a3a)';
-    }
-  };
 
   return (
     <div className="battle-screen-grid">
