@@ -60,11 +60,11 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
             </>
           ) : (
             <>
-              <button 
+              <button
                 className="menu-button-large military-button"
-                disabled
+                onClick={() => onNavigate('tutorial-select')}
               >
-                Tutorial (Coming Soon)
+                チュートリアル
               </button>
               
               <button 

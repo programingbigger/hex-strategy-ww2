@@ -201,22 +201,132 @@ export const getUnitStats = (type: UnitType, team: 'Blue' | 'Red' = 'Blue'): Uni
 };
 
 // Legacy unit creation functions - kept for backward compatibility
-export const getPlayerStartingUnits = (): Unit[] => {
-  // Updated unit selection as per requirements:
-  // 歩兵:2, 戦車:2, 装甲車:2, 砲兵:1, 対戦車:1, 工作車:1, 輸送車:1
+export const getPlayerStartingUnits = (mapId?: string): Unit[] => {
+  // If mapId is provided, try to load map-specific unit configuration
+  if (mapId) {
+    try {
+      // Check for map-specific unit configurations
+      if (mapId === 'test_map_1') {
+        return getUnitsForTestMap1();
+      }
+      
+      // Fallback to default if map-specific config not found
+      console.log(`Map-specific units not configured for ${mapId}, using default`);
+    } catch (error) {
+      console.error(`Failed to load units for map ${mapId}:`, error);
+    }
+  }
+  
+  // Default hardcoded units (fallback)
   return [
     createUnit('player-infantry-1', 'Infantry', 'Blue'),
-    createUnit('player-infantry-2', 'Infantry', 'Blue'),
-    createUnit('player-tank-1', 'Tank', 'Blue'),
-    createUnit('player-tank-2', 'Tank', 'Blue'),
-    createUnit('player-armored-1', 'ArmoredCar', 'Blue'),
-    createUnit('player-armored-2', 'ArmoredCar', 'Blue'),
-    createUnit('player-artillery-1', 'Artillery', 'Blue'),
-    createUnit('player-antitank-1', 'AntiTank', 'Blue'),
-    createUnit('player-engineer-1', 'Engineer', 'Blue'),
-    createUnit('player-transport-1', 'Transport', 'Blue')
   ];
-};;
+};;;
+
+const getUnitsForTestMap1 = (): Unit[] => {
+  // Load test_map_1 specific unit configuration
+  const mapConfig = {
+    "mode": "scenario",
+    "map_name": "test_map_1",
+    "units": [
+      {
+        "id": "blue-infantry-standard",
+        "faction": "Blue",
+        "count": 2,
+        "unitId": "player-infantry"
+      },
+      {
+        "id": "blue-tank-medium",
+        "faction": "Blue",
+        "count": 2,
+        "unitId": "player-tank"
+      },
+      {
+        "id": "blue-armored-car",
+        "faction": "Blue",
+        "count": 2,
+        "unitId": "player-armored"
+      },
+      {
+        "id": "blue-artillery-howitzer",
+        "faction": "Blue",
+        "count": 1,
+        "unitId": "player-artillery"
+      },
+      {
+        "id": "blue-antitank-gun",
+        "faction": "Blue",
+        "count": 1,
+        "unitId": "player-antitank"
+      },
+      {
+        "id": "blue-engineer",
+        "faction": "Blue",
+        "count": 1,
+        "unitId": "player-engineer"
+      },
+      {
+        "id": "blue-transport",
+        "faction": "Blue",
+        "count": 1,
+        "unitId": "player-transport"
+      }
+    ]
+  };
+
+  return createUnitsFromConfig(mapConfig.units);
+};
+
+const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
+  const units: Unit[] = [];
+  
+  unitConfigs.forEach(config => {
+    for (let i = 1; i <= config.count; i++) {
+      const unitId = `${config.unitId}-${i}`;
+      const unitType = getUnitTypeFromArmyId(config.id);
+      
+      if (unitType) {
+        units.push(createUnit(unitId, unitType, config.faction as 'Blue' | 'Red'));
+      }
+    }
+  });
+  
+  return units;
+};
+
+const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
+  // Map army organization IDs to unit types
+  const idToTypeMap: { [key: string]: UnitType } = {
+    'blue-infantry-standard': 'Infantry',
+    'blue-tank-medium': 'Tank',
+    'blue-armored-car': 'ArmoredCar',
+    'blue-artillery-howitzer': 'Artillery',
+    'blue-antitank-gun': 'AntiTank',
+    'blue-engineer': 'Engineer',
+    'blue-transport': 'Transport'
+  };
+  
+  return idToTypeMap[armyId] || null;
+};
+
+// Async version for loading map-specific units dynamically
+export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[]> => {
+  if (mapId) {
+    try {
+      // Try to fetch the map-specific configuration file
+      const response = await fetch(`/src/data/PrepAvailableUnitsByMaps/${mapId}.json`);
+      if (response.ok) {
+        const mapConfig = await response.json();
+        return createUnitsFromConfig(mapConfig.units);
+      }
+    } catch (error) {
+      console.log(`Map-specific config for ${mapId} not found, using fallback`);
+    }
+  }
+  
+  // Return the synchronous version as fallback
+  return getPlayerStartingUnits(mapId);
+};
 
 export const getEnemyStartingUnits = (): Unit[] => {
   // Try to use new army system first, fallback to legacy if needed

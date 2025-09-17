@@ -33,3 +33,12 @@ export const availableMaps: GameMap[] = [
   //   deploymentCenter: { q: -4, r: -2 }
   // }
 ];
+
+export const tutorialMaps: GameMap[] = [
+  {
+    id: 'tutorial_1',
+    name: 'チュートリアル: 基本操作',
+    description: '基本的な移動、攻撃、地形効果を学習する初心者向けマップです。',
+    difficulty: 'Easy'
+  }
+];

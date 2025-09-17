@@ -62,9 +62,10 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
           <div style={{ padding: '20px', background: 'rgba(39, 174, 96, 0.1)', borderRadius: '8px', border: '1px solid #27ae60' }}>
             <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#27ae60' }}>勝利条件</h4>
             <p style={{ fontSize: '16px', marginBottom: '10px' }}>• 敵軍ユニットを全滅させる</p>
-            <p style={{ fontSize: '16px', marginBottom: '15px' }}>• または全ての都市を占領する</p>
+            <p style={{ fontSize: '16px', marginBottom: '15px' }}>• 全ての都市を占領する</p>
             <h4 style={{ fontSize: '18px', marginBottom: '10px', color: '#e74c3c' }}>敗北条件</h4>
             <p style={{ fontSize: '16px' }}>• 自軍ユニットが全滅する</p>
+            <p style={{ fontSize: '16px' }}>• 制限ターンを超える</p>
           </div>
         </div>
         
@@ -214,7 +215,7 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep }) => {
   const [page, setPage] = useState<1 | 2>(1);
 
-  const availableUnits = getPlayerStartingUnits();
+  const availableUnits = getPlayerStartingUnits(gameState.selectedMap?.id);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
     gameState.battlePrep?.selectedUnits || []
   );

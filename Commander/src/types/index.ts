@@ -1,7 +1,8 @@
-export type GameScreen = 
+export type GameScreen =
   | 'title'
   | 'home'
   | 'scenario-select'
+  | 'tutorial-select'
   | 'battle-prep'
   | 'deployment'
   | 'battle';
