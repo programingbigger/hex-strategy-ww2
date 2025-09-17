@@ -2,23 +2,23 @@ import { GameMap } from '../types';
 
 export const availableMaps: GameMap[] = [
   {
-    id: 'test_map_1',
-    name: 'Diverse Terrain Test Map',
-    description: 'Testing grounds featuring all terrain types - Capital, Port, Fortress, Desert, Snow, Sea coastline, and strategic locations.'
+    id: 'testdev_map',
+    name: '開発用マップ',
+    description: '開発者が色々と実験をするためのマップ。プレイ用ではない。'
   },
   {
     id: 'short_case_map',
-    name: 'ShortCase',
-    description: 'ショートマップ'
+    name: 'ショートケースマップ',
+    description: 'プレイ用マップ。'
   },
     {
     id: 'large_map',
-    name: 'Stage 2',
+    name: 'Stage 1',
     description: 'Large Map x: -18_18 y: -6〜6'
   },
     {
     id: 'large_map_2',
-    name: 'Stage 3',
+    name: 'Stage 2',
     description: 'マップ第二弾'
   }
 ];
