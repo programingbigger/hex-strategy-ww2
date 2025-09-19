@@ -7,7 +7,8 @@
 * コードリファクタリング
 * UIの改善
     * tutorialの作成
-        * 
+        * マップの表示
+        * プレイヤーに説明する将軍
     * BattleScreen
         * infomationPanelについて
     * 全体的なUIについて
