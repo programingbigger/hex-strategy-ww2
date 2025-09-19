@@ -27,7 +27,7 @@ export const loadIncomeSettings = async (): Promise<IncomeSettings | null> => {
   }
 
   try {
-    const response = await fetch('/data/settings/income_settings.json');
+    const response = await fetch('/settings/income_settings.json');
     if (!response.ok) {
       console.error('Failed to load income settings:', response.statusText);
       return null;

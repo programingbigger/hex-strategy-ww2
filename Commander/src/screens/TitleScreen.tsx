@@ -27,7 +27,7 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ onNavigate }) => {
             muted 
             playsInline
           >
-            <source src="/data/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
+            <source src="/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>

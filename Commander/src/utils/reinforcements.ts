@@ -2,7 +2,7 @@ import { ReinforcementConfig, ReinforcementData } from '../types/reinforcements'
 
 export const loadReinforcementConfig = async (mapId: string): Promise<ReinforcementConfig | null> => {
   try {
-    const response = await fetch(`/data/reinforcements/${mapId}.json`);
+    const response = await fetch(`/reinforcements/${mapId}.json`);
     if (!response.ok) {
       console.warn(`Reinforcement config not found for map: ${mapId}`);
       return null;

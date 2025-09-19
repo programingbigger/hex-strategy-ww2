@@ -152,11 +152,11 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   // Helper function to get transport capacity info
   const getTransportCapacity = (): { capacity: number; unitCapacityCosts: Record<string, number> } | null => {
     if (!selectedUnit || selectedUnit.type !== 'Transport') return null;
-    
+
     try {
       const templates = armyManager.getUnitTemplatesBy(selectedUnit.team as 'Blue' | 'Red', '陸');
       const template = templates.find(t => t.type === selectedUnit.type);
-      
+
       if (template) {
         // Access the transport info from the JSON data directly
         const armyData = require('../../data/armyOrganization.json');

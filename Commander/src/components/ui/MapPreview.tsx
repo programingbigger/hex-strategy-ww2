@@ -40,12 +40,17 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     const loadMapData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`/data/maps/scenario/${selectedMap.id}.json`);
-        if (response.ok) {
-          const data = await response.json();
+        // Load from public/maps/scenario
+        const response = await fetch(`/maps/scenario/${selectedMap.id}.json`);
+        if (!response.ok) {
+          throw new Error(`Failed to load map: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        if (data) {
           setMapData(data);
         } else {
-          console.warn(`Failed to load map data for ${selectedMap.id}`);
+          console.warn(`Map data not found for ${selectedMap.id}`);
           setMapData(null);
         }
       } catch (error) {
@@ -70,7 +75,7 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     }
 
     const tiles = mapData.board.tiles;
-    
+
     // Calculate bounds
     const xs = tiles.map((tile: any) => tile.x);
     const ys = tiles.map((tile: any) => tile.y);
@@ -78,13 +83,13 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     const maxX = Math.max(...xs);
     const minY = Math.min(...ys);
     const maxY = Math.max(...ys);
-    
+
     const width = maxX - minX + 1;
     const height = maxY - minY + 1;
-    
+
     // Create a grid representation
     const grid: Array<Array<string | null>> = Array(height).fill(null).map(() => Array(width).fill(null));
-    
+
     tiles.forEach((tile: any) => {
       const gridX = tile.x - minX;
       const gridY = tile.y - minY;
@@ -139,7 +144,7 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
       <div className="map-preview-header">
         <h3 className="map-preview-title">{selectedMap.name}</h3>
       </div>
-      
+
       <div className="map-preview-content">
         {loading ? (
           <div className="map-preview-loading">
@@ -150,7 +155,7 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
           renderMapPreview()
         )}
       </div>
-      
+
       <div className="map-preview-description">
         <p>{selectedMap.description}</p>
       </div>
@@ -160,8 +165,8 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
         <div className="legend-grid">
           {Object.entries(terrainColors).slice(0, 8).map(([terrain, color]) => (
             <div key={terrain} className="legend-item">
-              <div 
-                className="legend-color" 
+              <div
+                className="legend-color"
                 style={{ backgroundColor: color }}
               />
               <span className="legend-label">{terrain}</span>
