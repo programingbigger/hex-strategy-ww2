@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
 import ReinforcementPreview from '../components/game/ReinforcementPreview';
-import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext } from '../utils/operationDates';
+import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext, getAvailableYears, getAvailableDays } from '../utils/operationDates';
 
 interface BattlePrepScreenProps {
   gameState: GameState;
@@ -15,21 +15,31 @@ interface BattlePrepScreenProps {
 // =================================================================
 interface OperationPrepPageProps {
   gameState: GameState;
+  selectedYear: number;
   selectedMonth: number;
+  selectedDay: number;
+  setSelectedYear: (year: number) => void;
   setSelectedMonth: (month: number) => void;
+  setSelectedDay: (day: number) => void;
   onProceed: () => void;
   onBack: () => void;
 }
 
 const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
   gameState,
+  selectedYear,
   selectedMonth,
+  selectedDay,
+  setSelectedYear,
   setSelectedMonth,
+  setSelectedDay,
   onProceed,
   onBack
 }) => {
-  const operationPeriod = getOperationPeriod(selectedMonth);
+  const operationPeriod = getOperationPeriod(selectedMonth, selectedYear, selectedDay);
   const strategicContext = getMonthlyStrategicContext(selectedMonth);
+  const availableYears = getAvailableYears();
+  const availableDays = getAvailableDays(selectedMonth, selectedYear);
 
   return (
     <>
@@ -73,6 +83,24 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
         <div style={{ flex: '1', padding: '25px', background: 'rgba(52, 73, 94, 0.1)', borderRadius: '12px' }}>
           <div style={{ marginBottom: '25px', padding: '20px', background: 'rgba(52, 152, 219, 0.1)', borderRadius: '8px', border: '1px solid #3498db' }}>
             <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#3498db' }}>📅 作戦開始日</h4>
+            
+            {/* Year Selection */}
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', fontSize: '16px', marginBottom: '8px', fontWeight: 'bold' }}>
+                作戦開始年:
+              </label>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                {availableYears.map((year) => (
+                  <option key={year} value={year}>{year}年</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Month Selection */}
             <div style={{ marginBottom: '15px' }}>
               <label style={{ display: 'block', fontSize: '16px', marginBottom: '8px', fontWeight: 'bold' }}>
                 作戦開始月:
@@ -83,10 +111,27 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
                 style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
               >
                 {getMonthNames().map((monthName, index) => (
-                  <option key={index + 1} value={index + 1}>{monthName} ({getOperationPeriod(index + 1).season}季)</option>
+                  <option key={index + 1} value={index + 1}>{monthName} ({operationPeriod.season}季)</option>
                 ))}
               </select>
             </div>
+
+            {/* Day Selection */}
+            <div style={{ marginBottom: '15px' }}>
+              <label style={{ display: 'block', fontSize: '16px', marginBottom: '8px', fontWeight: 'bold' }}>
+                作戦開始日:
+              </label>
+              <select
+                value={selectedDay}
+                onChange={(e) => setSelectedDay(Number(e.target.value))}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                {availableDays.map((day) => (
+                  <option key={day} value={day}>{day}日</option>
+                ))}
+              </select>
+            </div>
+
             <div style={{ fontSize: '16px', lineHeight: '1.6', background: 'rgba(255, 255, 255, 0.3)', padding: '15px', borderRadius: '6px', border: '1px solid rgba(52, 152, 219, 0.3)' }}>
               <p><strong>📅 作戦期間:</strong> {operationPeriod.startDate} ～ {operationPeriod.endDate}</p>
               <p><strong>🌤️ 戦術環境:</strong> {strategicContext}</p>
@@ -219,7 +264,9 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
     gameState.battlePrep?.selectedUnits || []
   );
+  const [selectedYear, setSelectedYear] = useState<number>(gameState.year || 1944);
   const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || new Date().getMonth() + 1);
+  const [selectedDay, setSelectedDay] = useState<number>(gameState.day || 1);
 
   // Load available units asynchronously
   useEffect(() => {
@@ -237,9 +284,16 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
         }
       }
     };
-
     loadUnits();
   }, [gameState.selectedMap?.id]);
+
+  // Adjust selected day when month or year changes to ensure it's valid
+  useEffect(() => {
+    const availableDays = getAvailableDays(selectedMonth, selectedYear);
+    if (selectedDay > availableDays.length) {
+      setSelectedDay(availableDays.length); // Set to last day of month
+    }
+  }, [selectedMonth, selectedYear, selectedDay]);
 
   const handleUnitSelect = (unit: Unit) => {
     if (selectedUnits.find(u => u.id === unit.id)) {
@@ -267,7 +321,12 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
       victoryConditions: [
         'Eliminate all enemy units',
         'OR capture all cities'
-      ]
+      ],
+      startDate: {
+        year: selectedYear,
+        month: selectedMonth,
+        day: selectedDay
+      }
     };
     
     onUpdateBattlePrep(battlePrep, selectedMonth);
@@ -279,8 +338,12 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
       {page === 1 ? (
         <OperationPrepPage
           gameState={gameState}
+          selectedYear={selectedYear}
           selectedMonth={selectedMonth}
+          selectedDay={selectedDay}
+          setSelectedYear={setSelectedYear}
           setSelectedMonth={setSelectedMonth}
+          setSelectedDay={setSelectedDay}
           onProceed={() => setPage(2)}
           onBack={() => onNavigate('scenario-select')}
         />

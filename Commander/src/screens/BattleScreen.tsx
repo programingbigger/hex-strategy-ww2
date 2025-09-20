@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
+import { useCamera } from '../hooks/useCamera';
 import { createUnit } from '../data/units';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
@@ -33,6 +34,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     gameState: battleGameState,
     turn,
     month,
+    year,
+    day,
     activeTeam,
     boardLayout,
     units,
@@ -49,6 +52,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     transportTargetTiles,
     selectedUnitTile,
     loadGame,
+    setYear,
+    setDay,
     handleEndTurn,
     handleHexClick,
     handleAction,
@@ -83,6 +88,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     isReinforcementSpawnLocation,
     getReinforcementsForPreview,
   } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
+
+  // Camera controls for zoom functionality
+  const { zoomCamera } = useCamera();
 
   // Log panel state
   const [isLogPanelVisible, setIsLogPanelVisible] = useState(false);
@@ -190,6 +198,15 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setCurrentReinforcements([]);
   }, []);
 
+  // Zoom handlers
+  const handleZoomIn = useCallback(() => {
+    zoomCamera(1);
+  }, [zoomCamera]);
+
+  const handleZoomOut = useCallback(() => {
+    zoomCamera(-1);
+  }, [zoomCamera]);
+
   useEffect(() => {
     const loadBattle = async () => {
       if (gameState.selectedMap) {
@@ -215,6 +232,15 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           } else {
             // No deployed units, use default map data
             loadGame(mapData);
+          }
+
+          // Apply date from battlePrep if available
+          if (gameState.battlePrep?.startDate) {
+            setYear(gameState.battlePrep.startDate.year);
+            setDay(gameState.battlePrep.startDate.day);
+          } else if (gameState.year && gameState.day) {
+            setYear(gameState.year);
+            setDay(gameState.day);
           }
         } catch (error) {
           console.error(`Failed to load map ${gameState.selectedMap.id}:`, error);
@@ -256,10 +282,19 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         ]
       };
       loadGame(fallbackMapData);
+
+      // Apply date from battlePrep if available
+      if (gameState.battlePrep?.startDate) {
+        setYear(gameState.battlePrep.startDate.year);
+        setDay(gameState.battlePrep.startDate.day);
+      } else if (gameState.year && gameState.day) {
+        setYear(gameState.year);
+        setDay(gameState.day);
+      }
     };
     
     loadBattle();
-  }, [loadGame, gameState.units, gameState.selectedMap]);
+  }, [loadGame, gameState.units, gameState.selectedMap, gameState.battlePrep, gameState.year, gameState.day, setYear, setDay]);
 
   useEffect(() => {
     if (battleGameState === 'gameOver' && winner) {
@@ -280,15 +315,19 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   return (
     <div className="battle-screen-grid">
       <div className="header-area military-header">
-        <Header 
-          turn={turn} 
+        <Header
+          turn={turn}
           month={month}
-          activeTeam={activeTeam} 
-          weather={weather} 
+          year={year}
+          day={day}
+          activeTeam={activeTeam}
+          weather={weather}
           blueUnits={blueUnits}
           redUnits={redUnits}
           blueFunds={armyFunds?.Blue || 0}
           redFunds={armyFunds?.Red || 0}
+          onZoomIn={handleZoomIn}
+          onZoomOut={handleZoomOut}
         />
       </div>
 

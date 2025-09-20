@@ -1038,34 +1038,28 @@
   background: var(--earth-olive-dark);
   padding: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Video Background for Home Screen */
+.home-video-container {
+  margin-bottom: 3rem;
+  border: 4px solid var(--earth-khaki);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 
+    0 0 20px var(--earth-shadow),
+    inset 0 0 20px rgba(0, 0, 0, 0.3);
+  width: 800px;
+  height: 450px;
+}
+
 .home-video-background {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
-  opacity: 0.3;
-}
-
-/* Content Overlay */
-.home-content-overlay {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.4);
+  display: block;
 }
 
 .home-content-container {

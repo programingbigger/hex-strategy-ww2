@@ -17,6 +17,8 @@ export interface GameStateHook {
   gameState: 'playing' | 'gameOver';
   turn: number;
   month: number;
+  year: number;
+  day: number;
   activeTeam: Team;
   boardLayout: BoardLayout;
   units: Unit[];
@@ -35,6 +37,8 @@ export interface GameStateHook {
   setGameState: (state: 'playing' | 'gameOver') => void;
   setTurn: (turn: number) => void;
   setMonth: (month: number) => void;
+  setYear: (year: number) => void;
+  setDay: (day: number) => void;
   setActiveTeam: (team: Team) => void;
   setBoardLayout: (layout: BoardLayout) => void;
   setUnits: (units: Unit[] | ((prev: Unit[]) => Unit[])) => void;
@@ -54,6 +58,8 @@ export const useGameState = (): GameStateHook => {
   const [gameState, setGameState] = useState<'playing' | 'gameOver'>('playing');
   const [turn, setTurn] = useState<number>(1);
   const [month, setMonth] = useState<number>(1); // Start with January
+  const [year, setYear] = useState<number>(1944); // Start with 1944
+  const [day, setDay] = useState<number>(1); // Start with 1st day
   const [activeTeam, setActiveTeam] = useState<Team>('Blue');
   const [boardLayout, setBoardLayout] = useState<BoardLayout>(new Map());
   const [units, setUnits] = useState<Unit[]>([]);
@@ -112,6 +118,8 @@ export const useGameState = (): GameStateHook => {
     gameState,
     turn,
     month,
+    year,
+    day,
     activeTeam,
     boardLayout,
     units,
@@ -130,6 +138,8 @@ export const useGameState = (): GameStateHook => {
     setGameState,
     setTurn,
     setMonth,
+    setYear,
+    setDay,
     setActiveTeam,
     setBoardLayout,
     setUnits,

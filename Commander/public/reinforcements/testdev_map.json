@@ -14,7 +14,7 @@
       "description": "Enemy infantry reinforcement from the east"
     },
     {
-      "id": "reinforcement-2", 
+      "id": "reinforcement-2",
       "unitId": "red-tank-medium",
       "spawnTurn": 5,
       "spawnLocation": {
@@ -23,6 +23,28 @@
       },
       "team": "Red",
       "description": "Enemy tank reinforcement from the east"
+    },
+    {
+      "id": "reinforcement-3",
+      "unitId": "blue-infantry-standard",
+      "spawnTurn": 3,
+      "spawnLocation": {
+        "x": -3,
+        "y": -2
+      },
+      "team": "Blue",
+      "description": "Player infantry reinforcement from the west"
+    },
+    {
+      "id": "reinforcement-4",
+      "unitId": "blue-tank-medium",
+      "spawnTurn": 6,
+      "spawnLocation": {
+        "x": -3,
+        "y": -2
+      },
+      "team": "Blue",
+      "description": "Player tank reinforcement from the west"
     }
   ],
   "spawnLocations": [
@@ -31,6 +53,12 @@
       "y": 2,
       "description": "Eastern reinforcement spawn point",
       "allowedTeam": "Red"
+    },
+    {
+      "x": -3,
+      "y": -2,
+      "description": "Western reinforcement spawn point",
+      "allowedTeam": "Blue"
     }
   ]
 }
