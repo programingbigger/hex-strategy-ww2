@@ -49,11 +49,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
 
             <button
               className="home-mode-button military-button"
-              disabled
+              onClick={() => onNavigate('tutorial-intro')}
             >
               <div className="mode-button-icon">🎓</div>
               <div className="mode-button-title">Tutorial</div>
-              <div className="mode-button-desc">Coming Soon</div>
+              <div className="mode-button-desc">Learn the Basics</div>
             </button>
 
             <button

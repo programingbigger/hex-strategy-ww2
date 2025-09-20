@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "version": "1.1.0",
+    "version": "1.3.0",
     "description": "Military unit organization by branch and faction. Blue=Axis, Red=Allies.",
-    "lastUpdated": "2025-09-07"
+    "lastUpdated": "2025-09-20"
   },
   "factions": {
     "Blue": {
@@ -58,6 +58,120 @@
             "armor": {
               "name": "機甲科",
               "units": [
+                {
+                  "id": "blue-tank-panzer1",
+                  "name": "一号戦車",
+                  "type": "Tank",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "armor",
+                  "stats": {
+                    "maxHp": 12,
+                    "attack": 4,
+                    "defense": 3,
+                    "movement": 6,
+                    "attackRange": { "min": 1, "max": 1 },
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 70,
+                    "reconnaissance": 4
+                  },
+                  "cost": {
+                    "production": 150,
+                    "supply": {
+                      "ammunition": 6,
+                      "fuel": 8,
+                      "repair": 10
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-tank-panzer1-mg",
+                      "name": "MG13",
+                      "type": "MG13",
+                      "ammunition": 10,
+                      "maxAmmunition": 10,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 4
+                    }
+                  ]
+                },
+                {
+                  "id": "blue-tank-panzer2",
+                  "name": "二号戦車",
+                  "type": "Tank",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "armor",
+                  "stats": {
+                    "maxHp": 14,
+                    "attack": 5,
+                    "defense": 4,
+                    "movement": 5,
+                    "attackRange": { "min": 1, "max": 1 },
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 50,
+                    "reconnaissance": 3
+                  },
+                  "cost": {
+                    "production": 200,
+                    "supply": {
+                      "ammunition": 10,
+                      "fuel": 9,
+                      "repair": 15
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-tank-panzer2-gun",
+                      "name": "20mm機関砲",
+                      "type": "20mm機関砲",
+                      "ammunition": 8,
+                      "maxAmmunition": 8,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 5
+                    }
+                  ]
+                },
+                {
+                  "id": "blue-tank-panzer3",
+                  "name": "三号戦車",
+                  "type": "Tank",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "armor",
+                  "stats": {
+                    "maxHp": 18,
+                    "attack": 7,
+                    "defense": 6,
+                    "movement": 5,
+                    "attackRange": { "min": 1, "max": 1 },
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 45,
+                    "reconnaissance": 3
+                  },
+                  "cost": {
+                    "production": 250,
+                    "supply": {
+                      "ammunition": 12,
+                      "fuel": 10,
+                      "repair": 18
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-tank-panzer3-gun",
+                      "name": "50mm戦車砲",
+                      "type": "50mm戦車砲",
+                      "ammunition": 10,
+                      "maxAmmunition": 10,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 7
+                    }
+                  ]
+                },
                 {
                   "id": "blue-tank-medium",
                   "name": "IV号戦車",
@@ -191,6 +305,44 @@
             "antitank": {
               "name": "対戦車科",
               "units": [
+                {
+                  "id": "blue-antitank-37mm",
+                  "name": "37mm対戦車砲",
+                  "type": "AntiTank",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "antitank",
+                  "stats": {
+                    "maxHp": 6,
+                    "attack": 4,
+                    "defense": 2,
+                    "movement": 1,
+                    "attackRange": { "min": 1, "max": 2 },
+                    "canCounterAttack": true,
+                    "unitClass": "Infantry",
+                    "maxFuel": 0,
+                    "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 100,
+                    "supply": {
+                      "ammunition": 8,
+                      "fuel": 0,
+                      "repair": 7
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-antitank-gun-37mm",
+                      "name": "37mm対戦車砲",
+                      "type": "37mm対戦車砲",
+                      "ammunition": 8,
+                      "maxAmmunition": 8,
+                      "range": { "min": 1, "max": 2 },
+                      "attack": 5
+                    }
+                  ]
+                },
                 {
                   "id": "blue-antitank-gun",
                   "name": "PaK 40",
@@ -351,8 +503,8 @@
       }
     },
     "Red": {
-      "name": "連合軍",
-      "description": "The resilient Portland Expeditionary Force.",
+      "name": "ポーランド軍",
+      "description": "The Polish Army, defending their homeland.",
       "branches": {
         "陸": {
           "name": "陸軍",
@@ -361,8 +513,46 @@
               "name": "歩兵科",
               "units": [
                 {
+                  "id": "red-infantry-reservist",
+                  "name": "予備役兵",
+                  "type": "Infantry",
+                  "faction": "Red",
+                  "branch": "陸",
+                  "category": "infantry",
+                  "stats": {
+                    "maxHp": 8,
+                    "attack": 3,
+                    "defense": 2,
+                    "movement": 3,
+                    "attackRange": { "min": 1, "max": 1 },
+                    "canCounterAttack": true,
+                    "unitClass": "Infantry",
+                    "maxFuel": 0,
+                    "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 70,
+                    "supply": {
+                      "ammunition": 4,
+                      "fuel": 0,
+                      "repair": 6
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "red-infantry-old-rifle",
+                      "name": "旧式ライフル",
+                      "type": "Old Service Rifle",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 3
+                    }
+                  ]
+                },
+                {
                   "id": "red-infantry-standard",
-                  "name": "ライフル分隊",
+                  "name": "歩兵分隊",
                   "type": "Infantry",
                   "faction": "Red",
                   "branch": "陸",
@@ -375,22 +565,22 @@
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 50,
+                    "maxFuel": 0,
                     "reconnaissance": 2
                   },
                   "cost": {
                     "production": 100,
                     "supply": {
                       "ammunition": 5,
-                      "fuel": 3,
+                      "fuel": 0,
                       "repair": 8
                     }
                   },
                   "weapons": [
                     {
                       "id": "red-infantry-rifle",
-                      "name": "Service Rifle No.4",
-                      "type": "Service Rifle No.4",
+                      "name": "Karabinek wz. 29",
+                      "type": "Karabinek wz. 29",
                       "ammunition": 8,
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
@@ -404,63 +594,92 @@
               "name": "機甲科",
               "units": [
                 {
-                  "id": "red-tank-medium",
-                  "name": "Valiant中戦車",
+                  "id": "red-tankette-tks",
+                  "name": "TKS豆戦車",
                   "type": "Tank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
                   "stats": {
-                    "maxHp": 22,
-                    "attack": 7,
-                    "defense": 6,
-                    "movement": 4,
+                    "maxHp": 8,
+                    "attack": 3,
+                    "defense": 2,
+                    "movement": 7,
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
-                    "maxFuel": 40,
-                    "reconnaissance": 3
+                    "maxFuel": 60,
+                    "reconnaissance": 4
                   },
                   "cost": {
-                    "production": 320,
+                    "production": 130,
                     "supply": {
-                      "ammunition": 14,
-                      "fuel": 10,
-                      "repair": 22
+                      "ammunition": 8,
+                      "fuel": 6,
+                      "repair": 9
                     }
                   },
                   "weapons": [
                     {
-                      "id": "red-tank-main-gun",
-                      "name": "75mm砲",
-                      "type": "75mm砲",
-                      "ammunition": 11,
-                      "maxAmmunition": 11,
+                      "id": "red-tankette-tks-gun",
+                      "name": "20mm機関砲",
+                      "type": "20mm機関砲",
+                      "ammunition": 10,
+                      "maxAmmunition": 10,
                       "range": { "min": 1, "max": 1 },
-                      "attack": 8
-                    },
+                      "attack": 4
+                    }
+                  ]
+                },
+                {
+                  "id": "red-tank-7tp",
+                  "name": "7TP軽戦車",
+                  "type": "Tank",
+                  "faction": "Red",
+                  "branch": "陸",
+                  "category": "armor",
+                  "stats": {
+                    "maxHp": 16,
+                    "attack": 6,
+                    "defense": 5,
+                    "movement": 5,
+                    "attackRange": { "min": 1, "max": 1 },
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 45,
+                    "reconnaissance": 3
+                  },
+                  "cost": {
+                    "production": 230,
+                    "supply": {
+                      "ammunition": 12,
+                      "fuel": 9,
+                      "repair": 16
+                    }
+                  },
+                  "weapons": [
                     {
-                      "id": "red-tank-mg",
-                      "name": "同軸機銃",
-                      "type": "同軸機銃",
-                      "ammunition": 5,
-                      "maxAmmunition": 5,
+                      "id": "red-tank-7tp-gun",
+                      "name": "Bofors 37mm戦車砲",
+                      "type": "Bofors 37mm戦車砲",
+                      "ammunition": 10,
+                      "maxAmmunition": 10,
                       "range": { "min": 1, "max": 1 },
                       "attack": 6
                     }
                   ]
                 },
                 {
-                  "id": "red-armored-car",
-                  "name": "偵察車",
+                  "id": "red-armored-car-wz34",
+                  "name": "wz.34装甲車",
                   "type": "ArmoredCar",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
                   "stats": {
-                    "maxHp": 15,
-                    "attack": 6,
-                    "defense": 4,
+                    "maxHp": 12,
+                    "attack": 4,
+                    "defense": 3,
                     "movement": 6,
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
@@ -469,22 +688,22 @@
                     "reconnaissance": 3
                   },
                   "cost": {
-                    "production": 180,
+                    "production": 160,
                     "supply": {
                       "ammunition": 8,
                       "fuel": 7,
-                      "repair": 12
+                      "repair": 11
                     }
                   },
                   "weapons": [
                     {
-                      "id": "red-armored-mg",
-                      "name": "車載機銃",
-                      "type": "車載機銃",
-                      "ammunition": 5,
-                      "maxAmmunition": 5,
+                      "id": "red-armored-car-wz34-mg",
+                      "name": "Hotchkiss wz.25",
+                      "type": "Hotchkiss wz.25",
+                      "ammunition": 8,
+                      "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
-                      "attack": 6
+                      "attack": 5
                     }
                   ]
                 }
@@ -494,8 +713,46 @@
               "name": "砲兵科",
               "units": [
                 {
+                  "id": "red-artillery-75mm",
+                  "name": "wz.1897/17 75mm野砲",
+                  "type": "Artillery",
+                  "faction": "Red",
+                  "branch": "陸",
+                  "category": "artillery",
+                  "stats": {
+                    "maxHp": 10,
+                    "attack": 7,
+                    "defense": 2,
+                    "movement": 1,
+                    "attackRange": { "min": 2, "max": 4 },
+                    "canCounterAttack": false,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 25,
+                    "reconnaissance": 1
+                  },
+                  "cost": {
+                    "production": 180,
+                    "supply": {
+                      "ammunition": 15,
+                      "fuel": 4,
+                      "repair": 12
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "red-artillery-gun-75mm",
+                      "name": "Armata polowa 75mm",
+                      "type": "Armata polowa 75mm",
+                      "ammunition": 5,
+                      "maxAmmunition": 5,
+                      "range": { "min": 2, "max": 4 },
+                      "attack": 8
+                    }
+                  ]
+                },
+                {
                   "id": "red-artillery-howitzer",
-                  "name": "105mm野砲",
+                  "name": "wz.1914/19A 100mm榴弾砲",
                   "type": "Artillery",
                   "faction": "Red",
                   "branch": "陸",
@@ -521,9 +778,9 @@
                   },
                   "weapons": [
                     {
-                      "id": "red-artillery-howitzer",
-                      "name": "Field Gun 105mm",
-                      "type": "Field Gun 105mm",
+                      "id": "red-artillery-howitzer-100mm",
+                      "name": "Haubica 100mm",
+                      "type": "Haubica 100mm",
                       "ammunition": 6,
                       "maxAmmunition": 6,
                       "range": { "min": 2, "max": 5 },
@@ -537,40 +794,40 @@
               "name": "対戦車科",
               "units": [
                 {
-                  "id": "red-antitank-gun",
-                  "name": "6ポンド対戦車砲",
+                  "id": "red-antitank-37mm",
+                  "name": "wz.36 37mm対戦車砲",
                   "type": "AntiTank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "antitank",
                   "stats": {
-                    "maxHp": 8,
+                    "maxHp": 6,
                     "attack": 5,
-                    "defense": 4,
+                    "defense": 2,
                     "movement": 1,
                     "attackRange": { "min": 1, "max": 2 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 40,
+                    "maxFuel": 0,
                     "reconnaissance": 1
                   },
                   "cost": {
-                    "production": 140,
+                    "production": 110,
                     "supply": {
-                      "ammunition": 10,
-                      "fuel": 3,
-                      "repair": 9
+                      "ammunition": 8,
+                      "fuel": 0,
+                      "repair": 8
                     }
                   },
                   "weapons": [
                     {
-                      "id": "red-antitank-gun",
-                      "name": "6-pounder AT Gun",
-                      "type": "6-pounder AT Gun",
-                      "ammunition": 9,
-                      "maxAmmunition": 9,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "id": "red-antitank-gun-37mm",
+                      "name": "Bofors 37mm AT Gun",
+                      "type": "Bofors 37mm AT Gun",
+                      "ammunition": 8,
+                      "maxAmmunition": 8,
+                      "range": { "min": 1, "max": 2 },
+                      "attack": 6
                     }
                   ]
                 }
@@ -608,8 +865,8 @@
                   "weapons": [
                     {
                       "id": "red-engineer-rifle",
-                      "name": "M1 Garand",
-                      "type": "M1 Garand",
+                      "name": "Karabinek wz. 29",
+                      "type": "Karabinek wz. 29",
                       "ammunition": 6,
                       "maxAmmunition": 6,
                       "range": { "min": 1, "max": 1 },
@@ -628,7 +885,7 @@
                 },
                 {
                   "id": "red-transport",
-                  "name": "輸送車",
+                  "name": "Polski Fiat 621",
                   "type": "Transport",
                   "faction": "Red",
                   "branch": "陸",

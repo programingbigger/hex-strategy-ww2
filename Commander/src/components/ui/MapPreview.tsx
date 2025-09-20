@@ -3,6 +3,7 @@ import { GameMap } from '../../types';
 
 interface MapPreviewProps {
   selectedMap: GameMap | null;
+  mapType?: 'scenario' | 'tutorial';
 }
 
 interface TerrainColors {
@@ -27,7 +28,7 @@ const terrainColors: TerrainColors = {
   'Mud': '#8B7D6B'
 };
 
-const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
+const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap, mapType = 'scenario' }) => {
   const [mapData, setMapData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,8 +41,9 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     const loadMapData = async () => {
       setLoading(true);
       try {
-        // Load from public/maps/scenario
-        const response = await fetch(`/maps/scenario/${selectedMap.id}.json`);
+        // Load from appropriate directory based on mapType
+        const basePath = mapType === 'tutorial' ? '/maps/tutorial' : '/maps/scenario';
+        const response = await fetch(`${basePath}/${selectedMap.id}.json`);
         if (!response.ok) {
           throw new Error(`Failed to load map: ${response.statusText}`);
         }
@@ -62,7 +64,7 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
     };
 
     loadMapData();
-  }, [selectedMap]);
+  }, [selectedMap, mapType]);
 
   const renderMapPreview = () => {
     if (!mapData || !mapData.board || !mapData.board.tiles) {

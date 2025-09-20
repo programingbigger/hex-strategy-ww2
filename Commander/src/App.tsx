@@ -3,6 +3,7 @@ import { GameScreen, GameState, GameMap, BattlePrepState } from './types';
 import TitleScreen from './screens/TitleScreen';
 import HomeScreen from './screens/HomeScreen';
 import ScenarioSelectScreen from './screens/ScenarioSelectScreen';
+import TutorialIntroductionScreen from './screens/TutorialIntroductionScreen';
 import TutorialSelectScreen from './screens/TutorialSelectScreen';
 import BattlePrepScreen from './screens/BattlePrepScreen';
 import UnitDeploymentScreen from './screens/UnitDeploymentScreen';
@@ -85,6 +86,8 @@ const App: React.FC = () => {
         return <HomeScreen onNavigate={navigateToScreen} />;
       case 'scenario-select':
         return <ScenarioSelectScreen onNavigate={navigateToScreen} />;
+      case 'tutorial-intro':
+        return <TutorialIntroductionScreen onNavigate={navigateToScreen} />;
       case 'tutorial-select':
         return <TutorialSelectScreen onNavigate={navigateToScreen} />;
       case 'battle-prep':

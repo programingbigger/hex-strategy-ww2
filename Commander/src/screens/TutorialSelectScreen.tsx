@@ -55,7 +55,7 @@ const TutorialSelectScreen: React.FC<TutorialSelectScreenProps> = ({ onNavigate 
             <h3 className="panel-title">マップ プレビュー</h3>
           </div>
           <div className="map-preview-area">
-            <MapPreview selectedMap={selectedMap} />
+            <MapPreview selectedMap={selectedMap} mapType="tutorial" />
           </div>
         </div>
 

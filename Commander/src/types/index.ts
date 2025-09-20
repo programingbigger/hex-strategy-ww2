@@ -2,6 +2,7 @@ export type GameScreen =
   | 'title'
   | 'home'
   | 'scenario-select'
+  | 'tutorial-intro'
   | 'tutorial-select'
   | 'battle-prep'
   | 'deployment'
