@@ -112,6 +112,8 @@ interface TurnManagementDeps {
   boardLayout: BoardLayout;
   turn: number;
   month: number;
+  year: number;
+  day: number;
   turnLimit?: number;
   defendingTeam: Team;
   armyFunds: { [team: string]: number };
@@ -120,6 +122,8 @@ interface TurnManagementDeps {
   setBoardLayout: (layout: BoardLayout) => void;
   setTurn: (turn: number) => void;
   setMonth: (month: number) => void;
+  setYear: (year: number) => void;
+  setDay: (day: number) => void;
   setWeather: (weather: WeatherType) => void;
   setEnvironmentalLevels: (levels: EnvironmentalLevels) => void;
   setSelectedUnitId: (id: string | null) => void;
@@ -139,6 +143,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     boardLayout,
     turn,
     month,
+    year,
+    day,
     turnLimit,
     defendingTeam,
     armyFunds,
@@ -147,6 +153,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout,
     setTurn,
     setMonth,
+    setYear,
+    setDay,
     setWeather,
     setEnvironmentalLevels,
     setSelectedUnitId,
@@ -279,8 +287,23 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       const newUnits = [...currentUnits];
       
       for (const reinforcement of reinforcementsToSpawn) {
-        // Check if spawn location is occupied
-        const isOccupied = currentUnits.some(u => 
+        // Validate spawn location exists on the map
+        const spawnTileKey = coordToString(reinforcement.spawnLocation);
+        const spawnTile = boardLayout.get(spawnTileKey);
+
+        if (!spawnTile) {
+          console.error(`❌ Reinforcement spawn location (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y}) is outside map bounds, skipping reinforcement ${reinforcement.id}`);
+          continue;
+        }
+
+        // Check if spawn location has valid terrain for units
+        if (spawnTile.terrain === 'Sea' || spawnTile.terrain === 'FrozenSea' || spawnTile.terrain === 'Mountain') {
+          console.error(`❌ Cannot spawn reinforcement ${reinforcement.id} on impassable terrain: ${spawnTile.terrain} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
+          continue;
+        }
+
+        // Check if spawn location is occupied by existing units
+        const isOccupied = currentUnits.some(u =>
           u.x === reinforcement.spawnLocation.x && u.y === reinforcement.spawnLocation.y
         );
 
@@ -306,8 +329,11 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         // Ensure unit is assigned to correct team from reinforcement config
         newUnit.team = reinforcement.team;
 
-        newUnits.push(newUnit);
+        // Debug: log the full unit state to verify correct flags
         console.log(`✅ Spawned reinforcement: ${reinforcement.description} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
+        console.log(`   Unit state: team=${newUnit.team}, moved=${newUnit.moved}, attacked=${newUnit.attacked}, id=${newUnit.id}`);
+
+        newUnits.push(newUnit);
       }
 
       return newUnits;
@@ -352,10 +378,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     });
 
     let finalUnits = unitsWithHealing;
+    let currentTurnForReinforcements = turn;
 
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
+      currentTurnForReinforcements = newTurn;
       
       if (turnLimit && newTurn > turnLimit) {
         setGameState('gameOver');
@@ -378,13 +406,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       } catch (error) {
         console.error('❌ Error calculating income:', error);
       }
-      
-      // Check for reinforcements at the start of Blue's turn (beginning of new turn)
-      finalUnits = await spawnReinforcements(newTurn, unitsWithHealing);
-      if (finalUnits !== unitsWithHealing) {
-        setUnits(finalUnits);
-      }
-      
+
       // Monthly weather probability system
       const { generateWeatherForMonth, getMonthFromTurn } = await import('../../data/weatherConfig');
       const currentMonth = getMonthFromTurn(newTurn);
@@ -563,12 +585,13 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       } else {
         log(`🗺️ NO TERRAIN CHANGES: Environmental levels did not trigger any terrain modifications`);
       }
-    } else {
-      // Check for reinforcements at the start of Red's turn (enemy turn)
-      finalUnits = await spawnReinforcements(turn, unitsWithHealing);
-      if (finalUnits !== unitsWithHealing) {
-        setUnits(finalUnits);
-      }
+    }
+
+    // Check for reinforcements for both teams using consistent turn numbering
+    console.log(`🟢 Checking reinforcements for turn ${currentTurnForReinforcements}`);
+    finalUnits = await spawnReinforcements(currentTurnForReinforcements, unitsWithHealing);
+    if (finalUnits !== unitsWithHealing) {
+      setUnits(finalUnits);
     }
     
     setBoardLayout(newBoardLayout);

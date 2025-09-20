@@ -107,6 +107,8 @@ export interface GameState {
   activeTeam: Team;
   turn: number;
   month?: number; // Month of the year (1-12) for weather probability
+  year?: number; // Year for date display
+  day?: number; // Day of the month for date display
   winner?: Team;
   gameState?: 'playing' | 'gameOver';
   weather?: WeatherType;
@@ -209,6 +211,11 @@ export interface BattlePrepState {
   selectedUnits: Unit[];
   deployedUnits: Map<string, { x: number; y: number }>;
   victoryConditions: string[];
+  startDate?: {
+    year: number;
+    month: number;
+    day: number;
+  };
 }
 
 export interface DeploymentCoordinate {

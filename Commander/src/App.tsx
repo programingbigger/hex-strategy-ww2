@@ -52,13 +52,15 @@ const App: React.FC = () => {
         currentScreen: screen
       }));
     }
-  };;
+  };
 
   const updateBattlePrep = (battlePrep: BattlePrepState, startingMonth?: number) => {
     setGameState(prev => ({
       ...prev,
       battlePrep,
-      month: startingMonth || prev.month || 1
+      month: battlePrep.startDate?.month || startingMonth || prev.month || 1,
+      year: battlePrep.startDate?.year || prev.year || 1944,
+      day: battlePrep.startDate?.day || prev.day || 1
     }));
   };
 

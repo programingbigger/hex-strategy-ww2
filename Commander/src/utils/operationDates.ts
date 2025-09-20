@@ -7,6 +7,9 @@ export interface OperationPeriod {
   endDate: string;
   monthName: string;
   season: string;
+  year: number;
+  month: number;
+  day: number;
 }
 
 /**
@@ -14,7 +17,7 @@ export interface OperationPeriod {
  * @param month Month number (1-12)
  * @returns Operation period with formatted dates
  */
-export function getOperationPeriod(month: number): OperationPeriod {
+export function getOperationPeriod(month: number, year: number = 1944, day: number = 1): OperationPeriod {
   const monthNames = [
     '1月', '2月', '3月', '4月', '5月', '6月',
     '7月', '8月', '9月', '10月', '11月', '12月'
@@ -23,19 +26,36 @@ export function getOperationPeriod(month: number): OperationPeriod {
   const seasonNames = ['冬', '春', '夏', '秋'];
   const seasonIndex = Math.floor((month % 12) / 3);
   
-  // Calculate operation dates (assuming each operation lasts about 2 weeks in that month)
-  const year = 1944; // WW2 setting
-  const startDay = 1 + Math.floor(Math.random() * 5); // Random start within first week
-  const endDay = startDay + 13 + Math.floor(Math.random() * 4); // ~2 weeks duration
+  // Calculate operation dates (assuming each operation lasts about 2 weeks from the specified start date)
+  const startDay = day;
+  const endDay = startDay + 13; // ~2 weeks duration
+  const daysInMonth = getDaysInMonth(month, year);
+  
+  let actualEndDay = endDay;
+  let endMonth = month;
+  let endYear = year;
+  
+  // Handle month/year overflow
+  if (endDay > daysInMonth) {
+    actualEndDay = endDay - daysInMonth;
+    endMonth = month + 1;
+    if (endMonth > 12) {
+      endMonth = 1;
+      endYear = year + 1;
+    }
+  }
   
   const startDate = `${year}年${month}月${startDay}日`;
-  const endDate = `${year}年${month}月${Math.min(endDay, getDaysInMonth(month, year))}日`;
+  const endDate = `${endYear}年${endMonth}月${actualEndDay}日`;
   
   return {
     startDate,
     endDate,
     monthName: monthNames[month - 1] || '1月',
-    season: seasonNames[seasonIndex]
+    season: seasonNames[seasonIndex],
+    year,
+    month,
+    day: startDay
   };
 }
 
@@ -64,6 +84,25 @@ export function getMonthNames(): string[] {
     '1月', '2月', '3月', '4月', '5月', '6月',
     '7月', '8月', '9月', '10月', '11月', '12月'
   ];
+}
+
+/**
+ * Get available years for operation selection
+ * @returns Array of years for WW2 period
+ */
+export function getAvailableYears(): number[] {
+  return [1942, 1943, 1944, 1945];
+}
+
+/**
+ * Get available days for a given month and year
+ * @param month Month number (1-12)
+ * @param year Year
+ * @returns Array of available days
+ */
+export function getAvailableDays(month: number, year: number): number[] {
+  const daysInMonth = getDaysInMonth(month, year);
+  return Array.from({ length: daysInMonth }, (_, i) => i + 1);
 }
 
 /**

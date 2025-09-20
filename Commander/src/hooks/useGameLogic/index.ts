@@ -82,6 +82,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     boardLayout: gameState.boardLayout,
     turn: gameState.turn,
     month: gameState.month,
+    year: gameState.year,
+    day: gameState.day,
     turnLimit: gameState.turnLimit,
     defendingTeam: gameState.defendingTeam,
     armyFunds: gameState.armyFunds,
@@ -90,6 +92,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setBoardLayout: gameState.setBoardLayout,
     setTurn: gameState.setTurn,
     setMonth: gameState.setMonth,
+    setYear: gameState.setYear,
+    setDay: gameState.setDay,
     setWeather: gameState.setWeather,
     setEnvironmentalLevels: gameState.setEnvironmentalLevels,
     setSelectedUnitId: gameState.setSelectedUnitId,
@@ -418,6 +422,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     gameState: gameState.gameState,
     turn: gameState.turn,
     month: gameState.month,
+    year: gameState.year,
+    day: gameState.day,
     activeTeam: gameState.activeTeam,
     boardLayout: gameState.boardLayout,
     units: gameState.units,
@@ -459,6 +465,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     // Game state methods
     loadGame: gameState.loadGame,
     saveStateToHistory: gameState.saveStateToHistory,
+    setYear: gameState.setYear,
+    setDay: gameState.setDay,
     
     // UI state setters
     setHoveredHex: uiStates.setHoveredHex,

@@ -8,24 +8,24 @@ interface HomeScreenProps {
 const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   return (
     <div className="screen home-screen">
-      {/* Video Background */}
-      <video
-        className="home-video-background"
-        autoPlay
-        muted
-        loop
-        playsInline
-      >
-        <source src="/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {/* Content Overlay */}
-      <div className="home-content-overlay">
         <div className="home-content-container">
           <div className="home-header">
             <h1 className="screen-title-home">MODE SELECT</h1>
             <p className="home-subtitle">Choose your battle experience</p>
+          </div>
+
+          {/* Video */}
+          <div className="home-video-container">
+            <video
+              className="home-video-background"
+              autoPlay
+              muted
+              loop
+              playsInline
+            >
+              <source src="/assets/videos/intro/game-introduction.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           <div className="home-menu-grid">
@@ -75,7 +75,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
             </button>
           </div>
         </div>
-      </div>
     </div>
   );
 };
