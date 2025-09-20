@@ -378,10 +378,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     });
 
     let finalUnits = unitsWithHealing;
+    let currentTurnForReinforcements = turn;
 
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
+      currentTurnForReinforcements = newTurn;
       
       if (turnLimit && newTurn > turnLimit) {
         setGameState('gameOver');
@@ -404,13 +406,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       } catch (error) {
         console.error('❌ Error calculating income:', error);
       }
-      
-      // Check for reinforcements at the start of Blue's turn (beginning of new turn)
-      finalUnits = await spawnReinforcements(newTurn, unitsWithHealing);
-      if (finalUnits !== unitsWithHealing) {
-        setUnits(finalUnits);
-      }
-      
+
       // Monthly weather probability system
       const { generateWeatherForMonth, getMonthFromTurn } = await import('../../data/weatherConfig');
       const currentMonth = getMonthFromTurn(newTurn);
@@ -589,13 +585,13 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       } else {
         log(`🗺️ NO TERRAIN CHANGES: Environmental levels did not trigger any terrain modifications`);
       }
-    } else {
-      // Check for reinforcements at the start of Red's turn (enemy turn)
-      // Use the same turn number since Red's turn is part of the same turn cycle
-      finalUnits = await spawnReinforcements(turn, unitsWithHealing);
-      if (finalUnits !== unitsWithHealing) {
-        setUnits(finalUnits);
-      }
+    }
+
+    // Check for reinforcements for both teams using consistent turn numbering
+    console.log(`🟢 Checking reinforcements for turn ${currentTurnForReinforcements}`);
+    finalUnits = await spawnReinforcements(currentTurnForReinforcements, unitsWithHealing);
+    if (finalUnits !== unitsWithHealing) {
+      setUnits(finalUnits);
     }
     
     setBoardLayout(newBoardLayout);

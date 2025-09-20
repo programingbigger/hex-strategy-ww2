@@ -131,6 +131,15 @@
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
                       "attack": 5
+                    },
+                    {
+                      "id": "blue-tank-mg",
+                      "name": "MG34",
+                      "type": "MG34",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 7
                     }
                   ]
                 },
@@ -167,6 +176,15 @@
                       "type": "50mm戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": 7
+                    },
+                    {
+                      "id": "blue-tank-mg",
+                      "name": "MG34",
+                      "type": "MG34",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
                       "range": { "min": 1, "max": 1 },
                       "attack": 7
                     }
@@ -523,7 +541,7 @@
                     "maxHp": 8,
                     "attack": 3,
                     "defense": 2,
-                    "movement": 3,
+                    "movement": 2,
                     "attackRange": { "min": 1, "max": 1 },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
