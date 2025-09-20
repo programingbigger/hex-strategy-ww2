@@ -39,17 +39,18 @@ const unitNameCache = new Map<string, string>();
 
 /**
  * Extract the base unit ID from a unit instance ID with numbering
- * @param instanceId - The unit instance ID (e.g., "blue-infantry-standard-1")
- * @returns The base unit ID (e.g., "blue-infantry-standard")
+ * @param instanceId - The unit instance ID (e.g., "blue-infantry-standard-1758359257841" or "blue-tank-panzer_3-123")
+ * @returns The base unit ID (e.g., "blue-infantry-standard" or "blue-tank-panzer_3")
  */
 export function extractBaseUnitId(instanceId: string): string {
-  // Pattern: {base-id}-{number} -> extract {base-id}
-  const lastDashIndex = instanceId.lastIndexOf('-');
-  if (lastDashIndex !== -1) {
-    const afterLastDash = instanceId.substring(lastDashIndex + 1);
-    // Check if the part after the last dash is a number
-    if (/^\d+$/.test(afterLastDash)) {
-      return instanceId.substring(0, lastDashIndex);
+  // Split by hyphens and check if the last part is a number (any number of digits)
+  const parts = instanceId.split('-');
+  if (parts.length > 1) {
+    const lastPart = parts[parts.length - 1];
+    // Check if the last part is a pure number (including long timestamp-like numbers)
+    if (/^\d+$/.test(lastPart)) {
+      // Remove the last part and rejoin with hyphens
+      return parts.slice(0, -1).join('-');
     }
   }
   // If no number pattern found, return the original ID

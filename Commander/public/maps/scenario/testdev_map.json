@@ -20,43 +20,43 @@
       "id": "blue-infantry-standard",
       "faction": "Blue",
       "count": 2,
-      "unitId": "player-infantry"
+      "unitId": "blue-infantry-standard"
     },
     {
       "id": "blue-tank-medium",
       "faction": "Blue",
       "count": 2,
-      "unitId": "player-tank"
+      "unitId": "blue-tank-medium"
     },
     {
       "id": "blue-armored-car",
       "faction": "Blue",
       "count": 2,
-      "unitId": "player-armored"
+      "unitId": "blue-armored-car"
     },
     {
       "id": "blue-artillery-howitzer",
       "faction": "Blue",
       "count": 1,
-      "unitId": "player-artillery"
+      "unitId": "blue-artillery-howitzer"
     },
     {
-      "id": "blue-antitank-gun",
+      "id": "blue-antitank-gun_pak_40",
       "faction": "Blue",
       "count": 1,
-      "unitId": "player-antitank"
+      "unitId": "blue-antitank-gun_pak_40"
     },
     {
       "id": "blue-engineer",
       "faction": "Blue",
       "count": 1,
-      "unitId": "player-engineer"
+      "unitId": "blue-engineer"
     },
     {
       "id": "blue-transport",
       "faction": "Blue",
       "count": 1,
-      "unitId": "player-transport"
+      "unitId": "blue-transport"
     }
   ],
   "initialCameraPosition": {
@@ -131,7 +131,7 @@
   },
   "units": [
     {
-      "id": "u-0",
+      "id": "blue-tank-medium-1",
       "type": "Tank",
       "team": "Blue",
       "x": -4,
@@ -154,7 +154,7 @@
       "attacked": false
     },
     {
-      "id": "u-1",
+      "id": "blue-infantry-standard-1",
       "type": "Infantry",
       "team": "Blue",
       "x": -3,
@@ -177,7 +177,7 @@
       "attacked": false
     },
     {
-      "id": "u-2",
+      "id": "blue-armored-car-1",
       "type": "ArmoredCar",
       "team": "Blue",
       "x": -5,
@@ -200,7 +200,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry",
+      "id": "red-infantry-standard-1",
       "type": "Infantry",
       "team": "Red",
       "x": 4,
@@ -223,7 +223,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-tank",
+      "id": "red-tank-7tp-1",
       "type": "Tank",
       "team": "Red",
       "x": 4,
@@ -246,7 +246,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-armoredcar",
+      "id": "red-armored-car_wz34-1",
       "type": "ArmoredCar",
       "team": "Red",
       "x": 4,
@@ -269,7 +269,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery",
+      "id": "red-artillery-75mm-1",
       "type": "Artillery",
       "team": "Red",
       "x": 3,
@@ -292,7 +292,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank",
+      "id": "red-antitank-gun_37mm-1",
       "type": "AntiTank",
       "team": "Red",
       "x": 3,
@@ -315,8 +315,8 @@
       "attacked": false
     },
     {
-      "id": "enemy-engineer",
-      "type": "Engineer", 
+      "id": "red-engineer-1",
+      "type": "Engineer",
       "team": "Red",
       "x": 2,
       "y": 2,
@@ -338,7 +338,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-transport",
+      "id": "red-transport-1",
       "type": "Transport",
       "team": "Red", 
       "x": 1,

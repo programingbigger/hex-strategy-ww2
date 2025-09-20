@@ -220,7 +220,7 @@ export const getPlayerStartingUnits = async (mapId?: string): Promise<Unit[]> =>
   
   // Default hardcoded units (fallback)
   return [
-    createUnit('player-infantry-1', 'Infantry', 'Blue'),
+    createUnit('blue-infantry-standard-1', 'Infantry', 'Blue'),
   ];
 };;
 

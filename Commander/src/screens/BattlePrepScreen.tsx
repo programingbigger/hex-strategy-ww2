@@ -3,6 +3,7 @@ import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
 import ReinforcementPreview from '../components/game/ReinforcementPreview';
 import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext } from '../utils/operationDates';
+import { getUnitNameById } from '../utils/unitNames';
 
 interface BattlePrepScreenProps {
   gameState: GameState;
@@ -160,7 +161,7 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
                 }}
               >
                 <div style={{ fontWeight: 'bold', fontSize: '20px', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {unit.type}
+                  {getUnitNameById(unit.id)}
                   {selectedUnits.find(u => u.id === unit.id) && (
                     <span style={{ background: '#27ae60', color: 'white', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 'bold' }}>✓</span>
                   )}
@@ -185,7 +186,7 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
             ) : (
               selectedUnits.map(unit => (
                 <div key={unit.id} style={{ background: 'rgba(142, 68, 173, 0.2)', border: '2px solid #8e44ad', borderRadius: '10px', padding: '18px', boxShadow: '0 4px 10px rgba(142, 68, 173, 0.3)' }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '8px' }}>{unit.type}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '8px' }}>{getUnitNameById(unit.id)}</div>
                   <div style={{ fontSize: '16px', opacity: 0.9 }}>HP: {unit.hp} | ATK: {unit.attack} | DEF: {unit.defense}</div>
                 </div>
               ))

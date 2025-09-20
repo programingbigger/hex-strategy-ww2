@@ -2,6 +2,7 @@ import React from 'react';
 import { Unit, Weapon } from '../../types';
 import { getWeaponsInRange } from '../../utils/weapons';
 import { getDistance } from '../../utils/map';
+import { getUnitNameById } from '../../utils/unitNames';
 
 interface WeaponSelectorModalProps {
   isOpen: boolean;
@@ -104,7 +105,7 @@ export const WeaponSelectorModal: React.FC<WeaponSelectorModalProps> = ({
         <div className="modal-header" style={{ marginBottom: '20px' }}>
           <h3 style={{ margin: 0, color: '#ffd700' }}>武器選択</h3>
           <p style={{ margin: '8px 0', fontSize: '14px', color: '#ccc' }}>
-            {attacker.type} → {target.type} (距離: {distance}hex)
+            {getUnitNameById(attacker.id)} → {getUnitNameById(target.id)} (距離: {distance}hex)
           </p>
           <p style={{ margin: '8px 0', fontSize: '12px', color: '#ffd700', fontWeight: 'bold' }}>
             ⚡ 使用する武器をクリックして選択してください

@@ -23,1073 +23,5396 @@
   },
   "board": {
     "tiles": [
-      {"x": -16, "y": -9, "terrain": "Forest"},
-      {"x": -15, "y": -9, "terrain": "Plains"},
-      {"x": -14, "y": -9, "terrain": "Road"},
-      {"x": -13, "y": -9, "terrain": "Plains"},
-      {"x": -12, "y": -9, "terrain": "Forest"},
-      {"x": -11, "y": -9, "terrain": "Forest"},
-      {"x": -10, "y": -9, "terrain": "Forest"},
-      {"x": -9, "y": -9, "terrain": "Forest"},
-      {"x": -8, "y": -9, "terrain": "Forest"},
-      {"x": -7, "y": -9, "terrain": "Plains"},
-      {"x": -6, "y": -9, "terrain": "Plains"},
-      {"x": -5, "y": -9, "terrain": "Plains"},
-      {"x": -4, "y": -9, "terrain": "Plains"},
-      {"x": -3, "y": -9, "terrain": "Plains"},
-      {"x": -2, "y": -9, "terrain": "Plains"},
-      {"x": -1, "y": -9, "terrain": "Plains"},
-      {"x": 0, "y": -9, "terrain": "Plains"},
-      {"x": 1, "y": -9, "terrain": "Plains"},
-      {"x": 2, "y": -9, "terrain": "Plains"},
-      {"x": 3, "y": -9, "terrain": "Forest"},
-      {"x": 4, "y": -9, "terrain": "Plains"},
-      {"x": 5, "y": -9, "terrain": "Plains"},
-      {"x": 6, "y": -9, "terrain": "Plains"},
-      {"x": 7, "y": -9, "terrain": "Plains"},
-      {"x": 8, "y": -9, "terrain": "Plains"},
-      {"x": 9, "y": -9, "terrain": "River"},
-      {"x": 10, "y": -9, "terrain": "Plains"},
-      {"x": 11, "y": -9, "terrain": "Plains"},
-      {"x": 12, "y": -9, "terrain": "Plains"},
-      {"x": 13, "y": -9, "terrain": "Plains"},
-      {"x": 14, "y": -9, "terrain": "Plains"},
-      {"x": 15, "y": -9, "terrain": "Plains"},
-      {"x": 16, "y": -9, "terrain": "Plains"},
-      {"x": 17, "y": -9, "terrain": "Plains"},
-      {"x": 18, "y": -9, "terrain": "Forest"},
-      {"x": 19, "y": -9, "terrain": "Plains"},
-      {"x": 20, "y": -9, "terrain": "Plains"},
-      {"x": 21, "y": -9, "terrain": "Plains"},
-      {"x": 22, "y": -9, "terrain": "Plains"},
-      {"x": 23, "y": -9, "terrain": "Plains"},
-      {"x": 24, "y": -9, "terrain": "Plains"},
-      {"x": 25, "y": -9, "terrain": "Plains"},
-      {"x": -17, "y": -8, "terrain": "Forest"},
-      {"x": -16, "y": -8, "terrain": "Plains"},
-      {"x": -15, "y": -8, "terrain": "Plains"},
-      {"x": -14, "y": -8, "terrain": "Road"},
-      {"x": -13, "y": -8, "terrain": "Plains"},
-      {"x": -12, "y": -8, "terrain": "Forest"},
-      {"x": -11, "y": -8, "terrain": "Forest"},
-      {"x": -10, "y": -8, "terrain": "Forest"},
-      {"x": -9, "y": -8, "terrain": "Forest"},
-      {"x": -8, "y": -8, "terrain": "Plains"},
-      {"x": -7, "y": -8, "terrain": "Plains"},
-      {"x": -6, "y": -8, "terrain": "Plains"},
-      {"x": -5, "y": -8, "terrain": "Plains"},
-      {"x": -4, "y": -8, "terrain": "Plains"},
-      {"x": -3, "y": -8, "terrain": "Plains"},
-      {"x": -2, "y": -8, "terrain": "Plains"},
-      {"x": -1, "y": -8, "terrain": "Plains"},
-      {"x": 0, "y": -8, "terrain": "Plains"},
-      {"x": 1, "y": -8, "terrain": "Plains"},
-      {"x": 2, "y": -8, "terrain": "Plains"},
-      {"x": 3, "y": -8, "terrain": "Plains"},
-      {"x": 4, "y": -8, "terrain": "Plains"},
-      {"x": 5, "y": -8, "terrain": "Forest"},
-      {"x": 6, "y": -8, "terrain": "Plains"},
-      {"x": 7, "y": -8, "terrain": "Plains"},
-      {"x": 8, "y": -8, "terrain": "Plains"},
-      {"x": 9, "y": -8, "terrain": "River"},
-      {"x": 10, "y": -8, "terrain": "Plains"},
-      {"x": 11, "y": -8, "terrain": "Plains"},
-      {"x": 12, "y": -8, "terrain": "Plains"},
-      {"x": 13, "y": -8, "terrain": "Plains"},
-      {"x": 14, "y": -8, "terrain": "Plains"},
-      {"x": 15, "y": -8, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 16, "y": -8, "terrain": "Plains"},
-      {"x": 17, "y": -8, "terrain": "Plains"},
-      {"x": 18, "y": -8, "terrain": "Plains"},
-      {"x": 19, "y": -8, "terrain": "Plains"},
-      {"x": 20, "y": -8, "terrain": "Forest"},
-      {"x": 21, "y": -8, "terrain": "Plains"},
-      {"x": 22, "y": -8, "terrain": "Plains"},
-      {"x": 23, "y": -8, "terrain": "Plains"},
-      {"x": 24, "y": -8, "terrain": "Plains"},
-      {"x": 25, "y": -8, "terrain": "Plains"},
-      {"x": -17, "y": -7, "terrain": "Plains"},
-      {"x": -16, "y": -7, "terrain": "Plains"},
-      {"x": -15, "y": -7, "terrain": "Plains"},
-      {"x": -14, "y": -7, "terrain": "Road"},
-      {"x": -13, "y": -7, "terrain": "Plains"},
-      {"x": -12, "y": -7, "terrain": "Forest"},
-      {"x": -11, "y": -7, "terrain": "Plains"},
-      {"x": -10, "y": -7, "terrain": "Plains"},
-      {"x": -9, "y": -7, "terrain": "Plains"},
-      {"x": -8, "y": -7, "terrain": "Plains"},
-      {"x": -7, "y": -7, "terrain": "Plains"},
-      {"x": -6, "y": -7, "terrain": "Plains"},
-      {"x": -5, "y": -7, "terrain": "Plains"},
-      {"x": -4, "y": -7, "terrain": "Plains"},
-      {"x": -3, "y": -7, "terrain": "Plains"},
-      {"x": -2, "y": -7, "terrain": "Plains"},
-      {"x": -1, "y": -7, "terrain": "Plains"},
-      {"x": 0, "y": -7, "terrain": "Plains"},
-      {"x": 1, "y": -7, "terrain": "Forest"},
-      {"x": 2, "y": -7, "terrain": "Plains"},
-      {"x": 3, "y": -7, "terrain": "Plains"},
-      {"x": 4, "y": -7, "terrain": "Plains"},
-      {"x": 5, "y": -7, "terrain": "Plains"},
-      {"x": 6, "y": -7, "terrain": "Plains"},
-      {"x": 7, "y": -7, "terrain": "Plains"},
-      {"x": 8, "y": -7, "terrain": "Plains"},
-      {"x": 9, "y": -7, "terrain": "River"},
-      {"x": 10, "y": -7, "terrain": "Plains"},
-      {"x": 11, "y": -7, "terrain": "Plains"},
-      {"x": 12, "y": -7, "terrain": "Plains"},
-      {"x": 13, "y": -7, "terrain": "Plains"},
-      {"x": 14, "y": -7, "terrain": "Plains"},
-      {"x": 15, "y": -7, "terrain": "Forest"},
-      {"x": 16, "y": -7, "terrain": "Plains"},
-      {"x": 17, "y": -7, "terrain": "Plains"},
-      {"x": 18, "y": -7, "terrain": "Plains"},
-      {"x": 19, "y": -7, "terrain": "Plains"},
-      {"x": 20, "y": -7, "terrain": "Plains"},
-      {"x": 21, "y": -7, "terrain": "Plains"},
-      {"x": 22, "y": -7, "terrain": "Plains"},
-      {"x": 23, "y": -7, "terrain": "Plains"},
-      {"x": 24, "y": -7, "terrain": "Plains"},
-      {"x": -18, "y": -6, "terrain": "Plains"},
-      {"x": -17, "y": -6, "terrain": "Plains"},
-      {"x": -16, "y": -6, "terrain": "Plains"},
-      {"x": -15, "y": -6, "terrain": "Plains"},
-      {"x": -14, "y": -6, "terrain": "Road"},
-      {"x": -13, "y": -6, "terrain": "Plains"},
-      {"x": -12, "y": -6, "terrain": "Plains"},
-      {"x": -11, "y": -6, "terrain": "Plains"},
-      {"x": -10, "y": -6, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -9, "y": -6, "terrain": "Plains"},
-      {"x": -8, "y": -6, "terrain": "Forest"},
-      {"x": -7, "y": -6, "terrain": "Plains"},
-      {"x": -6, "y": -6, "terrain": "Plains"},
-      {"x": -5, "y": -6, "terrain": "Plains"},
-      {"x": -4, "y": -6, "terrain": "Plains"},
-      {"x": -3, "y": -6, "terrain": "Plains"},
-      {"x": -2, "y": -6, "terrain": "Plains"},
-      {"x": -1, "y": -6, "terrain": "Plains"},
-      {"x": 0, "y": -6, "terrain": "Plains"},
-      {"x": 1, "y": -6, "terrain": "Plains"},
-      {"x": 2, "y": -6, "terrain": "Plains"},
-      {"x": 3, "y": -6, "terrain": "Plains"},
-      {"x": 4, "y": -6, "terrain": "Forest"},
-      {"x": 5, "y": -6, "terrain": "Plains"},
-      {"x": 6, "y": -6, "terrain": "Plains"},
-      {"x": 7, "y": -6, "terrain": "Plains"},
-      {"x": 8, "y": -6, "terrain": "Plains"},
-      {"x": 9, "y": -6, "terrain": "River"},
-      {"x": 10, "y": -6, "terrain": "Plains"},
-      {"x": 11, "y": -6, "terrain": "Plains"},
-      {"x": 12, "y": -6, "terrain": "Plains"},
-      {"x": 13, "y": -6, "terrain": "Plains"},
-      {"x": 14, "y": -6, "terrain": "Plains"},
-      {"x": 15, "y": -6, "terrain": "Plains"},
-      {"x": 16, "y": -6, "terrain": "Plains"},
-      {"x": 17, "y": -6, "terrain": "Forest"},
-      {"x": 18, "y": -6, "terrain": "Forest"},
-      {"x": 19, "y": -6, "terrain": "Forest"},
-      {"x": 20, "y": -6, "terrain": "Forest"},
-      {"x": 21, "y": -6, "terrain": "Forest"},
-      {"x": 22, "y": -6, "terrain": "Plains"},
-      {"x": 23, "y": -6, "terrain": "Plains"},
-      {"x": 24, "y": -6, "terrain": "Plains"},
-      {"x": -18, "y": -5, "terrain": "Plains"},
-      {"x": -17, "y": -5, "terrain": "Plains"},
-      {"x": -16, "y": -5, "terrain": "Plains"},
-      {"x": -15, "y": -5, "terrain": "Plains"},
-      {"x": -14, "y": -5, "terrain": "Road"},
-      {"x": -13, "y": -5, "terrain": "Plains"},
-      {"x": -12, "y": -5, "terrain": "Plains"},
-      {"x": -11, "y": -5, "terrain": "Plains"},
-      {"x": -10, "y": -5, "terrain": "Plains"},
-      {"x": -9, "y": -5, "terrain": "Forest"},
-      {"x": -8, "y": -5, "terrain": "Plains"},
-      {"x": -7, "y": -5, "terrain": "Plains"},
-      {"x": -6, "y": -5, "terrain": "Plains"},
-      {"x": -5, "y": -5, "terrain": "Plains"},
-      {"x": -4, "y": -5, "terrain": "Plains"},
-      {"x": -3, "y": -5, "terrain": "Plains"},
-      {"x": -2, "y": -5, "terrain": "Plains"},
-      {"x": -1, "y": -5, "terrain": "Plains"},
-      {"x": 0, "y": -5, "terrain": "Plains"},
-      {"x": 1, "y": -5, "terrain": "Plains"},
-      {"x": 2, "y": -5, "terrain": "Plains"},
-      {"x": 3, "y": -5, "terrain": "Plains"},
-      {"x": 4, "y": -5, "terrain": "Plains"},
-      {"x": 5, "y": -5, "terrain": "Plains"},
-      {"x": 6, "y": -5, "terrain": "Plains"},
-      {"x": 7, "y": -5, "terrain": "Forest"},
-      {"x": 8, "y": -5, "terrain": "Plains"},
-      {"x": 9, "y": -5, "terrain": "River"},
-      {"x": 10, "y": -5, "terrain": "Forest"},
-      {"x": 11, "y": -5, "terrain": "Forest"},
-      {"x": 12, "y": -5, "terrain": "Forest"},
-      {"x": 13, "y": -5, "terrain": "Forest"},
-      {"x": 14, "y": -5, "terrain": "Forest"},
-      {"x": 15, "y": -5, "terrain": "Forest"},
-      {"x": 16, "y": -5, "terrain": "Plains"},
-      {"x": 17, "y": -5, "terrain": "Plains"},
-      {"x": 18, "y": -5, "terrain": "Plains"},
-      {"x": 19, "y": -5, "terrain": "Plains"},
-      {"x": 20, "y": -5, "terrain": "Plains"},
-      {"x": 21, "y": -5, "terrain": "Plains"},
-      {"x": 22, "y": -5, "terrain": "Forest"},
-      {"x": 23, "y": -5, "terrain": "Plains"},
-      {"x": -19, "y": -4, "terrain": "Plains"},
-      {"x": -18, "y": -4, "terrain": "Plains"},
-      {"x": -17, "y": -4, "terrain": "Plains"},
-      {"x": -16, "y": -4, "terrain": "Plains"},
-      {"x": -15, "y": -4, "terrain": "Plains"},
-      {"x": -14, "y": -4, "terrain": "Road"},
-      {"x": -13, "y": -4, "terrain": "Plains"},
-      {"x": -12, "y": -4, "terrain": "Plains"},
-      {"x": -11, "y": -4, "terrain": "Forest"},
-      {"x": -10, "y": -4, "terrain": "Plains"},
-      {"x": -9, "y": -4, "terrain": "Plains"},
-      {"x": -8, "y": -4, "terrain": "Plains"},
-      {"x": -7, "y": -4, "terrain": "Plains"},
-      {"x": -6, "y": -4, "terrain": "Plains"},
-      {"x": -5, "y": -4, "terrain": "Plains"},
-      {"x": -4, "y": -4, "terrain": "Plains"},
-      {"x": -3, "y": -4, "terrain": "Plains"},
-      {"x": -2, "y": -4, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -1, "y": -4, "terrain": "Plains"},
-      {"x": 0, "y": -4, "terrain": "Plains"},
-      {"x": 1, "y": -4, "terrain": "Plains"},
-      {"x": 2, "y": -4, "terrain": "Forest"},
-      {"x": 3, "y": -4, "terrain": "Plains"},
-      {"x": 4, "y": -4, "terrain": "Plains"},
-      {"x": 5, "y": -4, "terrain": "Plains"},
-      {"x": 6, "y": -4, "terrain": "Plains"},
-      {"x": 7, "y": -4, "terrain": "Plains"},
-      {"x": 8, "y": -4, "terrain": "Plains"},
-      {"x": 9, "y": -4, "terrain": "River"},
-      {"x": 10, "y": -4, "terrain": "Forest"},
-      {"x": 11, "y": -4, "terrain": "Forest"},
-      {"x": 12, "y": -4, "terrain": "Forest"},
-      {"x": 13, "y": -4, "terrain": "Forest"},
-      {"x": 14, "y": -4, "terrain": "Forest"},
-      {"x": 15, "y": -4, "terrain": "Forest"},
-      {"x": 16, "y": -4, "terrain": "Plains"},
-      {"x": 17, "y": -4, "terrain": "Plains"},
-      {"x": 18, "y": -4, "terrain": "Plains"},
-      {"x": 19, "y": -4, "terrain": "Forest"},
-      {"x": 20, "y": -4, "terrain": "Plains"},
-      {"x": 21, "y": -4, "terrain": "Plains"},
-      {"x": 22, "y": -4, "terrain": "Plains"},
-      {"x": 23, "y": -4, "terrain": "Plains"},
-      {"x": -19, "y": -3, "terrain": "River"},
-      {"x": -18, "y": -3, "terrain": "River"},
-      {"x": -17, "y": -3, "terrain": "River"},
-      {"x": -16, "y": -3, "terrain": "Plains"},
-      {"x": -15, "y": -3, "terrain": "Forest"},
-      {"x": -14, "y": -3, "terrain": "Road"},
-      {"x": -13, "y": -3, "terrain": "Plains"},
-      {"x": -12, "y": -3, "terrain": "Plains"},
-      {"x": -11, "y": -3, "terrain": "Plains"},
-      {"x": -10, "y": -3, "terrain": "Plains"},
-      {"x": -9, "y": -3, "terrain": "Plains"},
-      {"x": -8, "y": -3, "terrain": "Road"},
-      {"x": -7, "y": -3, "terrain": "Road"},
-      {"x": -6, "y": -3, "terrain": "Road"},
-      {"x": -5, "y": -3, "terrain": "Road"},
-      {"x": -4, "y": -3, "terrain": "Road"},
-      {"x": -3, "y": -3, "terrain": "Road"},
-      {"x": -2, "y": -3, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red"},
-      {"x": -1, "y": -3, "terrain": "Road"},
-      {"x": 0, "y": -3, "terrain": "Road"},
-      {"x": 1, "y": -3, "terrain": "Road"},
-      {"x": 2, "y": -3, "terrain": "Road"},
-      {"x": 3, "y": -3, "terrain": "Road"},
-      {"x": 4, "y": -3, "terrain": "Road"},
-      {"x": 5, "y": -3, "terrain": "Road"},
-      {"x": 6, "y": -3, "terrain": "Road"},
-      {"x": 7, "y": -3, "terrain": "Road"},
-      {"x": 8, "y": -3, "terrain": "Plains"},
-      {"x": 9, "y": -3, "terrain": "River"},
-      {"x": 10, "y": -3, "terrain": "River"},
-      {"x": 11, "y": -3, "terrain": "Plains"},
-      {"x": 12, "y": -3, "terrain": "Plains"},
-      {"x": 13, "y": -3, "terrain": "Plains"},
-      {"x": 14, "y": -3, "terrain": "Plains"},
-      {"x": 15, "y": -3, "terrain": "Plains"},
-      {"x": 16, "y": -3, "terrain": "Plains"},
-      {"x": 17, "y": -3, "terrain": "Plains"},
-      {"x": 18, "y": -3, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red"},
-      {"x": 19, "y": -3, "terrain": "Plains"},
-      {"x": 20, "y": -3, "terrain": "Plains"},
-      {"x": 21, "y": -3, "terrain": "Plains"},
-      {"x": 22, "y": -3, "terrain": "Plains"},
-      {"x": -20, "y": -2, "terrain": "Plains"},
-      {"x": -19, "y": -2, "terrain": "Plains"},
-      {"x": -18, "y": -2, "terrain": "Plains"},
-      {"x": -17, "y": -2, "terrain": "River"},
-      {"x": -16, "y": -2, "terrain": "Plains"},
-      {"x": -15, "y": -2, "terrain": "Plains"},
-      {"x": -14, "y": -2, "terrain": "Road"},
-      {"x": -13, "y": -2, "terrain": "Plains"},
-      {"x": -12, "y": -2, "terrain": "Plains"},
-      {"x": -11, "y": -2, "terrain": "Plains"},
-      {"x": -10, "y": -2, "terrain": "Plains"},
-      {"x": -9, "y": -2, "terrain": "Road"},
-      {"x": -8, "y": -2, "terrain": "Plains"},
-      {"x": -7, "y": -2, "terrain": "Plains"},
-      {"x": -6, "y": -2, "terrain": "Plains"},
-      {"x": -5, "y": -2, "terrain": "Forest"},
-      {"x": -4, "y": -2, "terrain": "Forest"},
-      {"x": -3, "y": -2, "terrain": "Forest"},
-      {"x": -2, "y": -2, "terrain": "Plains"},
-      {"x": -1, "y": -2, "terrain": "Plains"},
-      {"x": 0, "y": -2, "terrain": "Plains"},
-      {"x": 1, "y": -2, "terrain": "Plains"},
-      {"x": 2, "y": -2, "terrain": "Plains"},
-      {"x": 3, "y": -2, "terrain": "Plains"},
-      {"x": 4, "y": -2, "terrain": "Plains"},
-      {"x": 5, "y": -2, "terrain": "Plains"},
-      {"x": 6, "y": -2, "terrain": "Plains"},
-      {"x": 7, "y": -2, "terrain": "Road"},
-      {"x": 8, "y": -2, "terrain": "Plains"},
-      {"x": 9, "y": -2, "terrain": "Plains"},
-      {"x": 10, "y": -2, "terrain": "River"},
-      {"x": 11, "y": -2, "terrain": "River"},
-      {"x": 12, "y": -2, "terrain": "Plains"},
-      {"x": 13, "y": -2, "terrain": "Plains"},
-      {"x": 14, "y": -2, "terrain": "Plains"},
-      {"x": 15, "y": -2, "terrain": "Plains"},
-      {"x": 16, "y": -2, "terrain": "Plains"},
-      {"x": 17, "y": -2, "terrain": "Plains"},
-      {"x": 18, "y": -2, "terrain": "Plains"},
-      {"x": 19, "y": -2, "terrain": "Plains"},
-      {"x": 20, "y": -2, "terrain": "Plains"},
-      {"x": 21, "y": -2, "terrain": "Plains"},
-      {"x": 22, "y": -2, "terrain": "Plains"},
-      {"x": -20, "y": -1, "terrain": "Plains"},
-      {"x": -19, "y": -1, "terrain": "Plains"},
-      {"x": -18, "y": -1, "terrain": "Plains"},
-      {"x": -17, "y": -1, "terrain": "River"},
-      {"x": -16, "y": -1, "terrain": "River"},
-      {"x": -15, "y": -1, "terrain": "River"},
-      {"x": -14, "y": -1, "terrain": "Bridge"},
-      {"x": -13, "y": -1, "terrain": "River"},
-      {"x": -12, "y": -1, "terrain": "Bridge"},
-      {"x": -11, "y": -1, "terrain": "Road"},
-      {"x": -10, "y": -1, "terrain": "Road"},
-      {"x": -9, "y": -1, "terrain": "Plains"},
-      {"x": -8, "y": -1, "terrain": "Forest"},
-      {"x": -7, "y": -1, "terrain": "Forest"},
-      {"x": -6, "y": -1, "terrain": "Forest"},
-      {"x": -5, "y": -1, "terrain": "Plains"},
-      {"x": -4, "y": -1, "terrain": "Plains"},
-      {"x": -3, "y": -1, "terrain": "Plains"},
-      {"x": -2, "y": -1, "terrain": "Plains"},
-      {"x": -1, "y": -1, "terrain": "Plains"},
-      {"x": 0, "y": -1, "terrain": "Plains"},
-      {"x": 1, "y": -1, "terrain": "Plains"},
-      {"x": 2, "y": -1, "terrain": "Plains"},
-      {"x": 3, "y": -1, "terrain": "Plains"},
-      {"x": 4, "y": -1, "terrain": "Plains"},
-      {"x": 5, "y": -1, "terrain": "Plains"},
-      {"x": 6, "y": -1, "terrain": "Plains"},
-      {"x": 7, "y": -1, "terrain": "Road"},
-      {"x": 8, "y": -1, "terrain": "Fortress"},
-      {"x": 9, "y": -1, "terrain": "Plains"},
-      {"x": 10, "y": -1, "terrain": "Plains"},
-      {"x": 11, "y": -1, "terrain": "Bridge"},
-      {"x": 12, "y": -1, "terrain": "River"},
-      {"x": 13, "y": -1, "terrain": "River"},
-      {"x": 14, "y": -1, "terrain": "Plains"},
-      {"x": 15, "y": -1, "terrain": "Plains"},
-      {"x": 16, "y": -1, "terrain": "Plains"},
-      {"x": 17, "y": -1, "terrain": "Plains"},
-      {"x": 18, "y": -1, "terrain": "Plains"},
-      {"x": 19, "y": -1, "terrain": "Plains"},
-      {"x": 20, "y": -1, "terrain": "Plains"},
-      {"x": 21, "y": -1, "terrain": "Plains"},
-      {"x": -21, "y": 0, "terrain": "Plains"},
-      {"x": -20, "y": 0, "terrain": "Plains"},
-      {"x": -19, "y": 0, "terrain": "Plains"},
-      {"x": -18, "y": 0, "terrain": "Plains"},
-      {"x": -17, "y": 0, "terrain": "Plains"},
-      {"x": -16, "y": 0, "terrain": "Plains"},
-      {"x": -15, "y": 0, "terrain": "Plains"},
-      {"x": -14, "y": 0, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -13, "y": 0, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 1},
-      {"x": -12, "y": 0, "terrain": "River"},
-      {"x": -11, "y": 0, "terrain": "Plains"},
-      {"x": -10, "y": 0, "terrain": "Plains"},
-      {"x": -9, "y": 0, "terrain": "Plains"},
-      {"x": -8, "y": 0, "terrain": "Forest"},
-      {"x": -7, "y": 0, "terrain": "Forest"},
-      {"x": -6, "y": 0, "terrain": "Forest"},
-      {"x": -5, "y": 0, "terrain": "Plains"},
-      {"x": -4, "y": 0, "terrain": "Plains"},
-      {"x": -3, "y": 0, "terrain": "Plains"},
-      {"x": -2, "y": 0, "terrain": "Plains"},
-      {"x": -1, "y": 0, "terrain": "Plains"},
-      {"x": 0, "y": 0, "terrain": "Mountain"},
-      {"x": 1, "y": 0, "terrain": "Mountain"},
-      {"x": 2, "y": 0, "terrain": "Plains"},
-      {"x": 3, "y": 0, "terrain": "Plains"},
-      {"x": 4, "y": 0, "terrain": "Plains"},
-      {"x": 5, "y": 0, "terrain": "Plains"},
-      {"x": 6, "y": 0, "terrain": "Plains"},
-      {"x": 7, "y": 0, "terrain": "Road"},
-      {"x": 8, "y": 0, "terrain": "Road"},
-      {"x": 9, "y": 0, "terrain": "Road"},
-      {"x": 10, "y": 0, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 11, "y": 0, "terrain": "Plains"},
-      {"x": 12, "y": 0, "terrain": "Plains"},
-      {"x": 13, "y": 0, "terrain": "River"},
-      {"x": 14, "y": 0, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 15, "y": 0, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red"},
-      {"x": 16, "y": 0, "terrain": "Plains"},
-      {"x": 17, "y": 0, "terrain": "Plains"},
-      {"x": 18, "y": 0, "terrain": "Plains"},
-      {"x": 19, "y": 0, "terrain": "Plains"},
-      {"x": 20, "y": 0, "terrain": "Plains"},
-      {"x": 21, "y": 0, "terrain": "Plains"},
-      {"x": -21, "y": 1, "terrain": "Plains"},
-      {"x": -20, "y": 1, "terrain": "Plains"},
-      {"x": -19, "y": 1, "terrain": "Plains"},
-      {"x": -18, "y": 1, "terrain": "Plains"},
-      {"x": -17, "y": 1, "terrain": "Plains"},
-      {"x": -16, "y": 1, "terrain": "Fortress"},
-      {"x": -15, "y": 1, "terrain": "Plains"},
-      {"x": -14, "y": 1, "terrain": "Plains"},
-      {"x": -13, "y": 1, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -12, "y": 1, "terrain": "River"},
-      {"x": -11, "y": 1, "terrain": "River"},
-      {"x": -10, "y": 1, "terrain": "River"},
-      {"x": -9, "y": 1, "terrain": "Plains"},
-      {"x": -8, "y": 1, "terrain": "Plains"},
-      {"x": -7, "y": 1, "terrain": "Plains"},
-      {"x": -6, "y": 1, "terrain": "Plains"},
-      {"x": -5, "y": 1, "terrain": "Plains"},
-      {"x": -4, "y": 1, "terrain": "Plains"},
-      {"x": -3, "y": 1, "terrain": "Plains"},
-      {"x": -2, "y": 1, "terrain": "Mountain"},
-      {"x": -1, "y": 1, "terrain": "Mountain"},
-      {"x": 0, "y": 1, "terrain": "Mountain"},
-      {"x": 1, "y": 1, "terrain": "Mountain"},
-      {"x": 2, "y": 1, "terrain": "Plains"},
-      {"x": 3, "y": 1, "terrain": "Plains"},
-      {"x": 4, "y": 1, "terrain": "Plains"},
-      {"x": 5, "y": 1, "terrain": "Plains"},
-      {"x": 6, "y": 1, "terrain": "Fortress"},
-      {"x": 7, "y": 1, "terrain": "Plains"},
-      {"x": 8, "y": 1, "terrain": "Plains"},
-      {"x": 9, "y": 1, "terrain": "Plains"},
-      {"x": 10, "y": 1, "terrain": "Road"},
-      {"x": 11, "y": 1, "terrain": "Plains"},
-      {"x": 12, "y": 1, "terrain": "Plains"},
-      {"x": 13, "y": 1, "terrain": "River"},
-      {"x": 14, "y": 1, "terrain": "City", "hp": 20, "maxHp": 20, "owner": "Red"},
-      {"x": 15, "y": 1, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 16, "y": 1, "terrain": "Forest"},
-      {"x": 17, "y": 1, "terrain": "Forest"},
-      {"x": 18, "y": 1, "terrain": "Forest"},
-      {"x": 19, "y": 1, "terrain": "Plains"},
-      {"x": 20, "y": 1, "terrain": "Plains"},
-      {"x": -22, "y": 2, "terrain": "Plains"},
-      {"x": -21, "y": 2, "terrain": "Plains"},
-      {"x": -20, "y": 2, "terrain": "Plains"},
-      {"x": -19, "y": 2, "terrain": "Plains"},
-      {"x": -18, "y": 2, "terrain": "Plains"},
-      {"x": -17, "y": 2, "terrain": "Plains"},
-      {"x": -16, "y": 2, "terrain": "Plains"},
-      {"x": -15, "y": 2, "terrain": "Plains"},
-      {"x": -14, "y": 2, "terrain": "Plains"},
-      {"x": -13, "y": 2, "terrain": "Plains"},
-      {"x": -12, "y": 2, "terrain": "Plains"},
-      {"x": -11, "y": 2, "terrain": "Plains"},
-      {"x": -10, "y": 2, "terrain": "River"},
-      {"x": -9, "y": 2, "terrain": "River"},
-      {"x": -8, "y": 2, "terrain": "River"},
-      {"x": -7, "y": 2, "terrain": "River"},
-      {"x": -6, "y": 2, "terrain": "River"},
-      {"x": -5, "y": 2, "terrain": "River"},
-      {"x": -4, "y": 2, "terrain": "River"},
-      {"x": -3, "y": 2, "terrain": "Plains"},
-      {"x": -2, "y": 2, "terrain": "Mountain"},
-      {"x": -1, "y": 2, "terrain": "Mountain"},
-      {"x": 0, "y": 2, "terrain": "Mountain"},
-      {"x": 1, "y": 2, "terrain": "Mountain"},
-      {"x": 2, "y": 2, "terrain": "Plains"},
-      {"x": 3, "y": 2, "terrain": "Plains"},
-      {"x": 4, "y": 2, "terrain": "Plains"},
-      {"x": 5, "y": 2, "terrain": "Plains"},
-      {"x": 6, "y": 2, "terrain": "Plains"},
-      {"x": 7, "y": 2, "terrain": "Plains"},
-      {"x": 8, "y": 2, "terrain": "Plains"},
-      {"x": 9, "y": 2, "terrain": "Plains"},
-      {"x": 10, "y": 2, "terrain": "Road"},
-      {"x": 11, "y": 2, "terrain": "Road"},
-      {"x": 12, "y": 2, "terrain": "Road"},
-      {"x": 13, "y": 2, "terrain": "Bridge"},
-      {"x": 14, "y": 2, "terrain": "River"},
-      {"x": 15, "y": 2, "terrain": "River"},
-      {"x": 16, "y": 2, "terrain": "Forest"},
-      {"x": 17, "y": 2, "terrain": "Forest"},
-      {"x": 18, "y": 2, "terrain": "Forest"},
-      {"x": 19, "y": 2, "terrain": "Plains"},
-      {"x": 20, "y": 2, "terrain": "Plains"},
-      {"x": -22, "y": 3, "terrain": "Plains"},
-      {"x": -21, "y": 3, "terrain": "Plains"},
-      {"x": -20, "y": 3, "terrain": "Forest"},
-      {"x": -19, "y": 3, "terrain": "Plains"},
-      {"x": -18, "y": 3, "terrain": "Plains"},
-      {"x": -17, "y": 3, "terrain": "Plains"},
-      {"x": -16, "y": 3, "terrain": "Plains"},
-      {"x": -15, "y": 3, "terrain": "Fortress"},
-      {"x": -14, "y": 3, "terrain": "Plains"},
-      {"x": -13, "y": 3, "terrain": "Plains"},
-      {"x": -12, "y": 3, "terrain": "Plains"},
-      {"x": -11, "y": 3, "terrain": "Plains"},
-      {"x": -10, "y": 3, "terrain": "Plains"},
-      {"x": -9, "y": 3, "terrain": "Plains"},
-      {"x": -8, "y": 3, "terrain": "Forest"},
-      {"x": -7, "y": 3, "terrain": "Plains"},
-      {"x": -6, "y": 3, "terrain": "Plains"},
-      {"x": -5, "y": 3, "terrain": "Plains"},
-      {"x": -4, "y": 3, "terrain": "River"},
-      {"x": -3, "y": 3, "terrain": "Plains"},
-      {"x": -2, "y": 3, "terrain": "Mountain"},
-      {"x": -1, "y": 3, "terrain": "Mountain"},
-      {"x": 0, "y": 3, "terrain": "Mountain"},
-      {"x": 1, "y": 3, "terrain": "Mountain"},
-      {"x": 2, "y": 3, "terrain": "Plains"},
-      {"x": 3, "y": 3, "terrain": "Fortress"},
-      {"x": 4, "y": 3, "terrain": "Plains"},
-      {"x": 5, "y": 3, "terrain": "Forest"},
-      {"x": 6, "y": 3, "terrain": "Plains"},
-      {"x": 7, "y": 3, "terrain": "Plains"},
-      {"x": 8, "y": 3, "terrain": "Plains"},
-      {"x": 9, "y": 3, "terrain": "Plains"},
-      {"x": 10, "y": 3, "terrain": "Plains"},
-      {"x": 11, "y": 3, "terrain": "Forest"},
-      {"x": 12, "y": 3, "terrain": "Plains"},
-      {"x": 13, "y": 3, "terrain": "Road"},
-      {"x": 14, "y": 3, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 15, "y": 3, "terrain": "River"},
-      {"x": 16, "y": 3, "terrain": "River"},
-      {"x": 17, "y": 3, "terrain": "River"},
-      {"x": 18, "y": 3, "terrain": "River"},
-      {"x": 19, "y": 3, "terrain": "River"},
-      {"x": -23, "y": 4, "terrain": "Plains"},
-      {"x": -22, "y": 4, "terrain": "Plains"},
-      {"x": -21, "y": 4, "terrain": "Plains"},
-      {"x": -20, "y": 4, "terrain": "Plains"},
-      {"x": -19, "y": 4, "terrain": "Forest"},
-      {"x": -18, "y": 4, "terrain": "Plains"},
-      {"x": -17, "y": 4, "terrain": "Plains"},
-      {"x": -16, "y": 4, "terrain": "Plains"},
-      {"x": -15, "y": 4, "terrain": "Plains"},
-      {"x": -14, "y": 4, "terrain": "Plains"},
-      {"x": -13, "y": 4, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -12, "y": 4, "terrain": "Plains"},
-      {"x": -11, "y": 4, "terrain": "Forest"},
-      {"x": -10, "y": 4, "terrain": "Plains"},
-      {"x": -9, "y": 4, "terrain": "Plains"},
-      {"x": -8, "y": 4, "terrain": "Plains"},
-      {"x": -7, "y": 4, "terrain": "Plains"},
-      {"x": -6, "y": 4, "terrain": "Plains"},
-      {"x": -5, "y": 4, "terrain": "Forest"},
-      {"x": -4, "y": 4, "terrain": "River"},
-      {"x": -3, "y": 4, "terrain": "Plains"},
-      {"x": -2, "y": 4, "terrain": "Mountain"},
-      {"x": -1, "y": 4, "terrain": "Mountain"},
-      {"x": 0, "y": 4, "terrain": "Mountain"},
-      {"x": 1, "y": 4, "terrain": "Mountain"},
-      {"x": 2, "y": 4, "terrain": "Forest"},
-      {"x": 3, "y": 4, "terrain": "Plains"},
-      {"x": 4, "y": 4, "terrain": "Plains"},
-      {"x": 5, "y": 4, "terrain": "Plains"},
-      {"x": 6, "y": 4, "terrain": "Plains"},
-      {"x": 7, "y": 4, "terrain": "Plains"},
-      {"x": 8, "y": 4, "terrain": "Plains"},
-      {"x": 9, "y": 4, "terrain": "Plains"},
-      {"x": 10, "y": 4, "terrain": "Plains"},
-      {"x": 11, "y": 4, "terrain": "Plains"},
-      {"x": 12, "y": 4, "terrain": "Plains"},
-      {"x": 13, "y": 4, "terrain": "Plains"},
-      {"x": 14, "y": 4, "terrain": "Road"},
-      {"x": 15, "y": 4, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 16, "y": 4, "terrain": "Road"},
-      {"x": 17, "y": 4, "terrain": "Road"},
-      {"x": 18, "y": 4, "terrain": "Road"},
-      {"x": 19, "y": 4, "terrain": "Road"},
-      {"x": -23, "y": 5, "terrain": "Plains"},
-      {"x": -22, "y": 5, "terrain": "Plains"},
-      {"x": -21, "y": 5, "terrain": "Plains"},
-      {"x": -20, "y": 5, "terrain": "Plains"},
-      {"x": -19, "y": 5, "terrain": "Plains"},
-      {"x": -18, "y": 5, "terrain": "Plains"},
-      {"x": -17, "y": 5, "terrain": "Forest"},
-      {"x": -16, "y": 5, "terrain": "Forest"},
-      {"x": -15, "y": 5, "terrain": "Forest"},
-      {"x": -14, "y": 5, "terrain": "Forest"},
-      {"x": -13, "y": 5, "terrain": "Forest"},
-      {"x": -12, "y": 5, "terrain": "Forest"},
-      {"x": -11, "y": 5, "terrain": "Plains"},
-      {"x": -10, "y": 5, "terrain": "Plains"},
-      {"x": -9, "y": 5, "terrain": "Forest"},
-      {"x": -8, "y": 5, "terrain": "Plains"},
-      {"x": -7, "y": 5, "terrain": "Plains"},
-      {"x": -6, "y": 5, "terrain": "Plains"},
-      {"x": -5, "y": 5, "terrain": "Plains"},
-      {"x": -4, "y": 5, "terrain": "River"},
-      {"x": -3, "y": 5, "terrain": "Plains"},
-      {"x": -2, "y": 5, "terrain": "Mountain"},
-      {"x": -1, "y": 5, "terrain": "Mountain"},
-      {"x": 0, "y": 5, "terrain": "Mountain"},
-      {"x": 1, "y": 5, "terrain": "Mountain"},
-      {"x": 2, "y": 5, "terrain": "Plains"},
-      {"x": 3, "y": 5, "terrain": "Plains"},
-      {"x": 4, "y": 5, "terrain": "Plains"},
-      {"x": 5, "y": 5, "terrain": "Plains"},
-      {"x": 6, "y": 5, "terrain": "Plains"},
-      {"x": 7, "y": 5, "terrain": "Plains"},
-      {"x": 8, "y": 5, "terrain": "Plains"},
-      {"x": 9, "y": 5, "terrain": "Plains"},
-      {"x": 10, "y": 5, "terrain": "Plains"},
-      {"x": 11, "y": 5, "terrain": "Plains"},
-      {"x": 12, "y": 5, "terrain": "Forest"},
-      {"x": 13, "y": 5, "terrain": "Forest"},
-      {"x": 14, "y": 5, "terrain": "Forest"},
-      {"x": 15, "y": 5, "terrain": "Forest"},
-      {"x": 16, "y": 5, "terrain": "Forest"},
-      {"x": 17, "y": 5, "terrain": "Forest"},
-      {"x": 18, "y": 5, "terrain": "Plains"},
-      {"x": -24, "y": 6, "terrain": "Plains"},
-      {"x": -23, "y": 6, "terrain": "Plains"},
-      {"x": -22, "y": 6, "terrain": "Plains"},
-      {"x": -21, "y": 6, "terrain": "Forest"},
-      {"x": -20, "y": 6, "terrain": "Plains"},
-      {"x": -19, "y": 6, "terrain": "Plains"},
-      {"x": -18, "y": 6, "terrain": "Plains"},
-      {"x": -17, "y": 6, "terrain": "Plains"},
-      {"x": -16, "y": 6, "terrain": "Forest"},
-      {"x": -15, "y": 6, "terrain": "Forest"},
-      {"x": -14, "y": 6, "terrain": "Forest"},
-      {"x": -13, "y": 6, "terrain": "Forest"},
-      {"x": -12, "y": 6, "terrain": "Forest"},
-      {"x": -11, "y": 6, "terrain": "Plains"},
-      {"x": -10, "y": 6, "terrain": "Plains"},
-      {"x": -9, "y": 6, "terrain": "Plains"},
-      {"x": -8, "y": 6, "terrain": "Plains"},
-      {"x": -7, "y": 6, "terrain": "Plains"},
-      {"x": -6, "y": 6, "terrain": "Plains"},
-      {"x": -5, "y": 6, "terrain": "Plains"},
-      {"x": -4, "y": 6, "terrain": "River"},
-      {"x": -3, "y": 6, "terrain": "Plains"},
-      {"x": -2, "y": 6, "terrain": "Mountain"},
-      {"x": -1, "y": 6, "terrain": "Mountain"},
-      {"x": 0, "y": 6, "terrain": "Mountain"},
-      {"x": 1, "y": 6, "terrain": "Mountain"},
-      {"x": 2, "y": 6, "terrain": "Plains"},
-      {"x": 3, "y": 6, "terrain": "Plains"},
-      {"x": 4, "y": 6, "terrain": "Plains"},
-      {"x": 5, "y": 6, "terrain": "Plains"},
-      {"x": 6, "y": 6, "terrain": "Plains"},
-      {"x": 7, "y": 6, "terrain": "Plains"},
-      {"x": 8, "y": 6, "terrain": "Plains"},
-      {"x": 9, "y": 6, "terrain": "Plains"},
-      {"x": 10, "y": 6, "terrain": "Plains"},
-      {"x": 11, "y": 6, "terrain": "Plains"},
-      {"x": 12, "y": 6, "terrain": "Forest"},
-      {"x": 13, "y": 6, "terrain": "Forest"},
-      {"x": 14, "y": 6, "terrain": "Forest"},
-      {"x": 15, "y": 6, "terrain": "Forest"},
-      {"x": 16, "y": 6, "terrain": "Forest"},
-      {"x": 17, "y": 6, "terrain": "Plains"},
-      {"x": 18, "y": 6, "terrain": "Plains"},
-      {"x": -24, "y": 7, "terrain": "Plains"},
-      {"x": -23, "y": 7, "terrain": "Plains"},
-      {"x": -22, "y": 7, "terrain": "Plains"},
-      {"x": -21, "y": 7, "terrain": "Plains"},
-      {"x": -20, "y": 7, "terrain": "Plains"},
-      {"x": -19, "y": 7, "terrain": "Plains"},
-      {"x": -18, "y": 7, "terrain": "Plains"},
-      {"x": -17, "y": 7, "terrain": "Plains"},
-      {"x": -16, "y": 7, "terrain": "Forest"},
-      {"x": -15, "y": 7, "terrain": "Forest"},
-      {"x": -14, "y": 7, "terrain": "Forest"},
-      {"x": -13, "y": 7, "terrain": "Forest"},
-      {"x": -12, "y": 7, "terrain": "Plains"},
-      {"x": -11, "y": 7, "terrain": "Plains"},
-      {"x": -10, "y": 7, "terrain": "Plains"},
-      {"x": -9, "y": 7, "terrain": "Plains"},
-      {"x": -8, "y": 7, "terrain": "Plains"},
-      {"x": -7, "y": 7, "terrain": "Plains"},
-      {"x": -6, "y": 7, "terrain": "Plains"},
-      {"x": -5, "y": 7, "terrain": "Plains"},
-      {"x": -4, "y": 7, "terrain": "River"},
-      {"x": -3, "y": 7, "terrain": "City", "hp": 5, "maxHp": 5, "owner": "Red"},
-      {"x": -2, "y": 7, "terrain": "Plains"},
-      {"x": -1, "y": 7, "terrain": "Mountain"},
-      {"x": 0, "y": 7, "terrain": "Mountain"},
-      {"x": 1, "y": 7, "terrain": "Mountain"},
-      {"x": 2, "y": 7, "terrain": "Plains"},
-      {"x": 3, "y": 7, "terrain": "Plains"},
-      {"x": 4, "y": 7, "terrain": "Plains"},
-      {"x": 5, "y": 7, "terrain": "Plains"},
-      {"x": 6, "y": 7, "terrain": "Plains"},
-      {"x": 7, "y": 7, "terrain": "Plains"},
-      {"x": 8, "y": 7, "terrain": "Plains"},
-      {"x": 9, "y": 7, "terrain": "Plains"},
-      {"x": 10, "y": 7, "terrain": "Plains"},
-      {"x": 11, "y": 7, "terrain": "Plains"},
-      {"x": 12, "y": 7, "terrain": "Forest"},
-      {"x": 13, "y": 7, "terrain": "Forest"},
-      {"x": 14, "y": 7, "terrain": "Forest"},
-      {"x": 15, "y": 7, "terrain": "Forest"},
-      {"x": 16, "y": 7, "terrain": "Forest"},
-      {"x": 17, "y": 7, "terrain": "Plains"},
-      {"x": -25, "y": 8, "terrain": "Plains"},
-      {"x": -24, "y": 8, "terrain": "Plains"},
-      {"x": -23, "y": 8, "terrain": "Plains"},
-      {"x": -22, "y": 8, "terrain": "Plains"},
-      {"x": -21, "y": 8, "terrain": "Plains"},
-      {"x": -20, "y": 8, "terrain": "Plains"},
-      {"x": -19, "y": 8, "terrain": "Plains"},
-      {"x": -18, "y": 8, "terrain": "Plains"},
-      {"x": -17, "y": 8, "terrain": "Plains"},
-      {"x": -16, "y": 8, "terrain": "Forest"},
-      {"x": -15, "y": 8, "terrain": "Forest"},
-      {"x": -14, "y": 8, "terrain": "Forest"},
-      {"x": -13, "y": 8, "terrain": "Forest"},
-      {"x": -12, "y": 8, "terrain": "Plains"},
-      {"x": -11, "y": 8, "terrain": "Plains"},
-      {"x": -10, "y": 8, "terrain": "Plains"},
-      {"x": -9, "y": 8, "terrain": "Plains"},
-      {"x": -8, "y": 8, "terrain": "Plains"},
-      {"x": -7, "y": 8, "terrain": "Plains"},
-      {"x": -6, "y": 8, "terrain": "Plains"},
-      {"x": -5, "y": 8, "terrain": "Plains"},
-      {"x": -4, "y": 8, "terrain": "River"},
-      {"x": -3, "y": 8, "terrain": "Plains"},
-      {"x": -2, "y": 8, "terrain": "Plains"},
-      {"x": -1, "y": 8, "terrain": "Mountain"},
-      {"x": 0, "y": 8, "terrain": "Mountain"},
-      {"x": 1, "y": 8, "terrain": "Mountain"},
-      {"x": 2, "y": 8, "terrain": "Mountain"},
-      {"x": 3, "y": 8, "terrain": "Mountain"},
-      {"x": 4, "y": 8, "terrain": "Mountain"},
-      {"x": 5, "y": 8, "terrain": "Plains"},
-      {"x": 6, "y": 8, "terrain": "Plains"},
-      {"x": 7, "y": 8, "terrain": "Plains"},
-      {"x": 8, "y": 8, "terrain": "Plains"},
-      {"x": 9, "y": 8, "terrain": "Plains"},
-      {"x": 10, "y": 8, "terrain": "Plains"},
-      {"x": 11, "y": 8, "terrain": "Plains"},
-      {"x": 12, "y": 8, "terrain": "Forest"},
-      {"x": 13, "y": 8, "terrain": "Forest"},
-      {"x": 14, "y": 8, "terrain": "Forest"},
-      {"x": 15, "y": 8, "terrain": "Forest"},
-      {"x": 16, "y": 8, "terrain": "Forest"},
-      {"x": 17, "y": 8, "terrain": "Plains"},
-      {"x": -25, "y": 9, "terrain": "Plains"},
-      {"x": -24, "y": 9, "terrain": "Plains"},
-      {"x": -23, "y": 9, "terrain": "Plains"},
-      {"x": -22, "y": 9, "terrain": "Plains"},
-      {"x": -21, "y": 9, "terrain": "Plains"},
-      {"x": -20, "y": 9, "terrain": "Plains"},
-      {"x": -19, "y": 9, "terrain": "Plains"},
-      {"x": -18, "y": 9, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Blue"},
-      {"x": -17, "y": 9, "terrain": "Plains"},
-      {"x": -16, "y": 9, "terrain": "Plains"},
-      {"x": -15, "y": 9, "terrain": "Plains"},
-      {"x": -14, "y": 9, "terrain": "Plains"},
-      {"x": -13, "y": 9, "terrain": "Plains"},
-      {"x": -12, "y": 9, "terrain": "Plains"},
-      {"x": -11, "y": 9, "terrain": "Plains"},
-      {"x": -10, "y": 9, "terrain": "Plains"},
-      {"x": -9, "y": 9, "terrain": "Plains"},
-      {"x": -8, "y": 9, "terrain": "Plains"},
-      {"x": -7, "y": 9, "terrain": "Plains"},
-      {"x": -6, "y": 9, "terrain": "Plains"},
-      {"x": -5, "y": 9, "terrain": "Plains"},
-      {"x": -4, "y": 9, "terrain": "River"},
-      {"x": -3, "y": 9, "terrain": "Plains"},
-      {"x": -2, "y": 9, "terrain": "Plains"},
-      {"x": -1, "y": 9, "terrain": "Mountain"},
-      {"x": 0, "y": 9, "terrain": "Mountain"},
-      {"x": 1, "y": 9, "terrain": "Mountain"},
-      {"x": 2, "y": 9, "terrain": "Mountain"},
-      {"x": 3, "y": 9, "terrain": "Mountain"},
-      {"x": 4, "y": 9, "terrain": "Mountain"},
-      {"x": 5, "y": 9, "terrain": "Mountain"},
-      {"x": 6, "y": 9, "terrain": "Plains"},
-      {"x": 7, "y": 9, "terrain": "Plains"},
-      {"x": 8, "y": 9, "terrain": "Plains"},
-      {"x": 9, "y": 9, "terrain": "Plains"},
-      {"x": 10, "y": 9, "terrain": "Plains"},
-      {"x": 11, "y": 9, "terrain": "Plains"},
-      {"x": 12, "y": 9, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 13, "y": 9, "terrain": "Plains"},
-      {"x": 14, "y": 9, "terrain": "Plains"},
-      {"x": 15, "y": 9, "terrain": "Plains"},
-      {"x": 16, "y": 9, "terrain": "Plains"},
-      {"x": -26, "y": 10, "terrain": "Plains"},
-      {"x": -25, "y": 10, "terrain": "Plains"},
-      {"x": -24, "y": 10, "terrain": "Plains"},
-      {"x": -23, "y": 10, "terrain": "Plains"},
-      {"x": -22, "y": 10, "terrain": "Plains"},
-      {"x": -21, "y": 10, "terrain": "Plains"},
-      {"x": -20, "y": 10, "terrain": "Plains"},
-      {"x": -19, "y": 10, "terrain": "Plains"},
-      {"x": -18, "y": 10, "terrain": "Plains"},
-      {"x": -17, "y": 10, "terrain": "Plains"},
-      {"x": -16, "y": 10, "terrain": "Plains"},
-      {"x": -15, "y": 10, "terrain": "Plains"},
-      {"x": -14, "y": 10, "terrain": "Plains"},
-      {"x": -13, "y": 10, "terrain": "Plains"},
-      {"x": -12, "y": 10, "terrain": "Plains"},
-      {"x": -11, "y": 10, "terrain": "Plains"},
-      {"x": -10, "y": 10, "terrain": "Plains"},
-      {"x": -9, "y": 10, "terrain": "Plains"},
-      {"x": -8, "y": 10, "terrain": "Plains"},
-      {"x": -7, "y": 10, "terrain": "Plains"},
-      {"x": -6, "y": 10, "terrain": "Plains"},
-      {"x": -5, "y": 10, "terrain": "Plains"},
-      {"x": -4, "y": 10, "terrain": "River"},
-      {"x": -3, "y": 10, "terrain": "Plains"},
-      {"x": -2, "y": 10, "terrain": "Plains"},
-      {"x": -1, "y": 10, "terrain": "Plains"},
-      {"x": 0, "y": 10, "terrain": "Mountain"},
-      {"x": 1, "y": 10, "terrain": "Mountain"},
-      {"x": 2, "y": 10, "terrain": "Mountain"},
-      {"x": 3, "y": 10, "terrain": "Mountain"},
-      {"x": 4, "y": 10, "terrain": "Mountain"},
-      {"x": 5, "y": 10, "terrain": "Mountain"},
-      {"x": 6, "y": 10, "terrain": "Plains"},
-      {"x": 7, "y": 10, "terrain": "Plains"},
-      {"x": 8, "y": 10, "terrain": "Plains"},
-      {"x": 9, "y": 10, "terrain": "Plains"},
-      {"x": 10, "y": 10, "terrain": "Plains"},
-      {"x": 11, "y": 10, "terrain": "Plains"},
-      {"x": 12, "y": 10, "terrain": "Plains"},
-      {"x": 13, "y": 10, "terrain": "Plains"},
-      {"x": 14, "y": 10, "terrain": "Plains"},
-      {"x": 15, "y": 10, "terrain": "Plains"},
-      {"x": 16, "y": 10, "terrain": "Plains"},
-      {"x": -26, "y": 11, "terrain": "Plains"},
-      {"x": -25, "y": 11, "terrain": "Plains"},
-      {"x": -24, "y": 11, "terrain": "Plains"},
-      {"x": -23, "y": 11, "terrain": "Plains"},
-      {"x": -22, "y": 11, "terrain": "Plains"},
-      {"x": -21, "y": 11, "terrain": "Plains"},
-      {"x": -20, "y": 11, "terrain": "Plains"},
-      {"x": -19, "y": 11, "terrain": "Plains"},
-      {"x": -18, "y": 11, "terrain": "Plains"},
-      {"x": -17, "y": 11, "terrain": "Plains"},
-      {"x": -16, "y": 11, "terrain": "Plains"},
-      {"x": -15, "y": 11, "terrain": "Plains"},
-      {"x": -14, "y": 11, "terrain": "Plains"},
-      {"x": -13, "y": 11, "terrain": "Plains"},
-      {"x": -12, "y": 11, "terrain": "Plains"},
-      {"x": -11, "y": 11, "terrain": "Plains"},
-      {"x": -10, "y": 11, "terrain": "Plains"},
-      {"x": -9, "y": 11, "terrain": "Plains"},
-      {"x": -8, "y": 11, "terrain": "Plains"},
-      {"x": -7, "y": 11, "terrain": "Plains"},
-      {"x": -6, "y": 11, "terrain": "Plains"},
-      {"x": -5, "y": 11, "terrain": "Plains"},
-      {"x": -4, "y": 11, "terrain": "River"},
-      {"x": -3, "y": 11, "terrain": "Plains"},
-      {"x": -2, "y": 11, "terrain": "Plains"},
-      {"x": -1, "y": 11, "terrain": "Plains"},
-      {"x": 0, "y": 11, "terrain": "Mountain"},
-      {"x": 1, "y": 11, "terrain": "Mountain"},
-      {"x": 2, "y": 11, "terrain": "Mountain"},
-      {"x": 3, "y": 11, "terrain": "Mountain"},
-      {"x": 4, "y": 11, "terrain": "Mountain"},
-      {"x": 5, "y": 11, "terrain": "Mountain"},
-      {"x": 6, "y": 11, "terrain": "Plains"},
-      {"x": 7, "y": 11, "terrain": "Plains"},
-      {"x": 8, "y": 11, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red"},
-      {"x": 9, "y": 11, "terrain": "Plains"},
-      {"x": 10, "y": 11, "terrain": "Plains"},
-      {"x": 11, "y": 11, "terrain": "Plains"},
-      {"x": 12, "y": 11, "terrain": "Plains"},
-      {"x": 13, "y": 11, "terrain": "Plains"},
-      {"x": 14, "y": 11, "terrain": "Plains"},
-      {"x": 15, "y": 11, "terrain": "Plains"},
-      {"x": -27, "y": 12, "terrain": "Plains"},
-      {"x": -26, "y": 12, "terrain": "Plains"},
-      {"x": -25, "y": 12, "terrain": "Plains"},
-      {"x": -24, "y": 12, "terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Blue", "order": 1},
-      {"x": -23, "y": 12, "terrain": "Plains"},
-      {"x": -22, "y": 12, "terrain": "Plains"},
-      {"x": -21, "y": 12, "terrain": "Plains"},
-      {"x": -20, "y": 12, "terrain": "Plains"},
-      {"x": -19, "y": 12, "terrain": "Plains"},
-      {"x": -18, "y": 12, "terrain": "Plains"},
-      {"x": -17, "y": 12, "terrain": "Plains"},
-      {"x": -16, "y": 12, "terrain": "Plains"},
-      {"x": -15, "y": 12, "terrain": "Plains"},
-      {"x": -14, "y": 12, "terrain": "Plains"},
-      {"x": -13, "y": 12, "terrain": "Plains"},
-      {"x": -12, "y": 12, "terrain": "Plains"},
-      {"x": -11, "y": 12, "terrain": "Plains"},
-      {"x": -10, "y": 12, "terrain": "Plains"},
-      {"x": -9, "y": 12, "terrain": "Plains"},
-      {"x": -8, "y": 12, "terrain": "Plains"},
-      {"x": -7, "y": 12, "terrain": "Plains"},
-      {"x": -6, "y": 12, "terrain": "Plains"},
-      {"x": -5, "y": 12, "terrain": "Plains"},
-      {"x": -4, "y": 12, "terrain": "River"},
-      {"x": -3, "y": 12, "terrain": "Plains"},
-      {"x": -2, "y": 12, "terrain": "Plains"},
-      {"x": -1, "y": 12, "terrain": "Plains"},
-      {"x": 0, "y": 12, "terrain": "Plains"},
-      {"x": 1, "y": 12, "terrain": "Mountain"},
-      {"x": 2, "y": 12, "terrain": "Mountain"},
-      {"x": 3, "y": 12, "terrain": "Mountain"},
-      {"x": 4, "y": 12, "terrain": "Mountain"},
-      {"x": 5, "y": 12, "terrain": "Mountain"},
-      {"x": 6, "y": 12, "terrain": "Mountain"},
-      {"x": 7, "y": 12, "terrain": "Mountain"},
-      {"x": 8, "y": 12, "terrain": "Mountain"},
-      {"x": 9, "y": 12, "terrain": "Mountain"},
-      {"x": 10, "y": 12, "terrain": "Plains"},
-      {"x": 11, "y": 12, "terrain": "Plains"},
-      {"x": 12, "y": 12, "terrain": "Plains"},
-      {"x": 13, "y": 12, "terrain": "Plains"},
-      {"x": 14, "y": 12, "terrain": "Plains"},
-      {"x": 15, "y": 12, "terrain": "Plains"},
-      {"x": -27, "y": 13, "terrain": "Plains"},
-      {"x": -26, "y": 13, "terrain": "Plains"},
-      {"x": -25, "y": 13, "terrain": "Plains"},
-      {"x": -24, "y": 13, "terrain": "Plains"},
-      {"x": -23, "y": 13, "terrain": "Plains"},
-      {"x": -22, "y": 13, "terrain": "Plains"},
-      {"x": -21, "y": 13, "terrain": "Plains"},
-      {"x": -20, "y": 13, "terrain": "Plains"},
-      {"x": -19, "y": 13, "terrain": "Plains"},
-      {"x": -18, "y": 13, "terrain": "Plains"},
-      {"x": -17, "y": 13, "terrain": "Plains"},
-      {"x": -16, "y": 13, "terrain": "Plains"},
-      {"x": -15, "y": 13, "terrain": "Plains"},
-      {"x": -14, "y": 13, "terrain": "Plains"},
-      {"x": -13, "y": 13, "terrain": "Plains"},
-      {"x": -12, "y": 13, "terrain": "Plains"},
-      {"x": -11, "y": 13, "terrain": "Plains"},
-      {"x": -10, "y": 13, "terrain": "Plains"},
-      {"x": -9, "y": 13, "terrain": "Plains"},
-      {"x": -8, "y": 13, "terrain": "Plains"},
-      {"x": -7, "y": 13, "terrain": "Plains"},
-      {"x": -6, "y": 13, "terrain": "Plains"},
-      {"x": -5, "y": 13, "terrain": "Plains"},
-      {"x": -4, "y": 13, "terrain": "River"},
-      {"x": -3, "y": 13, "terrain": "Plains"},
-      {"x": -2, "y": 13, "terrain": "Plains"},
-      {"x": -1, "y": 13, "terrain": "Plains"},
-      {"x": 0, "y": 13, "terrain": "Plains"},
-      {"x": 1, "y": 13, "terrain": "Plains"},
-      {"x": 2, "y": 13, "terrain": "Mountain"},
-      {"x": 3, "y": 13, "terrain": "Mountain"},
-      {"x": 4, "y": 13, "terrain": "Mountain"},
-      {"x": 5, "y": 13, "terrain": "Mountain"},
-      {"x": 6, "y": 13, "terrain": "Mountain"},
-      {"x": 7, "y": 13, "terrain": "Mountain"},
-      {"x": 8, "y": 13, "terrain": "Mountain"},
-      {"x": 9, "y": 13, "terrain": "Mountain"},
-      {"x": 10, "y": 13, "terrain": "Plains"},
-      {"x": 11, "y": 13, "terrain": "Plains"},
-      {"x": 12, "y": 13, "terrain": "Plains"},
-      {"x": 13, "y": 13, "terrain": "Plains"},
-      {"x": 14, "y": 13, "terrain": "Plains"},
-      {"x": -28, "y": 14, "terrain": "Plains"},
-      {"x": -27, "y": 14, "terrain": "Plains"},
-      {"x": -26, "y": 14, "terrain": "Plains"},
-      {"x": -25, "y": 14, "terrain": "Plains"},
-      {"x": -24, "y": 14, "terrain": "Plains"},
-      {"x": -23, "y": 14, "terrain": "Plains"},
-      {"x": -22, "y": 14, "terrain": "Plains"},
-      {"x": -21, "y": 14, "terrain": "Capital", "hp": 10, "maxHp": 10, "owner": "Blue", "order": 2},
-      {"x": -20, "y": 14, "terrain": "Plains"},
-      {"x": -19, "y": 14, "terrain": "Plains"},
-      {"x": -18, "y": 14, "terrain": "Plains"},
-      {"x": -17, "y": 14, "terrain": "Plains"},
-      {"x": -16, "y": 14, "terrain": "Plains"},
-      {"x": -15, "y": 14, "terrain": "Plains"},
-      {"x": -14, "y": 14, "terrain": "Plains"},
-      {"x": -13, "y": 14, "terrain": "Plains"},
-      {"x": -12, "y": 14, "terrain": "Plains"},
-      {"x": -11, "y": 14, "terrain": "Plains"},
-      {"x": -10, "y": 14, "terrain": "Plains"},
-      {"x": -9, "y": 14, "terrain": "Plains"},
-      {"x": -8, "y": 14, "terrain": "Plains"},
-      {"x": -7, "y": 14, "terrain": "Plains"},
-      {"x": -6, "y": 14, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -5, "y": 14, "terrain": "Plains"},
-      {"x": -4, "y": 14, "terrain": "River"},
-      {"x": -3, "y": 14, "terrain": "Plains"},
-      {"x": -2, "y": 14, "terrain": "Plains"},
-      {"x": -1, "y": 14, "terrain": "Capital", "hp": 15, "maxHp": 15, "owner": "Red"},
-      {"x": 0, "y": 14, "terrain": "Plains"},
-      {"x": 1, "y": 14, "terrain": "Plains"},
-      {"x": 2, "y": 14, "terrain": "Mountain"},
-      {"x": 3, "y": 14, "terrain": "Mountain"},
-      {"x": 4, "y": 14, "terrain": "Mountain"},
-      {"x": 5, "y": 14, "terrain": "Mountain"},
-      {"x": 6, "y": 14, "terrain": "Mountain"},
-      {"x": 7, "y": 14, "terrain": "Mountain"},
-      {"x": 8, "y": 14, "terrain": "Mountain"},
-      {"x": 9, "y": 14, "terrain": "Mountain"},
-      {"x": 10, "y": 14, "terrain": "Mountain"},
-      {"x": 11, "y": 14, "terrain": "Plains"},
-      {"x": 12, "y": 14, "terrain": "Plains"},
-      {"x": 13, "y": 14, "terrain": "Plains"},
-      {"x": 14, "y": 14, "terrain": "Plains"},
-      {"x": -28, "y": 15, "terrain": "Plains"},
-      {"x": -27, "y": 15, "terrain": "Plains"},
-      {"x": -26, "y": 15, "terrain": "Plains"},
-      {"x": -25, "y": 15, "terrain": "Plains"},
-      {"x": -24, "y": 15, "terrain": "Plains"},
-      {"x": -23, "y": 15, "terrain": "Plains"},
-      {"x": -22, "y": 15, "terrain": "Plains"},
-      {"x": -21, "y": 15, "terrain": "Plains"},
-      {"x": -20, "y": 15, "terrain": "Plains"},
-      {"x": -19, "y": 15, "terrain": "Plains"},
-      {"x": -18, "y": 15, "terrain": "Plains"},
-      {"x": -17, "y": 15, "terrain": "Plains"},
-      {"x": -16, "y": 15, "terrain": "Plains"},
-      {"x": -15, "y": 15, "terrain": "Plains"},
-      {"x": -14, "y": 15, "terrain": "Plains"},
-      {"x": -13, "y": 15, "terrain": "Plains"},
-      {"x": -12, "y": 15, "terrain": "Plains"},
-      {"x": -11, "y": 15, "terrain": "Plains"},
-      {"x": -10, "y": 15, "terrain": "Plains"},
-      {"x": -9, "y": 15, "terrain": "Plains"},
-      {"x": -8, "y": 15, "terrain": "Plains"},
-      {"x": -7, "y": 15, "terrain": "Plains"},
-      {"x": -6, "y": 15, "terrain": "Plains"},
-      {"x": -5, "y": 15, "terrain": "Plains"},
-      {"x": -4, "y": 15, "terrain": "River"},
-      {"x": -3, "y": 15, "terrain": "Plains"},
-      {"x": -2, "y": 15, "terrain": "Plains"},
-      {"x": -1, "y": 15, "terrain": "Plains"},
-      {"x": 0, "y": 15, "terrain": "Plains"},
-      {"x": 1, "y": 15, "terrain": "Mountain"},
-      {"x": 2, "y": 15, "terrain": "Mountain"},
-      {"x": 3, "y": 15, "terrain": "Mountain"},
-      {"x": 4, "y": 15, "terrain": "Mountain"},
-      {"x": 5, "y": 15, "terrain": "Mountain"},
-      {"x": 6, "y": 15, "terrain": "Mountain"},
-      {"x": 7, "y": 15, "terrain": "Mountain"},
-      {"x": 8, "y": 15, "terrain": "Mountain"},
-      {"x": 9, "y": 15, "terrain": "Mountain"},
-      {"x": 10, "y": 15, "terrain": "Plains"},
-      {"x": 11, "y": 15, "terrain": "Plains"},
-      {"x": 12, "y": 15, "terrain": "Plains"},
-      {"x": 13, "y": 15, "terrain": "Plains"}
+      {
+        "x": -16,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -15,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -9,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -11,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -10,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -9,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -8,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": -7,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": 4,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -9,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -9,
+        "terrain": "Forest"
+      },
+      {
+        "x": 19,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 23,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 24,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 25,
+        "y": -9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -16,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -8,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -11,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -10,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -9,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -8,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 6,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -8,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -8,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 16,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 21,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 23,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 24,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 25,
+        "y": -8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -7,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -7,
+        "terrain": "Forest"
+      },
+      {
+        "x": -11,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 2,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -7,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 23,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 24,
+        "y": -7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -6,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": -6,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -9,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -7,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 5,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -6,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 18,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 19,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 20,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 21,
+        "y": -6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 22,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 23,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 24,
+        "y": -6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -5,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -8,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 8,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -5,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 11,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 12,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 23,
+        "y": -5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -4,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": -10,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -4,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -1,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 3,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -4,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 11,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 12,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 20,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 23,
+        "y": -4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": -3,
+        "terrain": "River"
+      },
+      {
+        "x": -18,
+        "y": -3,
+        "terrain": "River"
+      },
+      {
+        "x": -17,
+        "y": -3,
+        "terrain": "River"
+      },
+      {
+        "x": -16,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -3,
+        "terrain": "Forest"
+      },
+      {
+        "x": -14,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -7,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -6,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -5,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -4,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -3,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": -2,
+        "y": -3,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red"
+      },
+      {
+        "x": -1,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 0,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 1,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 2,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 3,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 4,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 5,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 6,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 7,
+        "y": -3,
+        "terrain": "Road"
+      },
+      {
+        "x": 8,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -3,
+        "terrain": "River"
+      },
+      {
+        "x": 10,
+        "y": -3,
+        "terrain": "River"
+      },
+      {
+        "x": 11,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -3,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red"
+      },
+      {
+        "x": 19,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -2,
+        "terrain": "River"
+      },
+      {
+        "x": -16,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": -2,
+        "terrain": "Road"
+      },
+      {
+        "x": -13,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": -2,
+        "terrain": "Road"
+      },
+      {
+        "x": -8,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": -2,
+        "terrain": "Forest"
+      },
+      {
+        "x": -4,
+        "y": -2,
+        "terrain": "Forest"
+      },
+      {
+        "x": -3,
+        "y": -2,
+        "terrain": "Forest"
+      },
+      {
+        "x": -2,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -2,
+        "terrain": "Road"
+      },
+      {
+        "x": 8,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": -2,
+        "terrain": "River"
+      },
+      {
+        "x": 11,
+        "y": -2,
+        "terrain": "River"
+      },
+      {
+        "x": 12,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 22,
+        "y": -2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": -16,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": -15,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": -14,
+        "y": -1,
+        "terrain": "Bridge"
+      },
+      {
+        "x": -13,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": -12,
+        "y": -1,
+        "terrain": "Bridge"
+      },
+      {
+        "x": -11,
+        "y": -1,
+        "terrain": "Road"
+      },
+      {
+        "x": -10,
+        "y": -1,
+        "terrain": "Road"
+      },
+      {
+        "x": -9,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": -1,
+        "terrain": "Forest"
+      },
+      {
+        "x": -7,
+        "y": -1,
+        "terrain": "Forest"
+      },
+      {
+        "x": -6,
+        "y": -1,
+        "terrain": "Forest"
+      },
+      {
+        "x": -5,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": -1,
+        "terrain": "Road"
+      },
+      {
+        "x": 8,
+        "y": -1,
+        "terrain": "Fortress"
+      },
+      {
+        "x": 9,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": -1,
+        "terrain": "Bridge"
+      },
+      {
+        "x": 12,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": 13,
+        "y": -1,
+        "terrain": "River"
+      },
+      {
+        "x": 14,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": -1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 0,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -13,
+        "y": 0,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red",
+        "order": 1
+      },
+      {
+        "x": -12,
+        "y": 0,
+        "terrain": "River"
+      },
+      {
+        "x": -11,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 0,
+        "terrain": "Forest"
+      },
+      {
+        "x": -7,
+        "y": 0,
+        "terrain": "Forest"
+      },
+      {
+        "x": -6,
+        "y": 0,
+        "terrain": "Forest"
+      },
+      {
+        "x": -5,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 0,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 0,
+        "terrain": "Road"
+      },
+      {
+        "x": 8,
+        "y": 0,
+        "terrain": "Road"
+      },
+      {
+        "x": 9,
+        "y": 0,
+        "terrain": "Road"
+      },
+      {
+        "x": 10,
+        "y": 0,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 11,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 0,
+        "terrain": "River"
+      },
+      {
+        "x": 14,
+        "y": 0,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 15,
+        "y": 0,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red"
+      },
+      {
+        "x": 16,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 17,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 19,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": 21,
+        "y": 0,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 1,
+        "terrain": "Fortress"
+      },
+      {
+        "x": -15,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 1,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -12,
+        "y": 1,
+        "terrain": "River"
+      },
+      {
+        "x": -11,
+        "y": 1,
+        "terrain": "River"
+      },
+      {
+        "x": -10,
+        "y": 1,
+        "terrain": "River"
+      },
+      {
+        "x": -9,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -3,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 1,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 1,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 1,
+        "terrain": "Fortress"
+      },
+      {
+        "x": 7,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 1,
+        "terrain": "Road"
+      },
+      {
+        "x": 11,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 1,
+        "terrain": "River"
+      },
+      {
+        "x": 14,
+        "y": 1,
+        "terrain": "City",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red"
+      },
+      {
+        "x": 15,
+        "y": 1,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 16,
+        "y": 1,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 1,
+        "terrain": "Forest"
+      },
+      {
+        "x": 18,
+        "y": 1,
+        "terrain": "Forest"
+      },
+      {
+        "x": 19,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": 1,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -9,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -8,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -7,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -6,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -5,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -4,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 2,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 2,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 2,
+        "terrain": "Road"
+      },
+      {
+        "x": 11,
+        "y": 2,
+        "terrain": "Road"
+      },
+      {
+        "x": 12,
+        "y": 2,
+        "terrain": "Road"
+      },
+      {
+        "x": 13,
+        "y": 2,
+        "terrain": "Bridge"
+      },
+      {
+        "x": 14,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": 15,
+        "y": 2,
+        "terrain": "River"
+      },
+      {
+        "x": 16,
+        "y": 2,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 2,
+        "terrain": "Forest"
+      },
+      {
+        "x": 18,
+        "y": 2,
+        "terrain": "Forest"
+      },
+      {
+        "x": 19,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": 20,
+        "y": 2,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 3,
+        "terrain": "Forest"
+      },
+      {
+        "x": -19,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 3,
+        "terrain": "Fortress"
+      },
+      {
+        "x": -14,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 3,
+        "terrain": "Forest"
+      },
+      {
+        "x": -7,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 3,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 3,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "terrain": "Fortress"
+      },
+      {
+        "x": 4,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 3,
+        "terrain": "Forest"
+      },
+      {
+        "x": 6,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 3,
+        "terrain": "Forest"
+      },
+      {
+        "x": 12,
+        "y": 3,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 3,
+        "terrain": "Road"
+      },
+      {
+        "x": 14,
+        "y": 3,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 15,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": 16,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": 17,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": 18,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": 19,
+        "y": 3,
+        "terrain": "River"
+      },
+      {
+        "x": -23,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 4,
+        "terrain": "Forest"
+      },
+      {
+        "x": -18,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 4,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -12,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 4,
+        "terrain": "Forest"
+      },
+      {
+        "x": -10,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 4,
+        "terrain": "Forest"
+      },
+      {
+        "x": -4,
+        "y": 4,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 4,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 4,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 4,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 4,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 4,
+        "terrain": "Forest"
+      },
+      {
+        "x": 3,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 4,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 4,
+        "terrain": "Road"
+      },
+      {
+        "x": 15,
+        "y": 4,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 16,
+        "y": 4,
+        "terrain": "Road"
+      },
+      {
+        "x": 17,
+        "y": 4,
+        "terrain": "Road"
+      },
+      {
+        "x": 18,
+        "y": 4,
+        "terrain": "Road"
+      },
+      {
+        "x": 19,
+        "y": 4,
+        "terrain": "Road"
+      },
+      {
+        "x": -23,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -16,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -15,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -14,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -13,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -12,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -11,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": -8,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 5,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 5,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 5,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 5,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 5,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 5,
+        "terrain": "Forest"
+      },
+      {
+        "x": 18,
+        "y": 5,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -20,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -15,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -14,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -13,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -12,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": -11,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 6,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 6,
+        "terrain": "Mountain"
+      },
+      {
+        "x": -1,
+        "y": 6,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 6,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 6,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": 6,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": 18,
+        "y": 6,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": -15,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": -14,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": -13,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": -12,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 7,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 7,
+        "terrain": "City",
+        "hp": 5,
+        "maxHp": 5,
+        "owner": "Red"
+      },
+      {
+        "x": -2,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 7,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 7,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 7,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 3,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 4,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 5,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": 7,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 7,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -15,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -14,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -13,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": -12,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 8,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 8,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 6,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 13,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 14,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 15,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 16,
+        "y": 8,
+        "terrain": "Forest"
+      },
+      {
+        "x": 17,
+        "y": 8,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 9,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Blue"
+      },
+      {
+        "x": -17,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 9,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 0,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 9,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 9,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": 13,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": 9,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 10,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 10,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 9,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": 16,
+        "y": 10,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 11,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 1,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 11,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 7,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 8,
+        "y": 11,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Red"
+      },
+      {
+        "x": 9,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 10,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": 11,
+        "terrain": "Plains"
+      },
+      {
+        "x": -27,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 12,
+        "terrain": "Capital",
+        "hp": 20,
+        "maxHp": 20,
+        "owner": "Blue",
+        "order": 1
+      },
+      {
+        "x": -23,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 12,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 7,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 8,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 9,
+        "y": 12,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 10,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": 15,
+        "y": 12,
+        "terrain": "Plains"
+      },
+      {
+        "x": -27,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 13,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 7,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 8,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 9,
+        "y": 13,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 10,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 13,
+        "terrain": "Plains"
+      },
+      {
+        "x": -28,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -27,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 14,
+        "terrain": "Capital",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Blue",
+        "order": 2
+      },
+      {
+        "x": -20,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 14,
+        "terrain": "City",
+        "hp": 10,
+        "maxHp": 10,
+        "owner": "Red"
+      },
+      {
+        "x": -5,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 14,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 14,
+        "terrain": "Capital",
+        "hp": 15,
+        "maxHp": 15,
+        "owner": "Red"
+      },
+      {
+        "x": 0,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": 2,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 7,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 8,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 9,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 10,
+        "y": 14,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 11,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": 14,
+        "y": 14,
+        "terrain": "Plains"
+      },
+      {
+        "x": -28,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -27,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -26,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -25,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -24,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -23,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -22,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -21,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -20,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -19,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -18,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -17,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -16,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -15,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -14,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -13,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -12,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -11,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -10,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -9,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -8,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -7,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -6,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -5,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -4,
+        "y": 15,
+        "terrain": "River"
+      },
+      {
+        "x": -3,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -2,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": -1,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": 0,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": 1,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 2,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 3,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 4,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 5,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 6,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 7,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 8,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 9,
+        "y": 15,
+        "terrain": "Mountain"
+      },
+      {
+        "x": 10,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": 11,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": 12,
+        "y": 15,
+        "terrain": "Plains"
+      },
+      {
+        "x": 13,
+        "y": 15,
+        "terrain": "Plains"
+      }
     ]
   },
   "units": [
     {
-      "id": "enemy-infantry",
+      "id": "red-infantry-standard-1",
       "type": "Infantry",
       "team": "Red",
       "x": 15,
@@ -1112,7 +5435,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-2",
+      "id": "red-infantry-standard-2",
       "type": "Infantry",
       "team": "Red",
       "x": -13,
@@ -1135,7 +5458,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-3",
+      "id": "red-infantry-standard-3",
       "type": "Infantry",
       "team": "Red",
       "x": -11,
@@ -1158,7 +5481,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-4",
+      "id": "red-infantry-standard-4",
       "type": "Infantry",
       "team": "Red",
       "x": -11,
@@ -1181,7 +5504,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-5",
+      "id": "red-infantry-standard-5",
       "type": "Infantry",
       "team": "Red",
       "x": -11,
@@ -1204,7 +5527,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-6",
+      "id": "red-infantry-standard-6",
       "type": "Infantry",
       "team": "Red",
       "x": 14,
@@ -1227,7 +5550,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-7",
+      "id": "red-infantry-standard-7",
       "type": "Infantry",
       "team": "Red",
       "x": -14,
@@ -1250,7 +5573,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-8",
+      "id": "red-infantry-standard-8",
       "type": "Infantry",
       "team": "Red",
       "x": -13,
@@ -1273,7 +5596,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-9",
+      "id": "red-infantry-standard-9",
       "type": "Infantry",
       "team": "Red",
       "x": -19,
@@ -1296,7 +5619,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-10",
+      "id": "red-infantry-standard-10",
       "type": "Infantry",
       "team": "Red",
       "x": -2,
@@ -1319,7 +5642,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-infantry-11",
+      "id": "red-infantry-standard-11",
       "type": "Infantry",
       "team": "Red",
       "x": -2,
@@ -1342,7 +5665,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-1",
+      "id": "red-antitank-gun_37mm-1",
       "type": "AntiTank",
       "team": "Red",
       "x": 8,
@@ -1365,7 +5688,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-2",
+      "id": "red-antitank-gun_37mm-2",
       "type": "AntiTank",
       "team": "Red",
       "x": -16,
@@ -1388,7 +5711,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-3",
+      "id": "red-antitank-gun_37mm-3",
       "type": "AntiTank",
       "team": "Red",
       "x": 6,
@@ -1411,7 +5734,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-4",
+      "id": "red-antitank-gun_37mm-4",
       "type": "AntiTank",
       "team": "Red",
       "x": -15,
@@ -1434,7 +5757,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-5",
+      "id": "red-antitank-gun_37mm-5",
       "type": "AntiTank",
       "team": "Red",
       "x": 3,
@@ -1457,7 +5780,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank",
+      "id": "red-antitank-gun_37mm-6",
       "type": "AntiTank",
       "team": "Red",
       "x": -13,
@@ -1480,7 +5803,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-6",
+      "id": "red-antitank-gun_37mm-7",
       "type": "AntiTank",
       "team": "Red",
       "x": -13,
@@ -1503,7 +5826,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-antitank-7",
+      "id": "red-antitank-gun_37mm-8",
       "type": "AntiTank",
       "team": "Red",
       "x": -3,
@@ -1526,7 +5849,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery",
+      "id": "red-artillery-75mm-1",
       "type": "Artillery",
       "team": "Red",
       "x": -11,
@@ -1549,7 +5872,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery-2",
+      "id": "red-artillery-75mm-2",
       "type": "Artillery",
       "team": "Red",
       "x": -14,
@@ -1572,7 +5895,7 @@
       "attacked": false
     },
     {
-      "id": "u-2",
+      "id": "blue-armored-car-1",
       "type": "ArmoredCar",
       "team": "Blue",
       "x": 10,
@@ -1595,7 +5918,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-tank",
+      "id": "red-tank-7tp-1",
       "type": "Tank",
       "team": "Red",
       "x": 14,
@@ -1618,7 +5941,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-tank-2",
+      "id": "red-tank-7tp-2",
       "type": "Tank",
       "team": "Red",
       "x": 14,
@@ -1641,7 +5964,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-tank-3",
+      "id": "red-tank-7tp-3",
       "type": "Tank",
       "team": "Red",
       "x": 15,
@@ -1664,7 +5987,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-armoredcar",
+      "id": "red-armored-car_wz34-1",
       "type": "ArmoredCar",
       "team": "Red",
       "x": 14,
@@ -1687,7 +6010,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-armoredcar-2",
+      "id": "red-armored-car_wz34-2",
       "type": "ArmoredCar",
       "team": "Red",
       "x": 18,
@@ -1710,7 +6033,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-armoredcar-3",
+      "id": "red-armored-car_wz34-3",
       "type": "ArmoredCar",
       "team": "Red",
       "x": -10,
@@ -1733,7 +6056,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery-3",
+      "id": "red-artillery-75mm-3",
       "type": "Artillery",
       "team": "Red",
       "x": 15,
@@ -1756,7 +6079,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery-4",
+      "id": "red-artillery-75mm-4",
       "type": "Artillery",
       "team": "Red",
       "x": -3,
@@ -1779,7 +6102,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery-5",
+      "id": "red-artillery-75mm-5",
       "type": "Artillery",
       "team": "Red",
       "x": 12,
@@ -1802,7 +6125,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-artillery-6",
+      "id": "red-artillery-75mm-6",
       "type": "Artillery",
       "team": "Red",
       "x": 9,
@@ -1825,7 +6148,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-tank-4",
+      "id": "red-tank-7tp-4",
       "type": "Tank",
       "team": "Red",
       "x": -1,
@@ -1848,7 +6171,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-engineer",
+      "id": "red-engineer-1",
       "type": "Engineer",
       "team": "Red",
       "x": -13,
@@ -1871,7 +6194,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-engineer-2",
+      "id": "red-engineer-2",
       "type": "Engineer",
       "team": "Red",
       "x": 8,
@@ -1894,7 +6217,7 @@
       "attacked": false
     },
     {
-      "id": "enemy-engineer-3",
+      "id": "red-engineer-3",
       "type": "Engineer",
       "team": "Red",
       "x": 15,

@@ -151,7 +151,7 @@ export class ArmyManager {
         for (let i = 1; i <= count; i++) {
           const unit = this.createUnitFromTemplateData(
             template,
-            `player-${template.type}-${i}`,
+            `${template.id}-${i}`,
             0,
             0
           );

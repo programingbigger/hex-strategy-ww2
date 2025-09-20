@@ -95,9 +95,5 @@
       {"x": 5,"y": 2, "terrain": "Sea"}
     ]
   },
-  "deploymentCenter": {
-    "q": -4,
-    "r": -2
-  },
   "units": []
 }

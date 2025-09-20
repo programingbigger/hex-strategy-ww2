@@ -4,6 +4,7 @@ import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { getNeighbors } from '../../utils/map';
 import { coordToString } from '../../utils/map';
 import { armyManager } from '../../data/armyLoader';
+import { getUnitNameById } from '../../utils/unitNames';
 import { 
   EngineerActionType, 
   getEngineerActionCost, 
@@ -283,7 +284,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             <h4 className="section-title">ユニット情報</h4>
             <div className="unit-name-plate">
               <span className={selectedUnit.team === 'Blue' ? 'team-blue' : 'team-red'}>
-                {selectedUnit.name || selectedUnit.type} ({selectedUnit.team === 'Blue' ? '青軍' : '赤軍'})
+                {getUnitNameById(selectedUnit.id)} ({selectedUnit.team === 'Blue' ? '青軍' : '赤軍'})
               </span>
               <div className="unit-category">
                 {selectedUnit.branch} • {selectedUnit.category}

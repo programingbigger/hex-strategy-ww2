@@ -3,6 +3,7 @@ import { GameScreen, GameState, Unit, BattlePrepState, Coordinate } from '../typ
 import GameBoard from '../components/game/GameBoard';
 import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable, getInitialCameraPosition } from '../utils/map';
 import { useCamera } from '../hooks/useCamera';
+import { getUnitNameById } from '../utils/unitNames';
 
 interface UnitDeploymentScreenProps {
   gameState: GameState;
@@ -312,12 +313,12 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
                     fontSize: '16px'
                   }}
                 >
-                  <div style={{ 
+                  <div style={{
                     fontWeight: 'bold',
                     fontSize: '18px',
                     marginBottom: '8px'
                   }}>
-                    {unit.type} {isDeployed ? '(配置済み)' : '(準備中)'}
+                    {getUnitNameById(unit.id)} {isDeployed ? '(配置済み)' : '(準備中)'}
                   </div>
                   <div style={{ fontSize: '16px', opacity: 0.9 }}>
                     HP: {unit.hp} | ATK: {unit.attack} | DEF: {unit.defense}
@@ -382,7 +383,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             <h4 style={{ fontSize: '20px', marginBottom: '15px' }}>ユニット情報</h4>
             {hoveredUnit ? (
               <div style={{ lineHeight: '1.8' }}>
-                <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>{hoveredUnit.type}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>{getUnitNameById(hoveredUnit.id)}</div>
                 <div>HP: {hoveredUnit.hp}/{hoveredUnit.maxHp}</div>
                 <div>攻撃力: {hoveredUnit.attack}</div>
                 <div>防御力: {hoveredUnit.defense}</div>

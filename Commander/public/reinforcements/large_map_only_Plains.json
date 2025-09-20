@@ -15,7 +15,7 @@
     },
     {
       "id": "reinforcement-2",
-      "unitId": "red-tank-light",
+      "unitId": "red-tankette-tks",
       "spawnTurn": 6,
       "spawnLocation": {
         "x": 16,

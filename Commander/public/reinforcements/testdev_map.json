@@ -15,7 +15,7 @@
     },
     {
       "id": "reinforcement-2", 
-      "unitId": "red-tank-medium",
+      "unitId": "red-tank-7tp",
       "spawnTurn": 5,
       "spawnLocation": {
         "x": 3,

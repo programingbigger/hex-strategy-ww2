@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Unit } from '../../types';
+import { getUnitNameById } from '../../utils/unitNames';
 
 interface UnitSelectionModalProps {
   isOpen: boolean;
@@ -96,7 +97,7 @@ const UnitSelectionModal: React.FC<UnitSelectionModalProps> = ({
             輸送ユニット:
           </div>
           <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#333' }}>
-            {transportUnit.name || transportUnit.type} ({transportUnit.team})
+            {getUnitNameById(transportUnit.id)} ({transportUnit.team})
           </div>
         </div>
 
@@ -169,7 +170,7 @@ const UnitSelectionModal: React.FC<UnitSelectionModalProps> = ({
                         color: isSelected ? '#007bff' : '#333',
                         marginBottom: '4px'
                       }}>
-                        {isSelected && '✓ '}{unit.name || unit.type}
+                        {isSelected && '✓ '}{getUnitNameById(unit.id)}
                       </div>
                       <div style={{ 
                         fontSize: '14px', 

@@ -59,7 +59,7 @@
               "name": "機甲科",
               "units": [
                 {
-                  "id": "blue-tank-panzer_1",
+                  "id": "blue-tank-panzer1",
                   "name": "一号戦車",
                   "type": "Tank",
                   "faction": "Blue",
@@ -97,7 +97,7 @@
                   ]
                 },
                 {
-                  "id": "blue-tank-panzer_2",
+                  "id": "blue-tank-panzer2",
                   "name": "二号戦車",
                   "type": "Tank",
                   "faction": "Blue",
@@ -144,7 +144,7 @@
                   ]
                 },
                 {
-                  "id": "blue-tank-panzer_3",
+                  "id": "blue-tank-panzer3",
                   "name": "三号戦車",
                   "type": "Tank",
                   "faction": "Blue",
@@ -324,7 +324,7 @@
               "name": "対戦車科",
               "units": [
                 {
-                  "id": "blue-antitank-gun_37mm",
+                  "id": "blue-antitank-37mm",
                   "name": "37mm対戦車砲",
                   "type": "AntiTank",
                   "faction": "Blue",
@@ -362,7 +362,7 @@
                   ]
                 },
                 {
-                  "id": "blue-antitank-gun_pak_40",
+                  "id": "blue-antitank-gun",
                   "name": "PaK 40",
                   "type": "AntiTank",
                   "faction": "Blue",
@@ -688,7 +688,7 @@
                   ]
                 },
                 {
-                  "id": "red-armored-car_wz34",
+                  "id": "red-armored-car-wz34",
                   "name": "wz.34装甲車",
                   "type": "ArmoredCar",
                   "faction": "Red",
@@ -812,7 +812,7 @@
               "name": "対戦車科",
               "units": [
                 {
-                  "id": "red-antitank-gun_37mm",
+                  "id": "red-antitank-37mm",
                   "name": "wz.36 37mm対戦車砲",
                   "type": "AntiTank",
                   "faction": "Red",
