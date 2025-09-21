@@ -3,129 +3,80 @@ import { GameMap } from '../../types';
 
 interface MapPreviewProps {
   selectedMap: GameMap | null;
-  mapType?: 'scenario' | 'tutorial';
 }
 
-interface TerrainColors {
-  [key: string]: string;
-}
-
-const terrainColors: TerrainColors = {
-  'Plains': '#9ACD32',
-  'Forest': '#228B22',
-  'Mountain': '#8B7355',
-  'River': '#4682B4',
-  'Bridge': '#DEB887',
-  'Road': '#CD853F',
-  'City': '#B22222',
-  'Capital': '#DC143C',
-  'Fortress': '#696969',
-  'Port': '#4169E1',
-  'Desert': '#F4A460',
-  'Snow': '#F0F8FF',
-  'Sea': '#006994',
-  'Bocage': '#556B2F',
-  'Mud': '#8B7D6B'
-};
-
-const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap, mapType = 'scenario' }) => {
-  const [mapData, setMapData] = useState<any>(null);
+const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Reset states when selected map changes
   useEffect(() => {
-    if (!selectedMap) {
-      setMapData(null);
-      return;
-    }
-
-    const loadMapData = async () => {
+    if (selectedMap) {
+      setImageLoaded(false);
+      setImageError(false);
       setLoading(true);
-      try {
-        // Load from appropriate directory based on mapType
-        const basePath = mapType === 'tutorial' ? '/maps/tutorial' : '/maps/scenario';
-        const response = await fetch(`${basePath}/${selectedMap.id}.json`);
-        if (!response.ok) {
-          throw new Error(`Failed to load map: ${response.statusText}`);
-        }
-        const data = await response.json();
+    }
+  }, [selectedMap]);
 
-        if (data) {
-          setMapData(data);
-        } else {
-          console.warn(`Map data not found for ${selectedMap.id}`);
-          setMapData(null);
-        }
-      } catch (error) {
-        console.error('Error loading map data:', error);
-        setMapData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+    setImageError(false);
+    setLoading(false);
+  };
 
-    loadMapData();
-  }, [selectedMap, mapType]);
+  const handleImageError = () => {
+    setImageLoaded(false);
+    setImageError(true);
+    setLoading(false);
+  };
 
   const renderMapPreview = () => {
-    if (!mapData || !mapData.board || !mapData.board.tiles) {
+    if (!selectedMap) {
+      return null;
+    }
+
+    const imagePath = `/assets/images/maps/${selectedMap.id}.png`;
+
+    if (loading) {
       return (
-        <div className="map-preview-placeholder">
-          <div className="placeholder-icon">🗺️</div>
-          <div className="placeholder-text">Map preview not available</div>
+        <div className="map-preview-loading">
+          <div className="loading-spinner">⟳</div>
+          <div>Loading map preview...</div>
         </div>
       );
     }
 
-    const tiles = mapData.board.tiles;
-
-    // Calculate bounds
-    const xs = tiles.map((tile: any) => tile.x);
-    const ys = tiles.map((tile: any) => tile.y);
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
-
-    const width = maxX - minX + 1;
-    const height = maxY - minY + 1;
-
-    // Create a grid representation
-    const grid: Array<Array<string | null>> = Array(height).fill(null).map(() => Array(width).fill(null));
-
-    tiles.forEach((tile: any) => {
-      const gridX = tile.x - minX;
-      const gridY = tile.y - minY;
-      grid[gridY][gridX] = tile.terrain;
-    });
-
-    const cellSize = Math.max(3, Math.min(8, 300 / Math.max(width, height)));
+    if (imageError || !imageLoaded) {
+      return (
+        <div className="map-preview-placeholder">
+          <div className="placeholder-icon">🗺️</div>
+          <div className="placeholder-text">Map preview not available</div>
+          <div className="placeholder-subtext">
+            No preview image found for {selectedMap.name}
+          </div>
+        </div>
+      );
+    }
 
     return (
-      <div className="hex-map-preview" style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
-        gridTemplateRows: `repeat(${height}, ${cellSize}px)`,
-        gap: '1px',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        {grid.map((row, y) =>
-          row.map((terrain, x) => (
-            <div
-              key={`${x}-${y}`}
-              className="hex-cell"
-              style={{
-                width: `${cellSize}px`,
-                height: `${cellSize}px`,
-                backgroundColor: terrain ? terrainColors[terrain] || '#DDD' : 'transparent',
-                border: terrain ? '1px solid rgba(0,0,0,0.2)' : 'none',
-                borderRadius: '2px',
-                position: 'relative'
-              }}
-              title={terrain || 'Empty'}
-            />
-          ))
-        )}
+      <div className="map-preview-image-container">
+        <img
+          src={imagePath}
+          alt={`Preview of ${selectedMap.name}`}
+          className="map-preview-image"
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          style={{
+            width: '100%',
+            height: 'auto',
+            maxHeight: '400px',
+            objectFit: 'contain',
+            borderRadius: '8px',
+            border: '1px solid #ddd',
+            backgroundColor: '#f9f9f9'
+          }}
+        />
       </div>
     );
   };
@@ -148,13 +99,16 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap, mapType = 'scenari
       </div>
 
       <div className="map-preview-content">
-        {loading ? (
-          <div className="map-preview-loading">
-            <div className="loading-spinner">⟳</div>
-            <div>Loading map preview...</div>
-          </div>
-        ) : (
-          renderMapPreview()
+        {renderMapPreview()}
+        {/* Hidden img element to test if image exists */}
+        {selectedMap && (
+          <img
+            src={`/assets/images/maps/${selectedMap.id}.png`}
+            alt=""
+            style={{ display: 'none' }}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+          />
         )}
       </div>
 
@@ -162,20 +116,14 @@ const MapPreview: React.FC<MapPreviewProps> = ({ selectedMap, mapType = 'scenari
         <p>{selectedMap.description}</p>
       </div>
 
-      <div className="terrain-legend">
-        <div className="legend-title">Terrain Legend</div>
-        <div className="legend-grid">
-          {Object.entries(terrainColors).slice(0, 8).map(([terrain, color]) => (
-            <div key={terrain} className="legend-item">
-              <div
-                className="legend-color"
-                style={{ backgroundColor: color }}
-              />
-              <span className="legend-label">{terrain}</span>
-            </div>
-          ))}
+      {imageLoaded && !imageError && (
+        <div className="map-info">
+          <div className="info-title">Map Information</div>
+          <div className="info-text">
+            Preview image available for detailed battlefield overview
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
