@@ -3,7 +3,7 @@ import { BoardLayout, Unit, Coordinate } from '../../types';
 import { coordToString } from '../../utils/map';
 import Hexagon from './Hexagon';
 import { HEX_SIZE } from '../../config/constants';
-import { useCamera } from '../../hooks/useCamera';
+import { useCamera } from '../../contexts/CameraContext';
 
 interface GameBoardProps {
   boardLayout: BoardLayout;

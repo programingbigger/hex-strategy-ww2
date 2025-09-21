@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { GameScreen, GameState, MapData } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
-import { useCamera } from '../hooks/useCamera';
+import { useCamera } from '../contexts/CameraContext';
 import { createUnit } from '../data/units';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
 import SelectedUnitPanel from '../components/game/SelectedUnitPanel';
 import InformationPanel from '../components/game/InformationPanel';
 import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
+import ZoomControls from '../components/ui/ZoomControls';
 import TurnChangeModal from '../components/game/TurnChangeModal';
 
 import BattleReportModal from '../components/game/BattleReportModal';
@@ -90,7 +91,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
 
   // Camera controls for zoom functionality
-  const { zoomCamera } = useCamera();
+  const { camera, zoomCamera, resetCamera } = useCamera();
 
   // Log panel state
   const [isLogPanelVisible, setIsLogPanelVisible] = useState(false);
@@ -468,6 +469,16 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         isOpen={isReinforcementNotificationOpen}
         reinforcements={currentReinforcements}
         onClose={handleReinforcementNotificationClose}
+      />
+
+      {/* Zoom Controls */}
+      <ZoomControls
+        currentZoom={camera.zoom}
+        onZoomIn={() => zoomCamera(1)}
+        onZoomOut={() => zoomCamera(-1)}
+        onResetZoom={resetCamera}
+        minZoom={0.5}
+        maxZoom={3}
       />
     </div>
   );

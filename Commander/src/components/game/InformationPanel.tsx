@@ -75,7 +75,7 @@ const InformationPanel: React.FC<InformationPanelProps> = ({
 
   const TerrainImage: React.FC<{ terrain: string }> = ({ terrain }) => {
     const [imageError, setImageError] = useState(false);
-    const imagePath = `/assets/images/maps/${terrain}.png`;
+    const imagePath = `/assets/images/terrain/${terrain}.png`;
     const hasImage = availableTerrainImages.includes(terrain);
 
     if (!hasImage || imageError) {

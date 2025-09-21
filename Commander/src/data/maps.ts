@@ -27,6 +27,31 @@ export const tutorialMaps: GameMap[] = [
   {
     id: 'tutorial_1',
     name: 'チュートリアル1',
-    description: 'ユニットの基本移動操作と都市の占領'
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+  },
+  {
+    id: 'tutorial_2',
+    name: 'チュートリアル2',
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+  },
+  {
+    id: 'tutorial_3',
+    name: 'チュートリアル3',
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+  },
+    {
+    id: 'tutorial_4',
+    name: 'チュートリアル4',
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+  },
+    {
+    id: 'tutorial_5',
+    name: 'チュートリアル5',
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+  },
+    {
+    id: 'tutorial_6',
+    name: 'チュートリアル6',
+    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
   }
 ];

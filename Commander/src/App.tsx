@@ -8,6 +8,7 @@ import TutorialSelectScreen from './screens/TutorialSelectScreen';
 import BattlePrepScreen from './screens/BattlePrepScreen';
 import UnitDeploymentScreen from './screens/UnitDeploymentScreen';
 import BattleScreen from './screens/BattleScreen';
+import { CameraProvider } from './contexts/CameraContext';
 import './styles/App.css';
 
 import { loadCompleteMap } from './utils/mapLoader';
@@ -96,9 +97,17 @@ const App: React.FC = () => {
       case 'battle-prep':
         return <BattlePrepScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} />;
       case 'deployment':
-        return <UnitDeploymentScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} onStartBattle={startBattle} />;
+        return (
+          <CameraProvider>
+            <UnitDeploymentScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} onStartBattle={startBattle} />
+          </CameraProvider>
+        );
       case 'battle':
-        return <BattleScreen gameState={gameState} setGameState={setGameState} onNavigate={navigateToScreen} />;
+        return (
+          <CameraProvider>
+            <BattleScreen gameState={gameState} setGameState={setGameState} onNavigate={navigateToScreen} />
+          </CameraProvider>
+        );
       default:
         return <TitleScreen onNavigate={navigateToScreen} />;
     }

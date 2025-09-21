@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState, Coordinate } from '../types';
 import GameBoard from '../components/game/GameBoard';
 import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable, getInitialCameraPosition } from '../utils/map';
-import { useCamera } from '../hooks/useCamera';
+import { useCamera } from '../contexts/CameraContext';
 import { getUnitNameById } from '../utils/unitNames';
+import ZoomControls from '../components/ui/ZoomControls';
 
 interface UnitDeploymentScreenProps {
   gameState: GameState;
@@ -26,8 +27,8 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   const [hoveredTerrain, setHoveredTerrain] = useState<{terrain: string, coord: Coordinate} | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Camera hook for automatic positioning
-  const { setCameraPosition } = useCamera();
+  // Camera hook for automatic positioning and zoom controls
+  const { camera, zoomCamera, resetCamera, setCameraPosition } = useCamera();
 
   // Automatically position camera using initial camera position from map or order=1 fallback
   useEffect(() => {
@@ -497,6 +498,16 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
           </div>
         </div>
       )}
+
+      {/* Zoom Controls */}
+      <ZoomControls
+        currentZoom={camera.zoom}
+        onZoomIn={() => zoomCamera(1)}
+        onZoomOut={() => zoomCamera(-1)}
+        onResetZoom={resetCamera}
+        minZoom={0.5}
+        maxZoom={3}
+      />
     </div>
   );
 };
