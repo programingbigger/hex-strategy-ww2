@@ -1,6 +1,5 @@
 import { Team, Unit } from '../types';
-import { calculateProductionCost, processProductionWithCost, ProductionCost, CostCalculationResult, getUnitTemplate } from './costManager';
-import { createUnit } from '../data/units';
+import { calculateProductionCost, processProductionWithCost, ProductionCost } from './costManager';
 
 export interface ProductionRequest {
   unitId: string;
@@ -139,20 +138,23 @@ export const processSingleProductionRequest = async (
     );
     
     if (productionResult.success) {
-      // Create the actual unit
+      // Create the actual unit using ArmyManager
       const unitId = `${request.unitId}-${Date.now()}-${i}`;
       try {
-        // Get the unit type from the template
-        const template = await getUnitTemplate(request.unitId, request.faction);
-        const unitType = template?.type || 'Infantry';
+        // Use ArmyManager to create unit with correct weapons from armyOrganization.json
+        const { ArmyManager } = await import('../data/armyLoader');
+        const armyManager = ArmyManager.getInstance();
         
-        const newUnit = createUnit(
+        const newUnit = armyManager.createUnitFromTemplate(
+          request.unitId,
           unitId,
-          unitType as any, // Cast to UnitType
-          request.faction,
           request.x,
           request.y
         );
+        
+        if (!newUnit) {
+          throw new Error(`Failed to create unit from template: ${request.unitId}`);
+        }
         
         units.push(newUnit);
         totalCost += productionResult.productionCost.cost;
@@ -178,7 +180,7 @@ export const processSingleProductionRequest = async (
     remainingFunds,
     errors
   };
-};
+};;
 
 /**
  * Get available units for production for a team based on budget

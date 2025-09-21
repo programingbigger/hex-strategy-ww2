@@ -29,16 +29,28 @@
       "unitId": "blue-infantry-standard"
     },
     {
+      "id": "blue-tank-panzer_1",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-tank-panzer_1"
+    },
+    {
       "id": "blue-tank-panzer_2",
       "faction": "Blue",
       "count": 1,
       "unitId": "blue-tank-panzer_2"
     },
     {
-      "id": "blue-armored-car",
+      "id": "blue-tank-panzer_3",
       "faction": "Blue",
-      "count": 2,
-      "unitId": "blue-armored-car"
+      "count": 1,
+      "unitId": "blue-tank-panzer_3"
+    },
+    {
+      "id": "blue-tank-medium",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-tank-medium"
     }
   ],
   "producibleUnits": {
