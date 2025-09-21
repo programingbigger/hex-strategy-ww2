@@ -391,12 +391,40 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
 
           if (canProduce) {
             const faction = gameState.activeTeam === 'Blue' ? 'Blue' : 'Red';
-            const producibleUnits = armyManager.getUnitTemplatesBy(faction);
-            uiStates.setProductionState({
-              isOpen: true,
-              capital: coord,
-              producibleUnits: producibleUnits as ProducibleUnit[],
-            });
+
+            // Load producible units from map data
+            const loadProducibleUnits = async () => {
+              try {
+                const { getProducibleUnitsForMap } = await import('../../data/units');
+                if (mapId) {
+                  const producibleUnits = await getProducibleUnitsForMap(mapId, faction);
+                  uiStates.setProductionState({
+                    isOpen: true,
+                    capital: coord,
+                    producibleUnits: producibleUnits as ProducibleUnit[],
+                  });
+                } else {
+                  // Fallback to all units if no map selected
+                  const producibleUnits = armyManager.getUnitTemplatesBy(faction);
+                  uiStates.setProductionState({
+                    isOpen: true,
+                    capital: coord,
+                    producibleUnits: producibleUnits as ProducibleUnit[],
+                  });
+                }
+              } catch (error) {
+                console.error('Failed to load producible units:', error);
+                // Fallback to all units on error
+                const producibleUnits = armyManager.getUnitTemplatesBy(faction);
+                uiStates.setProductionState({
+                  isOpen: true,
+                  capital: coord,
+                  producibleUnits: producibleUnits as ProducibleUnit[],
+                });
+              }
+            };
+
+            loadProducibleUnits();
           } else {
             gameState.setSelectedUnitId(null);
           }

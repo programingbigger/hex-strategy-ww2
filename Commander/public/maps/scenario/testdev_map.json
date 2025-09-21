@@ -59,6 +59,33 @@
       "unitId": "blue-transport-transport"
     }
   ],
+  "producibleUnits": {
+    "Blue": [
+      "blue-infantry-standard",
+      "blue-tank-panzer_1",
+      "blue-tank-panzer_2",
+      "blue-tank-panzer_3",
+      "blue-tank-medium",
+      "blue-armored-car",
+      "blue-artillery-howitzer",
+      "blue-antitank-gun_37mm",
+      "blue-antitank-gun_pak_40",
+      "blue-engineer-engineer",
+      "blue-transport-transport"
+    ], 
+    "Red": [
+      "red-infantry-reservist",
+      "red-infantry-standard",
+      "red-tankette-tks",
+      "red-tank-7tp",
+      "red-armored-car_wz34",
+      "red-artillery-75mm",
+      "red-artillery-howitzer",
+      "red-antitank-gun_37mm",
+      "red-engineer-engineer",
+      "red-transport-transport"
+    ]
+  },
   "initialCameraPosition": {
     "x": -5,
     "y": 0

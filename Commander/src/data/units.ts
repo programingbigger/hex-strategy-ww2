@@ -1,5 +1,6 @@
 import { Unit, UnitType, Weapon, UnitStats, UnitCategory } from '../types';
 import { armyManager, getEnemyStartingUnits as getEnemyStartingUnitsFromArmy } from './armyLoader';
+import { ProducibleUnit } from '../components/game/ProductionModal';
 
 // JSON-based unit and weapon creation functions
 const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
@@ -302,6 +303,43 @@ export const getUnitsForMap = async (mapId: string): Promise<Unit[]> => {
     return [];
   }
 };;;
+// Get producible unit templates from map data
+export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 'Red'): Promise<ProducibleUnit[]> => {
+  try {
+    // Load map data using the map loader to get producibleUnits from embedded data
+    const { loadMapData } = await import('../utils/mapLoader');
+    const mapData = await loadMapData(mapId);
+    
+    // Check if map has embedded producibleUnits
+    if (mapData.producibleUnits && mapData.producibleUnits[faction] && Array.isArray(mapData.producibleUnits[faction])) {
+      console.log(`✅ Using embedded producibleUnits from map: ${mapId} for faction: ${faction}`);
+      const producibleUnitIds = mapData.producibleUnits[faction];
+      
+      // Get unit templates from armyOrganization.json based on the producible unit IDs
+      const { armyManager } = await import('./armyLoader');
+      const allUnits = armyManager.getUnitTemplatesBy(faction);
+      
+      // Filter units based on producibleUnits list
+      const producibleUnits = allUnits.filter(unit => producibleUnitIds.includes(unit.id));
+      
+      return producibleUnits as ProducibleUnit[];
+    }
+
+    // If no embedded producibleUnits, fall back to all units for that faction
+    console.warn(`⚠️ Map ${mapId} doesn't have embedded producibleUnits for ${faction}. Using all available units.`);
+    const { armyManager } = await import('./armyLoader');
+    const allUnits = armyManager.getUnitTemplatesBy(faction);
+    return allUnits as ProducibleUnit[];
+  } catch (error) {
+    console.error(`Failed to load producible units for ${mapId}:`, error);
+    
+    // Fallback to all units if map config not found
+    console.warn(`Producible units configuration not found for ${mapId}, returning all units for ${faction}`);
+    const { armyManager } = await import('./armyLoader');
+    const allUnits = armyManager.getUnitTemplatesBy(faction);
+    return allUnits as ProducibleUnit[];
+  }
+};
 
 const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
   const units: Unit[] = [];

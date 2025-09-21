@@ -199,6 +199,7 @@ export interface MapData {
   };
   armyFunds?: { [team: string]: number };
   availableUnits?: UnitConfig[];  // Units available for deployment on this map
+  producibleUnits?: { [faction: string]: string[] };  // Units that can be produced by each faction on this map
   board: {
     tiles: Tile[];
   };

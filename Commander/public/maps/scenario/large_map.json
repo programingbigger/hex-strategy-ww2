@@ -41,6 +41,24 @@
       "unitId": "blue-armored-car"
     }
   ],
+  "producibleUnits": {
+    "Blue": [
+      "blue-infantry-standard",
+      "blue-tank-panzer_2",
+      "blue-armored-car",
+      "blue-artillery-howitzer",
+      "blue-antitank-gun_37mm",
+      "blue-engineer-engineer",
+      "blue-transport-transport"
+    ], 
+    "Red": [
+      "red-infantry-reservist",
+      "red-artillery-75mm",
+      "red-antitank-gun_37mm",
+      "red-engineer-engineer",
+      "red-transport-transport"
+    ]
+  },
   "board": {
     "tiles": [
       {
