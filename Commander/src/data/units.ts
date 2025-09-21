@@ -3,24 +3,49 @@ import { armyManager, getEnemyStartingUnits as getEnemyStartingUnitsFromArmy } f
 import { ProducibleUnit } from '../components/game/ProductionModal';
 
 // JSON-based unit and weapon creation functions
-const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
+const getUnitStatsByIdOrType = (unitId: string, type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
   const templates = armyManager.getUnitTemplatesBy(team, '陸');
-  const template = templates.find(t => t.type === type);
-  
+
+  // 1. First try to find by exact unit ID
+  let template = templates.find(t => t.id === unitId);
+
+  // 2. If not found by ID, fallback to type search (for backward compatibility)
+  if (!template) {
+    template = templates.find(t => t.type === type);
+    if (template) {
+      console.warn(`Unit ID '${unitId}' not found, using type '${type}' fallback for stats`);
+    }
+  }
+
   if (template) {
     return template.stats;
   }
-  
+
   // Fallback for backward compatibility - should not be reached in normal usage
-  console.warn(`Unit stats not found in JSON for ${type}, using fallback`);
+  console.warn(`Unit stats not found in JSON for ${unitId}/${type}, using fallback`);
   return getUnitStatsFallback(type);
 };
 
-const getUnitWeaponsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): Weapon[] => {
+// Legacy function for backward compatibility
+const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
+  return getUnitStatsByIdOrType('', type, team);
+};
+
+const getUnitWeaponsByIdOrType = (unitId: string, type: UnitType, team: 'Blue' | 'Red'): Weapon[] => {
   try {
     const templates = armyManager.getUnitTemplatesBy(team, '陸');
-    const template = templates.find(t => t.type === type);
-    
+
+    // 1. First try to find by exact unit ID
+    let template = templates.find(t => t.id === unitId);
+
+    // 2. If not found by ID, fallback to type search (for backward compatibility)
+    if (!template) {
+      template = templates.find(t => t.type === type);
+      if (template) {
+        console.warn(`Unit ID '${unitId}' not found, using type '${type}' fallback`);
+      }
+    }
+
     if (template && template.weapons) {
       // Reset ammunition to max for new units
       return template.weapons.map(weapon => ({
@@ -29,11 +54,16 @@ const getUnitWeaponsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): Weapon[] 
       }));
     }
   } catch (error) {
-    console.warn(`ArmyManager failed for ${type} (${team}), trying direct JSON access:`, error);
+    console.warn(`ArmyManager failed for ${unitId}/${type} (${team}), trying direct JSON access:`, error);
   }
-  
+
   // Fallback: direct JSON access (still JSON-based, not hardcoded)
   return getWeaponsFromJSONDirect(type, team);
+};
+
+// Legacy function for backward compatibility
+const getUnitWeaponsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): Weapon[] => {
+  return getUnitWeaponsByIdOrType('', type, team);
 };
 
 // Direct JSON access fallback
@@ -71,10 +101,13 @@ export const createUnit = (
   x: number = 0,
   y: number = 0
 ): Unit => {
-  // Try to get data from JSON first
+  // Try to get data from JSON first using ID-based lookup
   try {
-    const unitStats = getUnitStatsFromJSON(type, team);
-    const weapons = getUnitWeaponsFromJSON(type, team);
+    // Extract unit ID base from the full ID (remove instance suffixes like "-1", "-2")
+    const unitIdBase = id.replace(/-\d+$/, '');
+
+    const unitStats = getUnitStatsByIdOrType(unitIdBase, type, team);
+    const weapons = getUnitWeaponsByIdOrType(unitIdBase, type, team);
     
     return {
       id,

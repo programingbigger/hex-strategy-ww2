@@ -6,17 +6,28 @@ import { coordToString } from './map';
  */
 export const loadMapData = async (mapId: string): Promise<MapData> => {
   try {
-    // Load from public/maps/scenario
-    const response = await fetch(`/maps/scenario/${mapId}.json`);
+    // Determine the correct directory based on map ID
+    let mapPath: string;
+
+    if (mapId.startsWith('tutorial_')) {
+      // Tutorial maps are in /maps/tutorial/
+      mapPath = `/maps/tutorial/${mapId}.json`;
+    } else {
+      // Scenario maps are in /maps/scenario/
+      mapPath = `/maps/scenario/${mapId}.json`;
+    }
+
+    const response = await fetch(mapPath);
     if (!response.ok) {
-      throw new Error(`Failed to load map ${mapId}: ${response.statusText}`);
+      throw new Error(`Failed to load map ${mapId} from ${mapPath}: ${response.statusText}`);
     }
     const mapData = await response.json();
-    
+
     if (!mapData) {
       throw new Error(`Map data not found for ${mapId}`);
     }
-    
+
+    console.log(`✅ Successfully loaded map: ${mapId} from ${mapPath}`);
     return mapData as MapData;
   } catch (error) {
     console.error('Error loading map data:', error);

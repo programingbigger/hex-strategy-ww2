@@ -39,11 +39,12 @@ const App: React.FC = () => {
         }));
       } catch (error) {
         console.error('Failed to load map:', error);
-        // Fallback to basic navigation without map data
+        // Fallback to basic navigation with empty board to prevent UI issues
         setGameState(prev => ({
           ...prev,
           currentScreen: screen,
-          selectedMap
+          selectedMap,
+          board: new Map() // Provide empty board as fallback
         }));
       }
     } else {
