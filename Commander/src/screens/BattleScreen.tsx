@@ -212,11 +212,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       if (gameState.selectedMap) {
         try {
           // Use the selected map from gameState instead of hardcoded map
-          const response = await fetch(`/maps/scenario/${gameState.selectedMap.id}.json`);
-          if (!response.ok) {
-            throw new Error(`Failed to load map ${gameState.selectedMap.id}`);
-          }
-          const mapData: MapData = await response.json();
+          const { loadMapData } = await import('../utils/mapLoader');
+          const mapData: MapData = await loadMapData(gameState.selectedMap.id);
           
           // If we have deployed units from gameState, use them instead of map units
           if (gameState.units && gameState.units.length > 0) {
