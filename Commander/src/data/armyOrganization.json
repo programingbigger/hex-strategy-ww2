@@ -405,7 +405,7 @@
               "name": "支援科",
               "units": [
                 {
-                  "id": "blue-engineer",
+                  "id": "blue-engineer-engineer",
                   "name": "工兵",
                   "type": "Engineer",
                   "faction": "Blue",
@@ -452,7 +452,7 @@
                   ]
                 },
                 {
-                  "id": "blue-transport",
+                  "id": "blue-transport-transport",
                   "name": "輸送車",
                   "type": "Transport",
                   "faction": "Blue",
@@ -855,7 +855,7 @@
               "name": "支援科",
               "units": [
                 {
-                  "id": "red-engineer",
+                  "id": "red-engineer-engineer",
                   "name": "工兵",
                   "type": "Engineer",
                   "faction": "Red",
@@ -902,7 +902,7 @@
                   ]
                 },
                 {
-                  "id": "red-transport",
+                  "id": "red-transport-transport",
                   "name": "Polski Fiat 621",
                   "type": "Transport",
                   "faction": "Red",

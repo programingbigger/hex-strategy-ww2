@@ -21,6 +21,20 @@
     "Blue": 1500,
     "Red": 1500
   },
+  "availableUnits":[
+    {
+      "id": "blue-infantry-standard",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-infantry-standard"
+    },
+    {
+      "id": "blue-tank-panzer_2",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-tank-panzer_2"
+    }
+  ],
   "board": {
     "tiles": [
       {

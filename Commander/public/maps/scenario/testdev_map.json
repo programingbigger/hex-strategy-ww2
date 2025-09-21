@@ -47,16 +47,16 @@
       "unitId": "blue-antitank-gun_pak_40"
     },
     {
-      "id": "blue-engineer",
+      "id": "blue-engineer-engineer",
       "faction": "Blue",
       "count": 1,
-      "unitId": "blue-engineer"
+      "unitId": "blue-engineer-engineer"
     },
     {
-      "id": "blue-transport",
+      "id": "blue-transport-transport",
       "faction": "Blue",
       "count": 1,
-      "unitId": "blue-transport"
+      "unitId": "blue-transport-transport"
     }
   ],
   "initialCameraPosition": {
