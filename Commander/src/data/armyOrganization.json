@@ -1,12 +1,12 @@
 {
   "metadata": {
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "Military unit organization by branch and faction. Blue=Axis, Red=Allies.",
-    "lastUpdated": "2025-09-20"
+    "lastUpdated": "2025-09-21"
   },
   "factions": {
     "Blue": {
-      "name": "枢軸軍",
+      "name": "ドイツ国防軍",
       "description": "German forces on the offensive.",
       "branches": {
         "陸": {
@@ -17,7 +17,7 @@
               "units": [
                 {
                   "id": "blue-infantry-standard",
-                  "name": "擲弾兵分隊",
+                  "name": "歩兵分隊",
                   "type": "Infantry",
                   "faction": "Blue",
                   "branch": "陸",
@@ -44,8 +44,8 @@
                   "weapons": [
                     {
                       "id": "blue-infantry-mg",
-                      "name": "MG42",
-                      "type": "MG42",
+                      "name": "MG34",
+                      "type": "MG34",
                       "ammunition": 10,
                       "maxAmmunition": 10,
                       "range": { "min": 1, "max": 1 },
@@ -60,7 +60,7 @@
               "units": [
                 {
                   "id": "blue-tank-panzer_1",
-                  "name": "一号戦車",
+                  "name": "I号戦車 B型",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -98,7 +98,7 @@
                 },
                 {
                   "id": "blue-tank-panzer_2",
-                  "name": "二号戦車",
+                  "name": "II号戦車 C型",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -125,8 +125,8 @@
                   "weapons": [
                     {
                       "id": "blue-tank-panzer2-gun",
-                      "name": "20mm機関砲",
-                      "type": "20mm機関砲",
+                      "name": "2cm KwK 30",
+                      "type": "2cm KwK 30",
                       "ammunition": 8,
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 1 },
@@ -145,7 +145,7 @@
                 },
                 {
                   "id": "blue-tank-panzer_3",
-                  "name": "三号戦車",
+                  "name": "III号戦車 E型",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -172,8 +172,8 @@
                   "weapons": [
                     {
                       "id": "blue-tank-panzer3-gun",
-                      "name": "50mm戦車砲",
-                      "type": "50mm戦車砲",
+                      "name": "3.7cm KwK 36",
+                      "type": "3.7cm KwK 36",
                       "ammunition": 10,
                       "maxAmmunition": 10,
                       "range": { "min": 1, "max": 1 },
@@ -192,7 +192,7 @@
                 },
                 {
                   "id": "blue-tank-medium",
-                  "name": "IV号戦車",
+                  "name": "IV号戦車 D型",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -219,8 +219,8 @@
                   "weapons": [
                     {
                       "id": "blue-tank-main-gun",
-                      "name": "75mm主砲",
-                      "type": "75mm主砲",
+                      "name": "7.5cm KwK 37",
+                      "type": "7.5cm KwK 37",
                       "ammunition": 12,
                       "maxAmmunition": 12,
                       "range": { "min": 1, "max": 1 },
@@ -239,7 +239,7 @@
                 },
                 {
                   "id": "blue-armored-car",
-                  "name": "装甲車",
+                  "name": "Sd.Kfz. 222",
                   "type": "ArmoredCar",
                   "faction": "Blue",
                   "branch": "陸",
@@ -266,8 +266,8 @@
                   "weapons": [
                     {
                       "id": "blue-armored-mg",
-                      "name": "MG34",
-                      "type": "MG34",
+                      "name": "2cm KwK 30",
+                      "type": "2cm KwK 30",
                       "ammunition": 6,
                       "maxAmmunition": 6,
                       "range": { "min": 1, "max": 1 },
@@ -282,7 +282,7 @@
               "units": [
                 {
                   "id": "blue-artillery-howitzer",
-                  "name": "leFH 18",
+                  "name": "10.5cm leFH 18",
                   "type": "Artillery",
                   "faction": "Blue",
                   "branch": "陸",
@@ -309,8 +309,8 @@
                   "weapons": [
                     {
                       "id": "blue-artillery-howitzer",
-                      "name": "105mm榴弾砲",
-                      "type": "105mm榴弾砲",
+                      "name": "10.5cm榴弾砲",
+                      "type": "10.5cm榴弾砲",
                       "ammunition": 5,
                       "maxAmmunition": 5,
                       "range": { "min": 2, "max": 6 },
@@ -325,7 +325,7 @@
               "units": [
                 {
                   "id": "blue-antitank-gun_37mm",
-                  "name": "37mm対戦車砲",
+                  "name": "3.7cm PaK 36",
                   "type": "AntiTank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -352,8 +352,8 @@
                   "weapons": [
                     {
                       "id": "blue-antitank-gun-37mm",
-                      "name": "37mm対戦車砲",
-                      "type": "37mm対戦車砲",
+                      "name": "3.7cm対戦車砲",
+                      "type": "3.7cm対戦車砲",
                       "ammunition": 8,
                       "maxAmmunition": 8,
                       "range": { "min": 1, "max": 2 },
@@ -363,7 +363,7 @@
                 },
                 {
                   "id": "blue-antitank-gun_pak_40",
-                  "name": "PaK 40",
+                  "name": "7.5cm PaK 40",
                   "type": "AntiTank",
                   "faction": "Blue",
                   "branch": "陸",
@@ -390,8 +390,8 @@
                   "weapons": [
                     {
                       "id": "blue-antitank-gun",
-                      "name": "75mm対戦車砲",
-                      "type": "75mm対戦車砲",
+                      "name": "7.5cm対戦車砲",
+                      "type": "7.5cm対戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
                       "range": { "min": 1, "max": 2 },
@@ -406,7 +406,7 @@
               "units": [
                 {
                   "id": "blue-engineer-engineer",
-                  "name": "工兵",
+                  "name": "戦闘工兵",
                   "type": "Engineer",
                   "faction": "Blue",
                   "branch": "陸",
@@ -453,7 +453,7 @@
                 },
                 {
                   "id": "blue-transport-transport",
-                  "name": "輸送車",
+                  "name": "オペル・ブリッツ",
                   "type": "Transport",
                   "faction": "Blue",
                   "branch": "陸",

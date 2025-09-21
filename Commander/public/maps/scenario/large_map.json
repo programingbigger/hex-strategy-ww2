@@ -33,6 +33,12 @@
       "faction": "Blue",
       "count": 1,
       "unitId": "blue-tank-panzer_2"
+    },
+    {
+      "id": "blue-armored-car",
+      "faction": "Blue",
+      "count": 2,
+      "unitId": "blue-armored-car"
     }
   ],
   "board": {
