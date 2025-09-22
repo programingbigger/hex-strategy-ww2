@@ -199,14 +199,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setCurrentReinforcements([]);
   }, []);
 
-  // Zoom handlers
-  const handleZoomIn = useCallback(() => {
-    zoomCamera(1);
-  }, [zoomCamera]);
-
-  const handleZoomOut = useCallback(() => {
-    zoomCamera(-1);
-  }, [zoomCamera]);
 
   useEffect(() => {
     const loadBattle = async () => {
@@ -324,8 +316,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           redUnits={redUnits}
           blueFunds={armyFunds?.Blue || 0}
           redFunds={armyFunds?.Red || 0}
-          onZoomIn={handleZoomIn}
-          onZoomOut={handleZoomOut}
         />
       </div>
 

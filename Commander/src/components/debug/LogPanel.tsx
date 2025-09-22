@@ -26,8 +26,8 @@ export const LogPanel: React.FC<LogPanelProps> = ({ isVisible, onToggle }) => {
         onClick={onToggle}
         style={{
           position: 'fixed',
-          top: '10px',
-          right: '10px',
+          bottom: '10px',
+          left: '10px',
           zIndex: 9999,
           padding: '8px 12px',
           background: 'rgba(0, 0, 0, 0.7)',
@@ -48,8 +48,8 @@ export const LogPanel: React.FC<LogPanelProps> = ({ isVisible, onToggle }) => {
     <div
       style={{
         position: 'fixed',
-        top: '10px',
-        right: '10px',
+        bottom: '10px',
+        left: '10px',
         zIndex: 9999,
         background: 'rgba(0, 0, 0, 0.9)',
         color: 'white',

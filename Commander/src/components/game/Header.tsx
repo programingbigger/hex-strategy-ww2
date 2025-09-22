@@ -16,8 +16,6 @@ interface HeaderProps {
   redFunds?: number;
   onSave?: () => void;
   onLoad?: () => void;
-  onZoomIn?: () => void;
-  onZoomOut?: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -33,8 +31,6 @@ const Header: React.FC<HeaderProps> = ({
   redFunds,
   onSave,
   onLoad,
-  onZoomIn,
-  onZoomOut,
   className
 }) => {
   const getWeatherEmoji = (weather: WeatherType) => {
@@ -77,8 +73,6 @@ const Header: React.FC<HeaderProps> = ({
     <div className={className} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
       {/* Left side - Controls */}
       <div className="header-controls" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-        {onZoomIn && <button onClick={onZoomIn} className="military-button zoom-button" title="拡大 (+)">🔍+</button>}
-        {onZoomOut && <button onClick={onZoomOut} className="military-button zoom-button" title="縮小 (-)">🔍-</button>}
         {onSave && <button onClick={onSave} className="military-button">セーブ</button>}
         {onLoad && <button onClick={onLoad} className="military-button">ロード</button>}
       </div>
