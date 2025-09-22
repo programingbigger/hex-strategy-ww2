@@ -10,8 +10,6 @@ import {
 import { coordToString } from '../../utils/map';
 import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/constants';
 import { log } from '../../utils/logger';
-import { loadReinforcementConfig, getReinforcementsForTurn } from '../../utils/reinforcements';
-import { ReinforcementConfig } from '../../types/reinforcements';
 import { calculateIncomeForAllTeams } from '../../utils/incomeManager';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
@@ -164,16 +162,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setArmyFunds
   } = deps;
 
-  // Store reinforcement config to avoid repeated loading
-  const reinforcementConfigRef = useRef<ReinforcementConfig | null>(null);
   const mapIdRef = useRef<string>(mapId); // Use mapId from props instead of hardcoded value
 
   // Update mapIdRef when mapId changes
   useEffect(() => {
     if (mapIdRef.current !== mapId) {
       mapIdRef.current = mapId;
-      // Reset reinforcement config when map changes
-      reinforcementConfigRef.current = null;
     }
   }, [mapId]);
 
@@ -260,88 +254,6 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     }
   }, [turn, setGameState, setWinner, setVictoryResult]);
 
-  // Function to spawn reinforcements
-  const spawnReinforcements = useCallback(async (currentTurn: number, currentUnits: Unit[]): Promise<Unit[]> => {
-    try {
-      // Load reinforcement config if not already loaded
-      if (!reinforcementConfigRef.current) {
-        reinforcementConfigRef.current = await loadReinforcementConfig(mapIdRef.current);
-        if (!reinforcementConfigRef.current) {
-          console.log('🪖 No reinforcement config found for map:', mapIdRef.current, '- skipping reinforcement spawn');
-          return currentUnits;
-        }
-        console.log('🪖 Loaded reinforcement config for map:', mapIdRef.current, reinforcementConfigRef.current);
-      }
-
-      const reinforcementsToSpawn = getReinforcementsForTurn(
-        reinforcementConfigRef.current.reinforcements, 
-        currentTurn
-      );
-
-      if (reinforcementsToSpawn.length === 0) {
-        return currentUnits;
-      }
-
-      console.log(`🪖 Spawning ${reinforcementsToSpawn.length} reinforcement(s) on turn ${currentTurn} for map ${mapIdRef.current}:`);
-      
-      const newUnits = [...currentUnits];
-      
-      for (const reinforcement of reinforcementsToSpawn) {
-        // Validate spawn location exists on the map
-        const spawnTileKey = coordToString(reinforcement.spawnLocation);
-        const spawnTile = boardLayout.get(spawnTileKey);
-
-        if (!spawnTile) {
-          console.error(`❌ Reinforcement spawn location (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y}) is outside map bounds, skipping reinforcement ${reinforcement.id}`);
-          continue;
-        }
-
-        // Check if spawn location has valid terrain for units
-        if (spawnTile.terrain === 'Sea' || spawnTile.terrain === 'FrozenSea' || spawnTile.terrain === 'Mountain') {
-          console.error(`❌ Cannot spawn reinforcement ${reinforcement.id} on impassable terrain: ${spawnTile.terrain} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
-          continue;
-        }
-
-        // Check if spawn location is occupied by existing units
-        const isOccupied = currentUnits.some(u =>
-          u.x === reinforcement.spawnLocation.x && u.y === reinforcement.spawnLocation.y
-        );
-
-        if (isOccupied) {
-          console.warn(`⚠️ Reinforcement spawn location (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y}) is occupied, skipping reinforcement ${reinforcement.id}`);
-          continue;
-        }
-
-        // Create the new unit using army organization data
-        const { createUnitFromArmy } = await import('../../data/armyLoader');
-        const newUnit = createUnitFromArmy(
-          reinforcement.unitId,
-          `reinforcement-${reinforcement.id}-turn-${currentTurn}`,
-          reinforcement.spawnLocation.x,
-          reinforcement.spawnLocation.y
-        );
-
-        if (!newUnit) {
-          console.error(`❌ Failed to create reinforcement unit with ID: ${reinforcement.unitId}`);
-          continue;
-        }
-
-        // Ensure unit is assigned to correct team from reinforcement config
-        newUnit.team = reinforcement.team;
-
-        // Debug: log the full unit state to verify correct flags
-        console.log(`✅ Spawned reinforcement: ${reinforcement.description} at (${reinforcement.spawnLocation.x}, ${reinforcement.spawnLocation.y})`);
-        console.log(`   Unit state: team=${newUnit.team}, moved=${newUnit.moved}, attacked=${newUnit.attacked}, id=${newUnit.id}`);
-
-        newUnits.push(newUnit);
-      }
-
-      return newUnits;
-    } catch (error) {
-      console.error('❌ Error spawning reinforcements:', error);
-      return currentUnits;
-    }
-  }, []);
 
   const handleEndTurn = useCallback(async () => {
     const nextTeam = activeTeam === 'Blue' ? 'Red' : 'Blue';
@@ -378,12 +290,9 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     });
 
     let finalUnits = unitsWithHealing;
-    let currentTurnForReinforcements = turn;
-
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
-      currentTurnForReinforcements = newTurn;
       
       if (turnLimit && newTurn > turnLimit) {
         setGameState('gameOver');
@@ -587,17 +496,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       }
     }
 
-    // Check for reinforcements for both teams using consistent turn numbering
-    console.log(`🟢 Checking reinforcements for turn ${currentTurnForReinforcements}`);
-    finalUnits = await spawnReinforcements(currentTurnForReinforcements, unitsWithHealing);
-    if (finalUnits !== unitsWithHealing) {
-      setUnits(finalUnits);
-    }
+    finalUnits = unitsWithHealing;
     
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(finalUnits, newBoardLayout);
-  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, month, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setMonth, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds, spawnReinforcements]);
+  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, month, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setMonth, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds]);
 
   return {
     handleEndTurn,

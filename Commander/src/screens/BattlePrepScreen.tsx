@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
-import ReinforcementPreview from '../components/game/ReinforcementPreview';
 import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext, getAvailableYears, getAvailableDays } from '../utils/operationDates';
 import { getUnitNameById } from '../utils/unitNames';
 import { getDeploymentLimit } from '../utils/deploymentLimits';
@@ -81,7 +80,7 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
           </div>
         </div>
         
-        {/* Right Section: Date & Reinforcements */}
+        {/* Right Section: Date */}
         <div style={{ flex: '1', padding: '25px', background: 'rgba(52, 73, 94, 0.1)', borderRadius: '12px' }}>
           <div style={{ marginBottom: '25px', padding: '20px', background: 'rgba(52, 152, 219, 0.1)', borderRadius: '8px', border: '1px solid #3498db' }}>
             <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#3498db' }}>📅 作戦開始日</h4>
@@ -140,10 +139,6 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
             </div>
           </div>
 
-          <div style={{ marginTop: '25px' }}>
-            <h4 style={{ fontSize: '18px', marginBottom: '15px', color: '#f39c12' }}>その他注意事項</h4>
-            <ReinforcementPreview mapId={gameState.selectedMap?.id || 'test_map_1'} />
-          </div>
         </div>
       </div>
 
