@@ -23,8 +23,43 @@ const TutorialSelectScreen: React.FC<TutorialSelectScreenProps> = ({ onNavigate 
   return (
     <div className="screen scenario-select-screen">
       <div className="scenario-header">
-        <h1 className="scenario-title">📚 TUTORIAL</h1>
-        <p className="scenario-subtitle">Learn the basics of warfare</p>
+        <div style={{ 
+          position: 'relative', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          marginBottom: '20px',
+          minHeight: '80px'
+        }}>
+          {/* Centered Title */}
+          <div style={{ textAlign: 'center' }}>
+            <h1 className="scenario-title">📚 TUTORIAL</h1>
+            <p className="scenario-subtitle">Learn the basics of warfare</p>
+          </div>
+          
+          {/* Bottom-left positioned Back to Menu button */}
+          <button
+            className="control-button military-button"
+            onClick={() => onNavigate('title')}
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              margin: '0',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              background: 'rgba(231, 76, 60, 0.8)',
+              border: '2px solid #e74c3c',
+              borderRadius: '6px',
+              color: 'white',
+              cursor: 'pointer',
+              minWidth: '140px'
+            }}
+          >
+            メインメニューに戻る
+          </button>
+        </div>
       </div>
 
       <div className="scenario-content">
@@ -97,15 +132,6 @@ const TutorialSelectScreen: React.FC<TutorialSelectScreenProps> = ({ onNavigate 
                 </div>
               </div>
             )}
-
-            <div className="mission-controls">
-              <button
-                className="control-button military-button"
-                onClick={() => onNavigate('title')}
-              >
-                メインメニューに戻る
-              </button>
-            </div>
           </div>
         </div>
       </div>

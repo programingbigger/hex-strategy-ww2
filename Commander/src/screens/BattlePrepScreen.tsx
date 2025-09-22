@@ -334,6 +334,14 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     onNavigate('deployment');
   };
 
+  // Determine which screen to navigate back to based on where we came from
+  const getBackScreen = (): GameScreen => {
+    if (gameState.previousScreen === 'tutorial-select') {
+      return 'tutorial-select';
+    }
+    return 'scenario-select'; // default to scenario-select
+  };
+
   return (
     <div className="screen battle-prep-screen" style={{ fontFamily: '"Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif', fontSize: '18px', padding: '20px' }}>
       {page === 1 ? (
@@ -346,7 +354,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           setSelectedMonth={setSelectedMonth}
           setSelectedDay={setSelectedDay}
           onProceed={() => setPage(2)}
-          onBack={() => onNavigate('scenario-select')}
+          onBack={() => onNavigate(getBackScreen())}
         />
       ) : isLoadingUnits ? (
         <div style={{ textAlign: 'center', padding: '50px' }}>

@@ -23,8 +23,43 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
   return (
     <div className="screen scenario-select-screen">
       <div className="scenario-header">
-        <h1 className="scenario-title">SELECT MISSION</h1>
-        <p className="scenario-subtitle">Choose your battlefield</p>
+        <div style={{ 
+          position: 'relative', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          marginBottom: '20px',
+          minHeight: '80px'
+        }}>
+          {/* Centered Title */}
+          <div style={{ textAlign: 'center' }}>
+            <h1 className="scenario-title">SELECT MISSION</h1>
+            <p className="scenario-subtitle">Choose your battlefield</p>
+          </div>
+          
+          {/* Bottom-left positioned Back to Menu button */}
+          <button
+            className="control-button military-button"
+            onClick={() => onNavigate('title')}
+            style={{
+              position: 'absolute',
+              bottom: '0',
+              left: '0',
+              margin: '0',
+              padding: '8px 16px',
+              fontSize: '14px',
+              fontWeight: 'bold',
+              background: 'rgba(231, 76, 60, 0.8)',
+              border: '2px solid #e74c3c',
+              borderRadius: '6px',
+              color: 'white',
+              cursor: 'pointer',
+              minWidth: '120px'
+            }}
+          >
+            Back to Menu
+          </button>
+        </div>
       </div>
       
       <div className="scenario-content">
@@ -88,15 +123,6 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
                 </div>
               </div>
             )}
-            
-            <div className="mission-controls">
-              <button 
-                className="control-button military-button"
-                onClick={() => onNavigate('title')}
-              >
-                Back to Menu
-              </button>
-            </div>
           </div>
         </div>
       </div>

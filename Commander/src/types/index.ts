@@ -101,6 +101,7 @@ export type BoardLayout = Map<string, Tile>;
 
 export interface GameState {
   currentScreen: GameScreen;
+  previousScreen?: GameScreen; // Track previous screen for navigation context
   selectedMap?: GameMap;
   units: Unit[];
   board: BoardLayout;

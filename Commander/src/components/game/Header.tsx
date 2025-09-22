@@ -74,21 +74,28 @@ const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div className={className}>
-      <div className="header-left">
+    <div className={className} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+      {/* Left side - Controls */}
+      <div className="header-controls" style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+        {onZoomIn && <button onClick={onZoomIn} className="military-button zoom-button" title="拡大 (+)">🔍+</button>}
+        {onZoomOut && <button onClick={onZoomOut} className="military-button zoom-button" title="縮小 (-)">🔍-</button>}
+        {onSave && <button onClick={onSave} className="military-button">セーブ</button>}
+        {onLoad && <button onClick={onLoad} className="military-button">ロード</button>}
+      </div>
+
+      {/* Center - Main game information */}
+      <div className="header-center" style={{ display: 'flex', gap: '20px', alignItems: 'center', textAlign: 'center' }}>
         <span className="header-item">ターン: {turn}</span>
         <span className="header-item">📅 {formatDate(year, month, day)}</span>
         <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
         <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
         <span className="header-item funds">軍資金：{formatFunds(activeTeam === 'Blue' ? blueFunds : redFunds)}</span>
       </div>
-      <div className="header-right">
+
+      {/* Right side - Unit counts */}
+      <div className="header-units" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
         <span className="header-item-small blue">青軍: {blueUnits}</span>
         <span className="header-item-small red">赤軍: {redUnits}</span>
-        {onZoomIn && <button onClick={onZoomIn} className="military-button zoom-button" title="拡大 (+)">🔍+</button>}
-        {onZoomOut && <button onClick={onZoomOut} className="military-button zoom-button" title="縮小 (-)">🔍-</button>}
-        {onSave && <button onClick={onSave} className="military-button">セーブ</button>}
-        {onLoad && <button onClick={onLoad} className="military-button">ロード</button>}
       </div>
     </div>
   );

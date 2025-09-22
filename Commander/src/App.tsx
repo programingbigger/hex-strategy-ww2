@@ -30,6 +30,7 @@ const App: React.FC = () => {
         
         setGameState(prev => ({
           ...prev,
+          previousScreen: prev.currentScreen,
           currentScreen: screen,
           selectedMap: {
             ...selectedMap,
@@ -43,6 +44,7 @@ const App: React.FC = () => {
         // Fallback to basic navigation with empty board to prevent UI issues
         setGameState(prev => ({
           ...prev,
+          previousScreen: prev.currentScreen,
           currentScreen: screen,
           selectedMap,
           board: new Map() // Provide empty board as fallback
@@ -51,10 +53,11 @@ const App: React.FC = () => {
     } else {
       setGameState(prev => ({
         ...prev,
+        previousScreen: prev.currentScreen,
         currentScreen: screen
       }));
     }
-  };
+  };;
 
   const updateBattlePrep = (battlePrep: BattlePrepState, startingMonth?: number) => {
     setGameState(prev => ({
