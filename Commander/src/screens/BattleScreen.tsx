@@ -21,6 +21,7 @@ import EngineerActionConfirmModal from '../components/game/EngineerActionConfirm
 import TransportActionConfirmModal from '../components/game/TransportActionConfirmModal';
 import UnitSelectionModal from '../components/game/UnitSelectionModal';
 import { ProductionModal } from '../components/game/ProductionModal';
+import { getDeploymentLimits } from '../utils/deploymentLimits';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -98,6 +99,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const [victoryInfo, setVictoryInfo] = useState<{defeatedArmy?: string; winnerArmy?: string}>({});
   const [lastTurn, setLastTurn] = useState(0);
   const [lastActiveTeam, setLastActiveTeam] = useState<'Blue' | 'Red'>('Blue');
+
+  // Deployment limits state
+  const [deploymentLimits, setDeploymentLimits] = useState<{Blue: number; Red: number}>({Blue: 10, Red: 10});
   
 
   // Handle keyboard shortcuts
@@ -146,6 +150,23 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       setLastActiveTeam(activeTeam);
     }
   }, [turn, activeTeam, lastTurn, lastActiveTeam]);
+
+  // Load deployment limits when map changes
+  useEffect(() => {
+    const loadDeploymentLimits = async () => {
+      if (gameState.selectedMap?.id) {
+        try {
+          const limits = await getDeploymentLimits(gameState.selectedMap.id);
+          setDeploymentLimits(limits);
+        } catch (error) {
+          console.error('Failed to load deployment limits:', error);
+          setDeploymentLimits({Blue: 10, Red: 10}); // Fallback to defaults
+        }
+      }
+    };
+
+    loadDeploymentLimits();
+  }, [gameState.selectedMap?.id]);
   
 
   // Handle end turn confirmation
@@ -285,6 +306,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           redUnits={redUnits}
           blueFunds={armyFunds?.Blue || 0}
           redFunds={armyFunds?.Red || 0}
+          blueMaxUnits={deploymentLimits.Blue}
+          redMaxUnits={deploymentLimits.Red}
         />
       </div>
 

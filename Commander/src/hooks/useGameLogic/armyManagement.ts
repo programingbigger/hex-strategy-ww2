@@ -8,6 +8,7 @@ import {
   Team
 } from '../../types';
 import { ProducibleUnit } from '../../components/game/ProductionModal';
+import { getDeploymentLimit } from '../../utils/deploymentLimits';
 import { armyManager } from '../../data/units';
 import { getDistance } from '../../utils/map';
 
@@ -39,6 +40,7 @@ interface ArmyManagementDeps {
   }) => void;
   armyFunds: { [team: string]: number };
   setArmyFunds: (funds: { [team: string]: number }) => void;
+  mapId: string;
 }
 
 export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook => {
@@ -48,7 +50,8 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
     setUnits,
     setProductionState,
     armyFunds,
-    setArmyFunds
+    setArmyFunds,
+    mapId
   } = deps;
 
   const getUnitsByBranch = useCallback((faction: Faction, branch: MilitaryBranch): Unit[] => {
@@ -110,11 +113,25 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
   const handleUnitProduction = useCallback(async (unitTemplate: ProducibleUnit) => {
     if (!productionState.capital) return;
 
-    // Import the production cost manager dynamically
-    const { processSingleProductionRequest } = await import('../../utils/productionCostManager');
-    
     // Determine the team from the unit template
     const team = unitTemplate.faction === 'Blue' ? 'Blue' as Team : 'Red' as Team;
+
+    // Check deployment limit before attempting production
+    try {
+      const deploymentLimit = await getDeploymentLimit(mapId, team);
+      const currentTeamUnits = units.filter(unit => unit.team === team).length;
+
+      if (currentTeamUnits >= deploymentLimit) {
+        alert(`上限に達したため、生産できません。\n現在のユニット数: ${currentTeamUnits}/${deploymentLimit}`);
+        return;
+      }
+    } catch (error) {
+      console.error('Failed to check deployment limit:', error);
+      // Continue with production if limit check fails
+    }
+
+    // Import the production cost manager dynamically
+    const { processSingleProductionRequest } = await import('../../utils/productionCostManager');
     
     // Create production request
     const productionRequest = {
@@ -157,7 +174,7 @@ export const useArmyManagement = (deps: ArmyManagementDeps): ArmyManagementHook 
       console.error('Production error:', error);
       alert('生産エラーが発生しました。');
     }
-  }, [productionState.capital, setUnits, setProductionState, armyFunds, setArmyFunds]);
+  }, [productionState.capital, setUnits, setProductionState, armyFunds, setArmyFunds, units, mapId]);
 
   const handleProductionClose = useCallback(() => {
     setProductionState({ isOpen: false, capital: null, producibleUnits: [] });

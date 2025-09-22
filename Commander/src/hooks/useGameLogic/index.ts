@@ -166,6 +166,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setProductionState: uiStates.setProductionState,
     armyFunds: gameState.armyFunds,
     setArmyFunds: gameState.setArmyFunds,
+    mapId,
   });;
 
   // Computed values

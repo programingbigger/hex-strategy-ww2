@@ -14,6 +14,8 @@ interface HeaderProps {
   redUnits: number;
   blueFunds?: number;
   redFunds?: number;
+  blueMaxUnits?: number;
+  redMaxUnits?: number;
   onSave?: () => void;
   onLoad?: () => void;
 }
@@ -29,6 +31,8 @@ const Header: React.FC<HeaderProps> = ({
   redUnits,
   blueFunds,
   redFunds,
+  blueMaxUnits,
+  redMaxUnits,
   onSave,
   onLoad,
   className
@@ -88,8 +92,8 @@ const Header: React.FC<HeaderProps> = ({
 
       {/* Right side - Unit counts */}
       <div className="header-units" style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-        <span className="header-item-small blue">青軍: {blueUnits}</span>
-        <span className="header-item-small red">赤軍: {redUnits}</span>
+        <span className="header-item-small blue">青軍: {blueUnits}/{blueMaxUnits || 10}</span>
+        <span className="header-item-small red">赤軍: {redUnits}/{redMaxUnits || 10}</span>
       </div>
     </div>
   );
