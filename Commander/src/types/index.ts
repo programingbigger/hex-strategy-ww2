@@ -199,6 +199,7 @@ export interface MapData {
     enabledVictoryConditions?: VictoryCondition[]; // Active victory conditions
   };
   armyFunds?: { [team: string]: number };
+  deploymentLimits?: { [team: string]: number };  // Maximum units that can be deployed per team ⭐️
   availableUnits?: UnitConfig[];  // Units available for deployment on this map
   producibleUnits?: { [faction: string]: string[] };  // Units that can be produced by each faction on this map
   board: {

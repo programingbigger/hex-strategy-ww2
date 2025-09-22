@@ -4,6 +4,7 @@ import { getPlayerStartingUnits } from '../data/units';
 import ReinforcementPreview from '../components/game/ReinforcementPreview';
 import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext, getAvailableYears, getAvailableDays } from '../utils/operationDates';
 import { getUnitNameById } from '../utils/unitNames';
+import { getDeploymentLimit } from '../utils/deploymentLimits';
 
 interface BattlePrepScreenProps {
   gameState: GameState;
@@ -168,6 +169,7 @@ interface UnitSelectionPageProps {
   resetSelection: () => void;
   proceedToDeployment: () => void;
   onBack: () => void;
+  deploymentLimit: number;
 }
 
 const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
@@ -176,7 +178,8 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
   handleUnitSelect,
   resetSelection,
   proceedToDeployment,
-  onBack
+  onBack,
+  deploymentLimit
 }) => {
   return (
     <>
@@ -221,7 +224,7 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
         {/* Right Section: Selected Units */}
         <div style={{ flex: '1', padding: '25px', background: 'rgba(52, 73, 94, 0.15)', borderRadius: '12px', border: '2px solid #8e44ad' }}>
           <h2 style={{ fontSize: '24px', textAlign: 'center', marginBottom: '20px', color: '#8e44ad' }}>参加ユニット</h2>
-          <div style={{ marginBottom: '20px', textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>選択済み: {selectedUnits.length}/10</div>
+          <div style={{ marginBottom: '20px', textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>選択済み: {selectedUnits.length}/{deploymentLimit}</div>
           <div style={{ background: 'rgba(142, 68, 173, 0.1)', border: '2px dashed #8e44ad', borderRadius: '12px', padding: '25px', minHeight: '50vh', maxHeight: '55vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {selectedUnits.length === 0 ? (
               <div style={{ textAlign: 'center', opacity: 0.8, fontSize: '18px', padding: '60px 20px' }}>
@@ -268,6 +271,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   const [selectedYear, setSelectedYear] = useState<number>(gameState.year || 1944);
   const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || new Date().getMonth() + 1);
   const [selectedDay, setSelectedDay] = useState<number>(gameState.day || 1);
+  const [deploymentLimit, setDeploymentLimit] = useState<number>(10); // Default to 10, will be updated based on map
 
   // Load available units asynchronously
   useEffect(() => {
@@ -288,6 +292,22 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     loadUnits();
   }, [gameState.selectedMap?.id]);
 
+  // Load deployment limit asynchronously
+  useEffect(() => {
+    const loadDeploymentLimit = async () => {
+      if (gameState.selectedMap?.id) {
+        try {
+          const limit = await getDeploymentLimit(gameState.selectedMap.id, 'Blue');
+          setDeploymentLimit(limit);
+        } catch (error) {
+          console.error('Failed to load deployment limit:', error);
+          setDeploymentLimit(10); // Default fallback
+        }
+      }
+    };
+    loadDeploymentLimit();
+  }, [gameState.selectedMap?.id]);
+
   // Adjust selected day when month or year changes to ensure it's valid
   useEffect(() => {
     const availableDays = getAvailableDays(selectedMonth, selectedYear);
@@ -299,10 +319,10 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   const handleUnitSelect = (unit: Unit) => {
     if (selectedUnits.find(u => u.id === unit.id)) {
       setSelectedUnits(prev => prev.filter(u => u.id !== unit.id));
-    } else if (selectedUnits.length < 10) {
+    } else if (selectedUnits.length < deploymentLimit) {
       setSelectedUnits(prev => [...prev, unit]);
     } else {
-      alert('Maximum 10 units can be selected!');
+      alert(`Maximum ${deploymentLimit} units can be selected!`);
     }
   };
 
@@ -368,6 +388,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           resetSelection={resetSelection}
           proceedToDeployment={proceedToDeployment}
           onBack={() => setPage(1)}
+          deploymentLimit={deploymentLimit}
         />
       )}
     </div>

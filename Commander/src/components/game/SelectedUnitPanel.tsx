@@ -18,7 +18,7 @@ interface SelectedUnitPanelProps {
   className?: string;
   selectedUnit: Unit | null;
   selectedUnitTile: Tile | null;
-  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload', materialAmount?: number) => void;
+  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload', materialAmount?: number) => void;
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onStartTransportAction?: () => void;
@@ -108,7 +108,6 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   const canDestroyFortress = isEngineer && selectedUnitTile && 
     selectedUnitTile.terrain === 'Fortress' && availableMaterials >= 2;
     
-  const canDestroyBridge = isEngineer && hasTerrainNearby('Bridge') && availableMaterials >= 2;
 
   // Engineer action cost helpers
   const getEngineerActionInfo = (actionType: EngineerActionType) => {
@@ -130,8 +129,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
       enhance_city: '🏗️ 増築',
       build_bridge: '🌉 架橋',
       build_fortress: '🏰 要塞化',
-      destroy_fortress: '💥 要塞無力化',
-      destroy_bridge: '⛏️ 橋破壊'
+      destroy_fortress: '💥 要塞無力化'
     };
 
     return {
@@ -148,7 +146,6 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   const enhancedCanBuildBridge = canBuildBridge && getEngineerActionInfo('build_bridge').canAfford;
   const enhancedCanBuildFortress = canBuildFortress && getEngineerActionInfo('build_fortress').canAfford;
   const enhancedCanDestroyFortress = canDestroyFortress && getEngineerActionInfo('destroy_fortress').canAfford;
-  const enhancedCanDestroyBridge = canDestroyBridge && getEngineerActionInfo('destroy_bridge').canAfford;
 
   // Helper function to get transport capacity info
   const getTransportCapacity = (): { capacity: number; unitCapacityCosts: Record<string, number> } | null => {
@@ -358,9 +355,6 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                   </button>
                   <button onClick={() => onAction('destroy_fortress')} disabled={!enhancedCanDestroyFortress} className="military-button" title={enhancedCanDestroyFortress ? '' : getEngineerActionInfo('destroy_fortress').validation.errors.join(', ')}>
                     {getEngineerActionInfo('destroy_fortress').buttonLabel}
-                  </button>
-                  <button onClick={() => onAction('destroy_bridge')} disabled={!enhancedCanDestroyBridge} className="military-button" title={enhancedCanDestroyBridge ? '' : getEngineerActionInfo('destroy_bridge').validation.errors.join(', ')}>
-                    {getEngineerActionInfo('destroy_bridge').buttonLabel}
                   </button>
                 </>
               )}

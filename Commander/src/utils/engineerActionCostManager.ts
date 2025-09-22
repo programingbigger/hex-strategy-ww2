@@ -6,8 +6,7 @@ export type EngineerActionType =
   | 'enhance_city'      // 増築
   | 'build_bridge'      // 架橋  
   | 'build_fortress'    // 要塞化
-  | 'destroy_fortress'  // 要塞無力化
-  | 'destroy_bridge';   // 橋破壊
+  | 'destroy_fortress'; // 要塞無力化
 
 // Cost configuration for each engineer action
 export interface EngineerActionCosts {
@@ -15,16 +14,14 @@ export interface EngineerActionCosts {
   build_bridge: number;
   build_fortress: number;
   destroy_fortress: number;
-  destroy_bridge: number;
 }
 
 // Default cost configuration - can be made configurable later
 export const DEFAULT_ENGINEER_ACTION_COSTS: EngineerActionCosts = {
   enhance_city: 50,      // 増築: Moderate cost for upgrading cities
-  build_bridge: 75,      // 架橋: Higher cost for infrastructure building  
+  build_bridge: 75,      // 架橋: Higher cost for infrastructure building
   build_fortress: 100,   // 要塞化: High cost for military fortification
-  destroy_fortress: 60,  // 要塞無力化: Moderate cost for demolition
-  destroy_bridge: 40     // 橋破壊: Lower cost for destruction
+  destroy_fortress: 60   // 要塞無力化: Moderate cost for demolition
 };
 
 // Result interface for engineer action cost operations
@@ -81,12 +78,10 @@ export const getMaterialCostForAction = (actionType: EngineerActionType): number
       return 1;
     case 'destroy_fortress':
       return 2;
-    case 'destroy_bridge':
-      return 2;
     default:
       return 0;
   }
-};
+};;
 
 /**
  * Validate if engineer can perform action (funds + materials check)
@@ -316,7 +311,6 @@ export const getActionNameJP = (actionType: EngineerActionType): string => {
     case 'build_bridge': return '架橋';
     case 'build_fortress': return '要塞化';
     case 'destroy_fortress': return '要塞無力化';
-    case 'destroy_bridge': return '橋破壊';
     default: return actionType;
   }
-};
+};;

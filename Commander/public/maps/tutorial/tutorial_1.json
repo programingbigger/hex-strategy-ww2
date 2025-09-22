@@ -15,6 +15,10 @@
     "Blue": 800,
     "Red": 800
   },
+  "deploymentLimits": {
+    "Blue": 10,
+    "Red": 10
+  },
   "availableUnits": [
     {
       "id": "blue-infantry-standard",

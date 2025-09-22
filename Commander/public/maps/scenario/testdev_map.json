@@ -9,7 +9,12 @@
     "turnLimit": 99,
     "attackingTeam": "Blue",
     "defendingTeam": "Red",
-    "enabledVictoryConditions": ["unit_elimination", "capital_capture", "city_capture", "turn_limit"]
+    "enabledVictoryConditions": [
+      "unit_elimination",
+      "capital_capture",
+      "city_capture",
+      "turn_limit"
+    ]
   },
   "armyFunds": {
     "Blue": 800,
@@ -19,7 +24,7 @@
     {
       "id": "blue-infantry-standard",
       "faction": "Blue",
-      "count": 2,
+      "count": 10,
       "unitId": "blue-infantry-standard"
     },
     {
@@ -72,7 +77,7 @@
       "blue-antitank-gun_pak_40",
       "blue-engineer-engineer",
       "blue-transport-transport"
-    ], 
+    ],
     "Red": [
       "red-infantry-reservist",
       "red-infantry-standard",
@@ -87,69 +92,69 @@
     ]
   },
   "initialCameraPosition": {
-    "x": -5,
+    "x": 0,
     "y": 0
   },
   "board": {
     "tiles": [
-      {"x": -4,"y": -2,"terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": -3,"y": -2,"terrain": "Forest"},
-      {"x": -2,"y": -2,"terrain": "Road"},
-      {"x": -1,"y": -2,"terrain": "Bridge"},
-      {"x": 0,"y": -2, "terrain": "River"},
-      {"x": 1,"y": -2, "terrain": "Bridge"},
-      {"x": 2,"y": -2, "terrain": "Road"},
-      {"x": 3,"y": -2, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Red"},
-      {"x": 4,"y": -2, "terrain": "Desert"},
-      {"x": 5,"y": -2, "terrain": "Sea"},
-      {"x": 6,"y": -2, "terrain": "Sea"},
-      {"x": 7,"y": -2, "terrain": "Sea"},
-      {"x": -4,"y": -1,"terrain": "Bocage"},
-      {"x": -3,"y": -1,"terrain": "Plains"},
-      {"x": -2,"y": -1,"terrain": "Road"},
-      {"x": -1,"y": -1,"terrain": "Mountain"},
-      {"x": 0,"y": -1, "terrain": "River"},
-      {"x": 1,"y": -1, "terrain": "Mud"},
-      {"x": 2,"y": -1, "terrain": "Road"},
-      {"x": 3,"y": -1, "terrain": "Forest"},
-      {"x": 4,"y": -1, "terrain": "Plains"},
-      {"x": 5,"y": -1, "terrain": "Sea"},
-      {"x": 6,"y": -1, "terrain": "Sea"},
-      {"x": -5,"y": 0,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Blue", "order": 1},
-      {"x": -4,"y": 0,"terrain": "Plains"},
-      {"x": -3,"y": 0,"terrain": "Forest"},
-      {"x": -2,"y": 0,"terrain": "Plains"},
-      {"x": -1,"y": 0,"terrain": "Plains"},
-      {"x": 0,"y": 0, "terrain": "Plains"},
-      {"x": 1,"y": 0, "terrain": "Plains"},
-      {"x": 2,"y": 0, "terrain": "Forest"},
-      {"x": 3,"y": 0, "terrain": "Plains"},
-      {"x": 4,"y": 0, "terrain": "Fortress"},
-      {"x": 5,"y": 0, "terrain": "Sea"},
-      {"x": 6,"y": 0, "terrain": "Sea"},
-      {"x": -5,"y": 1,"terrain": "Plains"},
-      {"x": -4,"y": 1,"terrain": "Snow"},
-      {"x": -3,"y": 1,"terrain": "Capital", "hp": 10, "maxHp": 10, "owner": "Red", "order": 1},
-      {"x": -2,"y": 1,"terrain": "Airport", "hp": 10, "maxHp": 10},
-      {"x": -1,"y": 1, "terrain": "City", "hp": 20, "maxHp": 20, "owner": "Blue"},
-      {"x": 0,"y": 1, "terrain": "Plains"},
-      {"x": 1,"y": 1, "terrain": "Plains"},
-      {"x": 2,"y": 1, "terrain": "Plains"},
-      {"x": 3,"y": 1,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 2},
-      {"x": 4,"y": 1,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 3},
-      {"x": 5,"y": 1, "terrain": "Port", "hp": 10, "maxHp": 10},
-      {"x": -6,"y": 2,"terrain": "Plains"},
-      {"x": -5,"y": 2,"terrain": "Plains"},
-      {"x": -4,"y": 2,"terrain": "Snow"},
-      {"x": -3,"y": 2,"terrain": "Plains"},
-      {"x": -2,"y": 2,"terrain": "Plains"},
-      {"x": -1,"y": 2,"terrain": "Plains"},
-      {"x": 0,"y": 2, "terrain": "Plains"},
-      {"x": 1,"y": 2, "terrain": "Plains"},
-      {"x": 2,"y": 2, "terrain": "Plains"},
-      {"x": 3,"y": 2, "terrain": "Plains"},
-      {"x": 4,"y": 2, "terrain": "Sea"},
-      {"x": 5,"y": 2, "terrain": "Sea"}
+      {"x":-4,"y":-2,"terrain":"City","hp":10,"maxHp":10,"owner":"Red"}
+      ,{"x":-3,"y":-2,"terrain":"Forest"}
+      ,{"x":-2,"y":-2,"terrain":"Road"}
+      ,{"x":-1,"y":-2,"terrain":"Bridge"}
+      ,{"x":0,"y":-2,"terrain":"River"}
+      ,{"x":1,"y":-2,"terrain":"Bridge"}
+      ,{"x":2,"y":-2,"terrain":"Road"}
+      ,{"x":3,"y":-2,"terrain":"City","hp":10,"maxHp":10,"owner":"Red"}
+      ,{"x":4,"y":-2,"terrain":"Desert"}
+      ,{"x":5,"y":-2,"terrain":"Sea"}
+      ,{"x":6,"y":-2,"terrain":"Sea"}
+      ,{"x":7,"y":-2,"terrain":"Sea"}
+      ,{"x":-4,"y":-1,"terrain":"Bocage"}
+      ,{"x":-3,"y":-1,"terrain":"Plains"}
+      ,{"x":-2,"y":-1,"terrain":"Road"}
+      ,{"x":-1,"y":-1,"terrain":"Mountain"}
+      ,{"x":0,"y":-1,"terrain":"River"}
+      ,{"x":1,"y":-1,"terrain":"Mud"}
+      ,{"x":2,"y":-1,"terrain":"Road"}
+      ,{"x":3,"y":-1,"terrain":"Forest"}
+      ,{"x":4,"y":-1,"terrain":"Plains"}
+      ,{"x":5,"y":-1,"terrain":"Sea"}
+      ,{"x":6,"y":-1,"terrain":"Sea"}
+      ,{"x":-5,"y":0,"terrain":"Capital","hp":20,"maxHp":20,"owner":"Blue","order":1}
+      ,{"x":-4,"y":0,"terrain":"Plains"}
+      ,{"x":-3,"y":0,"terrain":"Forest"}
+      ,{"x":-2,"y":0,"terrain":"Plains"}
+      ,{"x":-1,"y":0,"terrain":"Plains"}
+      ,{"x":0,"y":0,"terrain":"Plains"}
+      ,{"x":1,"y":0,"terrain":"Plains"}
+      ,{"x":2,"y":0,"terrain":"Forest"}
+      ,{"x":3,"y":0,"terrain":"Plains"}
+      ,{"x":4,"y":0,"terrain":"Fortress"}
+      ,{"x":5,"y":0,"terrain":"Sea"}
+      ,{"x":6,"y":0,"terrain":"Sea"}
+      ,{"x":-5,"y":1,"terrain":"Plains"}
+      ,{"x":-4,"y":1,"terrain":"Snow"}
+      ,{"x":-3,"y":1,"terrain":"Capital","hp":10,"maxHp":10,"owner":"Red","order":1}
+      ,{"x":-2,"y":1,"terrain":"Airport","hp":10,"maxHp":10}
+      ,{"x":-1,"y":1,"terrain":"City","hp":20,"maxHp":20,"owner":"Blue"}
+      ,{"x":0,"y":1,"terrain":"Plains"}
+      ,{"x":1,"y":1,"terrain":"Plains"}
+      ,{"x":2,"y":1,"terrain":"Plains"}
+      ,{"x":3,"y":1,"terrain":"Capital","hp":20,"maxHp":20,"owner":"Red","order":2}
+      ,{"x":4,"y":1,"terrain":"Capital","hp":20,"maxHp":20,"owner":"Red","order":3}
+      ,{"x":5,"y":1,"terrain":"Port","hp":10,"maxHp":10}
+      ,{"x":-6,"y":2,"terrain":"Plains"}
+      ,{"x":-5,"y":2,"terrain":"Plains"}
+      ,{"x":-4,"y":2,"terrain":"Snow"}
+      ,{"x":-3,"y":2,"terrain":"Plains"}
+      ,{"x":-2,"y":2,"terrain":"Plains"}
+      ,{"x":-1,"y":2,"terrain":"Plains"}
+      ,{"x":0,"y":2,"terrain":"Plains"}
+      ,{"x":1,"y":2,"terrain":"Plains"}
+      ,{"x":2,"y":2,"terrain":"Plains"}
+      ,{"x":3,"y":2,"terrain":"Plains"}
+      ,{"x":4,"y":2,"terrain":"Sea"}
+      ,{"x":5,"y":2,"terrain":"Sea"}
     ]
   },
   "deploymentCenter": {
@@ -367,7 +372,7 @@
     {
       "id": "red-transport-1",
       "type": "Transport",
-      "team": "Red", 
+      "team": "Red",
       "x": 1,
       "y": 2,
       "hp": 15,
@@ -387,5 +392,9 @@
       "moved": false,
       "attacked": false
     }
-  ]
+  ],
+  "deploymentLimits": {
+    "Blue": 10,
+    "Red": 10
+  }
 }

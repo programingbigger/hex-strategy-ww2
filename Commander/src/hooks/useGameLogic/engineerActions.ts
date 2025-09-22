@@ -9,14 +9,13 @@ import { coordToString, getNeighbors } from '../../utils/map';
 
 export interface EngineerActionsHook {
   getAvailableBridgeBuildTargets: (unit: Unit) => Coordinate[];
-  getAvailableBridgeDestroyTargets: (unit: Unit) => Coordinate[];
-  startEngineerAction: (actionType: 'build_bridge' | 'destroy_bridge') => void;
+  startEngineerAction: (actionType: 'build_bridge') => void;
   handleEngineerTargetSelect: (coord: Coordinate) => void;
   confirmEngineerAction: () => void;
   cancelEngineerAction: () => void;
   cancelEngineerSelectionMode: () => void;
   handleMaterialActionWithTarget: (
-    action: 'build_bridge' | 'destroy_bridge',
+    action: 'build_bridge',
     targetCoord: Coordinate
   ) => void;
 }
@@ -26,25 +25,25 @@ interface EngineerActionsDeps {
   boardLayout: BoardLayout;
   units: Unit[];
   engineerActionState: {
-    mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    mode: 'none' | 'selecting_bridge_build';
     unit: Unit | null;
     availableTargets: Coordinate[];
   };
   engineerConfirmState: {
     isOpen: boolean;
-    actionType: 'build_bridge' | 'destroy_bridge' | null;
+    actionType: 'build_bridge' | null;
     targetCoord: Coordinate | null;
     targetTile: Tile | null;
     materialCost: number;
   };
   setEngineerActionState: (state: {
-    mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    mode: 'none' | 'selecting_bridge_build';
     unit: Unit | null;
     availableTargets: Coordinate[];
   }) => void;
   setEngineerConfirmState: (state: {
     isOpen: boolean;
-    actionType: 'build_bridge' | 'destroy_bridge' | null;
+    actionType: 'build_bridge' | null;
     targetCoord: Coordinate | null;
     targetTile: Tile | null;
     materialCost: number;
@@ -94,29 +93,8 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
     return targets;
   }, [boardLayout]);
 
-  const getAvailableBridgeDestroyTargets = useCallback((unit: Unit): Coordinate[] => {
-    if (!unit || unit.type !== 'Engineer') return [];
-    
-    const targets: Coordinate[] = [];
-    const unitCoord = { x: unit.x, y: unit.y };
-    
-    const currentTile = boardLayout.get(coordToString(unitCoord));
-    if (currentTile?.terrain === 'Bridge') {
-      targets.push(unitCoord);
-    }
-    
-    const neighbors = getNeighbors(unitCoord);
-    for (const coord of neighbors) {
-      const tile = boardLayout.get(coordToString(coord));
-      if (tile?.terrain === 'Bridge') {
-        targets.push(coord);
-      }
-    }
-    
-    return targets;
-  }, [boardLayout]);
 
-  const startEngineerAction = useCallback((actionType: 'build_bridge' | 'destroy_bridge') => {
+  const startEngineerAction = useCallback((actionType: 'build_bridge') => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
     
     const materialWeapon = selectedUnit.weapons?.find(w => w.type === '資材');
@@ -125,14 +103,11 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
     if (availableMaterials < 2) return;
     
     let targets: Coordinate[] = [];
-    let mode: 'selecting_bridge_build' | 'selecting_bridge_destroy';
-    
+    let mode: 'selecting_bridge_build' = 'selecting_bridge_build';
+
     if (actionType === 'build_bridge') {
       targets = getAvailableBridgeBuildTargets(selectedUnit);
       mode = 'selecting_bridge_build';
-    } else {
-      targets = getAvailableBridgeDestroyTargets(selectedUnit);
-      mode = 'selecting_bridge_destroy';
     }
     
     if (targets.length === 0) return;
@@ -142,7 +117,7 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
       unit: selectedUnit,
       availableTargets: targets
     });
-  }, [selectedUnit, getAvailableBridgeBuildTargets, getAvailableBridgeDestroyTargets, setEngineerActionState]);
+  }, [selectedUnit, getAvailableBridgeBuildTargets, setEngineerActionState]);
 
   const handleEngineerTargetSelect = useCallback((coord: Coordinate) => {
     if (engineerActionState.mode === 'none' || !engineerActionState.unit) return;
@@ -159,7 +134,7 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
     const targetTile = boardLayout.get(coordToString(coord));
     if (!targetTile) return;
     
-    const actionType = engineerActionState.mode === 'selecting_bridge_build' ? 'build_bridge' : 'destroy_bridge';
+    const actionType = 'build_bridge';
     
     setEngineerConfirmState({
       isOpen: true,
@@ -173,7 +148,7 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
   }, [engineerActionState, boardLayout, setEngineerActionState, setEngineerConfirmState]);
 
   const handleMaterialActionWithTarget = useCallback((
-    action: 'build_bridge' | 'destroy_bridge',
+    action: 'build_bridge',
     targetCoord: Coordinate
   ) => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
@@ -185,8 +160,6 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
     
     let canPerformAction = false;
     if (action === 'build_bridge' && targetTile.terrain === 'River') {
-      canPerformAction = true;
-    } else if (action === 'destroy_bridge' && targetTile.terrain === 'Bridge') {
       canPerformAction = true;
     }
     
@@ -206,14 +179,9 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
     const tileKey = coordToString(targetCoord);
     
     if (action === 'build_bridge') {
-      newBoardLayout.set(tileKey, { 
-        ...targetTile, 
-        terrain: 'Bridge' 
-      });
-    } else if (action === 'destroy_bridge') {
-      newBoardLayout.set(tileKey, { 
-        ...targetTile, 
-        terrain: 'River'
+      newBoardLayout.set(tileKey, {
+        ...targetTile,
+        terrain: 'Bridge'
       });
     }
     
@@ -266,7 +234,6 @@ export const useEngineerActions = (deps: EngineerActionsDeps): EngineerActionsHo
 
   return {
     getAvailableBridgeBuildTargets,
-    getAvailableBridgeDestroyTargets,
     startEngineerAction,
     handleEngineerTargetSelect,
     confirmEngineerAction,

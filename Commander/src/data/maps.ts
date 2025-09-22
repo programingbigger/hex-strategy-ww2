@@ -27,31 +27,31 @@ export const tutorialMaps: GameMap[] = [
   {
     id: 'tutorial_1',
     name: 'チュートリアル1',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
   },
   {
     id: 'tutorial_2',
     name: 'チュートリアル2',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・ユニットへの攻撃\n・ユニット特性'
   },
   {
     id: 'tutorial_3',
     name: 'チュートリアル3',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・ユニットの輸送\n・複数の首都占領'
   },
     {
     id: 'tutorial_4',
     name: 'チュートリアル4',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・工作車の使い方を学ぶ'
   },
     {
     id: 'tutorial_5',
     name: 'チュートリアル5',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・Zocの概念'
   },
     {
     id: 'tutorial_6',
     name: 'チュートリアル6',
-    description: '以下の基本操作を学ぶ\n・ユニットの基本移動操作\n・都市の占領\n・ユニットの生産'
+    description: '・総合演習'
   }
 ];

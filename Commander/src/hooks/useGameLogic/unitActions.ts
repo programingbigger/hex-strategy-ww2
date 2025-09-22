@@ -24,10 +24,10 @@ const isCapturableTerrain = (terrain: string): boolean => {
 
 export interface UnitActionsHook {
   handleAction: (
-    action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload'
+    action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload'
   ) => void;
   handleMaterialAction: (
-    action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge'
+    action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress'
   ) => void;
   consumeMaterial: (unit: Unit, amount: number) => Unit | null;
 }
@@ -80,7 +80,7 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
   }, []);
 
   const handleMaterialAction = useCallback((
-    action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge'
+    action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress'
   ) => {
     if (!selectedUnit || selectedUnit.type !== 'Engineer') return;
 
@@ -149,25 +149,6 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
         canPerformAction = currentTile.terrain === 'Fortress';
         requiredMaterials = 2;
         break;
-      case 'destroy_bridge':
-        requiredMaterials = 2;
-        if (currentTile.terrain === 'Bridge') {
-          canPerformAction = true;
-          targetTile = currentTile;
-          targetCoord = { x: selectedUnit.x, y: selectedUnit.y };
-        } else {
-          const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
-          for (const coord of neighbors) {
-            const tile = boardLayout.get(coordToString(coord));
-            if (tile?.terrain === 'Bridge') {
-              canPerformAction = true;
-              targetTile = tile;
-              targetCoord = coord;
-              break;
-            }
-          }
-        }
-        break;
     }
     
     if (!canPerformAction) return;
@@ -220,12 +201,6 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
           maxHp: undefined
         });
         break;
-      case 'destroy_bridge':
-        newBoardLayout.set(tileKey, { 
-          ...targetTile, 
-          terrain: 'River'
-        });
-        break;
     }
     
     setBoardLayout(newBoardLayout);
@@ -235,7 +210,7 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     setSelectedUnitId(null);
   }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial, setBoardLayout, setUnits, setSelectedUnitId, armyFunds, setArmyFunds]);
 
-  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge' | 'load' | 'unload') => {
+  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload') => {
     if (!selectedUnit) return;
 
     if (action === 'wait') {
@@ -376,8 +351,8 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
           }
         }
       }
-    } else if (['enhance_city', 'build_bridge', 'build_fortress', 'destroy_fortress', 'destroy_bridge'].includes(action)) {
-      handleMaterialAction(action as 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'destroy_bridge');
+    } else if (['enhance_city', 'build_bridge', 'build_fortress', 'destroy_fortress'].includes(action)) {
+      handleMaterialAction(action as 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress');
     } else if (action === 'undo') {
       if (history.length > 0) {
         const lastState = history[history.length - 1];

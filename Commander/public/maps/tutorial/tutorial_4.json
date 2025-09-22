@@ -9,7 +9,11 @@
     "turnLimit": 99,
     "attackingTeam": "Blue",
     "defendingTeam": "Red",
-    "enabledVictoryConditions": ["capital_capture", "city_capture", "turn_limit"]
+    "enabledVictoryConditions": [
+      "capital_capture",
+      "city_capture",
+      "turn_limit"
+    ]
   },
   "armyFunds": {
     "Blue": 800,
@@ -32,65 +36,65 @@
   },
   "board": {
     "tiles": [
-      {"x": -4,"y": -2,"terrain": "Plains"},
-      {"x": -3,"y": -2,"terrain": "Plains"},
-      {"x": -2,"y": -2,"terrain": "Plains"},
-      {"x": -1,"y": -2,"terrain": "Plains"},
-      {"x": 0,"y": -2, "terrain": "Plains"},
-      {"x": 1,"y": -2, "terrain": "Plains"},
-      {"x": 2,"y": -2, "terrain": "Plains"},
-      {"x": 3,"y": -2, "terrain": "Plains"},
-      {"x": 4,"y": -2, "terrain": "Plains"},
-      {"x": 5,"y": -2, "terrain": "River"},
-      {"x": 6,"y": -2, "terrain": "Plains"},
-      {"x": 7,"y": -2, "terrain": "Plains"},
-      {"x": -4,"y": -1,"terrain": "Plains"},
-      {"x": -3,"y": -1,"terrain": "Plains"},
-      {"x": -2,"y": -1,"terrain": "Plains"},
-      {"x": -1,"y": -1,"terrain": "Plains"},
-      {"x": 0,"y": -1, "terrain": "Plains"},
-      {"x": 1,"y": -1, "terrain": "Plains"},
-      {"x": 2,"y": -1, "terrain": "Plains"},
-      {"x": 3,"y": -1, "terrain": "Plains"},
-      {"x": 4,"y": -1, "terrain": "River"},
-      {"x": 5,"y": -1, "terrain": "Plains"},
-      {"x": 6,"y": -1, "terrain": "Plains"},
-      {"x": -5,"y": 0,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Blue", "order": 1},
-      {"x": -4,"y": 0,"terrain": "Plains"},
-      {"x": -3,"y": 0,"terrain": "Plains"},
-      {"x": -2,"y": 0, "terrain": "City", "hp": 10, "maxHp": 10, "owner": "Blue"},
-      {"x": -1,"y": 0,"terrain": "Plains"},
-      {"x": 0,"y": 0, "terrain": "Plains"},
-      {"x": 1,"y": 0, "terrain": "Plains"},
-      {"x": 2,"y": 0, "terrain": "Plains"},
-      {"x": 3,"y": 0, "terrain": "Plains"},
-      {"x": 4,"y": 0, "terrain": "River"},
-      {"x": 5,"y": 0, "terrain": "Plains"},
-      {"x": 6,"y": 0, "terrain": "Plains"},
-      {"x": -5,"y": 1,"terrain": "Plains"},
-      {"x": -4,"y": 1,"terrain": "Plains"},
-      {"x": -3,"y": 1,"terrain": "Plains"},
-      {"x": -2,"y": 1,"terrain": "Plains"},
-      {"x": -1,"y": 1,"terrain": "Plains"},
-      {"x": 0,"y": 1, "terrain": "Plains"},
-      {"x": 1,"y": 1, "terrain": "Plains"},
-      {"x": 2,"y": 1, "terrain": "Plains"},
-      {"x": 3,"y": 1,"terrain": "River"},
-      {"x": 4,"y": 1,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 3},
-      {"x": 5,"y": 1,"terrain": "Plains"},
-      {"x": -4,"y": 1,"terrain": "Plains"},
-      {"x": -6,"y": 2,"terrain": "Plains"},
-      {"x": -5,"y": 2,"terrain": "Plains"},
-      {"x": -4,"y": 2,"terrain": "Plains"},
-      {"x": -3,"y": 2,"terrain": "Plains"},
-      {"x": -2,"y": 2,"terrain": "Plains"},
-      {"x": -1,"y": 2,"terrain": "Plains"},
-      {"x": 0,"y": 2, "terrain": "Plains"},
-      {"x": 1,"y": 2, "terrain": "Plains"},
-      {"x": 2,"y": 2, "terrain": "River"},
-      {"x": 3,"y": 2, "terrain": "Plains"},
-      {"x": 4,"y": 2, "terrain": "Plains"},
-      {"x": 5,"y": 2, "terrain": "Plains"}
+      {"x":-4,"y":-2,"terrain":"Plains"}
+      ,{"x":-3,"y":-2,"terrain":"Plains"}
+      ,{"x":-2,"y":-2,"terrain":"Plains"}
+      ,{"x":-1,"y":-2,"terrain":"Plains"}
+      ,{"x":0,"y":-2,"terrain":"Plains"}
+      ,{"x":1,"y":-2,"terrain":"Plains"}
+      ,{"x":2,"y":-2,"terrain":"Plains"}
+      ,{"x":3,"y":-2,"terrain":"Plains"}
+      ,{"x":4,"y":-2,"terrain":"Plains"}
+      ,{"x":5,"y":-2,"terrain":"River"}
+      ,{"x":6,"y":-2,"terrain":"Plains"}
+      ,{"x":7,"y":-2,"terrain":"Plains"}
+      ,{"x":-4,"y":-1,"terrain":"Plains"}
+      ,{"x":-3,"y":-1,"terrain":"Plains"}
+      ,{"x":-2,"y":-1,"terrain":"Plains"}
+      ,{"x":-1,"y":-1,"terrain":"Plains"}
+      ,{"x":0,"y":-1,"terrain":"Plains"}
+      ,{"x":1,"y":-1,"terrain":"Plains"}
+      ,{"x":2,"y":-1,"terrain":"Plains"}
+      ,{"x":3,"y":-1,"terrain":"Plains"}
+      ,{"x":4,"y":-1,"terrain":"River"}
+      ,{"x":5,"y":-1,"terrain":"Plains"}
+      ,{"x":6,"y":-1,"terrain":"Plains"}
+      ,{"x":-5,"y":0,"terrain":"Capital","hp":20,"maxHp":20,"owner":"Blue","order":1}
+      ,{"x":-4,"y":0,"terrain":"Plains"}
+      ,{"x":-3,"y":0,"terrain":"Plains"}
+      ,{"x":-2,"y":0,"terrain":"City","hp":10,"maxHp":10,"owner":"Blue"}
+      ,{"x":-1,"y":0,"terrain":"Plains"}
+      ,{"x":0,"y":0,"terrain":"Plains"}
+      ,{"x":1,"y":0,"terrain":"Plains"}
+      ,{"x":2,"y":0,"terrain":"Plains"}
+      ,{"x":3,"y":0,"terrain":"Plains"}
+      ,{"x":4,"y":0,"terrain":"River"}
+      ,{"x":5,"y":0,"terrain":"Plains"}
+      ,{"x":6,"y":0,"terrain":"Plains"}
+      ,{"x":-5,"y":1,"terrain":"Plains"}
+      ,{"x":-4,"y":1,"terrain":"Plains"}
+      ,{"x":-3,"y":1,"terrain":"Plains"}
+      ,{"x":-2,"y":1,"terrain":"Plains"}
+      ,{"x":-1,"y":1,"terrain":"Plains"}
+      ,{"x":0,"y":1,"terrain":"Plains"}
+      ,{"x":1,"y":1,"terrain":"Plains"}
+      ,{"x":2,"y":1,"terrain":"Plains"}
+      ,{"x":3,"y":1,"terrain":"River"}
+      ,{"x":4,"y":1,"terrain":"Capital","hp":20,"maxHp":20,"owner":"Red","order":3}
+      ,{"x":5,"y":1,"terrain":"Plains"}
+      ,{"x":-4,"y":1,"terrain":"Plains"}
+      ,{"x":-6,"y":2,"terrain":"Plains"}
+      ,{"x":-5,"y":2,"terrain":"Plains"}
+      ,{"x":-4,"y":2,"terrain":"Plains"}
+      ,{"x":-3,"y":2,"terrain":"Plains"}
+      ,{"x":-2,"y":2,"terrain":"Plains"}
+      ,{"x":-1,"y":2,"terrain":"Plains"}
+      ,{"x":0,"y":2,"terrain":"Plains"}
+      ,{"x":1,"y":2,"terrain":"Plains"}
+      ,{"x":2,"y":2,"terrain":"River"}
+      ,{"x":3,"y":2,"terrain":"Plains"}
+      ,{"x":4,"y":2,"terrain":"Plains"}
+      ,{"x":5,"y":2,"terrain":"Plains"}
     ]
   },
   "units": [
@@ -117,5 +121,9 @@
       "moved": false,
       "attacked": false
     }
-  ]
+  ],
+  "deploymentLimits": {
+    "Blue": 10,
+    "Red": 10
+  }
 }

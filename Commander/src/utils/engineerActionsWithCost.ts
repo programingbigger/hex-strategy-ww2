@@ -139,10 +139,9 @@ const getMaterialCostForActionType = (actionType: EngineerActionType): number =>
     case 'build_bridge': return 2;
     case 'build_fortress': return 1;
     case 'destroy_fortress': return 2;
-    case 'destroy_bridge': return 2;
     default: return 0;
   }
-};
+};;
 
 /**
  * Enhanced engineer action processor that integrates with existing material system

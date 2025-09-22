@@ -3,7 +3,7 @@ import { Coordinate, Tile } from '../../types';
 
 interface EngineerActionConfirmModalProps {
   isOpen: boolean;
-  actionType: 'build_bridge' | 'destroy_bridge' | null;
+  actionType: 'build_bridge' | null;
   targetCoord: Coordinate | null;
   targetTile: Tile | null;
   materialCost: number;
@@ -30,13 +30,6 @@ const EngineerActionConfirmModal: React.FC<EngineerActionConfirmModalProps> = ({
           message: `座標 (${targetCoord.x}, ${targetCoord.y}) の${targetTile.terrain}に橋を架けますか？`,
           action: '架橋実行',
           icon: '🌉'
-        };
-      case 'destroy_bridge':
-        return {
-          title: '橋破壊確認', 
-          message: `座標 (${targetCoord.x}, ${targetCoord.y}) の橋を破壊しますか？`,
-          action: '破壊実行',
-          icon: '⛏️'
         };
       default:
         return {

@@ -23,7 +23,7 @@ export interface UIStatesHook {
     producibleUnits: ProducibleUnit[];
   };
   engineerActionState: {
-    mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    mode: 'none' | 'selecting_bridge_build';
     unit: Unit | null;
     availableTargets: Coordinate[];
   };
@@ -42,7 +42,7 @@ export interface UIStatesHook {
   };
   engineerConfirmState: {
     isOpen: boolean;
-    actionType: 'build_bridge' | 'destroy_bridge' | null;
+    actionType: 'build_bridge' | null;
     targetCoord: Coordinate | null;
     targetTile: Tile | null;
     materialCost: number;
@@ -53,10 +53,10 @@ export interface UIStatesHook {
   setBattleReport: (report: BattleReport | null | ((prev: BattleReport | null) => BattleReport | null)) => void;
   setWeaponSelectionState: (state: { isOpen: boolean; attacker: Unit | null; target: Unit | null }) => void;
   setProductionState: (state: { isOpen: boolean; capital: Coordinate | null; producibleUnits: ProducibleUnit[] }) => void;
-  setEngineerActionState: (state: { mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy'; unit: Unit | null; availableTargets: Coordinate[] }) => void;
+  setEngineerActionState: (state: { mode: 'none' | 'selecting_bridge_build'; unit: Unit | null; availableTargets: Coordinate[] }) => void;
   setTransportActionState: (state: { mode: 'none' | 'selecting_unit' | 'selecting_unload_position'; unit: Unit | null; availableTargets: Coordinate[]; selectedUnitToUnload: Unit | null }) => void;
   setTransportConfirmState: (state: { isOpen: boolean; actionType: 'unload' | null; targetCoord: Coordinate | null; targetTile: Tile | null; loadedUnit: Unit | null }) => void;
-  setEngineerConfirmState: (state: { isOpen: boolean; actionType: 'build_bridge' | 'destroy_bridge' | null; targetCoord: Coordinate | null; targetTile: Tile | null; materialCost: number }) => void;
+  setEngineerConfirmState: (state: { isOpen: boolean; actionType: 'build_bridge' | null; targetCoord: Coordinate | null; targetTile: Tile | null; materialCost: number }) => void;
   setBattleLog: (log: BattleLogState | ((prev: BattleLogState) => BattleLogState)) => void;
 }
 
@@ -76,7 +76,7 @@ export const useUIStates = (): UIStatesHook => {
   }>({ isOpen: false, capital: null, producibleUnits: [] });
 
   const [engineerActionState, setEngineerActionState] = useState<{
-    mode: 'none' | 'selecting_bridge_build' | 'selecting_bridge_destroy';
+    mode: 'none' | 'selecting_bridge_build';
     unit: Unit | null;
     availableTargets: Coordinate[];
   }>({ mode: 'none', unit: null, availableTargets: [] });
@@ -98,7 +98,7 @@ export const useUIStates = (): UIStatesHook => {
 
   const [engineerConfirmState, setEngineerConfirmState] = useState<{
     isOpen: boolean;
-    actionType: 'build_bridge' | 'destroy_bridge' | null;
+    actionType: 'build_bridge' | null;
     targetCoord: Coordinate | null;
     targetTile: Tile | null;
     materialCost: number;
