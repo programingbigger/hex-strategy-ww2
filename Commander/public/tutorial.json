@@ -1,9 +1,39 @@
 {
+  "version": "1.0",
+  "metadata": {
+    "lastUpdated": "2025-09-23",
+    "description": "Tutorial configuration and victory conditions for the strategy game"
+  },
+  "tutorialSelectScreen": {
+    "tutorial_1": {
+      "name": "チュートリアル1",
+      "victoryConditions": "首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    },
+    "tutorial_2": {
+      "name": "チュートリアル2",
+      "victoryConditions": "ユニットをすべて撃破または、首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    },
+    "tutorial_3": {
+      "name": "チュートリアル3",
+      "victoryConditions": "すべての首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    },
+    "tutorial_4": {
+      "name": "チュートリアル4",
+      "victoryConditions": "ユニットをすべて撃破または、首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    },
+    "tutorial_5": {
+      "name": "チュートリアル5",
+      "victoryConditions": "ユニットをすべて撃破または、首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    },
+    "tutorial_6": {
+      "name": "チュートリアル6",
+      "victoryConditions": "ユニットをすべて撃破または、首都を占領したらblue勝ち。経過ターンを過ぎたら負け"
+    }
+  },
   "stages": [
     {
       "id": "stage_0",
       "title": "出撃準備：戦いは始まる前に",
-      "map": "maps/tutorial/tutorial_0.json",
       "description": "ようこそ、候補生。戦いは最初の砲火を交える前に、その大勢が決まっていることが多い。この『戦闘準備画面 (BattlePrepScreen)』で、君は来たる戦闘の骨格を組み立てる。心して聞け。\n\n第一に、勝利条件の確認。画面上部、あるいは情報パネルに表示されている『勝利条件』を常に確認する癖をつけろ。今回の任務は『敵首都の占領』だ。目的を見誤った司令官に、勝利の女神は微笑まない。\n\n第二に、配置ユニットの選択。画面には君がこの作戦で動かせる『ユニット一覧 (Army Roster)』が表示されているはずだ。今回は、都市を占領するための『歩兵』が不可欠だ。リストから歩兵を一体、選択しろ。\n\n第三に、ユニットの配置。ユニットを選択したら、『出撃 (Deploy)』ボタンを押して『ユニット配置画面 (UnitDeploymentScreen)』へ進め。マップ上の青くハイライトされたエリアが、君の初期配置可能エリアだ。先ほど選んだ歩兵を選択し、エリア内の好きなヘックスに配置してみろ。\n\n配置が完了したら、『戦闘開始 (Start Mission)』を押せ。準備は整った。いよいよ初陣だ。",
       "victoryConditions": [
         {

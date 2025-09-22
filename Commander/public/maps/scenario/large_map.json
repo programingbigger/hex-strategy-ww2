@@ -18,7 +18,7 @@
     },
   "deploymentLimits": {
     "Blue": 25,
-    "Red": 35
+    "Red": 40
   },
     "initialCameraPosition": {
       "x": -16,
