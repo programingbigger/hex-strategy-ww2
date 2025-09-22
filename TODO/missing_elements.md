@@ -7,7 +7,17 @@
 * コードリファクタリング
 * UIの改善
     * tutorialの作成
-        * チュートリアルマップは、以下の
+        * マップ選択画面
+            * 画像の作成
+            * 学習開始の内容
+                * 学習目標をチュートリアルのマップに応じて動的にする
+                    * Commander/src/data/maps.tsのdescriptionを表示する
+        * 作戦準備
+            * 作戦概要
+                * 制限ターンがいくつか
+                * 勝利条件をチュートリアルごとに整備
+        * 戦闘準備
+            * Available UnitsとSelected Unitsを日本語に表記を直す
     * BattleScreen
         * infomationPanelについて
     * 全体的なUIについて

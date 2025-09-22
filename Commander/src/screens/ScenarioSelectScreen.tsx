@@ -33,8 +33,8 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         }}>
           {/* Centered Title */}
           <div style={{ textAlign: 'center' }}>
-            <h1 className="scenario-title">SELECT MISSION</h1>
-            <p className="scenario-subtitle">Choose your battlefield</p>
+            <h1 className="scenario-title">ミッション選択</h1>
+            <p className="scenario-subtitle">戦場を選択してください</p>
           </div>
           
           {/* Bottom-left positioned Back to Menu button */}
@@ -54,10 +54,10 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
               borderRadius: '6px',
               color: 'white',
               cursor: 'pointer',
-              minWidth: '120px'
+              minWidth: '140px'
             }}
           >
-            Back to Menu
+            メインメニューに戻る
           </button>
         </div>
       </div>
@@ -66,7 +66,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Left Panel - Map List (20%) */}
         <div className="scenario-left-panel">
           <div className="panel-header">
-            <h3 className="panel-title">Available Maps</h3>
+            <h3 className="panel-title">利用可能なマップ</h3>
           </div>
           <div className="map-list">
             {availableMaps.map((map) => (
@@ -87,7 +87,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Center Panel - Map Preview (60%) */}
         <div className="scenario-center-panel">
           <div className="panel-header">
-            <h3 className="panel-title">Map Preview</h3>
+            <h3 className="panel-title">マップ プレビュー</h3>
           </div>
           <div className="map-preview-area">
             <MapPreview selectedMap={selectedMap} />
@@ -97,13 +97,13 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Right Panel - Actions & Info (20%) */}
         <div className="scenario-right-panel">
           <div className="panel-header">
-            <h3 className="panel-title">Mission Control</h3>
+            <h3 className="panel-title">ミッション管理</h3>
           </div>
           <div className="mission-actions">
             {selectedMap ? (
               <>
                 <div className="selected-mission-info">
-                  <h4>Selected Mission:</h4>
+                  <h4>選択されたミッション:</h4>
                   <div className="mission-name">{selectedMap.name}</div>
                   <div className="mission-id">ID: {selectedMap.id}</div>
                 </div>
@@ -112,14 +112,14 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
                   className="mission-start-button military-button"
                   onClick={handleStartBattle}
                 >
-                  Start Battle
+                  戦闘開始
                 </button>
               </>
             ) : (
               <div className="no-mission-selected">
                 <div className="no-mission-icon">🎯</div>
                 <div className="no-mission-text">
-                  Select a mission from the list to view details and start battle
+                  リストからミッションを選択して詳細を確認し、戦闘を開始してください
                 </div>
               </div>
             )}

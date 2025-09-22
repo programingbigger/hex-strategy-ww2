@@ -171,8 +171,8 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   });
 
   const headerText = selectedUnitForDeployment 
-    ? "Please deploy the unit on the map"
-    : "Please select a unit to deploy";
+    ? "選択したユニットをマップ上に配置してください"
+    : "配置したいユニットを選択してください";
 
   const allUnitsDeployed = deployedUnits.size === selectedUnits.length;
 
@@ -188,7 +188,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
             fontWeight: 'bold',
             margin: '0',
             color: '#3498db'
-          }}>配置フェーズ (Deployment Phase)</h1>
+          }}>配置フェーズ</h1>
         </div>
         <p style={{ 
           textAlign: 'center', 
@@ -218,7 +218,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
               cursor: 'pointer'
             }}
           >
-            Return to Unit Selection
+            作戦準備へ戻る
           </button>
           <button
             className="menu-button"
@@ -240,7 +240,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
               opacity: allUnitsDeployed ? 1 : 0.6
             }}
           >
-            Start Battle
+            作戦開始
           </button>
         </div>
       </div>
