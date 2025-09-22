@@ -26,6 +26,7 @@
   "producibleUnits": {
     "Blue": [
       "blue-infantry-standard"
+      , "blue-tank-panzer_1"
     ]
   },
   "board": {
@@ -74,7 +75,7 @@
       {"x": 1,"y": 1, "terrain": "Plains"},
       {"x": 2,"y": 1, "terrain": "Plains"},
       {"x": 3,"y": 1,"terrain": "Plains"},
-      {"x": 4,"y": 1,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 3},
+      {"x": 4,"y": 1,"terrain": "Capital", "hp": 20, "maxHp": 20, "owner": "Red", "order": 1},
       {"x": 5,"y": 1,"terrain": "Plains"},
       {"x": -4,"y": 1,"terrain": "Plains"},
       {"x": -6,"y": 2,"terrain": "Plains"},
@@ -91,5 +92,75 @@
       {"x": 5,"y": 2, "terrain": "Plains"}
     ]
   },
-  "units": []
+  "units": [
+    {
+      "id": "red-infantry-standard-1",
+      "type": "Infantry",
+      "team": "Red",
+      "x": 4,
+      "y": 1,
+      "hp": 10,
+      "maxHp": 10,
+      "attack": 4,
+      "defense": 2,
+      "movement": 3,
+      "attackRange": {
+        "min": 1,
+        "max": 1
+      },
+      "canCounterAttack": true,
+      "unitClass": "Infantry",
+      "fuel": 50,
+      "maxFuel": 50,
+      "xp": 0,
+      "moved": false,
+      "attacked": false
+    },
+        {
+      "id": "red-infantry-standard-2",
+      "type": "Infantry",
+      "team": "Red",
+      "x": 5,
+      "y": 0,
+      "hp": 10,
+      "maxHp": 10,
+      "attack": 4,
+      "defense": 2,
+      "movement": 3,
+      "attackRange": {
+        "min": 1,
+        "max": 1
+      },
+      "canCounterAttack": true,
+      "unitClass": "Infantry",
+      "fuel": 50,
+      "maxFuel": 50,
+      "xp": 0,
+      "moved": false,
+      "attacked": false
+    },
+        {
+      "id": "red-infantry-standard-3",
+      "type": "Infantry",
+      "team": "Red",
+      "x": 5,
+      "y": -1,
+      "hp": 10,
+      "maxHp": 10,
+      "attack": 4,
+      "defense": 2,
+      "movement": 3,
+      "attackRange": {
+        "min": 1,
+        "max": 1
+      },
+      "canCounterAttack": true,
+      "unitClass": "Infantry",
+      "fuel": 50,
+      "maxFuel": 50,
+      "xp": 0,
+      "moved": false,
+      "attacked": false
+    }
+  ]
 }
