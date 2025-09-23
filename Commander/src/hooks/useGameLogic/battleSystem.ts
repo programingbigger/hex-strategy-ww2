@@ -18,7 +18,8 @@ import {
 import {
   getWeaponsInRange,
   selectCounterAttackWeapon,
-  consumeAmmunition
+  consumeAmmunition,
+  getWeaponAttackVsUnitClass
 } from '../../utils/weapons';
 import { TERRAIN_STATS } from '../../config/constants';
 import { logBattle } from '../../utils/battleLogger';
@@ -263,7 +264,12 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
           ammunition: 1,
           maxAmmunition: 1,
           range: { min: 1, max: 1 },
-          attack: currentDefender.attack
+          attack: [
+            { unitClass: 'Infantry', attack: currentDefender.attack },
+            { unitClass: 'Vehicle', attack: currentDefender.attack },
+            { unitClass: 'Tank', attack: currentDefender.attack },
+            { unitClass: 'Aircraft', attack: currentDefender.attack }
+          ]
         };
 
         counterAttackData = {
@@ -300,7 +306,12 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
       ammunition: 1,
       maxAmmunition: 1,
       range: { min: 1, max: 1 },
-      attack: attacker.attack
+      attack: [
+        { unitClass: 'Infantry', attack: attacker.attack },
+        { unitClass: 'Vehicle', attack: attacker.attack },
+        { unitClass: 'Tank', attack: attacker.attack },
+        { unitClass: 'Aircraft', attack: attacker.attack }
+      ]
     };
 
     const battleLogEntry = createBattleLogEntry(
@@ -326,7 +337,7 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
     const attackerTerrainStats = TERRAIN_STATS[attackerTile.terrain];
     const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
     
-    const baseAttackPower = weapon.effectiveness?.[defender.unitClass] ?? weapon.attack;
+    const baseAttackPower = getWeaponAttackVsUnitClass(weapon, defender.unitClass);
     const attackPower = baseAttackPower + attackerTerrainStats.attackBonus;
     
     let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
@@ -339,7 +350,7 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
     
     console.log('=== ATTACK DEBUG ===');
     console.log('Attack damage calculation:', {
-      baseAttackPower: weapon.effectiveness?.[defender.unitClass] ?? weapon.attack,
+      baseAttackPower: getWeaponAttackVsUnitClass(weapon, defender.unitClass),
       attackPower,
       defensePower,
       damage,
@@ -347,6 +358,7 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
       attackerTeam: attacker.team,
       defenderType: defender.type,
       defenderTeam: defender.team,
+      defenderUnitClass: defender.unitClass,
       weaponUsed: weapon.name
     });
 
@@ -429,7 +441,7 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
           const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
           const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
           
-          const counterBaseAttackPower = counterWeapon.effectiveness?.[attacker.unitClass] ?? counterWeapon.attack;
+          const counterBaseAttackPower = getWeaponAttackVsUnitClass(counterWeapon, attacker.unitClass);
           const counterAttackPower = counterBaseAttackPower + counterAttackerTerrainStats.attackBonus;
           const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
           const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);

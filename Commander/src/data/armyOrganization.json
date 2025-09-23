@@ -27,7 +27,10 @@
                     "attack": 3,
                     "defense": 2,
                     "movement": 3,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -48,8 +51,28 @@
                       "type": "Kar98k",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-infantry-at-rifle",
@@ -57,11 +80,28 @@
                       "type": "PzB 39",
                       "ammunition": 3,
                       "maxAmmunition": 3,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4,
-                      "effectiveness": {
-                        "Vehicle": 1.3
-                      }
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -77,7 +117,10 @@
                     "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -98,8 +141,28 @@
                       "type": "Kar98k",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -115,7 +178,10 @@
                     "attack": 6,
                     "defense": 3,
                     "movement": 2,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -136,8 +202,28 @@
                       "type": "MG34",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 6
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-mg-squad-rifle",
@@ -145,8 +231,28 @@
                       "type": "Kar98k",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -167,7 +273,10 @@
                     "attack": 4,
                     "defense": 3,
                     "movement": 6,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 70,
@@ -188,8 +297,28 @@
                       "type": "MG13",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -205,7 +334,10 @@
                     "attack": 5,
                     "defense": 4,
                     "movement": 5,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 50,
@@ -226,8 +358,28 @@
                       "type": "2cm KwK 30",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 5
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-tank-mg",
@@ -235,8 +387,28 @@
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -252,7 +424,10 @@
                     "attack": 7,
                     "defense": 6,
                     "movement": 5,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 45,
@@ -273,8 +448,28 @@
                       "type": "3.7cm KwK 36",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-tank-mg",
@@ -282,8 +477,28 @@
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -299,7 +514,10 @@
                     "attack": 9,
                     "defense": 7,
                     "movement": 4,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -320,8 +538,28 @@
                       "type": "7.5cm KwK 37",
                       "ammunition": 12,
                       "maxAmmunition": 12,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 10
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 12
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-tank-mg",
@@ -329,8 +567,28 @@
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -346,7 +604,10 @@
                     "attack": 6,
                     "defense": 4,
                     "movement": 6,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -367,8 +628,28 @@
                       "type": "2cm KwK 30",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 7
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -389,7 +670,10 @@
                     "attack": 12,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 2, "max": 6 },
+                    "attackRange": {
+                      "min": 2,
+                      "max": 6
+                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
@@ -410,8 +694,28 @@
                       "type": "10.5cm榴弾砲",
                       "ammunition": 5,
                       "maxAmmunition": 5,
-                      "range": { "min": 2, "max": 6 },
-                      "attack": 13
+                      "range": {
+                        "min": 2,
+                        "max": 6
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 16
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 9
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 14
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -432,7 +736,10 @@
                     "attack": 4,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 1, "max": 2 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 2
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -453,8 +760,28 @@
                       "type": "3.7cm対戦車砲",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 2 },
-                      "attack": 5
+                      "range": {
+                        "min": 1,
+                        "max": 2
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -470,7 +797,10 @@
                     "attack": 7,
                     "defense": 3,
                     "movement": 1,
-                    "attackRange": { "min": 1, "max": 2 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 2
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 40,
@@ -491,8 +821,28 @@
                       "type": "7.5cm対戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 2 },
-                      "attack": 9
+                      "range": {
+                        "min": 1,
+                        "max": 2
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 12
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 13
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -513,7 +863,10 @@
                     "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -534,8 +887,28 @@
                       "type": "Kar98k",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "blue-engineer-material",
@@ -543,8 +916,28 @@
                       "type": "資材",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 0
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -560,7 +953,10 @@
                     "attack": 5,
                     "defense": 4,
                     "movement": 8,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -576,7 +972,11 @@
                   },
                   "transport": {
                     "capacity": 2,
-                    "transportableUnits": ["infantry", "antitank", "artillery"],
+                    "transportableUnits": [
+                      "infantry",
+                      "antitank",
+                      "artillery"
+                    ],
                     "unitCapacityCosts": {
                       "infantry": 1,
                       "antitank": 1,
@@ -590,8 +990,28 @@
                       "type": "Kar98k",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -602,17 +1022,35 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": { "name": "駆逐艦", "units": [] },
-            "cruiser": { "name": "巡洋艦", "units": [] },
-            "battleship": { "name": "戦艦", "units": [] }
+            "destroyer": {
+              "name": "駆逐艦",
+              "units": []
+            },
+            "cruiser": {
+              "name": "巡洋艦",
+              "units": []
+            },
+            "battleship": {
+              "name": "戦艦",
+              "units": []
+            }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": { "name": "戦闘機", "units": [] },
-            "bomber": { "name": "爆撃機", "units": [] },
-            "transport": { "name": "輸送機", "units": [] }
+            "fighter": {
+              "name": "戦闘機",
+              "units": []
+            },
+            "bomber": {
+              "name": "爆撃機",
+              "units": []
+            },
+            "transport": {
+              "name": "輸送機",
+              "units": []
+            }
           }
         }
       }
@@ -639,7 +1077,10 @@
                     "attack": 3,
                     "defense": 2,
                     "movement": 2,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -660,8 +1101,28 @@
                       "type": "Old Service Rifle",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -677,7 +1138,10 @@
                     "attack": 4,
                     "defense": 3,
                     "movement": 3,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -698,8 +1162,28 @@
                       "type": "Karabinek wz. 29",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -720,7 +1204,10 @@
                     "attack": 3,
                     "defense": 2,
                     "movement": 7,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -741,8 +1228,28 @@
                       "type": "20mm機関砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 4
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -758,7 +1265,10 @@
                     "attack": 6,
                     "defense": 5,
                     "movement": 5,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 45,
@@ -779,8 +1289,28 @@
                       "type": "Bofors 37mm戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 6
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -796,7 +1326,10 @@
                     "attack": 4,
                     "defense": 3,
                     "movement": 6,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -817,8 +1350,28 @@
                       "type": "Hotchkiss wz.25",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 5
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -839,7 +1392,10 @@
                     "attack": 7,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 2, "max": 4 },
+                    "attackRange": {
+                      "min": 2,
+                      "max": 4
+                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 25,
@@ -860,8 +1416,28 @@
                       "type": "Armata polowa 75mm",
                       "ammunition": 5,
                       "maxAmmunition": 5,
-                      "range": { "min": 2, "max": 4 },
-                      "attack": 8
+                      "range": {
+                        "min": 2,
+                        "max": 4
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -877,7 +1453,10 @@
                     "attack": 9,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 2, "max": 5 },
+                    "attackRange": {
+                      "min": 2,
+                      "max": 5
+                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
@@ -898,8 +1477,28 @@
                       "type": "Haubica 100mm",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 2, "max": 5 },
-                      "attack": 10
+                      "range": {
+                        "min": 2,
+                        "max": 5
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -920,7 +1519,10 @@
                     "attack": 5,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": { "min": 1, "max": 2 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 2
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -941,8 +1543,28 @@
                       "type": "Bofors 37mm AT Gun",
                       "ammunition": 8,
                       "maxAmmunition": 8,
-                      "range": { "min": 1, "max": 2 },
-                      "attack": 6
+                      "range": {
+                        "min": 1,
+                        "max": 2
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 }
@@ -963,7 +1585,10 @@
                     "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -984,8 +1609,28 @@
                       "type": "Karabinek wz. 29",
                       "ammunition": 6,
                       "maxAmmunition": 6,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 3
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     },
                     {
                       "id": "red-engineer-material",
@@ -993,8 +1638,28 @@
                       "type": "資材",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
-                      "attack": 0
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
                     }
                   ]
                 },
@@ -1010,7 +1675,10 @@
                     "attack": 0,
                     "defense": 4,
                     "movement": 8,
-                    "attackRange": { "min": 1, "max": 1 },
+                    "attackRange": {
+                      "min": 1,
+                      "max": 1
+                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -1026,7 +1694,11 @@
                   },
                   "transport": {
                     "capacity": 2,
-                    "transportableUnits": ["infantry", "antitank", "artillery"],
+                    "transportableUnits": [
+                      "infantry",
+                      "antitank",
+                      "artillery"
+                    ],
                     "unitCapacityCosts": {
                       "infantry": 1,
                       "antitank": 1,
@@ -1042,17 +1714,35 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": { "name": "駆逐艦", "units": [] },
-            "cruiser": { "name": "巡洋艦", "units": [] },
-            "battleship": { "name": "戦艦", "units": [] }
+            "destroyer": {
+              "name": "駆逐艦",
+              "units": []
+            },
+            "cruiser": {
+              "name": "巡洋艦",
+              "units": []
+            },
+            "battleship": {
+              "name": "戦艦",
+              "units": []
+            }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": { "name": "戦闘機", "units": [] },
-            "bomber": { "name": "爆撃機", "units": [] },
-            "transport": { "name": "輸送機", "units": [] }
+            "fighter": {
+              "name": "戦闘機",
+              "units": []
+            },
+            "bomber": {
+              "name": "爆撃機",
+              "units": []
+            },
+            "transport": {
+              "name": "輸送機",
+              "units": []
+            }
           }
         }
       }

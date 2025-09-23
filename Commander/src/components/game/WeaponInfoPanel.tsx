@@ -1,5 +1,6 @@
 import React from 'react';
-import { Unit, Weapon } from '../../types';
+import { Unit, Weapon, UnitClass } from '../../types';
+import { getWeaponAttackVsUnitClass } from '../../utils/weapons';
 
 interface WeaponInfoPanelProps {
   unit: Unit | null;
@@ -71,7 +72,7 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
                   </span>
                 )}
               </div>
-              <div 
+              <div
                 className="weapon-stats"
                 style={{
                   fontSize: '11px',
@@ -79,7 +80,16 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
                   marginTop: '2px'
                 }}
               >
-                攻撃力{weapon.attack} | 射程{weapon.range.min}-{weapon.range.max} | 命中率85%
+                <div>射程{weapon.range.min}-{weapon.range.max} | 命中率85%</div>
+                <div style={{ marginTop: '2px', fontSize: '10px' }}>
+                  <span title="歩兵への攻撃力">👥{getWeaponAttackVsUnitClass(weapon, 'Infantry')}</span>
+                  {' | '}
+                  <span title="車両への攻撃力">🚗{getWeaponAttackVsUnitClass(weapon, 'Vehicle')}</span>
+                  {' | '}
+                  <span title="戦車への攻撃力">🛡️{getWeaponAttackVsUnitClass(weapon, 'Tank')}</span>
+                  {' | '}
+                  <span title="航空機への攻撃力">✈️{getWeaponAttackVsUnitClass(weapon, 'Aircraft')}</span>
+                </div>
               </div>
             </div>
             
@@ -147,7 +157,7 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
               >
                 基本武装
               </div>
-              <div 
+              <div
                 className="weapon-stats"
                 style={{
                   fontSize: '11px',
@@ -155,7 +165,10 @@ export const WeaponInfoPanel: React.FC<WeaponInfoPanelProps> = ({ unit }) => {
                   marginTop: '2px'
                 }}
               >
-                攻撃力{unit.attack} | 射程{unit.attackRange.min}-{unit.attackRange.max} | 命中率85%
+                <div>攻撃力{unit.attack} | 射程{unit.attackRange.min}-{unit.attackRange.max} | 命中率85%</div>
+                <div style={{ marginTop: '2px', fontSize: '10px', color: '#999' }}>
+                  旧式武装システム（全対象共通攻撃力）
+                </div>
               </div>
             </div>
             

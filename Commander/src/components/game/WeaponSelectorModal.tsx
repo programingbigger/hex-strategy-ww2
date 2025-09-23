@@ -1,6 +1,6 @@
 import React from 'react';
 import { Unit, Weapon } from '../../types';
-import { getWeaponsInRange } from '../../utils/weapons';
+import { getWeaponsInRange, getWeaponAttackVsUnitClass } from '../../utils/weapons';
 import { getDistance } from '../../utils/map';
 import { getUnitNameById } from '../../utils/unitNames';
 
@@ -30,8 +30,8 @@ export const WeaponSelectorModal: React.FC<WeaponSelectorModalProps> = ({
     if (availableWeapons.length === 0) return null;
     
     return availableWeapons.reduce((best, current) => {
-      const currentEffectiveness = current.effectiveness?.[target.unitClass] ?? current.attack;
-      const bestEffectiveness = best.effectiveness?.[target.unitClass] ?? best.attack;
+      const currentEffectiveness = getWeaponAttackVsUnitClass(current, target.unitClass);
+      const bestEffectiveness = getWeaponAttackVsUnitClass(best, target.unitClass);
       return currentEffectiveness > bestEffectiveness ? current : best;
     });
   };
@@ -56,15 +56,8 @@ export const WeaponSelectorModal: React.FC<WeaponSelectorModalProps> = ({
   };
   
   const getEffectivenessDisplay = (weapon: Weapon) => {
-    const effectiveness = weapon.effectiveness?.[target.unitClass] ?? weapon.attack;
-    const baseAttack = weapon.attack;
-    if (effectiveness > baseAttack) {
-      return `攻撃力: ${weapon.attack} (対${target.unitClass}: +${effectiveness - baseAttack})`;
-    } else if (effectiveness < baseAttack) {
-      return `攻撃力: ${weapon.attack} (対${target.unitClass}: ${effectiveness - baseAttack})`;
-    } else {
-      return `攻撃力: ${weapon.attack}`;
-    }
+    const effectiveness = getWeaponAttackVsUnitClass(weapon, target.unitClass);
+    return `攻撃力: ${effectiveness} (対${target.unitClass})`;
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {

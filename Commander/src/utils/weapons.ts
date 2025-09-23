@@ -1,4 +1,4 @@
-import { Unit, Weapon } from '../types';
+import { Unit, Weapon, UnitClass, UnitClassAttack } from '../types';
 
 // Weapon utility functions
 export const getAvailableWeapons = (unit: Unit): Weapon[] => {
@@ -145,6 +145,68 @@ export const getMaxAttackRange = (unit: Unit): number => {
 export const getMinAttackRange = (unit: Unit): number => {
   const availableWeapons = getAvailableWeapons(unit);
   if (availableWeapons.length === 0) return 0;
-  
+
   return Math.min(...availableWeapons.map(weapon => weapon.range.min));
+};
+
+// UnitClass-based attack utility functions
+export const getWeaponAttackVsUnitClass = (weapon: Weapon, targetUnitClass: UnitClass): number => {
+  // Handle both legacy number format and new unitClass array format
+  if (typeof weapon.attack === 'number') {
+    return weapon.attack;
+  }
+
+  if (Array.isArray(weapon.attack)) {
+    const unitClassAttack = weapon.attack.find(attack => attack.unitClass === targetUnitClass);
+    return unitClassAttack ? unitClassAttack.attack : 0;
+  }
+
+  return 0;
+};
+
+export const getBestWeaponVsUnitClass = (unit: Unit, targetUnitClass: UnitClass, targetDistance: number): Weapon | undefined => {
+  const weaponsInRange = getWeaponsInRange(unit, targetDistance);
+  if (weaponsInRange.length === 0) return undefined;
+
+  // Find weapon with highest attack value against target unit class
+  let bestWeapon: Weapon | undefined;
+  let bestAttack = -1;
+
+  for (const weapon of weaponsInRange) {
+    const attack = getWeaponAttackVsUnitClass(weapon, targetUnitClass);
+    if (attack > bestAttack) {
+      bestAttack = attack;
+      bestWeapon = weapon;
+    }
+  }
+
+  return bestWeapon;
+};
+
+export const calculateEffectiveAttack = (weapon: Weapon, targetUnitClass: UnitClass): number => {
+  return getWeaponAttackVsUnitClass(weapon, targetUnitClass);
+};
+
+export const getUnitClassAttackSummary = (unit: Unit): Record<UnitClass | 'Aircraft', number> => {
+  const summary: Record<UnitClass | 'Aircraft', number> = {
+    Infantry: 0,
+    Vehicle: 0,
+    Tank: 0,
+    Aircraft: 0
+  };
+
+  const availableWeapons = getAvailableWeapons(unit);
+
+  for (const unitClass of Object.keys(summary) as (UnitClass | 'Aircraft')[]) {
+    let maxAttack = 0;
+
+    for (const weapon of availableWeapons) {
+      const attack = getWeaponAttackVsUnitClass(weapon, unitClass as UnitClass);
+      maxAttack = Math.max(maxAttack, attack);
+    }
+
+    summary[unitClass] = maxAttack;
+  }
+
+  return summary;
 };
