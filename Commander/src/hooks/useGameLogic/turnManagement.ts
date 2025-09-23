@@ -5,7 +5,8 @@ import {
   Team,
   WeatherType,
   EnvironmentalLevels,
-  VictoryResult
+  VictoryResult,
+  VictoryCondition
 } from '../../types';
 import { coordToString } from '../../utils/map';
 import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/constants';
@@ -115,6 +116,7 @@ interface TurnManagementDeps {
   turnLimit?: number;
   defendingTeam: Team;
   armyFunds: { [team: string]: number };
+  enabledVictoryConditions: VictoryCondition[]; // Add enabled victory conditions
   setUnits: (units: Unit[]) => void;
   setActiveTeam: (team: Team) => void;
   setBoardLayout: (layout: BoardLayout) => void;
@@ -146,6 +148,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     turnLimit,
     defendingTeam,
     armyFunds,
+    enabledVictoryConditions, // Extract enabled victory conditions
     setUnits,
     setActiveTeam,
     setBoardLayout,
@@ -175,84 +178,93 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     const blueUnits = currentUnits.filter(u => u.team === 'Blue');
     const redUnits = currentUnits.filter(u => u.team === 'Red');
 
-    if (redUnits.length === 0) {
-      setGameState('gameOver');
-      setWinner('Blue');
-      setVictoryResult({
-        condition: 'unit_elimination',
-        winner: 'Blue',
-        description: 'All Red units eliminated',
-        turnsElapsed: turn
-      });
-      return;
-    }
-    if (blueUnits.length === 0) {
-      setGameState('gameOver');
-      setWinner('Red');
-      setVictoryResult({
-        condition: 'unit_elimination',
-        winner: 'Red',
-        description: 'All Blue units eliminated',
-        turnsElapsed: turn
-      });
-      return;
-    }
-
-    const capitals = Array.from(currentBoard.values()).filter(t => t.terrain === 'Capital');
-    if (capitals.length > 0) {
-      const blueCapitals = capitals.filter(c => c.owner === 'Blue');
-      const redCapitals = capitals.filter(c => c.owner === 'Red');
-      
-      if (blueCapitals.length === capitals.length && capitals.length > 0) {
+    // Only check unit elimination if it's enabled
+    if (enabledVictoryConditions.includes('unit_elimination')) {
+      if (redUnits.length === 0) {
         setGameState('gameOver');
         setWinner('Blue');
         setVictoryResult({
-          condition: 'capital_capture',
+          condition: 'unit_elimination',
           winner: 'Blue',
-          description: `All ${capitals.length} capital(s) captured`,
+          description: 'All Red units eliminated',
           turnsElapsed: turn
         });
         return;
-      } 
-      else if (redCapitals.length === capitals.length && capitals.length > 0) {
+      }
+      if (blueUnits.length === 0) {
         setGameState('gameOver');
         setWinner('Red');
         setVictoryResult({
-          condition: 'capital_capture',
+          condition: 'unit_elimination',
           winner: 'Red',
-          description: `All ${capitals.length} capital(s) captured`,
+          description: 'All Blue units eliminated',
           turnsElapsed: turn
         });
         return;
       }
     }
 
-    const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
-    const blueCities = cities.filter(c => c.owner === 'Blue').length;
-    const redCities = cities.filter(c => c.owner === 'Red').length;
+    // Only check capital capture if it's enabled
+    if (enabledVictoryConditions.includes('capital_capture')) {
+      const capitals = Array.from(currentBoard.values()).filter(t => t.terrain === 'Capital');
+      if (capitals.length > 0) {
+        const blueCapitals = capitals.filter(c => c.owner === 'Blue');
+        const redCapitals = capitals.filter(c => c.owner === 'Red');
 
-    if (cities.length > 0) {
-      if (blueCities === cities.length) {
-        setGameState('gameOver');
-        setWinner('Blue');
-        setVictoryResult({
-          condition: 'city_capture',
-          winner: 'Blue',
-          description: `All ${cities.length} capturable terrain(s) occupied`,
-          turnsElapsed: turn
-        });
-      } else if (redCities === cities.length) {
-        setGameState('gameOver');
-        setWinner('Red');
-        setVictoryResult({
-          condition: 'city_capture',
-          winner: 'Red',
-          description: `All ${cities.length} capturable terrain(s) occupied`,
-          turnsElapsed: turn
-        });
+        if (blueCapitals.length === capitals.length && capitals.length > 0) {
+          setGameState('gameOver');
+          setWinner('Blue');
+          setVictoryResult({
+            condition: 'capital_capture',
+            winner: 'Blue',
+            description: `All ${capitals.length} capital(s) captured`,
+            turnsElapsed: turn
+          });
+          return;
+        }
+        else if (redCapitals.length === capitals.length && capitals.length > 0) {
+          setGameState('gameOver');
+          setWinner('Red');
+          setVictoryResult({
+            condition: 'capital_capture',
+            winner: 'Red',
+            description: `All ${capitals.length} capital(s) captured`,
+            turnsElapsed: turn
+          });
+          return;
+        }
       }
     }
-  }, [turn, setGameState, setWinner, setVictoryResult]);
+
+    // Only check city capture if it's enabled
+    if (enabledVictoryConditions.includes('city_capture')) {
+      const cities = Array.from(currentBoard.values()).filter(t => isCapturableTerrain(t.terrain));
+      const blueCities = cities.filter(c => c.owner === 'Blue').length;
+      const redCities = cities.filter(c => c.owner === 'Red').length;
+
+      if (cities.length > 0) {
+        if (blueCities === cities.length) {
+          setGameState('gameOver');
+          setWinner('Blue');
+          setVictoryResult({
+            condition: 'city_capture',
+            winner: 'Blue',
+            description: `All ${cities.length} capturable terrain(s) occupied`,
+            turnsElapsed: turn
+          });
+        } else if (redCities === cities.length) {
+          setGameState('gameOver');
+          setWinner('Red');
+          setVictoryResult({
+            condition: 'city_capture',
+            winner: 'Red',
+            description: `All ${cities.length} capturable terrain(s) occupied`,
+            turnsElapsed: turn
+          });
+        }
+      }
+    }
+  }, [turn, enabledVictoryConditions, setGameState, setWinner, setVictoryResult]);
 
 
   const handleEndTurn = useCallback(async () => {

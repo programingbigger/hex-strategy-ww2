@@ -22,6 +22,7 @@ import TransportActionConfirmModal from '../components/game/TransportActionConfi
 import UnitSelectionModal from '../components/game/UnitSelectionModal';
 import { ProductionModal } from '../components/game/ProductionModal';
 import { getDeploymentLimits } from '../utils/deploymentLimits';
+import TutorialVictoryConditions from '../components/game/TutorialVictoryConditions';
 
 interface BattleScreenProps {
   gameState: GameState;
@@ -102,7 +103,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
 
   // Deployment limits state
   const [deploymentLimits, setDeploymentLimits] = useState<{Blue: number; Red: number}>({Blue: 10, Red: 10});
-  
+
+  // Tutorial turn limit state
+  const [turnLimit, setTurnLimit] = useState<number | undefined>(undefined);
 
   // Handle keyboard shortcuts
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
@@ -197,7 +200,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           // Use the selected map from gameState instead of hardcoded map
           const { loadMapData } = await import('../utils/mapLoader');
           const mapData: MapData = await loadMapData(gameState.selectedMap.id);
-          
+
+          // Extract turn limit for tutorial maps
+          if (gameState.selectedMap.id.startsWith('tutorial_') && mapData.gameStatus?.turnLimit) {
+            setTurnLimit(mapData.gameStatus.turnLimit);
+          } else {
+            setTurnLimit(undefined);
+          }
+
           // If we have deployed units from gameState, use them instead of map units
           if (gameState.units && gameState.units.length > 0) {
             // Use the map data for board and enemy units, but replace player units with deployed ones
@@ -308,6 +318,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           redFunds={armyFunds?.Red || 0}
           blueMaxUnits={deploymentLimits.Blue}
           redMaxUnits={deploymentLimits.Red}
+        />
+        <TutorialVictoryConditions
+          selectedMap={gameState.selectedMap}
+          currentTurn={turn}
+          turnLimit={turnLimit}
         />
       </div>
 

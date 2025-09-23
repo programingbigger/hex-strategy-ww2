@@ -84,6 +84,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     turnLimit: gameState.turnLimit,
     defendingTeam: gameState.defendingTeam,
     armyFunds: gameState.armyFunds,
+    enabledVictoryConditions: gameState.enabledVictoryConditions, // Pass enabled victory conditions
     setUnits: gameState.setUnits,
     setActiveTeam: gameState.setActiveTeam,
     setBoardLayout: gameState.setBoardLayout,
