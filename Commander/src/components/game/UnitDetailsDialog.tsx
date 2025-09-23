@@ -132,30 +132,14 @@ const UnitDetailsDialog: React.FC<UnitDetailsDialogProps> = ({
               )
             ))}
 
-            {/* Critical Weapon Information */}
-            {currentWeapon && (
-              <>
-                <div className="info-item critical-stat">
-                  <span className="info-label">🎯 射程</span>
-                  <div className="critical-value">
-                    {currentWeapon.range?.min || 1}-{currentWeapon.range?.max || 1}
-                  </div>
-                </div>
-                <div className="info-item critical-stat">
-                  <span className="info-label">💥 基本攻撃力</span>
-                  <div className="critical-value">
-                    {(() => {
-                      if (Array.isArray(currentWeapon.attack)) {
-                        // Find the highest attack value from the array
-                        const maxAttack = currentWeapon.attack.reduce((max: number, item: any) =>
-                          Math.max(max, item.attack || 0), 0);
-                        return maxAttack;
-                      }
-                      return typeof currentWeapon.attack === 'number' ? currentWeapon.attack : '不明';
-                    })()}
-                  </div>
-                </div>
-              </>
+            {/* Weapon Range Information */}
+            {currentWeapon && currentWeapon.range && (
+              <div className="info-item">
+                <span className="info-label">🎯 射程</span>
+                <span className="info-value">
+                  {currentWeapon.range.min || 1} - {currentWeapon.range.max || 1}
+                </span>
+              </div>
             )}
           </div>
         </div>
