@@ -738,11 +738,11 @@
                     "movement": 1,
                     "attackRange": {
                       "min": 1,
-                      "max": 2
+                      "max": 1
                     },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
-                    "maxFuel": 0,
+                    "maxFuel": 40,
                     "reconnaissance": 1
                   },
                   "cost": {
@@ -762,7 +762,7 @@
                       "maxAmmunition": 8,
                       "range": {
                         "min": 1,
-                        "max": 2
+                        "max": 1
                       },
                       "attack": [
                         {
@@ -799,7 +799,7 @@
                     "movement": 1,
                     "attackRange": {
                       "min": 1,
-                      "max": 2
+                      "max": 1
                     },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
@@ -823,7 +823,7 @@
                       "maxAmmunition": 10,
                       "range": {
                         "min": 1,
-                        "max": 2
+                        "max": 1
                       },
                       "attack": [
                         {
@@ -971,7 +971,7 @@
                     }
                   },
                   "transport": {
-                    "capacity": 2,
+                    "capacity": 1,
                     "transportableUnits": [
                       "infantry",
                       "antitank",
@@ -1545,7 +1545,7 @@
                       "maxAmmunition": 8,
                       "range": {
                         "min": 1,
-                        "max": 2
+                        "max": 1
                       },
                       "attack": [
                         {

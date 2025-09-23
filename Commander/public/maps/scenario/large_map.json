@@ -26,11 +26,16 @@
   },
   "availableUnits": 
     [
-      {"id": "blue-infantry-standard","faction": "Blue","count": 25,"unitId": "blue-infantry-standard"}
-      ,{"id": "blue-tank-panzer_1","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_1"}
-      ,{"id": "blue-tank-panzer_2","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_2"}
-      ,{"id": "blue-tank-panzer_3","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_3"}
-      ,{"id": "blue-tank-medium","faction": "Blue","count": 1,"unitId": "blue-tank-medium"}
+      {"id": "blue-infantry-standard","faction": "Blue","count": 3,"unitId": "blue-infantry-standard"}
+      ,{"id": "blue-infantry-motorized","faction": "Blue","count": 2,"unitId": "blue-infantry-motorized"}
+      ,{"id": "blue-infantry-mg_squad","faction": "Blue","count": 1,"unitId": "blue-infantry-mg_squad"}
+      ,{"id": "blue-tank-panzer_1","faction": "Blue","count": 2,"unitId": "blue-tank-panzer_1"}
+      ,{"id": "blue-tank-panzer_2","faction": "Blue","count": 4,"unitId": "blue-tank-panzer_2"}
+      ,{"id": "blue-tank-panzer_3","faction": "Blue","count": 3,"unitId": "blue-tank-panzer_3"}
+      ,{"id": "blue-armored-car","faction": "Blue","count": 2,"unitId": "blue-armored-car"}
+      ,{"id": "blue-artillery-howitzer","faction": "Blue","count": 2,"unitId": "blue-artillery-howitzer"}
+      ,{"id": "blue-antitank-gun_37mm","faction": "Blue","count": 1,"unitId": "blue-antitank-gun_37mm"}
+      ,{"id": "blue-transport-transport","faction": "Blue","count": 2,"unitId": "blue-transport-transport"}
     ],
   "producibleUnits": 
     {
@@ -52,42 +57,365 @@
       ]
   },
   "units": [
-    {"id": "red-infantry-standard-1","type": "Infantry","team": "Red","x": 15,"y": -8,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-2","type": "Infantry","team": "Red","x": -13,"y": 6,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-3","type": "Infantry","team": "Red","x": -11,"y": 9,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-4","type": "Infantry","team": "Red","x": -11,"y": 13,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-5","type": "Infantry","team": "Red","x": -11,"y": 11,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-6","type": "Infantry","team": "Red","x": 14,"y": -9,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-7","type": "Infantry","team": "Red","x": -14,"y": 0,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-8","type": "Infantry","team": "Red","x": -13,"y": 1,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-9","type": "Infantry","team": "Red","x": -19,"y": 0,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-10","type": "Infantry","team": "Red","x": -2,"y": -3,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-infantry-standard-11","type": "Infantry","team": "Red","x": -2,"y": -4,"hp": 10,"maxHp": 10,"attack": 4,"defense": 2,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 50,"maxFuel": 50,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-1","type": "AntiTank","team": "Red","x": 8,"y": -1,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-2","type": "AntiTank","team": "Red","x": -16,"y": 1,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-3","type": "AntiTank","team": "Red","x": 6,"y": 1,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-4","type": "AntiTank","team": "Red","x": -15,"y": 3,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-5","type": "AntiTank","team": "Red","x": 3,"y": 3,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-6","type": "AntiTank","team": "Red","x": -13,"y": 4,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 2},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-7","type": "AntiTank","team": "Red","x": -13,"y": 8,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 2},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-antitank-gun_37mm-8","type": "AntiTank","team": "Red","x": -3,"y": 7,"hp": 8,"maxHp": 8,"attack": 6,"defense": 3,"movement": 1,"attackRange": {"min": 1,"max": 2},"canCounterAttack": true,"unitClass": "Infantry","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-1","type": "Artillery","team": "Red","x": -11,"y": 4,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 3},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-2","type": "Artillery","team": "Red","x": -14,"y": 1,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 3},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "blue-armored-car-1","type": "ArmoredCar","team": "Blue","x": 10,"y": 0,"hp": 15,"maxHp": 15,"attack": 6,"defense": 4,"movement": 6,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 60,"maxFuel": 60,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-tank-7tp-1","type": "Tank","team": "Red","x": 14,"y": 0,"hp": 20,"maxHp": 20,"attack": 8,"defense": 6,"movement": 4,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-tank-7tp-2","type": "Tank","team": "Red","x": 14,"y": -1,"hp": 20,"maxHp": 20,"attack": 8,"defense": 6,"movement": 4,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-tank-7tp-3","type": "Tank","team": "Red","x": 15,"y": 1,"hp": 20,"maxHp": 20,"attack": 8,"defense": 6,"movement": 4,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-armored-car_wz34-1","type": "ArmoredCar","team": "Red","x": 14,"y": 3,"hp": 15,"maxHp": 15,"attack": 6,"defense": 4,"movement": 6,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 60,"maxFuel": 60,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-armored-car_wz34-2","type": "ArmoredCar","team": "Red","x": 18,"y": -3,"hp": 15,"maxHp": 15,"attack": 6,"defense": 4,"movement": 6,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 60,"maxFuel": 60,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-armored-car_wz34-3","type": "ArmoredCar","team": "Red","x": -10,"y": -6,"hp": 15,"maxHp": 15,"attack": 6,"defense": 4,"movement": 6,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 60,"maxFuel": 60,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-3","type": "Artillery","team": "Red","x": 15,"y": 4,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 4},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-4","type": "Artillery","team": "Red","x": -3,"y": -3,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 4},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-5","type": "Artillery","team": "Red","x": 12,"y": 9,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 4},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-artillery-75mm-6","type": "Artillery","team": "Red","x": 9,"y": 10,"hp": 12,"maxHp": 12,"attack": 10,"defense": 2,"movement": 1,"attackRange": {"min": 2,"max": 4},"canCounterAttack": false,"unitClass": "Vehicle","fuel": 30,"maxFuel": 30,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-tank-7tp-4","type": "Tank","team": "Red","x": -1,"y": 14,"hp": 20,"maxHp": 20,"attack": 8,"defense": 6,"movement": 4,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-engineer-1","type": "Engineer","team": "Red","x": -13,"y": 0,"hp": 10,"maxHp": 10,"attack": 3,"defense": 1,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-engineer-2","type": "Engineer","team": "Red","x": 8,"y": 11,"hp": 10,"maxHp": 10,"attack": 3,"defense": 1,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
-    ,{"id": "red-engineer-3","type": "Engineer","team": "Red","x": 15,"y": 0,"hp": 10,"maxHp": 10,"attack": 3,"defense": 1,"movement": 3,"attackRange": {"min": 1,"max": 1},"canCounterAttack": true,"unitClass": "Vehicle","fuel": 40,"maxFuel": 40,"xp": 0,"moved": false,"attacked": false}
+    {"id": "red-infantry-standard-1"
+        ,"team": "Red"
+        ,"x": 15 ,"y": -8
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-2"
+        ,"team": "Red"
+        ,"x": -13 ,"y": 6
+        ,"hp": 10
+        ,"maxHp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-3"
+        ,"team": "Red"
+        ,"x": -11
+        ,"y": 9
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-4"
+        ,"team": "Red"
+        ,"x": -11
+        ,"y": 13
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-5"
+        ,"team": "Red"
+        ,"x": -11
+        ,"y": 11
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-6"
+        ,"team": "Red"
+        ,"x": 14
+        ,"y": -9
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-7"
+        ,"team": "Red"
+        ,"x": -14
+        ,"y": 0
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-8"
+        ,"team": "Red"
+        ,"x": -13
+        ,"y": 1
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-9"
+        ,"team": "Red"
+        ,"x": -19
+        ,"y": 0
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-10"
+        ,"team": "Red"
+        ,"x": -2
+        ,"y": -3
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-infantry-standard-11"
+        ,"team": "Red"
+        ,"x": -2
+        ,"y": -4
+        ,"hp": 10
+        ,"fuel": 50
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-1"
+        ,"team": "Red"
+        ,"x": 8
+        ,"y": -1
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-2"
+        ,"team": "Red"
+        ,"x": -16
+        ,"y": 1
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-3"
+        ,"team": "Red"
+        ,"x": 6
+        ,"y": 1
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-4"
+        ,"team": "Red"
+        ,"x": -15
+        ,"y": 3
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-5"
+        ,"team": "Red"
+        ,"x": 3
+        ,"y": 3
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-6"
+        ,"team": "Red"
+        ,"x": -13
+        ,"y": 4
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-7"
+        ,"team": "Red"
+        ,"x": -13
+        ,"y": 8
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-antitank-gun_37mm-8"
+        ,"team": "Red"
+        ,"x": -3
+        ,"y": 7
+        ,"hp": 8
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-1"
+        ,"team": "Red"
+        ,"x": -11
+        ,"y": 4
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-2"
+        ,"team": "Red"
+        ,"x": -14
+        ,"y": 1
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "blue-armored-car-1"
+        ,"team": "Blue"
+        ,"x": 10
+        ,"y": 0
+        ,"hp": 15
+        ,"fuel": 60
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-tank-7tp-1"
+        ,"team": "Red"
+        ,"x": 14
+        ,"y": 0
+        ,"hp": 20
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-tank-7tp-2"
+        ,"team": "Red"
+        ,"x": 14
+        ,"y": -1
+        ,"hp": 20
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-tank-7tp-3"
+        ,"team": "Red"
+        ,"x": 15
+        ,"y": 1
+        ,"hp": 20
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-armored-car_wz34-1"
+        ,"team": "Red"
+        ,"x": 14
+        ,"y": 3
+        ,"hp": 15
+        ,"fuel": 60
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-armored-car_wz34-2"
+        ,"team": "Red"
+        ,"x": 18
+        ,"y": -3
+        ,"hp": 15
+        ,"fuel": 60
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-armored-car_wz34-3"
+        ,"team": "Red"
+        ,"x": -10
+        ,"y": -6
+        ,"hp": 15
+        ,"fuel": 60
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-3"
+        ,"team": "Red"
+        ,"x": 15
+        ,"y": 4
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-4"
+        ,"team": "Red"
+        ,"x": -3
+        ,"y": -3
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-5"
+        ,"team": "Red"
+        ,"x": 12
+        ,"y": 9
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-artillery-75mm-6"
+        ,"team": "Red"
+        ,"x": 9
+        ,"y": 10
+        ,"hp": 12
+        ,"fuel": 30
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-tank-7tp-4"
+        ,"team": "Red"
+        ,"x": -1
+        ,"y": 14
+        ,"hp": 20
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-engineer-1"
+        ,"team": "Red"
+        ,"x": -13
+        ,"y": 0
+        ,"hp": 10
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-engineer-2"
+        ,"team": "Red"
+        ,"x": 8
+        ,"y": 11
+        ,"hp": 10
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
+    ,{"id": "red-engineer-3"
+        ,"team": "Red"
+        ,"x": 15
+        ,"y": 0
+        ,"hp": 10
+        ,"fuel": 40
+        ,"xp": 0
+        ,"moved": false
+        ,"attacked": false
+    }
   ],
   "board": {
   "tiles": [

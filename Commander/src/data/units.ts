@@ -396,6 +396,8 @@ const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
   const idToTypeMap: { [key: string]: UnitType } = {
     // Blue army units from armyOrganization.json
     'blue-infantry-standard': 'Infantry',
+    'blue-infantry-motorized': 'Infantry',
+    'blue-infantry-mg_squad': 'Infantry',
     'blue-tank-panzer_1': 'Tank',
     'blue-tank-panzer_2': 'Tank',
     'blue-tank-panzer_3': 'Tank',
@@ -414,7 +416,7 @@ const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
   };
   
   return idToTypeMap[armyId] || null;
-};;;
+};;;;
 
 // Async version for loading map-specific units dynamically
 export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[]> => {
