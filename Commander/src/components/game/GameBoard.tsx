@@ -37,7 +37,24 @@ const GameBoard: React.FC<GameBoardProps> = ({
   
   const renderHexes = () => {
     const hexes: React.ReactElement[] = [];
-    
+
+    // If boardLayout is empty, show loading indicator
+    if (boardLayout.size === 0) {
+      return [(
+        <text
+          key="loading"
+          x={camera.x}
+          y={camera.y}
+          textAnchor="middle"
+          fill="white"
+          fontSize="24"
+          style={{ fontFamily: 'Arial, sans-serif' }}
+        >
+          マップを読み込み中...
+        </text>
+      )];
+    }
+
     for (const [, tile] of Array.from(boardLayout.entries())) {
       const unit = units.find(u => u.x === tile.x && u.y === tile.y && !u.loaded);
       const isSelected = !!(selectedUnit && selectedUnit.x === tile.x && selectedUnit.y === tile.y);

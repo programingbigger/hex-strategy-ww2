@@ -32,7 +32,7 @@ export function getDistance(a: Coordinate, b: Coordinate): number {
 
 export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: Unit[] } {
   const board: BoardLayout = new Map();
-  
+
   // Load tiles
   mapData.board.tiles.forEach(tile => {
     board.set(coordToString(tile), tile);
@@ -40,8 +40,33 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
   
   // Load units with HP corruption prevention
   const units: Unit[] = mapData.units.map(unitData => {
+    // Handle missing type field by inferring from unit ID
+    let unitType = unitData.type;
+    if (!unitType) {
+      // Extract type from unit ID (e.g., "red-infantry-standard-1" -> "Infantry")
+      if (unitData.id.includes('infantry')) {
+        unitType = 'Infantry';
+      } else if (unitData.id.includes('tank') || unitData.id.includes('panzer')) {
+        unitType = 'Tank';
+      } else if (unitData.id.includes('armored')) {
+        unitType = 'ArmoredCar';
+      } else if (unitData.id.includes('artillery') || unitData.id.includes('howitzer')) {
+        unitType = 'Artillery';
+      } else if (unitData.id.includes('antitank')) {
+        unitType = 'AntiTank';
+      } else if (unitData.id.includes('transport')) {
+        unitType = 'Transport';
+      } else if (unitData.id.includes('engineer')) {
+        unitType = 'Engineer';
+      } else {
+        // Fallback to Infantry if type can't be determined
+        unitType = 'Infantry';
+        console.warn(`Could not determine unit type for ${unitData.id}, using Infantry as fallback`);
+      }
+    }
+
     // Use createUnit to get properly initialized unit with faction-specific weapons
-    const baseUnit = createUnit(unitData.id, unitData.type, unitData.team, unitData.x, unitData.y);
+    const baseUnit = createUnit(unitData.id, unitType, unitData.team, unitData.x, unitData.y);
     
     // Safely merge unit data while preserving ACTUAL unit state
     const loadedUnit = {
@@ -77,7 +102,7 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
     
     return loadedUnit;
   });
-  
+
   return { board, units };
 }
 

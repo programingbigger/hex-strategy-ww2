@@ -276,23 +276,32 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
           />
         </div>
 
-        <div className="deployment-sidebar" style={{ 
-          width: '300px', 
+        <div className="deployment-sidebar" style={{
+          width: '300px',
           padding: '25px',
           background: 'rgba(52, 73, 94, 0.1)',
-          borderLeft: '2px solid #3498db'
+          borderLeft: '2px solid #3498db',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100%'
         }}>
           <h3 style={{ fontSize: '22px', marginBottom: '15px' }}>選択されたユニット</h3>
-          <div style={{ 
-            marginBottom: '15px', 
+          <div style={{
+            marginBottom: '15px',
             fontSize: '18px',
             fontWeight: 'bold',
             textAlign: 'center'
           }}>
             配置済み: {deployedUnits.size}/{selectedUnits.length}
           </div>
-          
-          <div className="unit-list" style={{ marginBottom: '20px' }}>
+
+          <div className="unit-list" style={{
+            marginBottom: '20px',
+            flex: 1,
+            overflowY: 'auto',
+            maxHeight: 'calc(100vh - 350px)',
+            paddingRight: '5px'
+          }}>
             {selectedUnits.map(unit => {
               const isDeployed = deployedUnits.has(unit.id);
               const isSelectedForDeployment = selectedUnitForDeployment?.id === unit.id;
@@ -375,11 +384,13 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
 
 
           {/* Information Panel */}
-          <div className="info-panel" style={{ 
+          <div className="info-panel" style={{
             padding: '20px',
             background: 'rgba(52, 73, 94, 0.2)',
             borderRadius: '10px',
-            fontSize: '16px'
+            fontSize: '16px',
+            flexShrink: 0,
+            minHeight: '160px'
           }}>
             <h4 style={{ fontSize: '20px', marginBottom: '15px' }}>ユニット情報</h4>
             {hoveredUnit ? (
