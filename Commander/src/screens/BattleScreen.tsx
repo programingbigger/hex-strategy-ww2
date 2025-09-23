@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { GameScreen, GameState, MapData } from '../types';
+import { GameScreen, GameState, MapData, Unit } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { useCamera } from '../contexts/CameraContext';
 import { createUnit } from '../data/units';
@@ -7,6 +7,7 @@ import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
 import SelectedUnitPanel from '../components/game/SelectedUnitPanel';
 import InformationPanel from '../components/game/InformationPanel';
+import UnitDetailsDialog from '../components/game/UnitDetailsDialog';
 import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
 import ZoomControls from '../components/ui/ZoomControls';
 import TurnChangeModal from '../components/game/TurnChangeModal';
@@ -107,6 +108,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   // Tutorial turn limit state
   const [turnLimit, setTurnLimit] = useState<number | undefined>(undefined);
 
+  // Unit details dialog state
+  const [isUnitDetailsOpen, setIsUnitDetailsOpen] = useState(false);
+  const [detailsUnit, setDetailsUnit] = useState<Unit | null>(null);
+
   // Handle keyboard shortcuts
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     // Cmd+E or Ctrl+E for End Turn
@@ -190,6 +195,16 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     setIsVictoryModalOpen(false);
     onNavigate('title');
   }, [onNavigate]);
+
+  const handleShowUnitDetails = useCallback((unit: Unit) => {
+    setDetailsUnit(unit);
+    setIsUnitDetailsOpen(true);
+  }, []);
+
+  const handleCloseUnitDetails = useCallback(() => {
+    setIsUnitDetailsOpen(false);
+    setDetailsUnit(null);
+  }, []);
   
 
 
@@ -337,6 +352,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onStartTransportAction={startTransportAction}
           currentFunds={armyFunds}
           activeTeam={activeTeam}
+          onShowUnitDetails={handleShowUnitDetails}
         />
       </div>
 
@@ -352,6 +368,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexClick={handleHexClick}
           onHexHover={setHoveredHex}
           onHexLeave={() => setHoveredHex(null)}
+          onUnitDoubleClick={handleShowUnitDetails}
         />
       </div>
 
@@ -365,6 +382,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           units={units}
           onAction={handleAction}
         />
+      </div>
+
+      <div className="battle-log-area">
         <BattleLogPanel
           className="military-battle-log"
           battleLog={battleLog}
@@ -459,6 +479,12 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         defeatedArmy={victoryInfo.defeatedArmy}
         winnerArmy={victoryInfo.winnerArmy}
         onClose={handleVictoryModalClose}
+      />
+
+      <UnitDetailsDialog
+        isOpen={isUnitDetailsOpen}
+        unit={detailsUnit}
+        onClose={handleCloseUnitDetails}
       />
 
 

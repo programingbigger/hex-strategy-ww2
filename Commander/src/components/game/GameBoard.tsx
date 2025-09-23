@@ -16,6 +16,7 @@ interface GameBoardProps {
   onHexClick: (coord: Coordinate) => void;
   onHexHover: (coord: Coordinate) => void;
   onHexLeave: () => void;
+  onUnitDoubleClick?: (unit: Unit) => void;
 }
 
 const GameBoard: React.FC<GameBoardProps> = ({
@@ -28,7 +29,8 @@ const GameBoard: React.FC<GameBoardProps> = ({
   transportTargetTiles,
   onHexClick,
   onHexHover,
-  onHexLeave
+  onHexLeave,
+  onUnitDoubleClick
 }) => {
   const selectedUnit = units.find(u => u.id === selectedUnitId && !u.loaded) || null;
   const { camera } = useCamera();
@@ -58,6 +60,7 @@ const GameBoard: React.FC<GameBoardProps> = ({
           onClick={onHexClick}
           onMouseEnter={onHexHover}
           onMouseLeave={onHexLeave}
+          onUnitDoubleClick={onUnitDoubleClick}
         />
       );
     }

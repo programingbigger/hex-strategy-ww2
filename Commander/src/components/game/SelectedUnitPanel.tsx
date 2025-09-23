@@ -1,6 +1,5 @@
 import React from 'react';
 import { Unit, Tile, Team } from '../../types';
-import { WeaponInfoPanel } from './WeaponInfoPanel';
 import { getNeighbors } from '../../utils/map';
 import { coordToString } from '../../utils/map';
 import { armyManager } from '../../data/armyLoader';
@@ -25,6 +24,8 @@ interface SelectedUnitPanelProps {
   // Add fund information for engineer action costs
   currentFunds?: { [team: string]: number };
   activeTeam?: Team;
+  // Add details dialog callback
+  onShowUnitDetails?: (unit: Unit) => void;
 }
 
 const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
@@ -36,7 +37,8 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   units,
   currentFunds,
   activeTeam,
-  onStartTransportAction
+  onStartTransportAction,
+  onShowUnitDetails
 }) => {
   // Helper function to check if terrain is capturable
   const isCapturableTerrain = (terrain: string): boolean => {
@@ -191,40 +193,6 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     return getLoadedUnits().length > 0;
   };
 
-  // Helper function to calculate current capacity usage
-  const getCurrentCapacityUsage = (): number => {
-    const loadedUnits = getLoadedUnits();
-    const transportCapacity = getTransportCapacity();
-    
-    if (!transportCapacity) return 0;
-    
-    return loadedUnits.reduce((total, unit) => {
-      const costKey = unit.category || 'infantry'; // fallback to infantry
-      const cost = transportCapacity.unitCapacityCosts[costKey] || 1;
-      return total + cost;
-    }, 0);
-  };
-
-  // Helper function to check if front position is available for unloading
-  const canUnloadAtFront = (): boolean => {
-    if (!selectedUnit || !boardLayout) return false;
-    
-    // Calculate front position (for now, we'll use position in front of transport - could be enhanced with direction)
-    const frontPosition = { x: selectedUnit.x + 1, y: selectedUnit.y }; // Simple front calculation
-    
-    // Check if the front position is empty (no units and valid terrain)
-    const frontTile = boardLayout.get(`${frontPosition.x},${frontPosition.y}`);
-    if (!frontTile) return false; // Position doesn't exist on map
-    
-    // Check if no unit is at front position
-    const unitAtFront = units.find(u => 
-      u.x === frontPosition.x && 
-      u.y === frontPosition.y && 
-      !u.loaded
-    );
-    
-    return !unitAtFront && frontTile.terrain !== 'Sea'; // Can't unload on sea
-  };
 
   // Helper function to check if unit can be loaded into transport
   const canUnitBeLoaded = (): boolean => {
@@ -241,7 +209,6 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   // Transport unloading conditions - only for Transport units with loaded units
   const isTransport = selectedUnit?.type === 'Transport';
   const canUnload = isTransport && hasLoadedUnits();
-  const canEnhancedUnload = canUnload && onStartTransportAction; // Enhanced unload with position selection
 
   // Progress bar component
   const ProgressBar: React.FC<{ current: number; max: number; color: string }> = ({ current, max, color }) => {
@@ -266,20 +233,32 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     );
   };
 
+  const handleUnitDoubleClick = () => {
+    if (selectedUnit && onShowUnitDetails) {
+      onShowUnitDetails(selectedUnit);
+    }
+  };
+
+  const handleDetailsClick = () => {
+    if (selectedUnit && onShowUnitDetails) {
+      onShowUnitDetails(selectedUnit);
+    }
+  };
+
   return (
     <div className={className}>
       {/* Header */}
       <div className="panel-header">
-        <h3 className="panel-title">選択中ユニット</h3>
+        <h3 className="panel-title">アクションパネル</h3>
       </div>
 
       {/* SELECTED UNIT Section */}
       {selectedUnit ? (
         <div className="panel-content">
-          {/* ユニット情報セクション */}
+          {/* 基本ユニット情報セクション */}
           <div className="panel-section">
-            <h4 className="section-title">ユニット情報</h4>
-            <div className="unit-name-plate">
+            <h4 className="section-title">基本情報</h4>
+            <div className="unit-name-plate" onDoubleClick={handleUnitDoubleClick}>
               <span className={selectedUnit.team === 'Blue' ? 'team-blue' : 'team-red'}>
                 {getUnitNameById(selectedUnit.id)} ({selectedUnit.team === 'Blue' ? '青軍' : '赤軍'})
               </span>
@@ -299,37 +278,34 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                 <ProgressBar current={selectedUnit.fuel} max={selectedUnit.maxFuel} color="var(--earth-warning)" />
                 <span>{selectedUnit.fuel}/{selectedUnit.maxFuel}</span>
               </div>
-              <div className="stat-item">
-                <span>⭐ 経験値</span>
-                <ProgressBar current={selectedUnit.xp} max={100} color="var(--earth-khaki-light)" />
-                <span>{selectedUnit.xp}/100</span>
-              </div>
             </div>
 
-            <div className="stats-grid">
-              <div>💥 攻撃: {selectedUnit.attack}</div>
-              <div>🛡️ 防御: {selectedUnit.defense}</div>
-              <div>🦾 移動: {selectedUnit.movement}</div>
-              <div>🎯 射程: {selectedUnit.attackRange.min}-{selectedUnit.attackRange.max}</div>
-            </div>
-
-            <div className="unit-status">
-              <div>📍 座標: ({selectedUnit.x}, {selectedUnit.y})</div>
-              <div>⚙️ 状態: {
-                selectedUnit.moved && selectedUnit.attacked ? '行動終了' :
-                selectedUnit.moved ? '移動済み' :
-                selectedUnit.attacked ? '攻撃済み' : '待機中'
-              }</div>
-            </div>
-
+            {/* 輸送ユニットの搭載情報 */}
             {selectedUnit.type === 'Transport' && (
-              <div className="transport-info">
-                <h5 className="section-subtitle">🚛 輸送情報</h5>
-                {/* ... 輸送関連情報 ... */}
+              <div className="transport-cargo">
+                <h5 className="section-subtitle">🚛 搭載</h5>
+                <div className="cargo-info">
+                  搭載数: {getLoadedUnits().length} / {getTransportCapacity()?.capacity || 2}
+                  {getLoadedUnits().length > 0 && (
+                    <div className="loaded-units">
+                      {getLoadedUnits().map(unit => (
+                        <div key={unit.id} className="loaded-unit">
+                          {getUnitNameById(unit.id)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 
-            <WeaponInfoPanel unit={selectedUnit} />
+            <button
+              className="military-button details-button"
+              onClick={handleDetailsClick}
+              disabled={!selectedUnit}
+            >
+              📋 詳細スペック
+            </button>
           </div>
 
           {/* アクションセクション */}

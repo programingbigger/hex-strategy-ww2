@@ -849,6 +849,225 @@
   color: var(--earth-danger);
 }
 
+/* ===== UNIT DETAILS DIALOG ===== */
+.unit-details-dialog {
+  min-width: 900px;
+  max-width: 1200px;
+  width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: linear-gradient(135deg, var(--earth-khaki-light) 0%, var(--earth-khaki) 50%, var(--earth-khaki-dark) 100%);
+  border: 3px solid var(--earth-sand);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px var(--earth-shadow);
+}
+
+.dialog-basic-info {
+  flex: 1;
+  padding: 20px;
+  border-bottom: 2px solid var(--earth-khaki);
+}
+
+.basic-info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans-jp);
+}
+
+.info-label {
+  min-width: 80px;
+  font-weight: bold;
+  color: var(--earth-contrast-light);
+}
+
+.progress-bar-container {
+  flex: 1;
+  max-width: 200px;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--earth-khaki-dark);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.info-value {
+  min-width: 60px;
+  text-align: right;
+  font-family: var(--font-stencil);
+  color: var(--earth-contrast-light);
+}
+
+.dialog-attack-tables {
+  flex: 2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.weapon-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.nav-arrow {
+  background: var(--earth-sand);
+  border: 2px solid var(--earth-khaki);
+  color: var(--earth-contrast-dark);
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-arrow:hover:not(:disabled) {
+  background: var(--earth-sand-light);
+  transform: scale(1.05);
+}
+
+.nav-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.weapon-name {
+  font-family: var(--font-stencil);
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--earth-contrast-light);
+  min-width: 200px;
+  text-align: center;
+}
+
+.attack-table {
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--earth-khaki);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.table-title {
+  font-family: var(--font-sans-jp);
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--earth-contrast-light);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.table-grid {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.table-header {
+  font-family: var(--font-stencil);
+  font-weight: bold;
+  background: var(--earth-khaki-dark);
+  padding: 8px 12px;
+  text-align: center;
+  color: var(--earth-contrast-light);
+}
+
+.table-cell {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--earth-contrast-light);
+  font-family: var(--font-sans-jp);
+}
+
+.table-cell.unit-type {
+  font-weight: bold;
+}
+
+.table-cell.attack-value {
+  text-align: center;
+  font-family: var(--font-stencil);
+  color: var(--earth-warning);
+}
+
+.weapon-specs {
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--earth-khaki-light);
+}
+
+.spec-item {
+  font-family: var(--font-sans-jp);
+}
+
+.dialog-controls {
+  padding: 16px 20px;
+  border-top: 2px solid var(--earth-khaki);
+  background: rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: var(--font-sans-jp);
+  color: var(--earth-khaki-light);
+  font-size: 14px;
+}
+
+/* Enhanced dialog title styling for better readability */
+.dialog-title {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: var(--earth-contrast-light);
+  text-shadow: 2px 2px 4px var(--earth-shadow);
+  border: 2px solid var(--earth-sand);
+  font-family: var(--font-stencil);
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Critical weapon statistics styling */
+.info-item.critical-stat {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--earth-warning);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 4px 0;
+}
+
+.critical-value {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-stencil);
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--earth-warning);
+  text-shadow: 1px 1px 2px var(--earth-shadow);
+}
+
 
 /* ProgressBar Styles */
 .progress-bar {

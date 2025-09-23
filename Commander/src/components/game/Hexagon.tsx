@@ -14,6 +14,7 @@ interface HexagonProps {
   onClick: (coord: Coordinate) => void;
   onMouseEnter: (coord: Coordinate) => void;
   onMouseLeave: () => void;
+  onUnitDoubleClick?: (unit: Unit) => void;
 }
 
 const Hexagon: React.FC<HexagonProps> = ({
@@ -27,7 +28,8 @@ const Hexagon: React.FC<HexagonProps> = ({
   isTransportTarget = false,
   onClick,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  onUnitDoubleClick
 }) => {
   const { x: pixelX, y: pixelY } = axialToPixel(tile, size);
   
@@ -342,7 +344,16 @@ const Hexagon: React.FC<HexagonProps> = ({
       )}
       
       {unit && (
-        <g opacity={(unit.moved || unit.attacked) ? 0.5 : 1}>
+        <g
+          opacity={(unit.moved || unit.attacked) ? 0.5 : 1}
+          onDoubleClick={(e) => {
+            e.stopPropagation();
+            if (onUnitDoubleClick) {
+              onUnitDoubleClick(unit);
+            }
+          }}
+          style={{ cursor: 'pointer' }}
+        >
           <rect
             x={-size * 0.6}
             y={-size * 0.4}

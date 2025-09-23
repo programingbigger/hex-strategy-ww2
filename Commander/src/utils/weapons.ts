@@ -1,4 +1,4 @@
-import { Unit, Weapon, UnitClass, UnitClassAttack } from '../types';
+import { Unit, Weapon, UnitClass } from '../types';
 
 // Weapon utility functions
 export const getAvailableWeapons = (unit: Unit): Weapon[] => {
