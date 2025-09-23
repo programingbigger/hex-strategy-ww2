@@ -1,4 +1,4 @@
-import { Unit, ArmyOrganization, ArmyUnitTemplate, Faction, MilitaryBranch, UnitCategory } from '../types';
+import { Unit, ArmyOrganization, ArmyUnitTemplate, ArmyUnitTemplateJSON, Faction, MilitaryBranch, UnitCategory } from '../types';
 import armyOrganizationData from './armyOrganization.json';
 
 export class ArmyManager {
@@ -25,12 +25,41 @@ export class ArmyManager {
     const factionData = this.armyData.factions[faction];
     if (!factionData) return [];
 
+    // Helper to convert JSON template to full template with calculated attack/range
+    const convertTemplate = (jsonTemplate: any): ArmyUnitTemplate => {
+      // Calculate attack and range from weapons
+      let primaryAttack = 0;
+      let primaryRange = { min: 1, max: 1 };
+      
+      if (jsonTemplate.weapons && jsonTemplate.weapons.length > 0) {
+        const firstWeapon = jsonTemplate.weapons[0];
+        primaryRange = firstWeapon.range;
+        
+        // Get attack value for Infantry class as default
+        if (Array.isArray(firstWeapon.attack)) {
+          const infantryAttack = firstWeapon.attack.find((a: any) => a.unitClass === 'Infantry');
+          primaryAttack = infantryAttack ? infantryAttack.attack : 0;
+        } else {
+          primaryAttack = typeof firstWeapon.attack === 'number' ? firstWeapon.attack : 0;
+        }
+      }
+
+      return {
+        ...jsonTemplate,
+        stats: {
+          ...jsonTemplate.stats,
+          attack: primaryAttack,
+          attackRange: primaryRange
+        }
+      };
+    };
+
     if (!branch) {
       // Return all units from all branches
       const allUnits: ArmyUnitTemplate[] = [];
       Object.values(factionData.branches).forEach(branchData => {
         Object.values(branchData.unitCategories).forEach(categoryData => {
-          allUnits.push(...categoryData.units);
+          allUnits.push(...categoryData.units.map(convertTemplate));
         });
       });
       return allUnits;
@@ -43,14 +72,14 @@ export class ArmyManager {
       // Return all units from the specified branch
       const branchUnits: ArmyUnitTemplate[] = [];
       Object.values(branchData.unitCategories).forEach(categoryData => {
-        branchUnits.push(...categoryData.units);
+        branchUnits.push(...categoryData.units.map(convertTemplate));
       });
       return branchUnits;
     }
 
     // Return units from specific category
     const categoryData = branchData.unitCategories[category];
-    return categoryData ? categoryData.units : [];
+    return categoryData ? categoryData.units.map(convertTemplate) : [];
   }
 
   // Create a unit instance from template
@@ -78,6 +107,29 @@ export class ArmyManager {
     x: number,
     y: number
   ): Unit {
+    // Calculate attack and range from weapons
+    const weapons = template.weapons.map(weapon => ({
+      ...weapon,
+      ammunition: weapon.maxAmmunition // Reset ammunition to max
+    }));
+    
+    // Get primary attack value from first weapon
+    let primaryAttack = 0;
+    let primaryRange = { min: 1, max: 1 };
+    
+    if (weapons.length > 0) {
+      const firstWeapon = weapons[0];
+      primaryRange = firstWeapon.range;
+      
+      // Get attack value for Infantry class as default
+      if (Array.isArray(firstWeapon.attack)) {
+        const infantryAttack = firstWeapon.attack.find(a => a.unitClass === 'Infantry');
+        primaryAttack = infantryAttack ? infantryAttack.attack : 0;
+      } else {
+        primaryAttack = typeof firstWeapon.attack === 'number' ? firstWeapon.attack : 0;
+      }
+    }
+
     return {
       id: instanceId,
       type: template.type,
@@ -90,10 +142,10 @@ export class ArmyManager {
       y,
       hp: template.stats.maxHp,
       maxHp: template.stats.maxHp,
-      attack: template.stats.attack,
+      attack: primaryAttack, // Now derived from weapons
       defense: template.stats.defense,
       movement: template.stats.movement,
-      attackRange: template.stats.attackRange,
+      attackRange: primaryRange, // Now derived from weapons
       moved: false,
       attacked: false,
       canCounterAttack: template.stats.canCounterAttack,
@@ -101,10 +153,7 @@ export class ArmyManager {
       fuel: template.stats.maxFuel,
       maxFuel: template.stats.maxFuel,
       xp: 0,
-      weapons: template.weapons.map(weapon => ({
-        ...weapon,
-        ammunition: weapon.maxAmmunition // Reset ammunition to max
-      }))
+      weapons: weapons
     };
   }
 

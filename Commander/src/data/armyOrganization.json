@@ -24,13 +24,8 @@
                   "category": "infantry",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 3,
                     "defense": 2,
                     "movement": 3,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -114,13 +109,8 @@
                   "category": "infantry",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -175,13 +165,8 @@
                   "category": "infantry",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 6,
                     "defense": 3,
                     "movement": 2,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
@@ -270,13 +255,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 4,
                     "defense": 3,
                     "movement": 6,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 70,
@@ -331,13 +311,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 14,
-                    "attack": 5,
                     "defense": 4,
                     "movement": 5,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 50,
@@ -421,13 +396,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 18,
-                    "attack": 7,
                     "defense": 6,
                     "movement": 5,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 45,
@@ -511,13 +481,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 20,
-                    "attack": 9,
                     "defense": 7,
                     "movement": 4,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -601,13 +566,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 15,
-                    "attack": 6,
                     "defense": 4,
                     "movement": 6,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -667,13 +627,8 @@
                   "category": "artillery",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 12,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 2,
-                      "max": 6
-                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
@@ -733,13 +688,8 @@
                   "category": "antitank",
                   "stats": {
                     "maxHp": 6,
-                    "attack": 4,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 40,
@@ -794,13 +744,8 @@
                   "category": "antitank",
                   "stats": {
                     "maxHp": 8,
-                    "attack": 7,
                     "defense": 3,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 40,
@@ -860,13 +805,8 @@
                   "category": "support",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -950,13 +890,8 @@
                   "category": "support",
                   "stats": {
                     "maxHp": 15,
-                    "attack": 5,
                     "defense": 4,
                     "movement": 8,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -1074,13 +1009,8 @@
                   "category": "infantry",
                   "stats": {
                     "maxHp": 8,
-                    "attack": 3,
                     "defense": 2,
                     "movement": 2,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -1135,13 +1065,8 @@
                   "category": "infantry",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 4,
                     "defense": 3,
                     "movement": 3,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -1201,13 +1126,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 8,
-                    "attack": 3,
                     "defense": 2,
                     "movement": 7,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -1262,13 +1182,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 16,
-                    "attack": 6,
                     "defense": 5,
                     "movement": 5,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 45,
@@ -1323,13 +1238,8 @@
                   "category": "armor",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 4,
                     "defense": 3,
                     "movement": 6,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
@@ -1389,13 +1299,8 @@
                   "category": "artillery",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 7,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 2,
-                      "max": 4
-                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 25,
@@ -1450,13 +1355,8 @@
                   "category": "artillery",
                   "stats": {
                     "maxHp": 12,
-                    "attack": 9,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 2,
-                      "max": 5
-                    },
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
@@ -1516,13 +1416,8 @@
                   "category": "antitank",
                   "stats": {
                     "maxHp": 6,
-                    "attack": 5,
                     "defense": 2,
                     "movement": 1,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 2
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 0,
@@ -1582,13 +1477,8 @@
                   "category": "support",
                   "stats": {
                     "maxHp": 10,
-                    "attack": 3,
                     "defense": 1,
                     "movement": 4,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
@@ -1672,13 +1562,8 @@
                   "category": "support",
                   "stats": {
                     "maxHp": 15,
-                    "attack": 0,
                     "defense": 4,
                     "movement": 8,
-                    "attackRange": {
-                      "min": 1,
-                      "max": 1
-                    },
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,

@@ -166,6 +166,20 @@ export interface UnitStats {
   reconnaissance: number; // 索敵能力（範囲）
 }
 
+// Unit stats as they appear in armyOrganization.json (without attack and attackRange)
+export interface ArmyUnitStats {
+  maxHp: number;
+  defense: number;
+  movement: number;
+  canCounterAttack: boolean;
+  unitClass: UnitClass;
+  maxFuel: number;
+  attackVs?: { [key in UnitClass]?: number };
+  defenseVs?: { [key in UnitClass]?: number };
+  isArtillery?: boolean;
+  reconnaissance: number; // 索敵能力（範囲）
+}
+
 // Victory condition types
 export type VictoryCondition = 
   | 'unit_elimination'    // All enemy units destroyed
@@ -254,9 +268,22 @@ export interface ArmyUnitTemplate {
   cost: UnitCost;
 }
 
+// Unit template as it appears in armyOrganization.json  
+export interface ArmyUnitTemplateJSON {
+  id: string;
+  name: string;
+  type: UnitType;
+  faction: Faction;
+  branch: MilitaryBranch;
+  category: UnitCategory;
+  stats: ArmyUnitStats; // Uses ArmyUnitStats without attack/attackRange
+  weapons: Weapon[];
+  cost: UnitCost;
+}
+
 export interface UnitCategoryData {
   name: string;
-  units: ArmyUnitTemplate[];
+  units: ArmyUnitTemplateJSON[]; // Use JSON version without attack/attackRange in stats
 }
 
 export interface MilitaryBranchData {

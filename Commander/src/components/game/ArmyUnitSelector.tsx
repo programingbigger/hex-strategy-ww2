@@ -2,6 +2,21 @@ import React, { useState } from 'react';
 import { Faction, MilitaryBranch, UnitCategory, ArmyUnitTemplate } from '../../types';
 import { armyManager } from '../../data/units';
 
+// Helper function to calculate attack value from weapons
+const getTemplateAttackValue = (template: ArmyUnitTemplate): number => {
+  if (!template.weapons || template.weapons.length === 0) {
+    return 0;
+  }
+
+  const firstWeapon = template.weapons[0];
+  if (Array.isArray(firstWeapon.attack)) {
+    const infantryAttack = firstWeapon.attack.find(a => a.unitClass === 'Infantry');
+    return infantryAttack ? infantryAttack.attack : 0;
+  }
+
+  return typeof firstWeapon.attack === 'number' ? firstWeapon.attack : 0;
+};
+
 interface ArmyUnitSelectorProps {
   faction: Faction;
   onUnitSelect: (template: ArmyUnitTemplate) => void;
@@ -157,7 +172,7 @@ export const ArmyUnitSelector: React.FC<ArmyUnitSelectorProps> = ({
                     {template.type} • {template.branch}
                   </div>
                   <div style={{ fontSize: '0.8em', color: '#888' }}>
-                    HP: {template.stats.maxHp} | 攻撃: {template.stats.attack} | 防御: {template.stats.defense}
+                    HP: {template.stats.maxHp} | 攻撃: {getTemplateAttackValue(template)} | 防御: {template.stats.defense}
                   </div>
                   <div style={{ fontSize: '0.8em', color: '#888' }}>
                     移動: {template.stats.movement} | 燃料: {template.stats.maxFuel}

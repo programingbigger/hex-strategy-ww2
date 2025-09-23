@@ -13,6 +13,43 @@ export const getWeaponsInRange = (unit: Unit, targetDistance: number): Weapon[] 
     targetDistance >= weapon.range.min && targetDistance <= weapon.range.max
   );
 };
+/**
+ * Get the primary attack range from unit's weapons
+ * @param unit Unit to get attack range for
+ * @returns Attack range object with min and max values
+ */
+export const getUnitAttackRange = (unit: Unit): { min: number; max: number } => {
+  const weapons = getAvailableWeapons(unit);
+  if (weapons.length === 0) {
+    return { min: 1, max: 1 }; // Default range if no weapons
+  }
+  
+  // Use the first weapon's range as primary range
+  // TODO: Could be enhanced to find optimal range across all weapons
+  return weapons[0].range;
+};
+
+/**
+ * Get the primary attack power for a unit against a specific target class
+ * @param unit Unit to get attack power for
+ * @param targetClass Target unit class to attack
+ * @returns Attack power value
+ */
+export const getUnitAttackPower = (unit: Unit, targetClass: UnitClass = 'Infantry'): number => {
+  const weapons = getAvailableWeapons(unit);
+  if (weapons.length === 0) {
+    return 0; // No attack if no weapons
+  }
+  
+  // Use the first weapon's attack power
+  const weapon = weapons[0];
+  if (Array.isArray(weapon.attack)) {
+    const classAttack = weapon.attack.find(a => a.unitClass === targetClass);
+    return classAttack ? classAttack.attack : 0;
+  }
+  
+  return typeof weapon.attack === 'number' ? weapon.attack : 0;
+};
 
 export const canCounterAttack = (defender: Unit, attacker: Unit): boolean => {
   if (!defender.canCounterAttack) {

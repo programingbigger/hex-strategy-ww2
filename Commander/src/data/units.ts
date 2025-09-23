@@ -18,13 +18,34 @@ const getUnitStatsByIdOrType = (unitId: string, type: UnitType, team: 'Blue' | '
   }
 
   if (template) {
-    return template.stats;
+    // Calculate attack and range from weapons
+    let primaryAttack = 0;
+    let primaryRange = { min: 1, max: 1 };
+    
+    if (template.weapons && template.weapons.length > 0) {
+      const firstWeapon = template.weapons[0];
+      primaryRange = firstWeapon.range;
+      
+      // Get attack value for Infantry class as default
+      if (Array.isArray(firstWeapon.attack)) {
+        const infantryAttack = firstWeapon.attack.find(a => a.unitClass === 'Infantry');
+        primaryAttack = infantryAttack ? infantryAttack.attack : 0;
+      } else {
+        primaryAttack = typeof firstWeapon.attack === 'number' ? firstWeapon.attack : 0;
+      }
+    }
+
+    return {
+      ...template.stats,
+      attack: primaryAttack, // Derived from weapons
+      attackRange: primaryRange // Derived from weapons
+    };
   }
 
   // Fallback for backward compatibility - should not be reached in normal usage
   console.warn(`Unit stats not found in JSON for ${unitId}/${type}, using fallback`);
   return getUnitStatsFallback(type);
-};
+};;
 
 // Legacy function for backward compatibility
 const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
@@ -343,6 +364,36 @@ export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 
     const { loadMapData } = await import('../utils/mapLoader');
     const mapData = await loadMapData(mapId);
     
+    // Helper function to convert ArmyUnitTemplate to ProducibleUnit
+    const convertToProducibleUnit = (template: any): ProducibleUnit => {
+      // Calculate attack from weapons
+      let primaryAttack = 0;
+      if (template.weapons && template.weapons.length > 0) {
+        const firstWeapon = template.weapons[0];
+        if (Array.isArray(firstWeapon.attack)) {
+          const infantryAttack = firstWeapon.attack.find((a: any) => a.unitClass === 'Infantry');
+          primaryAttack = infantryAttack ? infantryAttack.attack : 0;
+        } else {
+          primaryAttack = typeof firstWeapon.attack === 'number' ? firstWeapon.attack : 0;
+        }
+      }
+
+      return {
+        id: template.id,
+        name: template.name,
+        type: template.type,
+        faction: template.faction,
+        branch: template.branch,
+        category: template.category,
+        stats: {
+          maxHp: template.stats.maxHp,
+          attack: primaryAttack, // Calculated from weapons
+          defense: template.stats.defense,
+          movement: template.stats.movement
+        }
+      };
+    };
+    
     // Check if map has embedded producibleUnits
     if (mapData.producibleUnits && mapData.producibleUnits[faction] && Array.isArray(mapData.producibleUnits[faction])) {
       console.log(`✅ Using embedded producibleUnits from map: ${mapId} for faction: ${faction}`);
@@ -352,17 +403,19 @@ export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 
       const { armyManager } = await import('./armyLoader');
       const allUnits = armyManager.getUnitTemplatesBy(faction);
       
-      // Filter units based on producibleUnits list
-      const producibleUnits = allUnits.filter(unit => producibleUnitIds.includes(unit.id));
+      // Filter units based on producibleUnits list and convert them
+      const producibleUnits = allUnits
+        .filter(unit => producibleUnitIds.includes(unit.id))
+        .map(convertToProducibleUnit);
       
-      return producibleUnits as ProducibleUnit[];
+      return producibleUnits;
     }
 
     // If no embedded producibleUnits, fall back to all units for that faction
     console.warn(`⚠️ Map ${mapId} doesn't have embedded producibleUnits for ${faction}. Using all available units.`);
     const { armyManager } = await import('./armyLoader');
     const allUnits = armyManager.getUnitTemplatesBy(faction);
-    return allUnits as ProducibleUnit[];
+    return allUnits.map(convertToProducibleUnit);
   } catch (error) {
     console.error(`Failed to load producible units for ${mapId}:`, error);
     
@@ -370,9 +423,22 @@ export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 
     console.warn(`Producible units configuration not found for ${mapId}, returning all units for ${faction}`);
     const { armyManager } = await import('./armyLoader');
     const allUnits = armyManager.getUnitTemplatesBy(faction);
-    return allUnits as ProducibleUnit[];
+    return allUnits.map(template => ({
+      id: template.id,
+      name: template.name,
+      type: template.type,
+      faction: template.faction,
+      branch: template.branch,
+      category: template.category,
+      stats: {
+        maxHp: template.stats.maxHp,
+        attack: 0, // Default value for fallback
+        defense: template.stats.defense,
+        movement: template.stats.movement
+      }
+    }));
   }
-};
+};;
 
 const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
   const units: Unit[] = [];
