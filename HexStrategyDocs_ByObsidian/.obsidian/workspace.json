@@ -11,13 +11,30 @@
             "id": "85db564fb9d1c224",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "03_技術仕様/データスキーマ.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新規タブ"
+              "title": "データスキーマ"
+            }
+          },
+          {
+            "id": "54cad3ea955a7700",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.9.12"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.9.12"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -156,6 +173,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:クイックスイッチャーを開く": false,
       "graph:グラフビューを開く": false,
       "canvas:新規キャンバスを作成": false,
@@ -164,8 +182,20 @@
       "command-palette:コマンドパレットを開く": false
     }
   },
-  "active": "85db564fb9d1c224",
+  "active": "9e6ead3b29e6983f",
   "lastOpenFiles": [
+    "無題のファイル.base",
+    "03_技術仕様/ユーティリティ.md",
+    "03_技術仕様/データスキーマ.md",
+    "03_技術仕様/コンポーネント.md",
+    "03_技術仕様/ゲームロジック.md",
+    "02_ゲーム仕様/システム仕様/輸送システム.md",
+    "02_ゲーム仕様/システム仕様/天候システム.md",
+    "02_ゲーム仕様/システム仕様/地形システム.md",
+    "02_ゲーム仕様/システム仕様/戦闘システム.md",
+    "02_ゲーム仕様/システム仕様/工兵システム.md",
+    "02_ゲーム仕様/システム仕様/経済システム.md",
+    "01_プレイヤーガイド/遊び方.md",
     "03_技術仕様/ロギングシステム.md",
     "graph/unit_effectiveness.pu",
     "graph/team_relationship.pu",
@@ -175,8 +205,6 @@
     "pu/team_relationship.pu",
     "pu/game_flow.pu",
     "pu",
-    "02_ゲーム仕様/システム仕様/戦闘システム.md",
-    "02_ゲーム仕様/システム仕様/経済システム.md",
     "99_開発資料/開発計画・実装リスト.md",
     "99_開発資料/画像・動画素材管理システム.md",
     "99_開発資料/UI改善計画.md",
@@ -191,17 +219,7 @@
     "docs/Commander/Screens/BattleScreen.md",
     "docs/Commander/Screens/ScenarioSelectScreen.md",
     "docs/Commander/Screens/ResultScreen.md",
-    "docs/Commander/Screens/BattlePrepScreen.md",
-    "docs/Commander/Game-Logic/useGameLogic.md",
     "docs/Commander/Game-Logic/constants.md.backup",
-    "docs/Commander/Game-Logic/constants.md",
-    "docs/Commander/Game-Logic/README.md",
-    "docs/Commander/Core-Components/WeaponSelectorModal.md",
-    "docs/Commander/Core-Components/WeaponInfoPanel.md",
-    "docs/Commander/Core-Components/UnitSelectionModal.md",
-    "docs/Commander/Core-Components/VictoryModal.md",
-    "docs/Commander/Core-Components/TurnChangeModal.md",
-    "docs/Commander/Core-Components/TransportActionConfirmModal.md",
     "無題のファイル.canvas"
   ]
 }
