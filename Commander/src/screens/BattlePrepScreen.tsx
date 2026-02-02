@@ -162,6 +162,7 @@ interface UnitSelectionPageProps {
   selectedUnits: Unit[];
   handleUnitSelect: (unit: Unit) => void;
   resetSelection: () => void;
+  selectAllUnits: () => void;
   proceedToDeployment: () => void;
   onBack: () => void;
   deploymentLimit: number;
@@ -172,6 +173,7 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
   selectedUnits,
   handleUnitSelect,
   resetSelection,
+  selectAllUnits,
   proceedToDeployment,
   onBack,
   deploymentLimit
@@ -244,6 +246,9 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
         </button>
         <button className="menu-button" onClick={resetSelection} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: 'rgba(241, 196, 15, 0.3)', border: '3px solid #f1c40f', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
           ユニットの選択リセット
+        </button>
+        <button className="menu-button" onClick={selectAllUnits} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: 'rgba(155, 89, 182, 0.3)', border: '3px solid #9b59b6', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
+          ユニットを全選択
         </button>
         <button className="menu-button" onClick={proceedToDeployment} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: selectedUnits.length > 0 ? 'rgba(39, 174, 96, 0.4)' : 'rgba(127, 140, 141, 0.3)', border: selectedUnits.length > 0 ? '3px solid #27ae60' : '3px solid #7f8c8d', borderRadius: '10px', minWidth: '220px', cursor: selectedUnits.length > 0 ? 'pointer' : 'not-allowed', opacity: selectedUnits.length > 0 ? 1 : 0.6 }}>
           配置フェーズへ進む
@@ -325,6 +330,11 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     setSelectedUnits([]);
   };
 
+  const selectAllUnits = () => {
+    const unitsToSelect = availableUnits.slice(0, deploymentLimit);
+    setSelectedUnits(unitsToSelect);
+  };
+
   const proceedToDeployment = () => {
     if (selectedUnits.length === 0) {
       alert('Please select at least one unit before proceeding!');
@@ -381,6 +391,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           selectedUnits={selectedUnits}
           handleUnitSelect={handleUnitSelect}
           resetSelection={resetSelection}
+          selectAllUnits={selectAllUnits}
           proceedToDeployment={proceedToDeployment}
           onBack={() => setPage(1)}
           deploymentLimit={deploymentLimit}

@@ -1,5 +1,5 @@
 ---
-name: ummary_user_requirement
+name: summary_user_requirement
 description: Use this agent when the user struggles to clearly articulate their needs, requirements, or ideas and needs help transforming vague thoughts into precise, actionable specifications. Examples: <example>Context: User has a rough idea for a project but can't explain it clearly. user: 'I want to make something that helps people... you know, with their daily stuff, but I'm not sure how to explain it' assistant: 'I'll use the requirement-verbalizer agent to help you articulate your vision clearly' <commentary>The user has difficulty expressing their idea, so use the requirement-verbalizer agent to help them clarify and document their requirements.</commentary></example> <example>Context: User knows they need a solution but can't define the problem properly. user: 'My workflow is broken but I don't know how to describe what's wrong' assistant: 'Let me use the requirement-verbalizer agent to help you identify and articulate the specific issues with your workflow' <commentary>The user recognizes a problem but lacks the ability to verbalize it clearly, making this a perfect case for the requirement-verbalizer agent.</commentary></example>
 color: green
 ---
