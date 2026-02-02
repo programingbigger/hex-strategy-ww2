@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState, Coordinate } from '../types';
 import GameBoard from '../components/game/GameBoard';
 import { coordToString, calculateDeployableTilesFromCapitals, isCoordinateDeployable, getInitialCameraPosition } from '../utils/map';
@@ -30,12 +30,14 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   // Camera hook for automatic positioning and zoom controls
   const { camera, zoomCamera, resetCamera, setCameraPosition } = useCamera();
 
-  // Automatically position camera using initial camera position from map or order=1 fallback
-  useEffect(() => {
+  // Track if initial camera position has been set
+  const initialCameraSetRef = useRef(false);
+
+  // Function to move camera to the initial position
+  const moveCameraToInitialPosition = useCallback(() => {
     const focusCoordinate = getInitialCameraPosition(gameState);
     if (focusCoordinate) {
       // Convert hex coordinates to world coordinates for camera positioning
-      // Hex coordinates use a different coordinate system, so we need to convert them
       const worldX = focusCoordinate.x * 86.6; // Approximate hex width conversion
       const worldY = focusCoordinate.y * 75;   // Approximate hex height conversion
       setCameraPosition(worldX, worldY);
@@ -44,6 +46,30 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
       console.warn('⚠️ No initial camera position found');
     }
   }, [gameState, setCameraPosition]);
+
+  // Automatically position camera only on initial mount
+  useEffect(() => {
+    if (!initialCameraSetRef.current) {
+      moveCameraToInitialPosition();
+      initialCameraSetRef.current = true;
+    }
+  }, [moveCameraToInitialPosition]);
+
+  // Keyboard shortcut: Command/Ctrl + H to return camera to initial position
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Check for Command+H (Mac) or Ctrl+H (Windows/Linux)
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'h') {
+        event.preventDefault(); // Prevent browser default behavior
+        moveCameraToInitialPosition();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [moveCameraToInitialPosition]);
 
   const selectedUnits = gameState.battlePrep?.selectedUnits || [];
   
@@ -519,6 +545,41 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
         minZoom={0.5}
         maxZoom={3}
       />
+
+      {/* Keyboard Shortcut Help */}
+      <div style={{
+        position: 'fixed',
+        bottom: '20px',
+        left: '20px',
+        padding: '10px 15px',
+        background: 'rgba(52, 73, 94, 0.9)',
+        borderRadius: '8px',
+        border: '1px solid #3498db',
+        fontSize: '14px',
+        color: '#ecf0f1',
+        zIndex: 100,
+        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+      }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '5px', color: '#3498db' }}>ショートカット</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <kbd style={{
+            padding: '2px 6px',
+            background: '#2c3e50',
+            borderRadius: '4px',
+            border: '1px solid #7f8c8d',
+            fontSize: '12px'
+          }}>⌘/Ctrl</kbd>
+          <span>+</span>
+          <kbd style={{
+            padding: '2px 6px',
+            background: '#2c3e50',
+            borderRadius: '4px',
+            border: '1px solid #7f8c8d',
+            fontSize: '12px'
+          }}>H</kbd>
+          <span style={{ marginLeft: '5px' }}>初期位置に戻る</span>
+        </div>
+      </div>
     </div>
   );
 };
