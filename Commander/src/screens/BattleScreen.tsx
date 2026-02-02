@@ -70,6 +70,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     cancelEngineerAction,
     engineerActionState,
     cancelEngineerSelectionMode,
+    startEngineerAction,
     
     // Transport action system
     transportActionState,
@@ -350,6 +351,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           boardLayout={boardLayout}
           units={units}
           onStartTransportAction={startTransportAction}
+          onStartEngineerAction={startEngineerAction}
           currentFunds={armyFunds}
           activeTeam={activeTeam}
           onShowUnitDetails={handleShowUnitDetails}

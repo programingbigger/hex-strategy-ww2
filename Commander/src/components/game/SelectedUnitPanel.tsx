@@ -21,6 +21,8 @@ interface SelectedUnitPanelProps {
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onStartTransportAction?: () => void;
+  // Add engineer action callback for bridge building target selection
+  onStartEngineerAction?: (actionType: 'build_bridge') => void;
   // Add fund information for engineer action costs
   currentFunds?: { [team: string]: number };
   activeTeam?: Team;
@@ -38,6 +40,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   currentFunds,
   activeTeam,
   onStartTransportAction,
+  onStartEngineerAction,
   onShowUnitDetails
 }) => {
   // Helper function to check if terrain is capturable
@@ -323,7 +326,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                   <button onClick={() => onAction('enhance_city')} disabled={!enhancedCanEnhanceCity} className="military-button" title={enhancedCanEnhanceCity ? '' : getEngineerActionInfo('enhance_city').validation.errors.join(', ')}>
                     {getEngineerActionInfo('enhance_city').buttonLabel}
                   </button>
-                  <button onClick={() => onAction('build_bridge')} disabled={!enhancedCanBuildBridge} className="military-button" title={enhancedCanBuildBridge ? '' : getEngineerActionInfo('build_bridge').validation.errors.join(', ')}>
+                  <button onClick={() => onStartEngineerAction ? onStartEngineerAction('build_bridge') : onAction('build_bridge')} disabled={!enhancedCanBuildBridge} className="military-button" title={enhancedCanBuildBridge ? '' : getEngineerActionInfo('build_bridge').validation.errors.join(', ')}>
                     {getEngineerActionInfo('build_bridge').buttonLabel}
                   </button>
                   <button onClick={() => onAction('build_fortress')} disabled={!enhancedCanBuildFortress} className="military-button" title={enhancedCanBuildFortress ? '' : getEngineerActionInfo('build_fortress').validation.errors.join(', ')}>
