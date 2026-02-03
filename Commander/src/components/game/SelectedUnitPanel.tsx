@@ -1,217 +1,46 @@
 import React from 'react';
-import { Unit, Tile, Team } from '../../types';
-import { getNeighbors } from '../../utils/map';
-import { coordToString } from '../../utils/map';
-import { armyManager } from '../../data/armyLoader';
+import { Unit } from '../../types';
 import { getUnitNameById } from '../../utils/unitNames';
-import { 
-  EngineerActionType, 
-  getEngineerActionCost, 
-  getMaterialCostForAction,
-  validateEngineerAction,
-  DEFAULT_ENGINEER_COST_CONFIG 
-} from '../../utils/engineerActionCostManager';
 import '../../styles/military-museum-theme.css';
 
 interface SelectedUnitPanelProps {
   className?: string;
   selectedUnit: Unit | null;
-  selectedUnitTile: Tile | null;
-  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload', materialAmount?: number) => void;
-  boardLayout: Map<string, Tile>;
   units: Unit[];
-  onStartTransportAction?: () => void;
-  // Add engineer action callback for bridge building target selection
-  onStartEngineerAction?: (actionType: 'build_bridge') => void;
-  // Add fund information for engineer action costs
-  currentFunds?: { [team: string]: number };
-  activeTeam?: Team;
-  // Add details dialog callback
   onShowUnitDetails?: (unit: Unit) => void;
 }
 
 const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
   className,
   selectedUnit,
-  selectedUnitTile,
-  onAction,
-  boardLayout,
   units,
-  currentFunds,
-  activeTeam,
-  onStartTransportAction,
-  onStartEngineerAction,
   onShowUnitDetails
 }) => {
-  // Helper function to check if terrain is capturable
-  const isCapturableTerrain = (terrain: string): boolean => {
-    return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
-  };
-
-  // Action conditions
-  const canCapture = selectedUnit?.unitClass === 'Infantry' && 
-                    selectedUnitTile && isCapturableTerrain(selectedUnitTile.terrain) &&
-                    selectedUnitTile?.owner !== selectedUnit.team;
-  
-  const canUndo = selectedUnit?.moved && !selectedUnit?.attacked;
-  // Engineer action conditions
-  const isEngineer = selectedUnit?.type === 'Engineer';
-  const materialWeapon = selectedUnit?.weapons?.find(w => w.type === '資材');
-  const availableMaterials = materialWeapon?.ammunition || 0;
-  
-  const canEnhanceCity = isEngineer && selectedUnitTile && 
-    (selectedUnitTile.terrain === 'City' || selectedUnitTile.terrain === 'Capital' || 
-     selectedUnitTile.terrain === 'Airport' || selectedUnitTile.terrain === 'Port') &&
-    selectedUnitTile.owner === selectedUnit?.team && availableMaterials > 0;
-    
-  // Helper function to check if there's a specific terrain within 1 hex
-  const hasTerrainNearby = (terrainType: string): boolean => {
-    if (!selectedUnit || !boardLayout) return false;
-    
-    // Check current tile first
-    if (selectedUnitTile?.terrain === terrainType) return true;
-    
-    // Check neighboring tiles
-    const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
-    return neighbors.some(coord => {
-      const tile = boardLayout.get(coordToString(coord));
-      return tile?.terrain === terrainType;
-    });
-  };
-
-  // Helper function to check for nearby transport units
-  const hasTransportNearby = (): boolean => {
-    if (!selectedUnit || !units) return false;
-    
-    // Check current position for transport unit
-    const currentPositionTransport = units.find(unit => 
-      unit.type === 'Transport' && 
-      unit.team === selectedUnit.team &&
-      unit.x === selectedUnit.x && 
-      unit.y === selectedUnit.y &&
-      unit.id !== selectedUnit.id
-    );
-    if (currentPositionTransport) return true;
-    
-    // Check neighboring positions for transport units
-    const neighbors = getNeighbors({ x: selectedUnit.x, y: selectedUnit.y });
-    return neighbors.some(coord => {
-      return units.some(unit => 
-        unit.type === 'Transport' && 
-        unit.team === selectedUnit.team &&
-        unit.x === coord.x && 
-        unit.y === coord.y
-      );
-    });
-  };
-
-  const canBuildBridge = isEngineer && hasTerrainNearby('River') && availableMaterials >= 2;
-    
-  const canBuildFortress = isEngineer && selectedUnitTile && 
-    selectedUnitTile.terrain === 'Plains' && availableMaterials >= 1;
-  
-  const canDestroyFortress = isEngineer && selectedUnitTile && 
-    selectedUnitTile.terrain === 'Fortress' && availableMaterials >= 2;
-    
-
-  // Engineer action cost helpers
-  const getEngineerActionInfo = (actionType: EngineerActionType) => {
-    if (!selectedUnit || !currentFunds) {
-      return {
-        fundsCost: 0,
-        materialCost: 0,
-        canAfford: false,
-        buttonLabel: `${actionType} (0資材/0資金)`,
-        validation: { errors: [], canPerform: false, fundsCost: 0, materialCost: 0 }
-      };
-    }
-
-    const fundsCost = getEngineerActionCost(actionType, DEFAULT_ENGINEER_COST_CONFIG);
-    const materialCost = getMaterialCostForAction(actionType);
-    const validation = validateEngineerAction(actionType, selectedUnit, currentFunds, DEFAULT_ENGINEER_COST_CONFIG);
-
-    const actionLabels: { [key in EngineerActionType]: string } = {
-      enhance_city: '🏗️ 増築',
-      build_bridge: '🌉 架橋',
-      build_fortress: '🏰 要塞化',
-      destroy_fortress: '💥 要塞無力化'
-    };
-
-    return {
-      fundsCost,
-      materialCost,
-      canAfford: validation.canPerform,
-      buttonLabel: `${actionLabels[actionType]} (${materialCost}資材/${fundsCost}資金)`,
-      validation
-    };
-  };
-
-  // Enhanced engineer action availability checks
-  const enhancedCanEnhanceCity = canEnhanceCity && getEngineerActionInfo('enhance_city').canAfford;
-  const enhancedCanBuildBridge = canBuildBridge && getEngineerActionInfo('build_bridge').canAfford;
-  const enhancedCanBuildFortress = canBuildFortress && getEngineerActionInfo('build_fortress').canAfford;
-  const enhancedCanDestroyFortress = canDestroyFortress && getEngineerActionInfo('destroy_fortress').canAfford;
-
   // Helper function to get transport capacity info
-  const getTransportCapacity = (): { capacity: number; unitCapacityCosts: Record<string, number> } | null => {
+  const getTransportCapacity = (): { capacity: number } | null => {
     if (!selectedUnit || selectedUnit.type !== 'Transport') return null;
 
     try {
-      const templates = armyManager.getUnitTemplatesBy(selectedUnit.team as 'Blue' | 'Red', '陸');
-      const template = templates.find(t => t.type === selectedUnit.type);
+      const armyData = require('../../data/armyOrganization.json');
+      const factionData = armyData.factions[selectedUnit.team];
+      const supportCategory = factionData?.branches?.['陸']?.unitCategories?.support;
+      const transportTemplate = supportCategory?.units?.find((u: any) => u.type === 'Transport');
 
-      if (template) {
-        // Access the transport info from the JSON data directly
-        const armyData = require('../../data/armyOrganization.json');
-        const factionData = armyData.factions[selectedUnit.team];
-        const supportCategory = factionData?.branches?.['陸']?.unitCategories?.support;
-        const transportTemplate = supportCategory?.units?.find((u: any) => u.type === 'Transport');
-        
-        if (transportTemplate?.transport) {
-          return {
-            capacity: transportTemplate.transport.capacity,
-            unitCapacityCosts: transportTemplate.transport.unitCapacityCosts
-          };
-        }
+      if (transportTemplate?.transport) {
+        return { capacity: transportTemplate.transport.capacity };
       }
     } catch (error) {
       console.warn('Failed to get transport capacity info:', error);
     }
-    
-    return { capacity: 2, unitCapacityCosts: { infantry: 1, antitank: 1, artillery: 2 } }; // fallback
+
+    return { capacity: 2 }; // fallback
   };
 
   // Helper function to get loaded units in transport
   const getLoadedUnits = (): Unit[] => {
     if (!selectedUnit || selectedUnit.type !== 'Transport' || !units) return [];
-    
-    return units.filter(unit => 
-      unit.loaded && 
-      unit.transportId === selectedUnit.id
-    );
+    return units.filter(unit => unit.loaded && unit.transportId === selectedUnit.id);
   };
-
-  // Helper function to check for loaded units in transport
-  const hasLoadedUnits = (): boolean => {
-    return getLoadedUnits().length > 0;
-  };
-
-
-  // Helper function to check if unit can be loaded into transport
-  const canUnitBeLoaded = (): boolean => {
-    if (!selectedUnit) return false;
-    
-    // Check if unit type can be loaded (Infantry, AntiTank, Artillery)
-    const loadableUnitTypes = ['Infantry', 'AntiTank', 'Artillery'];
-    return loadableUnitTypes.includes(selectedUnit.type);
-  };
-
-  // Transport loading conditions - for Infantry, AntiTank, and Artillery units
-  const canLoad = canUnitBeLoaded() && hasTransportNearby();
-
-  // Transport unloading conditions - only for Transport units with loaded units
-  const isTransport = selectedUnit?.type === 'Transport';
-  const canUnload = isTransport && hasLoadedUnits();
 
   // Progress bar component
   const ProgressBar: React.FC<{ current: number; max: number; color: string }> = ({ current, max, color }) => {
@@ -252,7 +81,7 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
     <div className={className}>
       {/* Header */}
       <div className="panel-header">
-        <h3 className="panel-title">アクションパネル</h3>
+        <h3 className="panel-title">ユニット情報</h3>
       </div>
 
       {/* SELECTED UNIT Section */}
@@ -307,37 +136,8 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               onClick={handleDetailsClick}
               disabled={!selectedUnit}
             >
-              📋 詳細スペック
+              詳細スペック
             </button>
-          </div>
-
-          {/* アクションセクション */}
-          <div className="panel-section">
-            <h4 className="section-title">アクション</h4>
-            <div className="actions-grid">
-              <button onClick={() => onAction('wait')} className="military-button">待機</button>
-              <button onClick={() => onAction('undo')} disabled={!canUndo} className="military-button">待機解除</button>
-              {canCapture && <button onClick={() => onAction('capture')} className="military-button">占領</button>}
-              {canLoad && <button onClick={() => onAction('load')} className="military-button">📦 搭載</button>}
-              {canUnload && <button onClick={() => onStartTransportAction ? onStartTransportAction() : onAction('unload')} className="military-button">📤 降車</button>}
-              
-              {isEngineer && (
-                <>
-                  <button onClick={() => onAction('enhance_city')} disabled={!enhancedCanEnhanceCity} className="military-button" title={enhancedCanEnhanceCity ? '' : getEngineerActionInfo('enhance_city').validation.errors.join(', ')}>
-                    {getEngineerActionInfo('enhance_city').buttonLabel}
-                  </button>
-                  <button onClick={() => onStartEngineerAction ? onStartEngineerAction('build_bridge') : onAction('build_bridge')} disabled={!enhancedCanBuildBridge} className="military-button" title={enhancedCanBuildBridge ? '' : getEngineerActionInfo('build_bridge').validation.errors.join(', ')}>
-                    {getEngineerActionInfo('build_bridge').buttonLabel}
-                  </button>
-                  <button onClick={() => onAction('build_fortress')} disabled={!enhancedCanBuildFortress} className="military-button" title={enhancedCanBuildFortress ? '' : getEngineerActionInfo('build_fortress').validation.errors.join(', ')}>
-                    {getEngineerActionInfo('build_fortress').buttonLabel}
-                  </button>
-                  <button onClick={() => onAction('destroy_fortress')} disabled={!enhancedCanDestroyFortress} className="military-button" title={enhancedCanDestroyFortress ? '' : getEngineerActionInfo('destroy_fortress').validation.errors.join(', ')}>
-                    {getEngineerActionInfo('destroy_fortress').buttonLabel}
-                  </button>
-                </>
-              )}
-            </div>
           </div>
         </div>
       ) : (

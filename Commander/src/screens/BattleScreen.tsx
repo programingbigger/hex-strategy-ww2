@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { GameScreen, GameState, MapData, Unit } from '../types';
 import { useGameLogic } from '../hooks/useGameLogic';
 import { useCamera } from '../contexts/CameraContext';
@@ -6,6 +6,7 @@ import { createUnit } from '../data/units';
 import GameBoard from '../components/game/GameBoard';
 import Header from '../components/game/Header';
 import SelectedUnitPanel from '../components/game/SelectedUnitPanel';
+import ActionPopup from '../components/game/ActionPopup';
 import InformationPanel from '../components/game/InformationPanel';
 import UnitDetailsDialog from '../components/game/UnitDetailsDialog';
 import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
@@ -105,6 +106,22 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
 
   // Deployment limits state
   const [deploymentLimits, setDeploymentLimits] = useState<{Blue: number; Red: number}>({Blue: 10, Red: 10});
+
+  // Game board container ref and bounding rect (for ActionPopup positioning)
+  const gameBoardRef = useRef<HTMLDivElement>(null);
+  const [boardRect, setBoardRect] = useState<DOMRect | null>(null);
+
+  useEffect(() => {
+    const el = gameBoardRef.current;
+    if (!el) return;
+
+    const updateRect = () => setBoardRect(el.getBoundingClientRect());
+    updateRect();
+
+    const observer = new ResizeObserver(updateRect);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   // Tutorial turn limit state
   const [turnLimit, setTurnLimit] = useState<number | undefined>(undefined);
@@ -346,19 +363,12 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         <SelectedUnitPanel
           className="military-crt-monitor"
           selectedUnit={selectedUnit}
-          selectedUnitTile={selectedUnitTile}
-          onAction={handleAction}
-          boardLayout={boardLayout}
           units={units}
-          onStartTransportAction={startTransportAction}
-          onStartEngineerAction={startEngineerAction}
-          currentFunds={armyFunds}
-          activeTeam={activeTeam}
           onShowUnitDetails={handleShowUnitDetails}
         />
       </div>
 
-      <div className="game-board-area">
+      <div className="game-board-area" ref={gameBoardRef}>
         <GameBoard
           boardLayout={boardLayout}
           units={units}
@@ -371,6 +381,19 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexHover={setHoveredHex}
           onHexLeave={() => setHoveredHex(null)}
           onUnitDoubleClick={handleShowUnitDetails}
+        />
+        <ActionPopup
+          selectedUnit={selectedUnit}
+          selectedUnitTile={selectedUnitTile}
+          onAction={handleAction}
+          boardLayout={boardLayout}
+          units={units}
+          onStartTransportAction={startTransportAction}
+          onStartEngineerAction={startEngineerAction}
+          currentFunds={armyFunds}
+          activeTeam={activeTeam}
+          camera={camera}
+          boardRect={boardRect}
         />
       </div>
 

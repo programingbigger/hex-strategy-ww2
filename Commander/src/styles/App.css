@@ -14,7 +14,7 @@
 }
 
 .header-area { grid-area: header; }
-.game-board-area { grid-area: game-board; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+.game-board-area { grid-area: game-board; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative; }
 .left-panel-area { grid-area: left-panel; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;}
 .right-panel-area { grid-area: right-panel; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;}
 .battle-log-area {

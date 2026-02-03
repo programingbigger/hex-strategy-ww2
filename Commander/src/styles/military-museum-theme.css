@@ -1887,3 +1887,68 @@
   text-overflow: ellipsis;
 }
 
+/* ===== ACTION POPUP (ユニット隣接アクションポップアップ) ===== */
+.action-popup {
+  position: absolute;
+  z-index: 100;
+  background: var(--earth-olive-dark);
+  border: 3px solid var(--earth-khaki);
+  border-radius: 6px;
+  box-shadow:
+    0 4px 16px var(--earth-shadow),
+    inset 0 0 12px rgba(42, 37, 32, 0.4);
+  pointer-events: auto;
+}
+
+/* CRT scanline overlay (consistent with .military-crt-monitor) */
+.action-popup::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--earth-crt-scanline) 2px,
+    var(--earth-crt-scanline) 4px
+  );
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+.action-popup-header {
+  padding: 6px 10px;
+  border-bottom: 2px solid var(--earth-khaki);
+  background: rgba(0, 0, 0, 0.25);
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.action-popup-header span {
+  font-family: var(--font-stencil);
+  font-size: 0.9rem;
+  color: var(--earth-warning);
+  text-shadow: 0 0 4px var(--earth-glow);
+  letter-spacing: 1px;
+}
+
+.action-popup-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.action-popup-btn {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 0.82rem;
+  text-transform: none;
+}
+
