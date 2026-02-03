@@ -87,7 +87,12 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     productionState,
     handleUnitProduction,
     handleProductionClose,
-    
+
+    // Movement action
+    movementMode,
+    startMovementAction,
+    cancelMovementMode,
+
   } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
 
   // Camera controls for zoom functionality
@@ -150,14 +155,17 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       } else if (transportActionState.mode !== 'none') {
         // Cancel transport selection mode
         cancelTransportSelectionMode();
+      } else if (movementMode !== 'none') {
+        // Cancel movement selection mode
+        cancelMovementMode();
       }
     }
-    
+
     // Any key to close turn change modal
     if (isTurnChangeModalOpen) {
       setIsTurnChangeModalOpen(false);
     }
-  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode, transportActionState.mode, cancelTransportSelectionMode]);
+  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode, transportActionState.mode, cancelTransportSelectionMode, movementMode, cancelMovementMode]);
 
   // Add keyboard event listeners
   useEffect(() => {
@@ -198,8 +206,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   // Handle end turn confirmation
   const handleEndTurnConfirm = useCallback(() => {
     setIsEndTurnConfirmOpen(false);
+    cancelMovementMode();
     handleEndTurn();
-  }, [handleEndTurn]);
+  }, [handleEndTurn, cancelMovementMode]);
 
   const handleEndTurnCancel = useCallback(() => {
     setIsEndTurnConfirmOpen(false);
@@ -382,19 +391,22 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexLeave={() => setHoveredHex(null)}
           onUnitDoubleClick={handleShowUnitDetails}
         />
-        <ActionPopup
-          selectedUnit={selectedUnit}
-          selectedUnitTile={selectedUnitTile}
-          onAction={handleAction}
-          boardLayout={boardLayout}
-          units={units}
-          onStartTransportAction={startTransportAction}
-          onStartEngineerAction={startEngineerAction}
-          currentFunds={armyFunds}
-          activeTeam={activeTeam}
-          camera={camera}
-          boardRect={boardRect}
-        />
+        {movementMode !== 'selecting_destination' && (
+          <ActionPopup
+            selectedUnit={selectedUnit}
+            selectedUnitTile={selectedUnitTile}
+            onAction={handleAction}
+            boardLayout={boardLayout}
+            units={units}
+            onStartTransportAction={startTransportAction}
+            onStartEngineerAction={startEngineerAction}
+            onStartMovementAction={startMovementAction}
+            currentFunds={armyFunds}
+            activeTeam={activeTeam}
+            camera={camera}
+            boardRect={boardRect}
+          />
+        )}
       </div>
 
       <div className="right-panel-area">

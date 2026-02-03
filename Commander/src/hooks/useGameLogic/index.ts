@@ -183,18 +183,21 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
 
   const reachableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.moved) return [];
-    
+
     if (uiStates.engineerActionState.mode !== 'none') return [];
-    
+
+    // 移動モード未開始の場合は移動範囲を表示しない
+    if (uiStates.movementMode !== 'selecting_destination') return [];
+
     return calculateReachableTiles(
-      { x: selectedUnit.x, y: selectedUnit.y }, 
-      selectedUnit.movement, 
-      selectedUnit.fuel, 
-      gameState.boardLayout, 
-      gameState.units, 
+      { x: selectedUnit.x, y: selectedUnit.y },
+      selectedUnit.movement,
+      selectedUnit.fuel,
+      gameState.boardLayout,
+      gameState.units,
       gameState.activeTeam
     );
-  }, [selectedUnit, gameState.boardLayout, gameState.units, gameState.activeTeam, uiStates.engineerActionState.mode]);
+  }, [selectedUnit, gameState.boardLayout, gameState.units, gameState.activeTeam, uiStates.engineerActionState.mode, uiStates.movementMode]);
 
   const attackableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.attacked) return [];
@@ -259,6 +262,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
 
     if (selectedUnit) {
       if (unitOnHex && unitOnHex.id === selectedUnit.id) {
+        uiStates.setMovementMode('none');
         gameState.setSelectedUnitId(null);
         return;
       }
@@ -375,9 +379,13 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
         });
         
         gameState.setUnits(gameState.units.map(u => u.id === selectedUnit.id ? updatedUnit : u));
+        // 移動完了後はActionPopupを再表示（移動モードリセット）
+        uiStates.setMovementMode('none');
         return;
       }
 
+      // 他の場所クリック: アクションパネルを消去し移動モードもリセット
+      uiStates.setMovementMode('none');
       gameState.setSelectedUnitId(null);
     } else {
       if (unitOnHex && unitOnHex.team === gameState.activeTeam && !unitOnHex.moved && !unitOnHex.attacked) {
@@ -538,6 +546,11 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     handleUnitProduction: armyManagement.handleUnitProduction,
     handleProductionClose: armyManagement.handleProductionClose,
     
+    // Movement action
+    movementMode: uiStates.movementMode,
+    startMovementAction: () => uiStates.setMovementMode('selecting_destination'),
+    cancelMovementMode: () => uiStates.setMovementMode('none'),
+
     // Main interaction handler
     handleHexClick,
     

@@ -18,6 +18,8 @@ interface ActionPopupProps {
   units: Unit[];
   onStartTransportAction?: () => void;
   onStartEngineerAction?: (actionType: 'build_bridge') => void;
+  /** 移動モードを開始するコールバック */
+  onStartMovementAction?: () => void;
   currentFunds?: { [team: string]: number };
   activeTeam?: Team;
   /** Camera state from CameraContext: { x, y, zoom } */
@@ -34,6 +36,7 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   units,
   onStartTransportAction,
   onStartEngineerAction,
+  onStartMovementAction,
   currentFunds,
   camera,
   boardRect
@@ -179,8 +182,8 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   const unitScreenX = fracX * boardW; // px from left edge of board container
   const unitScreenY = fracY * boardH; // px from top edge of board container
 
-  // Popup width is approximately 140px. Place it to the left of the unit.
-  const POPUP_WIDTH = 140;
+  // Popup width is approximately 150px. Place it to the left of the unit.
+  const POPUP_WIDTH = 150;
   const OFFSET_LEFT = 24; // gap between unit and popup right edge
   const popupX = unitScreenX - POPUP_WIDTH - OFFSET_LEFT;
   const popupY = unitScreenY - 40; // vertically center-ish relative to unit
@@ -201,6 +204,13 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
         <span>アクション</span>
       </div>
       <div className="action-popup-body">
+        <button
+          className="military-button action-popup-btn"
+          onClick={() => onStartMovementAction && onStartMovementAction()}
+          disabled={selectedUnit.moved}
+        >
+          移動
+        </button>
         <button
           className="military-button action-popup-btn"
           onClick={() => onAction('wait')}

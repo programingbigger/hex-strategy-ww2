@@ -48,7 +48,8 @@ export interface UIStatesHook {
     materialCost: number;
   };
   battleLog: BattleLogState;
-  
+  movementMode: 'none' | 'selecting_destination';
+
   setHoveredHex: (hex: Coordinate | null) => void;
   setBattleReport: (report: BattleReport | null | ((prev: BattleReport | null) => BattleReport | null)) => void;
   setWeaponSelectionState: (state: { isOpen: boolean; attacker: Unit | null; target: Unit | null }) => void;
@@ -58,6 +59,7 @@ export interface UIStatesHook {
   setTransportConfirmState: (state: { isOpen: boolean; actionType: 'unload' | null; targetCoord: Coordinate | null; targetTile: Tile | null; loadedUnit: Unit | null }) => void;
   setEngineerConfirmState: (state: { isOpen: boolean; actionType: 'build_bridge' | null; targetCoord: Coordinate | null; targetTile: Tile | null; materialCost: number }) => void;
   setBattleLog: (log: BattleLogState | ((prev: BattleLogState) => BattleLogState)) => void;
+  setMovementMode: (mode: 'none' | 'selecting_destination') => void;
 }
 
 export const useUIStates = (): UIStatesHook => {
@@ -117,6 +119,8 @@ export const useUIStates = (): UIStatesHook => {
     autoScroll: true
   });
 
+  const [movementMode, setMovementMode] = useState<'none' | 'selecting_destination'>('none');
+
   return {
     hoveredHex,
     battleReport,
@@ -137,5 +141,7 @@ export const useUIStates = (): UIStatesHook => {
     setTransportConfirmState,
     setEngineerConfirmState,
     setBattleLog,
+    movementMode,
+    setMovementMode,
   };
 };
