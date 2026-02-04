@@ -1,6 +1,6 @@
 import React from 'react';
 import { Unit, Tile, Team } from '../../types';
-import { getNeighbors, coordToString, axialToPixel } from '../../utils/map';
+import { getNeighbors, coordToString, axialToPixel, getDistance } from '../../utils/map';
 import {
   EngineerActionType,
   getEngineerActionCost,
@@ -194,12 +194,39 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   // --- Attack availability check ---
   const canAttack = (() => {
     if (selectedUnit.attacked) return false;
-    // 武器システム: いずれかの武器が射程 > 0 であればOK
+
+    // 射程範囲を計算
+    let attackRangeMin = 1;
+    let attackRangeMax = 0;
+
     if (selectedUnit.weapons && selectedUnit.weapons.length > 0) {
-      return selectedUnit.weapons.some(w => w.type !== '資材' && w.range && w.range.max > 0);
+      // 武器システム: 最大射程を取得
+      for (const w of selectedUnit.weapons) {
+        if (w.type !== '資材' && w.range && w.range.max > 0) {
+          if (w.range.max > attackRangeMax) {
+            attackRangeMax = w.range.max;
+          }
+          if (w.range.min < attackRangeMin) {
+            attackRangeMin = w.range.min;
+          }
+        }
+      }
+    } else if (selectedUnit.attackRange) {
+      // レガシー
+      attackRangeMin = selectedUnit.attackRange.min;
+      attackRangeMax = selectedUnit.attackRange.max;
     }
-    // レガシー: attackRange.max > 0
-    return selectedUnit.attackRange && selectedUnit.attackRange.max > 0;
+
+    if (attackRangeMax === 0) return false;
+
+    // 射程範囲内に敵がいるかチェック
+    const hasEnemyInRange = units.some(u => {
+      if (u.team === selectedUnit.team) return false;
+      const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, { x: u.x, y: u.y });
+      return distance >= attackRangeMin && distance <= attackRangeMax;
+    });
+
+    return hasEnemyInRange;
   })();
 
   // --- Determine if the unit has already acted (moved AND attacked) ---

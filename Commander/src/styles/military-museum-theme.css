@@ -1943,6 +1943,27 @@
   gap: 6px;
   position: relative;
   z-index: 1;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* アクションパネルのスクロールバースタイル */
+.action-popup-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.action-popup-body::-webkit-scrollbar-track {
+  background: var(--earth-olive-dark);
+  border-radius: 4px;
+}
+
+.action-popup-body::-webkit-scrollbar-thumb {
+  background: var(--earth-khaki);
+  border-radius: 4px;
+}
+
+.action-popup-body::-webkit-scrollbar-thumb:hover {
+  background: var(--panel-highlight);
 }
 
 .action-popup-btn {

@@ -189,6 +189,16 @@ export const TERRAIN_STATS: { [key: string]: TerrainStats } = {
     defenseBonus: 2,
     attackBonus: 0,
     movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
+  },
+  FrozenSea: {
+    defenseBonus: -1,
+    attackBonus: -1,
+    movementCost: { Infantry: 2, Vehicle: 2, default: 2 }
+  },
+  FrozenRiver: {
+    defenseBonus: -1,
+    attackBonus: 0,
+    movementCost: { Infantry: 1, Vehicle: 1, default: 1 }
   }
 };
 

@@ -180,6 +180,11 @@ export function calculateReachableTiles(
       // Allow movement through friendly units or empty tiles
 
       const terrainStats = TERRAIN_STATS[tile.terrain];
+      // フォールバック: 未定義の地形タイプの場合はスキップ
+      if (!terrainStats) {
+        console.warn(`Unknown terrain type in calculateReachableTiles: ${tile.terrain}`);
+        continue;
+      }
       let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
 
       // Special movement costs for Transport units
@@ -299,8 +304,13 @@ export function findPath(
       if (unitOnTile) continue;
 
       const terrainStats = TERRAIN_STATS[tile.terrain];
+      // フォールバック: 未定義の地形タイプの場合はスキップ
+      if (!terrainStats) {
+        console.warn(`Unknown terrain type in findPath: ${tile.terrain}`);
+        continue;
+      }
       let moveCost = terrainStats.movementCost[unitAtStart.type] ?? terrainStats.movementCost.default;
-      
+
       // Special movement costs for Transport units
       if (unitAtStart.type === 'Transport') {
         switch (tile.terrain) {
