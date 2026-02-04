@@ -384,6 +384,14 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           units={units}
           onShowUnitDetails={handleShowUnitDetails}
         />
+        <div className="battle-log-area">
+          <BattleLogPanel
+            className="military-battle-log"
+            battleLog={battleLog}
+            currentTurn={turn}
+            currentPhase={activeTeam === 'Blue' ? 'プレイヤー フェーズ' : '敵 フェーズ'}
+          />
+        </div>
       </div>
 
       <div className="game-board-area" ref={gameBoardRef}>
@@ -434,15 +442,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         />
       </div>
 
-      <div className="battle-log-area">
-        <BattleLogPanel
-          className="military-battle-log"
-          battleLog={battleLog}
-          currentTurn={turn}
-          currentPhase={activeTeam === 'Blue' ? 'プレイヤー フェーズ' : '敵 フェーズ'}
-        />
-      </div>
-      
       <RainEffect weather={weather} />
 
       {battleReport && (

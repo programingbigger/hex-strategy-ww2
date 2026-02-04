@@ -322,7 +322,8 @@
   border: 3px inset var(--earth-khaki-dark);
   color: var(--earth-contrast-light);
   font-family: var(--font-sans-jp);
-  max-height: 200px;
+  flex: 1;
+  min-height: 100px;
   overflow-y: auto;
   padding: 12px;
   position: relative;

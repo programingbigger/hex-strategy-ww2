@@ -2,11 +2,10 @@
   display: grid;
   height: 100vh;
   grid-template-columns: 300px 1fr 300px; /* 左パネル | ゲームボード | 右パネル */
-  grid-template-rows: auto 1fr 120px; /* ヘッダー | メイン | 戦闘ログ */
+  grid-template-rows: auto 1fr; /* ヘッダー | メイン */
   grid-template-areas:
     "header header header"
-    "left-panel game-board right-panel"
-    "battle-log battle-log battle-log";
+    "left-panel game-board right-panel";
   gap: 16px;
   padding: 16px;
   background-color: var(--earth-olive-dark); /* military-museum-theme.css の変数を利用 */
@@ -17,12 +16,13 @@
 .game-board-area { grid-area: game-board; overflow: hidden; display: flex; justify-content: center; align-items: center; position: relative; }
 .left-panel-area { grid-area: left-panel; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;}
 .right-panel-area { grid-area: right-panel; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;}
+
+/* 戦闘ログエリア - 左パネル内で残りスペースを埋める */
 .battle-log-area {
-  grid-area: battle-log;
+  flex: 1;
+  min-height: 150px;
   display: flex;
-  justify-content: center;
-  align-items: stretch;
-  padding: 0 20%;  /* 左右に1/5ずつ空白を作る (2/5から4/5まで) */
+  flex-direction: column;
 }
 
 /* スクロールバーのスタイル */
