@@ -202,6 +202,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
   const attackableTiles = useMemo(() => {
     if (!selectedUnit || selectedUnit.attacked) return [];
 
+    // 攻撃モード未開始の場合は攻撃範囲を表示しない
+    if (uiStates.attackMode !== 'selecting_target') return [];
+
     if (selectedUnit.weapons && Array.isArray(selectedUnit.weapons) && selectedUnit.weapons.length > 0) {
       const attackRangeMin = getMinAttackRange(selectedUnit);
       const attackRangeMax = getMaxAttackRange(selectedUnit);
@@ -234,7 +237,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     return potentialTargets.filter(coord =>
       gameState.units.some(u => u.x === coord.x && u.y === coord.y && u.team !== selectedUnit.team)
     );
-  }, [selectedUnit, gameState.units, gameState.boardLayout]);
+  }, [selectedUnit, gameState.units, gameState.boardLayout, uiStates.attackMode]);
 
   const engineerTargetTiles = useMemo(() => {
     return uiStates.engineerActionState.availableTargets;
@@ -263,6 +266,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     if (selectedUnit) {
       if (unitOnHex && unitOnHex.id === selectedUnit.id) {
         uiStates.setMovementMode('none');
+        uiStates.setAttackMode('none');
         gameState.setSelectedUnitId(null);
         return;
       }
@@ -270,11 +274,12 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
       const isAttackable = attackableTiles.some(t => t.x === coord.x && t.y === coord.y);
       if (isAttackable && unitOnHex && unitOnHex.team !== selectedUnit.team) {
         gameState.saveStateToHistory();
-        
+        uiStates.setAttackMode('none');
+
         if (selectedUnit.weapons && Array.isArray(selectedUnit.weapons) && selectedUnit.weapons.length > 0) {
           const distance = getDistance(selectedUnit, unitOnHex);
           const availableWeapons = getWeaponsInRange(selectedUnit, distance);
-          
+
           if (availableWeapons.length === 0) {
             console.warn('No weapons available for attack');
             return;
@@ -384,8 +389,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
         return;
       }
 
-      // 他の場所クリック: アクションパネルを消去し移動モードもリセット
+      // 他の場所クリック: アクションパネルを消去し移動・攻撃モードもリセット
       uiStates.setMovementMode('none');
+      uiStates.setAttackMode('none');
       gameState.setSelectedUnitId(null);
     } else {
       if (unitOnHex && unitOnHex.team === gameState.activeTeam && !unitOnHex.moved && !unitOnHex.attacked) {
@@ -550,6 +556,11 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     movementMode: uiStates.movementMode,
     startMovementAction: () => uiStates.setMovementMode('selecting_destination'),
     cancelMovementMode: () => uiStates.setMovementMode('none'),
+
+    // Attack action
+    attackMode: uiStates.attackMode,
+    startAttackAction: () => uiStates.setAttackMode('selecting_target'),
+    cancelAttackMode: () => uiStates.setAttackMode('none'),
 
     // Main interaction handler
     handleHexClick,

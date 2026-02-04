@@ -49,6 +49,8 @@ export interface UIStatesHook {
   };
   battleLog: BattleLogState;
   movementMode: 'none' | 'selecting_destination';
+  /** 攻撃モード: 'selecting_target' で攻撃対象の赤色ヘックス選択中 */
+  attackMode: 'none' | 'selecting_target';
 
   setHoveredHex: (hex: Coordinate | null) => void;
   setBattleReport: (report: BattleReport | null | ((prev: BattleReport | null) => BattleReport | null)) => void;
@@ -60,6 +62,7 @@ export interface UIStatesHook {
   setEngineerConfirmState: (state: { isOpen: boolean; actionType: 'build_bridge' | null; targetCoord: Coordinate | null; targetTile: Tile | null; materialCost: number }) => void;
   setBattleLog: (log: BattleLogState | ((prev: BattleLogState) => BattleLogState)) => void;
   setMovementMode: (mode: 'none' | 'selecting_destination') => void;
+  setAttackMode: (mode: 'none' | 'selecting_target') => void;
 }
 
 export const useUIStates = (): UIStatesHook => {
@@ -120,6 +123,7 @@ export const useUIStates = (): UIStatesHook => {
   });
 
   const [movementMode, setMovementMode] = useState<'none' | 'selecting_destination'>('none');
+  const [attackMode, setAttackMode] = useState<'none' | 'selecting_target'>('none');
 
   return {
     hoveredHex,
@@ -143,5 +147,7 @@ export const useUIStates = (): UIStatesHook => {
     setBattleLog,
     movementMode,
     setMovementMode,
+    attackMode,
+    setAttackMode,
   };
 };

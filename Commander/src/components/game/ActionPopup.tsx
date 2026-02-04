@@ -20,6 +20,8 @@ interface ActionPopupProps {
   onStartEngineerAction?: (actionType: 'build_bridge') => void;
   /** 移動モードを開始するコールバック */
   onStartMovementAction?: () => void;
+  /** 攻撃モードを開始するコールバック */
+  onStartAttackAction?: () => void;
   currentFunds?: { [team: string]: number };
   activeTeam?: Team;
   /** Camera state from CameraContext: { x, y, zoom } */
@@ -37,6 +39,7 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   onStartTransportAction,
   onStartEngineerAction,
   onStartMovementAction,
+  onStartAttackAction,
   currentFunds,
   camera,
   boardRect
@@ -188,6 +191,17 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   const popupX = unitScreenX - POPUP_WIDTH - OFFSET_LEFT;
   const popupY = unitScreenY - 40; // vertically center-ish relative to unit
 
+  // --- Attack availability check ---
+  const canAttack = (() => {
+    if (selectedUnit.attacked) return false;
+    // 武器システム: いずれかの武器が射程 > 0 であればOK
+    if (selectedUnit.weapons && selectedUnit.weapons.length > 0) {
+      return selectedUnit.weapons.some(w => w.type !== '資材' && w.range && w.range.max > 0);
+    }
+    // レガシー: attackRange.max > 0
+    return selectedUnit.attackRange && selectedUnit.attackRange.max > 0;
+  })();
+
   // --- Determine if the unit has already acted (moved AND attacked) ---
   const hasActed = selectedUnit.moved && selectedUnit.attacked;
 
@@ -210,6 +224,13 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
           disabled={selectedUnit.moved}
         >
           移動
+        </button>
+        <button
+          className="military-button action-popup-btn"
+          onClick={() => onStartAttackAction && onStartAttackAction()}
+          disabled={!canAttack}
+        >
+          攻撃
         </button>
         <button
           className="military-button action-popup-btn"

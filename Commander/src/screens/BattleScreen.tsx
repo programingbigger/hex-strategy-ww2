@@ -93,6 +93,11 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     startMovementAction,
     cancelMovementMode,
 
+    // Attack action
+    attackMode,
+    startAttackAction,
+    cancelAttackMode,
+
   } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
 
   // Camera controls for zoom functionality
@@ -158,6 +163,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       } else if (movementMode !== 'none') {
         // Cancel movement selection mode
         cancelMovementMode();
+      } else if (attackMode !== 'none') {
+        // Cancel attack selection mode
+        cancelAttackMode();
       }
     }
 
@@ -165,7 +173,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     if (isTurnChangeModalOpen) {
       setIsTurnChangeModalOpen(false);
     }
-  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode, transportActionState.mode, cancelTransportSelectionMode, movementMode, cancelMovementMode]);
+  }, [isEndTurnConfirmOpen, isTurnChangeModalOpen, engineerActionState.mode, cancelEngineerSelectionMode, transportActionState.mode, cancelTransportSelectionMode, movementMode, cancelMovementMode, attackMode, cancelAttackMode]);
 
   // Add keyboard event listeners
   useEffect(() => {
@@ -207,8 +215,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
   const handleEndTurnConfirm = useCallback(() => {
     setIsEndTurnConfirmOpen(false);
     cancelMovementMode();
+    cancelAttackMode();
     handleEndTurn();
-  }, [handleEndTurn, cancelMovementMode]);
+  }, [handleEndTurn, cancelMovementMode, cancelAttackMode]);
 
   const handleEndTurnCancel = useCallback(() => {
     setIsEndTurnConfirmOpen(false);
@@ -391,7 +400,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           onHexLeave={() => setHoveredHex(null)}
           onUnitDoubleClick={handleShowUnitDetails}
         />
-        {movementMode !== 'selecting_destination' && (
+        {movementMode !== 'selecting_destination' &&
+         attackMode !== 'selecting_target' &&
+         engineerActionState.mode === 'none' &&
+         transportActionState.mode === 'none' && (
           <ActionPopup
             selectedUnit={selectedUnit}
             selectedUnitTile={selectedUnitTile}
@@ -401,6 +413,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             onStartTransportAction={startTransportAction}
             onStartEngineerAction={startEngineerAction}
             onStartMovementAction={startMovementAction}
+            onStartAttackAction={startAttackAction}
             currentFunds={armyFunds}
             activeTeam={activeTeam}
             camera={camera}
