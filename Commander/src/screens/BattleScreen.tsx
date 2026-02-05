@@ -237,6 +237,13 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     onNavigate('title');
   }, [onNavigate]);
 
+  const handleReturnToTutorialSelect = useCallback(() => {
+    setIsVictoryModalOpen(false);
+    onNavigate('tutorial-select');
+  }, [onNavigate]);
+
+  const isTutorialMap = gameState.selectedMap?.id?.startsWith('tutorial_') ?? false;
+
   const handleShowUnitDetails = useCallback((unit: Unit) => {
     setDetailsUnit(unit);
     setIsUnitDetailsOpen(true);
@@ -543,6 +550,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         defeatedArmy={victoryInfo.defeatedArmy}
         winnerArmy={victoryInfo.winnerArmy}
         onClose={handleVictoryModalClose}
+        onReturnToTutorialSelect={isTutorialMap ? handleReturnToTutorialSelect : undefined}
       />
 
       <UnitDetailsDialog
