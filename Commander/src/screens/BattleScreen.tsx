@@ -56,7 +56,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     selectedUnitTile,
     loadGame,
     setYear,
+    setMonth,
     setDay,
+    setWeather,
     handleEndTurn,
     handleHexClick,
     handleAction,
@@ -281,10 +283,18 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           // Apply date from battlePrep if available
           if (gameState.battlePrep?.startDate) {
             setYear(gameState.battlePrep.startDate.year);
+            setMonth(gameState.battlePrep.startDate.month);
             setDay(gameState.battlePrep.startDate.day);
           } else if (gameState.year && gameState.day) {
             setYear(gameState.year);
             setDay(gameState.day);
+          }
+
+          // チュートリアル1〜5では初期天候も Clear に強制設定する
+          const isTutorialAlwaysClear =
+            gameState.selectedMap.id.startsWith('tutorial_') && gameState.selectedMap.id !== 'tutorial_6';
+          if (isTutorialAlwaysClear) {
+            setWeather('Clear');
           }
         } catch (error) {
           console.error(`Failed to load map ${gameState.selectedMap.id}:`, error);
@@ -330,6 +340,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
       // Apply date from battlePrep if available
       if (gameState.battlePrep?.startDate) {
         setYear(gameState.battlePrep.startDate.year);
+        setMonth(gameState.battlePrep.startDate.month);
         setDay(gameState.battlePrep.startDate.day);
       } else if (gameState.year && gameState.day) {
         setYear(gameState.year);
@@ -338,7 +349,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     };
     
     loadBattle();
-  }, [loadGame, gameState.units, gameState.selectedMap, gameState.battlePrep, gameState.year, gameState.day, setYear, setDay]);
+  }, [loadGame, gameState.units, gameState.selectedMap, gameState.battlePrep, gameState.year, gameState.day, setYear, setMonth, setDay, setWeather]);
 
   useEffect(() => {
     if (battleGameState === 'gameOver' && winner) {

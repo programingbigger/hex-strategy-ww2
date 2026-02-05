@@ -514,7 +514,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     loadGame: gameState.loadGame,
     saveStateToHistory: gameState.saveStateToHistory,
     setYear: gameState.setYear,
+    setMonth: gameState.setMonth,
     setDay: gameState.setDay,
+    setWeather: gameState.setWeather,
     
     // UI state setters
     setHoveredHex: uiStates.setHoveredHex,

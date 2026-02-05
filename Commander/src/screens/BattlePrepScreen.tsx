@@ -25,6 +25,7 @@ interface OperationPrepPageProps {
   setSelectedDay: (day: number) => void;
   onProceed: () => void;
   onBack: () => void;
+  isTutorialFixed?: boolean; // チュートリアルで年月日が固定される場合に true
 }
 
 const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
@@ -36,7 +37,8 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
   setSelectedMonth,
   setSelectedDay,
   onProceed,
-  onBack
+  onBack,
+  isTutorialFixed = false
 }) => {
   const operationPeriod = getOperationPeriod(selectedMonth, selectedYear, selectedDay);
   const strategicContext = getMonthlyStrategicContext(selectedMonth);
@@ -94,11 +96,16 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+                disabled={isTutorialFixed}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
               >
-                {availableYears.map((year) => (
-                  <option key={year} value={year}>{year}年</option>
-                ))}
+                {isTutorialFixed ? (
+                  <option value={selectedYear}>{selectedYear}年</option>
+                ) : (
+                  availableYears.map((year) => (
+                    <option key={year} value={year}>{year}年</option>
+                  ))
+                )}
               </select>
             </div>
 
@@ -110,11 +117,16 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+                disabled={isTutorialFixed}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
               >
-                {getMonthNames().map((monthName, index) => (
-                  <option key={index + 1} value={index + 1}>{monthName}</option>
-                ))}
+                {isTutorialFixed ? (
+                  <option value={selectedMonth}>{getMonthNames()[selectedMonth - 1]}</option>
+                ) : (
+                  getMonthNames().map((monthName, index) => (
+                    <option key={index + 1} value={index + 1}>{monthName}</option>
+                  ))
+                )}
               </select>
             </div>
 
@@ -126,11 +138,16 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedDay}
                 onChange={(e) => setSelectedDay(Number(e.target.value))}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
+                disabled={isTutorialFixed}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
               >
-                {availableDays.map((day) => (
-                  <option key={day} value={day}>{day}日</option>
-                ))}
+                {isTutorialFixed ? (
+                  <option value={selectedDay}>{selectedDay}日</option>
+                ) : (
+                  availableDays.map((day) => (
+                    <option key={day} value={day}>{day}日</option>
+                  ))
+                )}
               </select>
             </div>
 
@@ -290,6 +307,17 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 // =================================================================
 // Main BattlePrepScreen Component
 // =================================================================
+// チュートリアルマップの開始年月を返す。該当マップでない場合は null を返す。
+const getTutorialFixedDate = (mapId: string | undefined): { year: number; month: number; day: number } | null => {
+  if (!mapId || !mapId.startsWith('tutorial_')) return null;
+  // tutorial_1 〜 tutorial_5: 1936年1月1日
+  if (mapId !== 'tutorial_6') {
+    return { year: 1936, month: 1, day: 1 };
+  }
+  // tutorial_6: 1938年4月1日
+  return { year: 1938, month: 4, day: 1 };
+};
+
 const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep, initialPage = 1 }) => {
   const [page, setPage] = useState<1 | 2>(initialPage);
   const [availableUnits, setAvailableUnits] = useState<Unit[]>([]);
@@ -297,9 +325,14 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
     initialPage === 2 ? [] : (gameState.battlePrep?.selectedUnits || [])
   );
-  const [selectedYear, setSelectedYear] = useState<number>(gameState.year || 1944);
-  const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || new Date().getMonth() + 1);
-  const [selectedDay, setSelectedDay] = useState<number>(gameState.day || 1);
+
+  // チュートリアルの場合は年月日を固定する
+  const tutorialFixedDate = getTutorialFixedDate(gameState.selectedMap?.id);
+  const isTutorialFixed = tutorialFixedDate !== null;
+
+  const [selectedYear, setSelectedYear] = useState<number>(tutorialFixedDate?.year ?? gameState.year ?? 1944);
+  const [selectedMonth, setSelectedMonth] = useState<number>(tutorialFixedDate?.month ?? gameState.month ?? (new Date().getMonth() + 1));
+  const [selectedDay, setSelectedDay] = useState<number>(tutorialFixedDate?.day ?? gameState.day ?? 1);
   const [deploymentLimit, setDeploymentLimit] = useState<number>(10); // Default to 10, will be updated based on map
 
   // Load available units asynchronously
@@ -409,6 +442,7 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           setSelectedDay={setSelectedDay}
           onProceed={() => setPage(2)}
           onBack={() => onNavigate(getBackScreen())}
+          isTutorialFixed={isTutorialFixed}
         />
       ) : isLoadingUnits ? (
         <div style={{ textAlign: 'center', padding: '50px' }}>

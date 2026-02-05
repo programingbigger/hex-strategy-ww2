@@ -362,38 +362,48 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
         console.error('❌ Error calculating income:', error);
       }
 
-      // Monthly weather probability system
-      const { generateWeatherForMonth } = await import('../../data/weatherConfig');
-      const nextWeather = generateWeatherForMonth(newMonth);
-      
-      // Calculate new environmental levels based on weather (with null safety)
-      const newEnvironmentalLevels = environmentalLevels 
-        ? { ...environmentalLevels } 
+      // チュートリアル1〜5では天候を常に晴れに固定する（天候に左右されず操作を学ぶため）
+      // チュートリアル6と通常マップでは月ごとの確率に基づく天候ロジックを適用する
+      const isTutorialAlwaysClear =
+        mapIdRef.current.startsWith('tutorial_') && mapIdRef.current !== 'tutorial_6';
+
+      let nextWeather: WeatherType;
+      const newEnvironmentalLevels = environmentalLevels
+        ? { ...environmentalLevels }
         : { wetness: 0, snow: 0 };
-      
-      // Update wetness levels
-      if (nextWeather === 'Rain') {
-        newEnvironmentalLevels.wetness++;
-      } else if (nextWeather === 'Storm') {
-        newEnvironmentalLevels.wetness += 3;
-      } else if (nextWeather === 'Clear') {
-        newEnvironmentalLevels.wetness = Math.max(0, newEnvironmentalLevels.wetness - 2);
-      } else if (nextWeather === 'Cloudy') {
-        // Cloudy weather doesn't change wetness
-      } else if (nextWeather === 'Fog') {
-        // Fog weather doesn't change wetness (placeholder weather)
+
+      if (isTutorialAlwaysClear) {
+        // チュートリアル1〜5: 天候は常に Clear、環境レベルは変化しない
+        nextWeather = 'Clear';
+      } else {
+        // Monthly weather probability system
+        const { generateWeatherForMonth } = await import('../../data/weatherConfig');
+        nextWeather = generateWeatherForMonth(newMonth);
+
+        // Update wetness levels
+        if (nextWeather === 'Rain') {
+          newEnvironmentalLevels.wetness++;
+        } else if (nextWeather === 'Storm') {
+          newEnvironmentalLevels.wetness += 3;
+        } else if (nextWeather === 'Clear') {
+          newEnvironmentalLevels.wetness = Math.max(0, newEnvironmentalLevels.wetness - 2);
+        } else if (nextWeather === 'Cloudy') {
+          // Cloudy weather doesn't change wetness
+        } else if (nextWeather === 'Fog') {
+          // Fog weather doesn't change wetness (placeholder weather)
+        }
+
+        // Update snow levels
+        if (nextWeather === 'Snow') {
+          newEnvironmentalLevels.snow++;
+        } else if (nextWeather === 'Blizzard') {
+          newEnvironmentalLevels.snow += 3;
+        } else if (nextWeather === 'Clear') {
+          // Clear weather reduces snow gradually
+          newEnvironmentalLevels.snow = Math.max(0, newEnvironmentalLevels.snow - 1);
+        }
       }
-      
-      // Update snow levels  
-      if (nextWeather === 'Snow') {
-        newEnvironmentalLevels.snow++;
-      } else if (nextWeather === 'Blizzard') {
-        newEnvironmentalLevels.snow += 3;
-      } else if (nextWeather === 'Clear') {
-        // Clear weather reduces snow gradually
-        newEnvironmentalLevels.snow = Math.max(0, newEnvironmentalLevels.snow - 1);
-      }
-      
+
       setWeather(nextWeather);
       setEnvironmentalLevels(newEnvironmentalLevels);
       
