@@ -180,15 +180,15 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 }) => {
   return (
     <>
-      <h1 className="screen-title" style={{ textAlign: 'center', marginBottom: '30px', fontSize: '32px', fontWeight: 'bold' }}>
+      <h1 className="screen-title" style={{ textAlign: 'center', marginBottom: '30px', fontSize: '60px', fontWeight: 'bold' }}>
         戦闘準備
       </h1>
       
       <div style={{ display: 'flex', height: '80vh', gap: '30px', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Left Section: Available Units */}
         <div style={{ flex: '1', padding: '25px', background: 'rgba(52, 73, 94, 0.1)', borderRadius: '12px' }}>
-          <h2 style={{ fontSize: '24px', textAlign: 'center', marginBottom: '25px', color: '#f39c12' }}>参加するユニットを選択</h2>
-          <p style={{ textAlign: 'center', fontSize: '16px', marginBottom: '25px', opacity: 0.8 }}>クリックしてユニットを選択/解除</p>
+          <h2 style={{ fontSize: '40px', textAlign: 'center', marginBottom: '25px', color: '#f39c12' }}>配備ユニット一覧</h2>
+          <p style={{ textAlign: 'center', fontSize: '25px', marginBottom: '25px', opacity: 0.8 }}>クリックしてユニットを選択/解除</p>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '15px', maxHeight: '60vh', overflowY: 'auto', paddingRight: '10px' }}>
             {availableUnits.map(unit => (
               <div 
@@ -220,13 +220,13 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
         
         {/* Right Section: Selected Units */}
         <div style={{ flex: '1', padding: '25px', background: 'rgba(52, 73, 94, 0.15)', borderRadius: '12px', border: '2px solid #8e44ad' }}>
-          <h2 style={{ fontSize: '24px', textAlign: 'center', marginBottom: '20px', color: '#8e44ad' }}>参加ユニット</h2>
-          <div style={{ marginBottom: '20px', textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>選択済み: {selectedUnits.length}/{deploymentLimit}</div>
+          <h2 style={{ fontSize: '40px', textAlign: 'center', marginBottom: '20px', color: '#8e44ad' }}>出撃ユニット</h2>
+          <div style={{ marginBottom: '28px', textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>選択済み: {selectedUnits.length}/{deploymentLimit}</div>
           <div style={{ background: 'rgba(142, 68, 173, 0.1)', border: '2px dashed #8e44ad', borderRadius: '12px', padding: '25px', minHeight: '50vh', maxHeight: '55vh', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
             {selectedUnits.length === 0 ? (
-              <div style={{ textAlign: 'center', opacity: 0.8, fontSize: '18px', padding: '60px 20px' }}>
+              <div style={{ textAlign: 'center', opacity: 0.8, fontSize: '40px', padding: '60px 20px' }}>
                 <p style={{ marginBottom: '15px' }}>ユニットが選択されていません</p>
-                <p style={{ fontSize: '16px', opacity: 0.6 }}>左のリストからユニットを選択してください</p>
+                <p style={{ fontSize: '38px', opacity: 0.6 }}>左のリストからユニットを選択してください</p>
               </div>
             ) : (
               selectedUnits.map(unit => (
@@ -241,16 +241,16 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
       </div>
 
       <div style={{ marginTop: '30px', display: 'flex', gap: '25px', justifyContent: 'center', flexWrap: 'wrap' }}>
-        <button className="menu-button" onClick={onBack} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: 'rgba(52, 152, 219, 0.3)', border: '3px solid #3498db', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
+        <button className="menu-button" onClick={onBack} style={{ padding: '16px 32px', fontSize: '34px', fontWeight: 'bold', background: 'rgba(52, 152, 219, 0.3)', border: '3px solid #3498db', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
           作戦準備へ戻る
         </button>
-        <button className="menu-button" onClick={resetSelection} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: 'rgba(241, 196, 15, 0.3)', border: '3px solid #f1c40f', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
+        <button className="menu-button" onClick={resetSelection} style={{ padding: '16px 32px', fontSize: '34px', fontWeight: 'bold', background: 'rgba(241, 196, 15, 0.3)', border: '3px solid #f1c40f', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
           ユニットの選択リセット
         </button>
-        <button className="menu-button" onClick={selectAllUnits} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: 'rgba(155, 89, 182, 0.3)', border: '3px solid #9b59b6', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
+        <button className="menu-button" onClick={selectAllUnits} style={{ padding: '16px 32px', fontSize: '34px', fontWeight: 'bold', background: 'rgba(155, 89, 182, 0.3)', border: '3px solid #9b59b6', borderRadius: '10px', minWidth: '180px', cursor: 'pointer' }}>
           ユニットを全選択
         </button>
-        <button className="menu-button" onClick={proceedToDeployment} style={{ padding: '16px 32px', fontSize: '18px', fontWeight: 'bold', background: selectedUnits.length > 0 ? 'rgba(39, 174, 96, 0.4)' : 'rgba(127, 140, 141, 0.3)', border: selectedUnits.length > 0 ? '3px solid #27ae60' : '3px solid #7f8c8d', borderRadius: '10px', minWidth: '220px', cursor: selectedUnits.length > 0 ? 'pointer' : 'not-allowed', opacity: selectedUnits.length > 0 ? 1 : 0.6 }}>
+        <button className="menu-button" onClick={proceedToDeployment} style={{ padding: '16px 32px', fontSize: '34px', fontWeight: 'bold', background: selectedUnits.length > 0 ? 'rgba(39, 174, 96, 0.4)' : 'rgba(127, 140, 141, 0.3)', border: selectedUnits.length > 0 ? '3px solid #27ae60' : '3px solid #7f8c8d', borderRadius: '10px', minWidth: '220px', cursor: selectedUnits.length > 0 ? 'pointer' : 'not-allowed', opacity: selectedUnits.length > 0 ? 1 : 0.6 }}>
           配置フェーズへ進む
         </button>
       </div>

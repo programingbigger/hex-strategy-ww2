@@ -66,7 +66,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Left Panel - Map List (20%) */}
         <div className="scenario-left-panel">
           <div className="panel-header">
-            <h3 className="panel-title">利用可能なマップ</h3>
+            <h3 className="panel-title">ステージ選択</h3>
           </div>
           <div className="map-list">
             {availableMaps.map((map) => (
@@ -87,7 +87,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Center Panel - Map Preview (60%) */}
         <div className="scenario-center-panel">
           <div className="panel-header">
-            <h3 className="panel-title">マップ プレビュー</h3>
+            <h3 className="panel-title">プレビュー</h3>
           </div>
           <div className="map-preview-area">
             <MapPreview selectedMap={selectedMap} />
@@ -97,7 +97,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
         {/* Right Panel - Actions & Info (20%) */}
         <div className="scenario-right-panel">
           <div className="panel-header">
-            <h3 className="panel-title">ミッション管理</h3>
+            <h3 className="panel-title">ステージ内容</h3>
           </div>
           <div className="mission-actions">
             {selectedMap ? (
