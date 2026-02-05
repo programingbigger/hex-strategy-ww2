@@ -45,7 +45,7 @@ const getUnitStatsByIdOrType = (unitId: string, type: UnitType, team: 'Blue' | '
   // Fallback for backward compatibility - should not be reached in normal usage
   console.warn(`Unit stats not found in JSON for ${unitId}/${type}, using fallback`);
   return getUnitStatsFallback(type);
-};;
+};
 
 // Legacy function for backward compatibility
 const getUnitStatsFromJSON = (type: UnitType, team: 'Blue' | 'Red'): UnitStats => {
@@ -265,7 +265,7 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         unitClass: 'Vehicle', maxFuel: 60, reconnaissance: 2
       };
   }
-};;
+};
 
 const createUnitFallback = (
   id: string,
@@ -321,7 +321,7 @@ export const getPlayerStartingUnits = async (mapId?: string): Promise<Unit[]> =>
   return [
     createUnit('blue-infantry-standard-1', 'Infantry', 'Blue'),
   ];
-};;
+};
 
 // Cache for available map IDs to improve performance
 let cachedMapIds: string[] | null = null;
@@ -400,7 +400,8 @@ export const getUnitsForMap = async (mapId: string): Promise<Unit[]> => {
     console.warn(`Unit configuration not found for ${mapId}, returning empty unit array`);
     return [];
   }
-};;;
+};
+
 // Get producible unit templates from map data
 export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 'Red'): Promise<ProducibleUnit[]> => {
   try {
@@ -482,7 +483,7 @@ export const getProducibleUnitsForMap = async (mapId: string, faction: 'Blue' | 
       }
     }));
   }
-};;
+};
 
 const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
   const units: Unit[] = [];
@@ -501,48 +502,37 @@ const createUnitsFromConfig = (unitConfigs: any[]): Unit[] => {
   return units;
 };
 
+/**
+ * armyOrganization.json から動的にユニットタイプを取得する
+ * これにより、armyOrganization.json が単一の真実のソースとなり、
+ * 新しいユニットを追加する際にこの関数を更新する必要がなくなる
+ */
 const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
-  // Map army organization IDs to unit types
-  const idToTypeMap: { [key: string]: UnitType } = {
-    // Blue army units from armyOrganization.json
-    'blue-infantry-standard': 'Infantry',
-    'blue-infantry-motorized': 'Infantry',
-    'blue-infantry-mg_squad': 'Infantry',
-    'blue-tank-panzer_1': 'Tank',
-    'blue-tank-panzer_2': 'Tank',
-    'blue-tank-panzer_3': 'Tank',
-    'blue-tank-medium': 'Tank',
-    'blue-armored-car': 'ArmoredCar',
-    'blue-artillery-howitzer': 'Artillery',
-    'blue-antitank-gun_37mm': 'AntiTank',
-    'blue-antitank-gun_pak_40': 'AntiTank',
-    'blue-engineer-engineer': 'Engineer',
-    'blue-transport-transport': 'Transport',
-    'blue-supply-wagon': 'SupplyWagon',
-    'blue-supply-truck': 'SupplyTruck',
+  // armyManager から全陣営の全ユニットテンプレートを検索
+  for (const faction of ['Blue', 'Red'] as const) {
+    const templates = armyManager.getUnitTemplatesBy(faction);
+    const template = templates.find(t => t.id === armyId);
+    if (template) {
+      return template.type as UnitType;
+    }
+  }
 
-    // Red army units
-    'red-infantry-reservist': 'Infantry',
-    'red-infantry-standard': 'Infantry',
-    'red-tankette-tks': 'Tank',
-    'red-tank-7tp': 'Tank',
-    'red-armored-car_wz34': 'ArmoredCar',
-    'red-artillery-75mm': 'Artillery',
-    'red-artillery-howitzer': 'Artillery',
-    'red-antitank-gun_37mm': 'AntiTank',
-    'red-engineer-engineer': 'Engineer',
-    'red-transport-transport': 'Transport',
-    'red-supply-wagon': 'SupplyWagon',
-    'red-supply-truck': 'SupplyTruck',
-
-    // Legacy mappings (kept for backward compatibility)
+  // レガシー互換性のためのフォールバックマッピング
+  // （古いマップデータがarmyOrganization.jsonにないIDを参照している場合のみ使用）
+  const legacyIdMap: { [key: string]: UnitType } = {
     'blue-antitank-gun': 'AntiTank',
     'blue-engineer': 'Engineer',
     'blue-transport': 'Transport'
   };
-  
-  return idToTypeMap[armyId] || null;
-};;;;
+
+  if (legacyIdMap[armyId]) {
+    console.warn(`[getUnitTypeFromArmyId] Using legacy fallback for '${armyId}'. Consider updating to use armyOrganization.json ID.`);
+    return legacyIdMap[armyId];
+  }
+
+  console.warn(`[getUnitTypeFromArmyId] Unit ID '${armyId}' not found in armyOrganization.json`);
+  return null;
+};
 
 // Async version for loading map-specific units dynamically
 export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[]> => {
@@ -560,7 +550,7 @@ export const getPlayerStartingUnitsAsync = async (mapId?: string): Promise<Unit[
   
   // Return the synchronous version as fallback
   return await getPlayerStartingUnits(mapId);
-};;
+};
 
 export const getEnemyStartingUnits = (): Unit[] => {
   // Try to use new army system first, fallback to legacy if needed

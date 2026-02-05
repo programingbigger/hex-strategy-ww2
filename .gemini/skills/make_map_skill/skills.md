@@ -6,12 +6,13 @@ version: 1.0.0
 # ステップ
 - ① 箱の作成：マップ構成の各要素をjsonで作成する
 - ② マップの要、tileの定義：board>tiles(array)を一番最初に作成する
-- ③ 各要素を埋める
-- ④ アウトプットを指定の場所に名前(name_hogehogeなど)を付け、json形式で提出する
-- ⑤ ④のアウトプットをアクティベイトするために、マップを登録する
+- ③ マップをデザインする
+- ④ 各要素を埋める
+- ⑤ アウトプットを指定の場所に名前(name_hogehogeなど)を付け、json形式で提出する
+- ⑥ ④のアウトプットをアクティベイトするために、マップを登録する
 
 # 条件
-- jsonの要素のうち、gameStatusとarmyFunds、deploymentLimits、　initialCameraPosition、availableUnits、producibleUnitsはassetを参考にする。
+- jsonの要素のうち、gameStatusとarmyFunds、deploymentLimits、　initialCameraPosition、availableUnits、producibleUnitsはassetを参考にする。ただし、availableUnits、producibleUnitsの登録では、登録されている兵器（陸海空）を全て表示します。
 - 特に指示がない場合は、それ以外はbrank（""）にする
 
 # マップの構成
@@ -73,9 +74,12 @@ version: 1.0.0
 # ツール
 - boardの作成: make_board.md
 - マップの登録: touroku_maps.md
+- マップのデザインの思想：WWII Strategic Map Architect.md
 
 # アウトプットの提出先
 - Commander/public/maps/scenario配下
 
 # 参考
-- board>tiles>terrainを定義するときは、Commander/src/types/index.tsの61行目を参照。
+- board>tiles>terrainを定義：Commander/src/types/index.tsの61行目を参照。
+- 登録されている兵器一覧：Commander/src/data/armyOrganization.jsonのfactions > [Faction] > branches > [Branch] >
+  unitCategories > [Category] > units > idのstringを参照。
