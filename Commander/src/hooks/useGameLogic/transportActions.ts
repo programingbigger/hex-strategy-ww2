@@ -7,9 +7,10 @@ import {
 } from '../../types';
 import { coordToString, getNeighbors } from '../../utils/map';
 import { logTransportOperation } from '../../utils/logger';
+import { TERRAIN_STATS } from '../../config/constants';
 
 export interface TransportActionsHook {
-  getAvailableUnloadTargets: (unit: Unit) => Coordinate[];
+  getAvailableUnloadTargets: (unit: Unit, unitToUnload?: Unit) => Coordinate[];
   startTransportAction: () => void;
   handleUnitSelection: (selectedUnit: Unit) => void;
   cancelUnitSelection: () => void;
@@ -66,28 +67,40 @@ export const useTransportActions = (deps: TransportActionsDeps): TransportAction
     setSelectedUnitId
   } = deps;
 
-  const getAvailableUnloadTargets = useCallback((unit: Unit): Coordinate[] => {
+  const getAvailableUnloadTargets = useCallback((unit: Unit, unitToUnload?: Unit): Coordinate[] => {
     if (!unit || unit.type !== 'Transport') return [];
-    
+
     const targets: Coordinate[] = [];
     const unitCoord = { x: unit.x, y: unit.y };
-    
+
     const neighbors = getNeighbors(unitCoord);
     for (const coord of neighbors) {
       const tile = boardLayout.get(coordToString(coord));
       if (!tile) continue;
-      
-      const unitAtPosition = units.find(u => 
-        u.x === coord.x && 
-        u.y === coord.y && 
+
+      const unitAtPosition = units.find(u =>
+        u.x === coord.x &&
+        u.y === coord.y &&
         !u.loaded
       );
-      
-      if (!unitAtPosition && tile.terrain !== 'Sea') {
-        targets.push(coord);
+
+      if (unitAtPosition) continue;
+
+      // 降車対象ユニットのclassに基づき地形制約をチェック
+      if (unitToUnload) {
+        const terrainStats = TERRAIN_STATS[tile.terrain];
+        if (terrainStats) {
+          const moveCost = terrainStats.movementCost[unitToUnload.unitClass] ?? terrainStats.movementCost.default;
+          if (moveCost === Infinity) continue;
+        }
+      } else {
+        // 降車対象未定の場合は海のみ除外（後方互換）
+        if (tile.terrain === 'Sea') continue;
       }
+
+      targets.push(coord);
     }
-    
+
     return targets;
   }, [boardLayout, units]);
 
@@ -111,18 +124,19 @@ export const useTransportActions = (deps: TransportActionsDeps): TransportAction
 
   const handleUnitSelection = useCallback((selectedUnit: Unit) => {
     if (transportActionState.mode !== 'selecting_unit' || !transportActionState.unit) return;
-    
-    const targets = getAvailableUnloadTargets(transportActionState.unit);
+
+    // 降車対象ユニットを渡し、そのclassに応じた地形制約で候補地を計算
+    const targets = getAvailableUnloadTargets(transportActionState.unit, selectedUnit);
     if (targets.length === 0) {
-      setTransportActionState({ 
-        mode: 'none', 
-        unit: null, 
-        availableTargets: [], 
-        selectedUnitToUnload: null 
+      setTransportActionState({
+        mode: 'none',
+        unit: null,
+        availableTargets: [],
+        selectedUnitToUnload: null
       });
       return;
     }
-    
+
     setTransportActionState({
       mode: 'selecting_unload_position',
       unit: transportActionState.unit,

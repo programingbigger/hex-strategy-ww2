@@ -112,7 +112,7 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
                 style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
               >
                 {getMonthNames().map((monthName, index) => (
-                  <option key={index + 1} value={index + 1}>{monthName} ({operationPeriod.season}季)</option>
+                  <option key={index + 1} value={index + 1}>{monthName}</option>
                 ))}
               </select>
             </div>

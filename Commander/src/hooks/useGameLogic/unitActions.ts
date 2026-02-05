@@ -5,16 +5,16 @@ import {
   GameStateSnapshot,
   Team
 } from '../../types';
-import { 
+import {
   coordToString,
   getNeighbors
 } from '../../utils/map';
-import { CITY_HP, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP } from '../../config/constants';
+import { CITY_HP, CAPTURE_DAMAGE_HIGH_HP, CAPTURE_DAMAGE_LOW_HP, TERRAIN_STATS } from '../../config/constants';
 import { logInfantryAction, logTransportOperation } from '../../utils/logger';
-import { 
+import {
   processEngineerActionWithCost,
   EngineerActionType,
-  DEFAULT_ENGINEER_COST_CONFIG 
+  DEFAULT_ENGINEER_COST_CONFIG
 } from '../../utils/engineerActionCostManager';
 
 // Helper functions
@@ -321,7 +321,13 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
             !u.loaded
           );
           
-          if (frontTile && !unitAtFront && frontTile.terrain !== 'Sea') {
+          // 降車対象ユニットのclassに基づき地形制約をチェック
+          const frontTerrainStats = frontTile ? TERRAIN_STATS[frontTile.terrain] : null;
+          const frontMoveCost = frontTerrainStats
+            ? (frontTerrainStats.movementCost[loadedUnit.unitClass] ?? frontTerrainStats.movementCost.default)
+            : Infinity;
+
+          if (frontTile && !unitAtFront && frontMoveCost !== Infinity) {
             logTransportOperation({
               infantryId: loadedUnit.id,
               infantryName: loadedUnit.name || loadedUnit.type,
