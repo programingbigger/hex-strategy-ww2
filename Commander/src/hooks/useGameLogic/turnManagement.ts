@@ -13,6 +13,7 @@ import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/
 import { log } from '../../utils/logger';
 import { isSupplyUnit } from './supplyActions';
 import { calculateIncomeForAllTeams } from '../../utils/incomeManager';
+import { getDaysInMonth } from '../../utils/operationDates';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
 };
@@ -316,7 +317,29 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
-      
+
+      // 日付を1日進める
+      let newDay = day;
+      let newMonth = month;
+      let newYear = year;
+      const daysInCurrentMonth = getDaysInMonth(month, year);
+      if (day < daysInCurrentMonth) {
+        newDay = day + 1;
+      } else {
+        // 月末になったので翌月へ
+        newDay = 1;
+        if (month < 12) {
+          newMonth = month + 1;
+        } else {
+          // 12月末になったので翌年へ
+          newMonth = 1;
+          newYear = year + 1;
+        }
+      }
+      setDay(newDay);
+      setMonth(newMonth);
+      setYear(newYear);
+
       if (turnLimit && newTurn > turnLimit) {
         setGameState('gameOver');
         const winner = defendingTeam || 'Red';
@@ -340,14 +363,8 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       }
 
       // Monthly weather probability system
-      const { generateWeatherForMonth, getMonthFromTurn } = await import('../../data/weatherConfig');
-      const currentMonth = getMonthFromTurn(newTurn);
-      const nextWeather = generateWeatherForMonth(currentMonth);
-      
-      // Update month if it changed
-      if (currentMonth !== month) {
-        setMonth(currentMonth);
-      }
+      const { generateWeatherForMonth } = await import('../../data/weatherConfig');
+      const nextWeather = generateWeatherForMonth(newMonth);
       
       // Calculate new environmental levels based on weather (with null safety)
       const newEnvironmentalLevels = environmentalLevels 
@@ -524,7 +541,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
     setBoardLayout(newBoardLayout);
     setSelectedUnitId(null);
     checkWinCondition(finalUnits, newBoardLayout);
-  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, month, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setMonth, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds]);
+  }, [activeTeam, units, weather, environmentalLevels, boardLayout, turn, month, year, day, turnLimit, defendingTeam, armyFunds, setUnits, setActiveTeam, setBoardLayout, setTurn, setMonth, setYear, setDay, setWeather, setEnvironmentalLevels, setSelectedUnitId, checkWinCondition, setGameState, setWinner, setVictoryResult, setArmyFunds]);
 
   return {
     handleEndTurn,

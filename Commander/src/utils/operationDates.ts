@@ -65,7 +65,7 @@ export function getOperationPeriod(month: number, year: number = 1944, day: numb
  * @param year Year
  * @returns Number of days in the month
  */
-function getDaysInMonth(month: number, year: number): number {
+export function getDaysInMonth(month: number, year: number): number {
   const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   
   // Check for leap year
