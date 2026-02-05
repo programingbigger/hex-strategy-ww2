@@ -1,3 +1,9 @@
+# アウトプット例
+## フォーマット
+json
+
+## アウトプット例
+```
 {
     "gameStatus": {
         "gameState": "playing","turn": 1
@@ -23,16 +29,16 @@
         "y": 8
     },
     "availableUnits": [
-        {"id": "blue-infantry-standard","faction": "Blue","count": 3,"unitId": "blue-infantry-standard"}
-        ,{"id": "blue-infantry-motorized","faction": "Blue","count": 2,"unitId": "blue-infantry-motorized"}
+        {"id": "blue-infantry-standard","faction": "Blue","count": 1,"unitId": "blue-infantry-standard"}
+        ,{"id": "blue-infantry-motorized","faction": "Blue","count": 1,"unitId": "blue-infantry-motorized"}
         ,{"id": "blue-infantry-mg_squad","faction": "Blue","count": 1,"unitId": "blue-infantry-mg_squad"}
-        ,{"id": "blue-tank-panzer_1","faction": "Blue","count": 2,"unitId": "blue-tank-panzer_1"}
-        ,{"id": "blue-tank-panzer_2","faction": "Blue","count": 4,"unitId": "blue-tank-panzer_2"}
-        ,{"id": "blue-tank-panzer_3","faction": "Blue","count": 3,"unitId": "blue-tank-panzer_3"}
-        ,{"id": "blue-armored-car","faction": "Blue","count": 2,"unitId": "blue-armored-car"}
-        ,{"id": "blue-artillery-howitzer","faction": "Blue","count": 2,"unitId": "blue-artillery-howitzer"}
+        ,{"id": "blue-tank-panzer_1","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_1"}
+        ,{"id": "blue-tank-panzer_2","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_2"}
+        ,{"id": "blue-tank-panzer_3","faction": "Blue","count": 1,"unitId": "blue-tank-panzer_3"}
+        ,{"id": "blue-armored-car","faction": "Blue","count": 1,"unitId": "blue-armored-car"}
+        ,{"id": "blue-artillery-howitzer","faction": "Blue","count": 1,"unitId": "blue-artillery-howitzer"}
         ,{"id": "blue-antitank-gun_37mm","faction": "Blue","count": 1,"unitId": "blue-antitank-gun_37mm"}
-        ,{"id": "blue-transport-transport","faction": "Blue","count": 2,"unitId": "blue-transport-transport"}
+        ,{"id": "blue-transport-transport","faction": "Blue","count": 1,"unitId": "blue-transport-transport"}
     ],
     "producibleUnits": {
         "Blue": [
@@ -1480,3 +1486,5 @@
         ]
     }
 }
+
+```
