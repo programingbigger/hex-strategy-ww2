@@ -19,3 +19,6 @@ Commander/log/*
 # Build files
 build/
 dist/
+
+# メモは見せない
+メモ.md

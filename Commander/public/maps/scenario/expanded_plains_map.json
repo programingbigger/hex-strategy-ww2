@@ -1,0 +1,92 @@
+{
+  "gameStatus": {
+  "gameState": "playing",
+  "turn": 1,
+  "activeTeam": "Blue",
+  "winner": null,
+  "weather": "Clear",
+  "weatherDuration": 0,
+  "turnLimit": 99,
+  "attackingTeam": "Blue",
+  "defendingTeam": "Red",
+  "enabledVictoryConditions": [
+    "unit_elimination",
+    "capital_capture",
+    "city_capture",
+    "turn_limit"
+  ]
+},
+  "armyFunds": {
+  "Blue": 1200,
+  "Red": 1200
+},
+  "initialCameraPosition": {
+  "x": 0,
+  "y": 0
+},
+  "producibleUnits": {
+  "Blue": [
+    "blue-infantry-standard",
+    "blue-tank-panzer_1",
+    "blue-tank-panzer_2",
+    "blue-tank-panzer_3",
+    "blue-tank-medium",
+    "blue-armored-car",
+    "blue-artillery-howitzer",
+    "blue-antitank-gun_37mm",
+    "blue-antitank-gun_pak_40",
+    "blue-engineer-engineer",
+    "blue-transport-transport"
+  ],
+  "Red": [
+    "red-infantry-reservist",
+    "red-infantry-standard",
+    "red-tankette-tks",
+    "red-tank-7tp",
+    "red-armored-car_wz34",
+    "red-artillery-75mm",
+    "red-artillery-howitzer",
+    "red-antitank-gun_37mm",
+    "red-engineer-engineer",
+    "red-transport-transport"
+  ]
+},
+  "board": {
+    "tiles": [
+      {"x":-15,"y":0,"terrain":"Plains"}
+      ,{"x":-14,"y":-1,"terrain":"Plains"}
+      ,{"x":-14,"y":-2,"terrain":"Plains"}
+      ,{"x":-13,"y":-3,"terrain":"Plains"}
+      ,{"x":-13,"y":-4,"terrain":"Plains"}
+      ,{"x":-12,"y":-5,"terrain":"Plains"}
+      ,{"x":-12,"y":-6,"terrain":"Plains"}
+      ,{"x":-11,"y":-7,"terrain":"Plains"}
+      ,{"x":-11,"y":-8,"terrain":"Plains"}
+      ,{"x":-10,"y":-9,"terrain":"Plains"}
+      ,{"x":-10,"y":-10,"terrain":"Plains"}
+      ,{"x":-9,"y":-11,"terrain":"Plains"}
+      ,{"x":-9,"y":-12,"terrain":"Plains"}
+      ,{"x":-8,"y":-13,"terrain":"Plains"}
+      ,{"x":-8,"y":-14,"terrain":"Plains"}
+      ,{"x":-7,"y":-15,"terrain":"Plains"}
+      ,{"x":15,"y":0,"terrain":"Plains"}
+      ,{"x":15,"y":-1,"terrain":"Plains"}
+      ,{"x":16,"y":-2,"terrain":"Plains"}
+      ,{"x":16,"y":-3,"terrain":"Plains"}
+      ,{"x":17,"y":-4,"terrain":"Plains"}
+      ,{"x":17,"y":-5,"terrain":"Plains"}
+      ,{"x":18,"y":-6,"terrain":"Plains"}
+      ,{"x":18,"y":-7,"terrain":"Plains"}
+      ,{"x":19,"y":-8,"terrain":"Plains"}
+      ,{"x":19,"y":-9,"terrain":"Plains"}
+      ,{"x":20,"y":-10,"terrain":"Plains"}
+      ,{"x":20,"y":-11,"terrain":"Plains"}
+      ,{"x":21,"y":-12,"terrain":"Plains"}
+      ,{"x":21,"y":-13,"terrain":"Plains"}
+      ,{"x":22,"y":-14,"terrain":"Plains"}
+      ,{"x":22,"y":-15,"terrain":"Plains"}
+    ]
+  },
+  "units": [],
+  "deploymentLimits": {"Blue": 10, "Red": 10}
+}

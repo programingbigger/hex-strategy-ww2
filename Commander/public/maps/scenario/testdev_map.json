@@ -58,6 +58,18 @@
       "unitId": "blue-engineer-engineer"
     },
     {
+      "id": "blue-supply-wagon",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-supply-wagon"
+    },
+    {
+      "id": "blue-supply-truck",
+      "faction": "Blue",
+      "count": 1,
+      "unitId": "blue-supply-truck"
+    },
+    {
       "id": "blue-transport-transport",
       "faction": "Blue",
       "count": 1,

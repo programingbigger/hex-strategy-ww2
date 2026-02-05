@@ -20,6 +20,11 @@ export const availableMaps: GameMap[] = [
     id: 'large_map_2',
     name: 'Stage 2',
     description: 'マップ第二弾'
+  },
+    {
+    id: 'expanded_plains_map',
+    name: 'Stage 3',
+    description: 'テスト用largeマップ'
   }
 ];
 
