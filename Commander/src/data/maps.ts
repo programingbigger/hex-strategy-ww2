@@ -25,6 +25,11 @@ export const availableMaps: GameMap[] = [
     id: 'expanded_plains_map',
     name: 'Stage 3',
     description: 'テスト用largeマップ'
+  },
+  {
+    id: 'vistula_offensive',
+    name: 'ヴィスワ攻勢',
+    description: '1939年秋、ヴィスワ川流域で繰り広げられる大規模な攻防戦。広大な平原での機甲部隊による電撃戦と、天然の要害である川の渡河を巡る死闘が展開される。戦略的な渡河地点の確保が勝利の鍵を握る。'
   }
 ];
 

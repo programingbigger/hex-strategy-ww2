@@ -6,7 +6,7 @@ version: 1.0.0
 # ステップ
 - ① 箱の作成：マップ構成の各要素をjsonで作成する
 - ② マップの要、tileの定義：board>tiles(array)を一番最初に作成する
-- ③ マップをデザインする
+- ③ マップをデザインする。これは"戦略マップの基本思想"を元に選別されたterrainをplainsから他の地形や都市（都市・首都・空港・港・橋）などへ変更することを指す。
 - ④ 各要素を埋める
 - ⑤ アウトプットを指定の場所に名前(name_hogehogeなど)を付け、json形式で提出する
 - ⑥ ④のアウトプットをアクティベイトするために、マップを登録する
@@ -48,7 +48,7 @@ version: 1.0.0
   いるユニット。
    * id: 管理用ID
    * faction: "Blue" / "Red"
-   * count: 保有数
+   * count: 保有数。defaultは1。
    * unitId: ユニットのタイプID
 
 - producibleUnits (Object): 生産できるユニットの定義
@@ -74,7 +74,7 @@ version: 1.0.0
 # ツール
 - boardの作成: make_board.md
 - マップの登録: touroku_maps.md
-- マップのデザインの思想：WWII Strategic Map Architect.md
+- 戦略マップの基本思想：WWII Strategic Map Architect.md
 
 # アウトプットの提出先
 - Commander/public/maps/scenario配下
