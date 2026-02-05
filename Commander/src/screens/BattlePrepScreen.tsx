@@ -421,12 +421,14 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     onNavigate('deployment');
   };
 
-  // Determine which screen to navigate back to based on where we came from
+  // Determine which screen to navigate back to based on the selected map.
+  // previousScreen は deployment への往復で上書きされるため、信頼できない。
+  // チュートリアルマップは mapId の接頭辞 'tutorial_' で正確に判定する。
   const getBackScreen = (): GameScreen => {
-    if (gameState.previousScreen === 'tutorial-select') {
+    if (gameState.selectedMap?.id?.startsWith('tutorial_')) {
       return 'tutorial-select';
     }
-    return 'scenario-select'; // default to scenario-select
+    return 'scenario-select';
   };
 
   return (
