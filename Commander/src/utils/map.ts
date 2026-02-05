@@ -81,7 +81,10 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
       maxHp: baseUnit.maxHp, // Keep calculated maxHp from createUnit
       fuel: unitData.fuel !== undefined ? unitData.fuel : baseUnit.fuel,
       // Preserve weapons but keep actual ammunition state
-      weapons: unitData.weapons || baseUnit.weapons
+      weapons: unitData.weapons || baseUnit.weapons,
+      // Preserve supply stock for supply units (from createUnit)
+      supplyStock: unitData.supplyStock !== undefined ? unitData.supplyStock : baseUnit.supplyStock,
+      maxSupplyStock: unitData.maxSupplyStock !== undefined ? unitData.maxSupplyStock : baseUnit.maxSupplyStock
     };
     
     // HP validation - only fix truly invalid values

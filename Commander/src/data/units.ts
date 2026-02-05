@@ -140,10 +140,9 @@ export const createUnit = (
         const templates = armyManager.getUnitTemplatesBy(team, '陸');
         const unitIdBase = id.replace(/-\d+$/, '');
         const template = templates.find(t => t.id === unitIdBase) || templates.find(t => t.type === type);
-        const rawTemplate = (template as any);
-        if (rawTemplate && rawTemplate.supply && rawTemplate.supply.maxSupplyStock) {
-          maxSupplyStock = rawTemplate.supply.maxSupplyStock;
-          supplyStock = rawTemplate.supply.maxSupplyStock;
+        if (template && template.supply && template.supply.maxSupplyStock) {
+          maxSupplyStock = template.supply.maxSupplyStock;
+          supplyStock = template.supply.maxSupplyStock;
         }
       } catch (e) {
         // フォールバック値

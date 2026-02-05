@@ -271,9 +271,12 @@ export interface ArmyUnitTemplate {
   stats: UnitStats;
   weapons: Weapon[];
   cost: UnitCost;
+  supply?: {
+    maxSupplyStock: number;
+  };
 }
 
-// Unit template as it appears in armyOrganization.json  
+// Unit template as it appears in armyOrganization.json
 export interface ArmyUnitTemplateJSON {
   id: string;
   name: string;
@@ -284,6 +287,9 @@ export interface ArmyUnitTemplateJSON {
   stats: ArmyUnitStats; // Uses ArmyUnitStats without attack/attackRange
   weapons: Weapon[];
   cost: UnitCost;
+  supply?: {
+    maxSupplyStock: number;
+  };
 }
 
 export interface UnitCategoryData {

@@ -136,10 +136,9 @@ export class ArmyManager {
     let maxSupplyStock: number | undefined;
     if (isSupplyUnit) {
       // テンプレートの supply フィールドから読み込む
-      const rawTemplate = template as any;
-      if (rawTemplate.supply && rawTemplate.supply.maxSupplyStock) {
-        maxSupplyStock = rawTemplate.supply.maxSupplyStock;
-        supplyStock = rawTemplate.supply.maxSupplyStock;
+      if (template.supply && template.supply.maxSupplyStock) {
+        maxSupplyStock = template.supply.maxSupplyStock;
+        supplyStock = template.supply.maxSupplyStock;
       } else {
         // フォールバック
         maxSupplyStock = template.type === 'SupplyWagon' ? 30 : 50;
