@@ -9,6 +9,7 @@ interface BattlePrepScreenProps {
   gameState: GameState;
   onNavigate: (screen: GameScreen) => void;
   onUpdateBattlePrep: (battlePrep: BattlePrepState, startingMonth?: number) => void;
+  initialPage?: 1 | 2;
 }
 
 // =================================================================
@@ -139,6 +140,34 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
             </div>
           </div>
 
+          {/* Tactical Directives Section */}
+          <div style={{ marginBottom: '20px', padding: '20px', background: 'rgba(231, 76, 60, 0.08)', borderRadius: '8px', border: '1px solid rgba(231, 76, 60, 0.4)' }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '12px', color: '#e74c3c' }}>📋 戦術指示</h4>
+            <div style={{ fontSize: '15px', lineHeight: '1.7', color: '#ecf0f1' }}>
+              <p style={{ marginBottom: '8px' }}>• 敵の主要拠点を早期に包囲し、補給を遮断する</p>
+              <p style={{ marginBottom: '8px' }}>• 地形の優勢を最大限に活用し、防御陣地を構築する</p>
+              <p style={{ marginBottom: '0' }}>• 機動力の高いユニットで偵察を先行させる</p>
+            </div>
+          </div>
+
+          {/* Supply Line Check Section */}
+          <div style={{ marginBottom: '20px', padding: '20px', background: 'rgba(243, 156, 18, 0.08)', borderRadius: '8px', border: '1px solid rgba(243, 156, 18, 0.4)' }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '12px', color: '#f39c12' }}>📦 補給線の確認</h4>
+            <div style={{ fontSize: '15px', lineHeight: '1.7', color: '#ecf0f1' }}>
+              <p style={{ marginBottom: '8px' }}>• 首都から補給ルートを確保し、前線への支援を維持する</p>
+              <p style={{ marginBottom: '0' }}>• 補給ユニットの配置を戦術の中核とする</p>
+            </div>
+          </div>
+
+          {/* Reconnaissance Report Section */}
+          <div style={{ padding: '20px', background: 'rgba(52, 152, 219, 0.08)', borderRadius: '8px', border: '1px solid rgba(52, 152, 219, 0.4)' }}>
+            <h4 style={{ fontSize: '18px', marginBottom: '12px', color: '#3498db' }}>🔍 偵察報告</h4>
+            <div style={{ fontSize: '15px', lineHeight: '1.7', color: '#ecf0f1' }}>
+              <p style={{ marginBottom: '8px' }}>• 敵軍の主力部隊の位置を把握している</p>
+              <p style={{ marginBottom: '8px' }}>• 地形の特徴と障害物の配置が確認されている</p>
+              <p style={{ marginBottom: '0' }}>• 天気予報により、戦術環境の変動が予想される</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -261,12 +290,12 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 // =================================================================
 // Main BattlePrepScreen Component
 // =================================================================
-const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep }) => {
-  const [page, setPage] = useState<1 | 2>(1);
+const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep, initialPage = 1 }) => {
+  const [page, setPage] = useState<1 | 2>(initialPage);
   const [availableUnits, setAvailableUnits] = useState<Unit[]>([]);
   const [isLoadingUnits, setIsLoadingUnits] = useState(false);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(
-    gameState.battlePrep?.selectedUnits || []
+    initialPage === 2 ? [] : (gameState.battlePrep?.selectedUnits || [])
   );
   const [selectedYear, setSelectedYear] = useState<number>(gameState.year || 1944);
   const [selectedMonth, setSelectedMonth] = useState<number>(gameState.month || new Date().getMonth() + 1);

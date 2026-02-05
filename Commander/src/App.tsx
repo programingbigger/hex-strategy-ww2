@@ -21,8 +21,18 @@ const App: React.FC = () => {
     activeTeam: 'Blue',
     turn: 1
   });
+  const [battlePrepInitialPage, setBattlePrepInitialPage] = useState<1 | 2>(1);
 
-  const navigateToScreen = async (screen: GameScreen, selectedMap?: GameMap) => {
+  const navigateToScreen = async (screen: GameScreen, selectedMapOrOptions?: GameMap | { initialPage?: 1 | 2 }) => {
+    // Determine if the second argument is a GameMap or navigation options
+    const selectedMap = selectedMapOrOptions && 'id' in selectedMapOrOptions ? selectedMapOrOptions as GameMap : undefined;
+    const navOptions = selectedMapOrOptions && !('id' in selectedMapOrOptions) ? selectedMapOrOptions as { initialPage?: 1 | 2 } : undefined;
+
+    // Update battlePrepInitialPage when navigating to battle-prep
+    if (screen === 'battle-prep') {
+      setBattlePrepInitialPage(navOptions?.initialPage || 1);
+    }
+
     if (selectedMap) {
       try {
         // Load the complete map data including board layout
@@ -98,7 +108,7 @@ const App: React.FC = () => {
       case 'tutorial-select':
         return <TutorialSelectScreen onNavigate={navigateToScreen} />;
       case 'battle-prep':
-        return <BattlePrepScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} />;
+        return <BattlePrepScreen gameState={gameState} onNavigate={navigateToScreen} onUpdateBattlePrep={updateBattlePrep} initialPage={battlePrepInitialPage} />;
       case 'deployment':
         return (
           <CameraProvider>

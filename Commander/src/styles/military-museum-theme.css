@@ -1655,10 +1655,12 @@
   margin-bottom: 0.5rem;
 }
 
-.mission-id {
+.mission-description {
   font-family: var(--font-sans-jp);
   font-size: 0.9rem;
   color: var(--earth-khaki-light);
+  line-height: 1.5;
+  margin-top: 0.5rem;
 }
 
 .mission-start-button {

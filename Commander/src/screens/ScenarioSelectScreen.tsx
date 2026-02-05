@@ -70,7 +70,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
           </div>
           <div className="map-list">
             {availableMaps.map((map) => (
-              <div 
+              <div
                 key={map.id}
                 className={`map-list-item ${selectedMap?.id === map.id ? 'selected' : ''}`}
                 onClick={() => handleMapSelect(map)}
@@ -78,7 +78,6 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
                 <div className="map-item-header">
                   <div className="map-item-name">{map.name}</div>
                 </div>
-                <div className="map-item-description">{map.description}</div>
               </div>
             ))}
           </div>
@@ -105,7 +104,7 @@ const ScenarioSelectScreen: React.FC<ScenarioSelectScreenProps> = ({ onNavigate 
                 <div className="selected-mission-info">
                   <h4>選択されたミッション:</h4>
                   <div className="mission-name">{selectedMap.name}</div>
-                  <div className="mission-id">ID: {selectedMap.id}</div>
+                  <div className="mission-description">{selectedMap.description}</div>
                 </div>
                 
                 <button 

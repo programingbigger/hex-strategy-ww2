@@ -8,7 +8,7 @@ import ZoomControls from '../components/ui/ZoomControls';
 
 interface UnitDeploymentScreenProps {
   gameState: GameState;
-  onNavigate: (screen: GameScreen) => void;
+  onNavigate: (screen: GameScreen, options?: { initialPage?: 1 | 2 }) => void;
   onUpdateBattlePrep: (battlePrep: BattlePrepState) => void;
   onStartBattle: () => void;
 }
@@ -55,12 +55,11 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
     }
   }, [moveCameraToInitialPosition]);
 
-  // Keyboard shortcut: Command/Ctrl + H to return camera to initial position
+  // Keyboard shortcut: Ctrl + H to return camera to initial position
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Check for Command+H (Mac) or Ctrl+H (Windows/Linux)
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'h') {
-        event.preventDefault(); // Prevent browser default behavior
+      if (event.ctrlKey && event.key.toLowerCase() === 'h') {
+        event.preventDefault();
         moveCameraToInitialPosition();
       }
     };
@@ -174,13 +173,16 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
   };
 
   const returnToUnitSelection = () => {
-    // Preserve deployment state
-    const updatedBattlePrep: BattlePrepState = {
+    // Reset selectedUnits and deployedUnits when returning to unit selection.
+    // This prevents stale deployment data from blocking the "作戦開始" button,
+    // which requires deployedUnits.size === selectedUnits.length.
+    const resetBattlePrep: BattlePrepState = {
       ...gameState.battlePrep!,
-      deployedUnits
+      selectedUnits: [],
+      deployedUnits: new Map()
     };
-    onUpdateBattlePrep(updatedBattlePrep);
-    onNavigate('battle-prep');
+    onUpdateBattlePrep(resetBattlePrep);
+    onNavigate('battle-prep', { initialPage: 2 });
   };
 
   // Create units for rendering on the board
@@ -244,7 +246,7 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
               cursor: 'pointer'
             }}
           >
-            作戦準備へ戻る
+            戦闘準備へ戻る
           </button>
           <button
             className="menu-button"
@@ -546,38 +548,55 @@ const UnitDeploymentScreen: React.FC<UnitDeploymentScreenProps> = ({
         maxZoom={3}
       />
 
-      {/* Keyboard Shortcut Help */}
+      {/* Keyboard Shortcut Help - positioned top-right below header */}
       <div style={{
         position: 'fixed',
-        bottom: '20px',
-        left: '20px',
-        padding: '10px 15px',
-        background: 'rgba(52, 73, 94, 0.9)',
-        borderRadius: '8px',
-        border: '1px solid #3498db',
+        top: '120px',
+        right: '20px',
+        padding: '12px 16px',
+        background: 'rgba(44, 62, 80, 0.92)',
+        borderRadius: '10px',
+        border: '1px solid rgba(52, 152, 219, 0.5)',
         fontSize: '14px',
         color: '#ecf0f1',
         zIndex: 100,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.35)',
+        backdropFilter: 'blur(4px)'
       }}>
-        <div style={{ fontWeight: 'bold', marginBottom: '5px', color: '#3498db' }}>ショートカット</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ fontWeight: 'bold', marginBottom: '8px', color: '#3498db', fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px' }}>ショートカット</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
           <kbd style={{
-            padding: '2px 6px',
-            background: '#2c3e50',
-            borderRadius: '4px',
-            border: '1px solid #7f8c8d',
-            fontSize: '12px'
-          }}>⌘/Ctrl</kbd>
-          <span>+</span>
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '4px 10px',
+            background: 'linear-gradient(145deg, #3d566e, #2c3e50)',
+            borderRadius: '6px',
+            border: '1px solid #5d6d7e',
+            fontSize: '13px',
+            fontWeight: 'bold',
+            color: '#ecf0f1',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+            minWidth: '36px',
+            fontFamily: 'monospace'
+          }}>Ctrl</kbd>
+          <span style={{ color: '#7f8c8d', fontWeight: 'bold' }}>+</span>
           <kbd style={{
-            padding: '2px 6px',
-            background: '#2c3e50',
-            borderRadius: '4px',
-            border: '1px solid #7f8c8d',
-            fontSize: '12px'
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '4px 10px',
+            background: 'linear-gradient(145deg, #3d566e, #2c3e50)',
+            borderRadius: '6px',
+            border: '1px solid #5d6d7e',
+            fontSize: '13px',
+            fontWeight: 'bold',
+            color: '#ecf0f1',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1)',
+            minWidth: '28px',
+            fontFamily: 'monospace'
           }}>H</kbd>
-          <span style={{ marginLeft: '5px' }}>初期位置に戻る</span>
+          <span style={{ marginLeft: '8px', color: '#bdc3c7', fontSize: '13px' }}>初期位置に戻る</span>
         </div>
       </div>
     </div>
