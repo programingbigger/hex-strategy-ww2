@@ -882,6 +882,128 @@
                   ]
                 },
                 {
+                  "id": "blue-supply-wagon",
+                  "name": "補給馬車",
+                  "type": "SupplyWagon",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "support",
+                  "stats": {
+                    "maxHp": 8,
+                    "defense": 0,
+                    "movement": 3,
+                    "canCounterAttack": true,
+                    "unitClass": "Infantry",
+                    "maxFuel": 50,
+                    "reconnaissance": 1
+                  },
+                  "supply": {
+                    "maxSupplyStock": 30
+                  },
+                  "cost": {
+                    "production": 80,
+                    "supply": {
+                      "ammunition": 2,
+                      "fuel": 2,
+                      "repair": 5
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-supply-wagon-kit",
+                      "name": "補給物資",
+                      "type": "補給物資",
+                      "ammunition": 0,
+                      "maxAmmunition": 0,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "isSupplyKit": true,
+                      "canInitiateAttack": false
+                    },
+                    {
+                      "id": "blue-supply-wagon-rifle",
+                      "name": "自衛用ライフル",
+                      "type": "自衛用ライフル",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 2 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 2 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "canInitiateAttack": false
+                    }
+                  ]
+                },
+                {
+                  "id": "blue-supply-truck",
+                  "name": "補給トラック",
+                  "type": "SupplyTruck",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "support",
+                  "stats": {
+                    "maxHp": 12,
+                    "defense": 1,
+                    "movement": 6,
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 60,
+                    "reconnaissance": 2
+                  },
+                  "supply": {
+                    "maxSupplyStock": 50
+                  },
+                  "cost": {
+                    "production": 200,
+                    "supply": {
+                      "ammunition": 3,
+                      "fuel": 5,
+                      "repair": 8
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-supply-truck-kit",
+                      "name": "補給物資",
+                      "type": "補給物資",
+                      "ammunition": 0,
+                      "maxAmmunition": 0,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "isSupplyKit": true,
+                      "canInitiateAttack": false
+                    },
+                    {
+                      "id": "blue-supply-truck-rifle",
+                      "name": "自衛用ライフル",
+                      "type": "自衛用ライフル",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 2 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 2 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "canInitiateAttack": false
+                    }
+                  ]
+                },
+                {
                   "id": "blue-transport-transport",
                   "name": "オペル・ブリッツ",
                   "type": "Transport",
@@ -1550,6 +1672,128 @@
                           "attack": 0
                         }
                       ]
+                    }
+                  ]
+                },
+                {
+                  "id": "red-supply-wagon",
+                  "name": "補給馬車",
+                  "type": "SupplyWagon",
+                  "faction": "Red",
+                  "branch": "陸",
+                  "category": "support",
+                  "stats": {
+                    "maxHp": 8,
+                    "defense": 0,
+                    "movement": 3,
+                    "canCounterAttack": true,
+                    "unitClass": "Infantry",
+                    "maxFuel": 50,
+                    "reconnaissance": 1
+                  },
+                  "supply": {
+                    "maxSupplyStock": 30
+                  },
+                  "cost": {
+                    "production": 80,
+                    "supply": {
+                      "ammunition": 2,
+                      "fuel": 2,
+                      "repair": 5
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "red-supply-wagon-kit",
+                      "name": "補給物資",
+                      "type": "補給物資",
+                      "ammunition": 0,
+                      "maxAmmunition": 0,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "isSupplyKit": true,
+                      "canInitiateAttack": false
+                    },
+                    {
+                      "id": "red-supply-wagon-rifle",
+                      "name": "自衛用ライフル",
+                      "type": "自衛用ライフル",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 2 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 2 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "canInitiateAttack": false
+                    }
+                  ]
+                },
+                {
+                  "id": "red-supply-truck",
+                  "name": "補給トラック",
+                  "type": "SupplyTruck",
+                  "faction": "Red",
+                  "branch": "陸",
+                  "category": "support",
+                  "stats": {
+                    "maxHp": 12,
+                    "defense": 1,
+                    "movement": 6,
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 60,
+                    "reconnaissance": 2
+                  },
+                  "supply": {
+                    "maxSupplyStock": 50
+                  },
+                  "cost": {
+                    "production": 200,
+                    "supply": {
+                      "ammunition": 3,
+                      "fuel": 5,
+                      "repair": 8
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "red-supply-truck-kit",
+                      "name": "補給物資",
+                      "type": "補給物資",
+                      "ammunition": 0,
+                      "maxAmmunition": 0,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "isSupplyKit": true,
+                      "canInitiateAttack": false
+                    },
+                    {
+                      "id": "red-supply-truck-rifle",
+                      "name": "自衛用ライフル",
+                      "type": "自衛用ライフル",
+                      "ammunition": 4,
+                      "maxAmmunition": 4,
+                      "range": { "min": 1, "max": 1 },
+                      "attack": [
+                        { "unitClass": "Infantry", "attack": 2 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 2 },
+                        { "unitClass": "Aircraft", "attack": 0 }
+                      ],
+                      "canInitiateAttack": false
                     }
                   ]
                 },

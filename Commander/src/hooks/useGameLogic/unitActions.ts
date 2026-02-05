@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   Unit,
   BoardLayout,
@@ -24,12 +24,14 @@ const isCapturableTerrain = (terrain: string): boolean => {
 
 export interface UnitActionsHook {
   handleAction: (
-    action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload'
+    action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload' | 'supply'
   ) => void;
   handleMaterialAction: (
     action: 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress'
   ) => void;
   consumeMaterial: (unit: Unit, amount: number) => Unit | null;
+  /** 補給アクション実行関数（外部から注入） */
+  setSupplyExecutor: (executor: (unit: Unit, allUnits: Unit[]) => Unit[] | null) => void;
 }
 
 interface UnitActionsDeps {
@@ -63,6 +65,13 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     armyFunds,
     setArmyFunds
   } = deps;
+
+  // 補給アクション実行関数のRef（外部から注入される）
+  const supplyExecutorRef = useRef<((unit: Unit, allUnits: Unit[]) => Unit[] | null) | null>(null);
+
+  const setSupplyExecutor = useCallback((executor: (unit: Unit, allUnits: Unit[]) => Unit[] | null) => {
+    supplyExecutorRef.current = executor;
+  }, []);
 
   const consumeMaterial = useCallback((unit: Unit, amount: number): Unit | null => {
     const materialWeapon = unit.weapons?.find(w => w.type === '資材');
@@ -210,7 +219,7 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     setSelectedUnitId(null);
   }, [selectedUnit, boardLayout, units, saveStateToHistory, consumeMaterial, setBoardLayout, setUnits, setSelectedUnitId, armyFunds, setArmyFunds]);
 
-  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload') => {
+  const handleAction = useCallback((action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload' | 'supply') => {
     if (!selectedUnit) return;
 
     if (action === 'wait') {
@@ -357,6 +366,16 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
           }
         }
       }
+    } else if (action === 'supply') {
+      // 補給アクション（フリーアクション）
+      if (supplyExecutorRef.current && selectedUnit) {
+        const updatedUnits = supplyExecutorRef.current(selectedUnit, units);
+        if (updatedUnits) {
+          saveStateToHistory();
+          setUnits(updatedUnits);
+          // フリーアクション: selectedUnitId は維持（選択解除しない）
+        }
+      }
     } else if (['enhance_city', 'build_bridge', 'build_fortress', 'destroy_fortress'].includes(action)) {
       handleMaterialAction(action as 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress');
     } else if (action === 'undo') {
@@ -373,5 +392,6 @@ export const useUnitActions = (deps: UnitActionsDeps): UnitActionsHook => {
     handleAction,
     handleMaterialAction,
     consumeMaterial,
+    setSupplyExecutor,
   };
 };

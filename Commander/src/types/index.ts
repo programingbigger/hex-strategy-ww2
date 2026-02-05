@@ -22,7 +22,7 @@ export type MilitaryBranch = '陸' | '海' | '空';
 
 export type UnitCategory = 'infantry' | 'armor' | 'artillery' | 'antitank' | 'support' | 'destroyer' | 'cruiser' | 'battleship' | 'fighter' | 'bomber' | 'transport';
 
-export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiTank' | 'Engineer' | 'Transport';
+export type UnitType = 'Infantry' | 'Tank' | 'ArmoredCar' | 'Artillery' | 'AntiTank' | 'Engineer' | 'Transport' | 'SupplyWagon' | 'SupplyTruck';
 
 export type UnitClass = 'Infantry' | 'Vehicle' | 'Tank' | 'Aircraft';
 
@@ -30,7 +30,8 @@ export type WeaponType =
   | '37mm主砲' | '36MG機銃' | '9mmライフル' | '105mm野砲'  // Legacy weapons
   | '50mm主砲' | '30cal機銃' | '57mm対戦車砲' | 'M1ライフル' | '155mm榴弾砲' | 'BAR機銃'  // Blue faction weapons
   | '7.7mm機銃' | '47mm対戦車砲' | '6.5mmライフル' | '99式軽機銃'  // Red faction weapons
-  | '7.92mm機銃' | '資材';  // New weapon types  // Red faction weapons
+  | '7.92mm機銃' | '資材'  // New weapon types  // Red faction weapons
+  | '補給物資' | '自衛用ライフル';  // 補給ユニットの武装
 
 export interface UnitClassAttack {
   unitClass: UnitClass | 'Tank' | 'Aircraft';
@@ -46,6 +47,8 @@ export interface Weapon {
   range: { min: number; max: number };
   attack: number | UnitClassAttack[];
   effectiveness?: { [key in UnitClass]?: number };
+  canInitiateAttack?: boolean; // false: 反撃でのみ使用可能（自発的攻撃不可）
+  isSupplyKit?: boolean; // true: 補給物資（攻撃武器ではない）
 }
 
 export type WeatherType = 'Clear' | 'Rain' | 'Storm' | 'Cloudy' | 'Snow' | 'Blizzard' | 'Fog';
@@ -90,6 +93,8 @@ export interface Unit {
   weapons: Weapon[]; // New weapon system
   loaded?: boolean; // New: for transport system - indicates if unit is loaded in transport
   transportId?: string; // New: for transport system - ID of transport unit
+  supplyStock?: number; // 補給ユニットの現在の補給物資量
+  maxSupplyStock?: number; // 補給ユニットの最大補給物資量
 }
 
 export interface Tile {

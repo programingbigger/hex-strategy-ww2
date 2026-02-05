@@ -130,6 +130,23 @@ export class ArmyManager {
       }
     }
 
+    // 補給ユニットの場合は supplyStock を初期化
+    const isSupplyUnit = template.type === 'SupplyWagon' || template.type === 'SupplyTruck';
+    let supplyStock: number | undefined;
+    let maxSupplyStock: number | undefined;
+    if (isSupplyUnit) {
+      // テンプレートの supply フィールドから読み込む
+      const rawTemplate = template as any;
+      if (rawTemplate.supply && rawTemplate.supply.maxSupplyStock) {
+        maxSupplyStock = rawTemplate.supply.maxSupplyStock;
+        supplyStock = rawTemplate.supply.maxSupplyStock;
+      } else {
+        // フォールバック
+        maxSupplyStock = template.type === 'SupplyWagon' ? 30 : 50;
+        supplyStock = maxSupplyStock;
+      }
+    }
+
     return {
       id: instanceId,
       type: template.type,
@@ -153,7 +170,8 @@ export class ArmyManager {
       fuel: template.stats.maxFuel,
       maxFuel: template.stats.maxFuel,
       xp: 0,
-      weapons: weapons
+      weapons: weapons,
+      ...(isSupplyUnit ? { supplyStock, maxSupplyStock } : {})
     };
   }
 

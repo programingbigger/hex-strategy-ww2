@@ -130,6 +130,30 @@ export const createUnit = (
     const unitStats = getUnitStatsByIdOrType(unitIdBase, type, team);
     const weapons = getUnitWeaponsByIdOrType(unitIdBase, type, team);
     
+    // 補給ユニットの場合、supplyStock を初期化する
+    const isSupplyUnit = type === 'SupplyWagon' || type === 'SupplyTruck';
+    let supplyStock: number | undefined;
+    let maxSupplyStock: number | undefined;
+    if (isSupplyUnit) {
+      // armyOrganization.json の supply.maxSupplyStock を読み込む
+      try {
+        const templates = armyManager.getUnitTemplatesBy(team, '陸');
+        const unitIdBase = id.replace(/-\d+$/, '');
+        const template = templates.find(t => t.id === unitIdBase) || templates.find(t => t.type === type);
+        const rawTemplate = (template as any);
+        if (rawTemplate && rawTemplate.supply && rawTemplate.supply.maxSupplyStock) {
+          maxSupplyStock = rawTemplate.supply.maxSupplyStock;
+          supplyStock = rawTemplate.supply.maxSupplyStock;
+        }
+      } catch (e) {
+        // フォールバック値
+      }
+      if (maxSupplyStock === undefined) {
+        maxSupplyStock = type === 'SupplyWagon' ? 30 : 50;
+        supplyStock = maxSupplyStock;
+      }
+    }
+
     return {
       id,
       type,
@@ -152,7 +176,8 @@ export const createUnit = (
       fuel: unitStats.maxFuel,
       maxFuel: unitStats.maxFuel,
       xp: 0,
-      weapons
+      weapons,
+      ...(isSupplyUnit ? { supplyStock, maxSupplyStock } : {})
     };
   } catch (error) {
     console.error('Failed to create unit from JSON, using fallback:', error);
@@ -169,7 +194,9 @@ const getUnitCategory = (type: UnitType): UnitCategory => {
     case 'Artillery': return 'artillery';
     case 'AntiTank': return 'antitank';
     case 'Engineer':
-    case 'Transport': return 'support';
+    case 'Transport':
+    case 'SupplyWagon':
+    case 'SupplyTruck': return 'support';
     default: return 'infantry';
   }
 };
@@ -223,6 +250,18 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
     case 'Transport':
       return {
         maxHp: 15, attack: 5, defense: 4, movement: 8,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 60, reconnaissance: 2
+      };
+    case 'SupplyWagon':
+      return {
+        maxHp: 8, attack: 2, defense: 0, movement: 3,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Infantry', maxFuel: 50, reconnaissance: 1
+      };
+    case 'SupplyTruck':
+      return {
+        maxHp: 12, attack: 2, defense: 1, movement: 6,
         attackRange: { min: 1, max: 1 }, canCounterAttack: true,
         unitClass: 'Vehicle', maxFuel: 60, reconnaissance: 2
       };
@@ -474,7 +513,23 @@ const getUnitTypeFromArmyId = (armyId: string): UnitType | null => {
     'blue-antitank-gun_pak_40': 'AntiTank',
     'blue-engineer-engineer': 'Engineer',
     'blue-transport-transport': 'Transport',
-    
+    'blue-supply-wagon': 'SupplyWagon',
+    'blue-supply-truck': 'SupplyTruck',
+
+    // Red army units
+    'red-infantry-reservist': 'Infantry',
+    'red-infantry-standard': 'Infantry',
+    'red-tankette-tks': 'Tank',
+    'red-tank-7tp': 'Tank',
+    'red-armored-car_wz34': 'ArmoredCar',
+    'red-artillery-75mm': 'Artillery',
+    'red-artillery-howitzer': 'Artillery',
+    'red-antitank-gun_37mm': 'AntiTank',
+    'red-engineer-engineer': 'Engineer',
+    'red-transport-transport': 'Transport',
+    'red-supply-wagon': 'SupplyWagon',
+    'red-supply-truck': 'SupplyTruck',
+
     // Legacy mappings (kept for backward compatibility)
     'blue-antitank-gun': 'AntiTank',
     'blue-engineer': 'Engineer',

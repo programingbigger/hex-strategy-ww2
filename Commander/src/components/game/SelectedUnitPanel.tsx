@@ -112,6 +112,17 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               </div>
             </div>
 
+            {/* 補給ユニットの補給物資量 */}
+            {(selectedUnit.type === 'SupplyWagon' || selectedUnit.type === 'SupplyTruck') && (
+              <div className="supply-stock">
+                <div className="stat-item">
+                  <span>📦 補給物資</span>
+                  <ProgressBar current={selectedUnit.supplyStock ?? 0} max={selectedUnit.maxSupplyStock ?? 1} color="var(--earth-info, #5b9bd5)" />
+                  <span>{selectedUnit.supplyStock ?? 0}/{selectedUnit.maxSupplyStock ?? 0}</span>
+                </div>
+              </div>
+            )}
+
             {/* 輸送ユニットの搭載情報 */}
             {selectedUnit.type === 'Transport' && (
               <div className="transport-cargo">

@@ -13,7 +13,7 @@ import { HEX_SIZE } from '../../config/constants';
 interface ActionPopupProps {
   selectedUnit: Unit | null;
   selectedUnitTile: Tile | null;
-  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload', materialAmount?: number) => void;
+  onAction: (action: 'wait' | 'undo' | 'capture' | 'enhance_city' | 'build_bridge' | 'build_fortress' | 'destroy_fortress' | 'load' | 'unload' | 'supply', materialAmount?: number) => void;
   boardLayout: Map<string, Tile>;
   units: Unit[];
   onStartTransportAction?: () => void;
@@ -22,6 +22,8 @@ interface ActionPopupProps {
   onStartMovementAction?: () => void;
   /** 攻撃モードを開始するコールバック */
   onStartAttackAction?: () => void;
+  /** 補給アクション: 受給側が実行可能かどうか */
+  canSupply?: (unit: Unit, allUnits: Unit[]) => boolean;
   currentFunds?: { [team: string]: number };
   activeTeam?: Team;
   /** Camera state from CameraContext: { x, y, zoom } */
@@ -40,6 +42,7 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   onStartEngineerAction,
   onStartMovementAction,
   onStartAttackAction,
+  canSupply,
   currentFunds,
   camera,
   boardRect
@@ -195,14 +198,17 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   const canAttack = (() => {
     if (selectedUnit.attacked) return false;
 
-    // 射程範囲を計算
+    // 射程範囲を計算（canInitiateAttack: false や isSupplyKit の武器を除外）
     let attackRangeMin = 1;
     let attackRangeMax = 0;
 
     if (selectedUnit.weapons && selectedUnit.weapons.length > 0) {
-      // 武器システム: 最大射程を取得
+      // 武器システム: 攻撃開始可能な武器の最大射程を取得
       for (const w of selectedUnit.weapons) {
-        if (w.type !== '資材' && w.range && w.range.max > 0) {
+        // isSupplyKit・canInitiateAttack:false・資材 の武器は除外
+        if (w.isSupplyKit || w.canInitiateAttack === false || w.type === '資材') continue;
+        if (w.ammunition <= 0) continue;
+        if (w.range && w.range.max > 0) {
           if (w.range.max > attackRangeMax) {
             attackRangeMax = w.range.max;
           }
@@ -228,6 +234,9 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
 
     return hasEnemyInRange;
   })();
+
+  // --- 補給アクション可否 ---
+  const canSupplyAction = selectedUnit && canSupply ? canSupply(selectedUnit, units) : false;
 
   // --- Determine if the unit has already acted (moved AND attacked) ---
   const hasActed = selectedUnit.moved && selectedUnit.attacked;
@@ -273,6 +282,14 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
         >
           待機解除
         </button>
+        {canSupplyAction && (
+          <button
+            className="military-button action-popup-btn"
+            onClick={() => onAction('supply')}
+          >
+            補給
+          </button>
+        )}
         {canCapture && (
           <button
             className="military-button action-popup-btn"

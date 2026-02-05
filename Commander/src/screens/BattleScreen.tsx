@@ -98,6 +98,9 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     startAttackAction,
     cancelAttackMode,
 
+    // Supply action
+    canSupply,
+
   } = useGameLogic(gameState.selectedMap?.id || 'test_map_1');
 
   // Camera controls for zoom functionality
@@ -422,6 +425,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             onStartEngineerAction={startEngineerAction}
             onStartMovementAction={startMovementAction}
             onStartAttackAction={startAttackAction}
+            canSupply={canSupply}
             currentFunds={armyFunds}
             activeTeam={activeTeam}
             camera={camera}

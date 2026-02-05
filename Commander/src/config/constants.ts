@@ -26,7 +26,9 @@ export const UNIT_STATS: { [key in UnitType]: UnitStats } = {
   AntiTank: getUnitStatsFromArmyJSON('AntiTank'),
   Artillery: getUnitStatsFromArmyJSON('Artillery'),
   Engineer: getUnitStatsFromArmyJSON('Engineer'),
-  Transport: getUnitStatsFromArmyJSON('Transport')
+  Transport: getUnitStatsFromArmyJSON('Transport'),
+  SupplyWagon: getUnitStatsFromArmyJSON('SupplyWagon'),
+  SupplyTruck: getUnitStatsFromArmyJSON('SupplyTruck')
 };
 
 // Helper function to get unit stats for a specific faction
@@ -100,6 +102,24 @@ const getUnitStatsFallback = (type: UnitType): UnitStats => {
         reconnaissance: 2,
         attackVs: { Vehicle: 5, Infantry: 5 },
         defenseVs: { Vehicle: 4, Infantry: 4 }
+      };
+    case 'SupplyWagon':
+      return {
+        maxHp: 8, attack: 2, defense: 0, movement: 3,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Infantry', maxFuel: 50,
+        reconnaissance: 1,
+        attackVs: { Vehicle: 2, Infantry: 2 },
+        defenseVs: { Vehicle: 0, Infantry: 0 }
+      };
+    case 'SupplyTruck':
+      return {
+        maxHp: 12, attack: 2, defense: 1, movement: 6,
+        attackRange: { min: 1, max: 1 }, canCounterAttack: true,
+        unitClass: 'Vehicle', maxFuel: 60,
+        reconnaissance: 2,
+        attackVs: { Vehicle: 2, Infantry: 2 },
+        defenseVs: { Vehicle: 1, Infantry: 1 }
       };
   }
 };

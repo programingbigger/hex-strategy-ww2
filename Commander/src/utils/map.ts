@@ -58,6 +58,10 @@ export function loadMapFromJSON(mapData: MapData): { board: BoardLayout; units: 
         unitType = 'Transport';
       } else if (unitData.id.includes('engineer')) {
         unitType = 'Engineer';
+      } else if (unitData.id.includes('supply-truck')) {
+        unitType = 'SupplyTruck';
+      } else if (unitData.id.includes('supply-wagon') || unitData.id.includes('supply')) {
+        unitType = 'SupplyWagon';
       } else {
         // Fallback to Infantry if type can't be determined
         unitType = 'Infantry';

@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import {
   Unit,
   Coordinate,
@@ -35,6 +35,7 @@ import { useTurnManagement } from './turnManagement';
 import { useUnitActions } from './unitActions';
 import { useEngineerActions } from './engineerActions';
 import { useTransportActions } from './transportActions';
+import { useSupplyActions } from './supplyActions';
 import { useArmyManagement } from './armyManagement';
 
 // Helper functions
@@ -169,6 +170,16 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     setArmyFunds: gameState.setArmyFunds,
     mapId,
   });;
+
+  const supplyActions = useSupplyActions({
+    units: gameState.units,
+    setUnits: gameState.setUnits,
+  });
+
+  // 補給アクション実行関数を unitActions に注入する
+  useEffect(() => {
+    unitActions.setSupplyExecutor(supplyActions.executeSupply);
+  }, [supplyActions.executeSupply]);
 
   // Computed values
   const selectedUnit = useMemo(() => 
@@ -525,6 +536,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     // Unit actions
     handleAction: unitActions.handleAction,
     handleMaterialAction: unitActions.handleMaterialAction,
+
+    // Supply actions
+    canSupply: supplyActions.canSupply,
     
     // Engineer actions
     startEngineerAction: engineerActions.startEngineerAction,

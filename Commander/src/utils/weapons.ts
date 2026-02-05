@@ -1,6 +1,22 @@
 import { Unit, Weapon, UnitClass } from '../types';
 
 // Weapon utility functions
+
+/**
+ * 攻撃に使用可能な武器を取得する。
+ * isSupplyKit: true の武器と canInitiateAttack: false の武器は除外する。
+ */
+export const getAttackableWeapons = (unit: Unit): Weapon[] => {
+  if (!unit.weapons || !Array.isArray(unit.weapons)) {
+    return [];
+  }
+  return unit.weapons.filter(weapon =>
+    weapon.ammunition > 0 &&
+    weapon.isSupplyKit !== true &&
+    weapon.canInitiateAttack !== false
+  );
+};
+
 export const getAvailableWeapons = (unit: Unit): Weapon[] => {
   if (!unit.weapons || !Array.isArray(unit.weapons)) {
     return [];
@@ -9,7 +25,7 @@ export const getAvailableWeapons = (unit: Unit): Weapon[] => {
 };
 
 export const getWeaponsInRange = (unit: Unit, targetDistance: number): Weapon[] => {
-  return getAvailableWeapons(unit).filter(weapon => 
+  return getAttackableWeapons(unit).filter(weapon =>
     targetDistance >= weapon.range.min && targetDistance <= weapon.range.max
   );
 };
@@ -173,17 +189,17 @@ export const getWeaponById = (unit: Unit, weaponId: string): Weapon | undefined 
 };
 
 export const getMaxAttackRange = (unit: Unit): number => {
-  const availableWeapons = getAvailableWeapons(unit);
-  if (availableWeapons.length === 0) return 0;
-  
-  return Math.max(...availableWeapons.map(weapon => weapon.range.max));
+  const attackableWeapons = getAttackableWeapons(unit);
+  if (attackableWeapons.length === 0) return 0;
+
+  return Math.max(...attackableWeapons.map(weapon => weapon.range.max));
 };
 
 export const getMinAttackRange = (unit: Unit): number => {
-  const availableWeapons = getAvailableWeapons(unit);
-  if (availableWeapons.length === 0) return 0;
+  const attackableWeapons = getAttackableWeapons(unit);
+  if (attackableWeapons.length === 0) return 0;
 
-  return Math.min(...availableWeapons.map(weapon => weapon.range.min));
+  return Math.min(...attackableWeapons.map(weapon => weapon.range.min));
 };
 
 // UnitClass-based attack utility functions
