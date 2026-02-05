@@ -132,6 +132,19 @@ const UnitDetailsDialog: React.FC<UnitDetailsDialogProps> = ({
               )
             ))}
 
+            {/* 補給ユニットの補給物資量 */}
+            {(unit.type === 'SupplyWagon' || unit.type === 'SupplyTruck') && (
+              <div className="info-item">
+                <span className="info-label">📦 補給物資</span>
+                <ProgressBar
+                  current={unit.supplyStock ?? 0}
+                  max={unit.maxSupplyStock ?? 1}
+                  color="var(--earth-info, #5b9bd5)"
+                />
+                <span className="info-value">{unit.supplyStock ?? 0}/{unit.maxSupplyStock ?? 0}</span>
+              </div>
+            )}
+
             {/* Weapon Range Information */}
             {currentWeapon && currentWeapon.range && (
               <div className="info-item">

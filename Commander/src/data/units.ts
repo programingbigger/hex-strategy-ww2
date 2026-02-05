@@ -276,7 +276,12 @@ const createUnitFallback = (
 ): Unit => {
   const unitStats = getUnitStatsFallback(type);
   const weapons = createUnitWeaponsFallback(type, team);
-  
+
+  // 補給ユニットの場合、supplyStock を初期化
+  const isSupplyUnit = type === 'SupplyWagon' || type === 'SupplyTruck';
+  const maxSupplyStock = isSupplyUnit ? (type === 'SupplyWagon' ? 30 : 50) : undefined;
+  const supplyStock = maxSupplyStock;
+
   return {
     id, type, team, x, y,
     hp: unitStats.maxHp, maxHp: unitStats.maxHp,
@@ -284,7 +289,8 @@ const createUnitFallback = (
     movement: unitStats.movement, attackRange: unitStats.attackRange,
     moved: false, attacked: false, canCounterAttack: unitStats.canCounterAttack,
     unitClass: unitStats.unitClass, fuel: unitStats.maxFuel,
-    maxFuel: unitStats.maxFuel, xp: 0, weapons
+    maxFuel: unitStats.maxFuel, xp: 0, weapons,
+    ...(isSupplyUnit ? { supplyStock, maxSupplyStock } : {})
   };
 };
 

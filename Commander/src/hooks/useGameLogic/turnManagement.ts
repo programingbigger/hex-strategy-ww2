@@ -11,6 +11,7 @@ import {
 import { coordToString } from '../../utils/map';
 import { CITY_HP, CITY_HEAL_RATE, UNIT_HEAL_HP, UNIT_STATS } from '../../config/constants';
 import { log } from '../../utils/logger';
+import { isSupplyUnit } from './supplyActions';
 import { calculateIncomeForAllTeams } from '../../utils/incomeManager';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
@@ -61,7 +62,7 @@ const applySupplyOperations = (unit: Unit, boardLayout: BoardLayout): Unit => {
     
     let resuppliedWeapons = unit.weapons;
     let ammunitionResupplied = false;
-    
+
     if (unit.weapons && Array.isArray(unit.weapons)) {
       resuppliedWeapons = unit.weapons.map(weapon => {
         if (weapon.ammunition < weapon.maxAmmunition) {
@@ -71,18 +72,28 @@ const applySupplyOperations = (unit: Unit, boardLayout: BoardLayout): Unit => {
         return weapon;
       });
     }
-    
+
+    // 補給ユニットの場合、supplyStock を最大値に回復
+    const unitIsSupplyType = isSupplyUnit(unit);
+    const originalSupplyStock = unit.supplyStock;
+    const needsSupplyRestock = unitIsSupplyType && unit.supplyStock !== undefined && unit.maxSupplyStock !== undefined && unit.supplyStock < unit.maxSupplyStock;
+    const newSupplyStock = needsSupplyRestock ? unit.maxSupplyStock : unit.supplyStock;
+
     const suppliedUnit = {
       ...unit,
       hp: newHp,
       fuel: newFuel,
-      weapons: resuppliedWeapons
+      weapons: resuppliedWeapons,
+      ...(unitIsSupplyType ? { supplyStock: newSupplyStock } : {})
     };
-    
+
     log(`🚛 SUPPLY APPLIED to ${unit.type}(${unit.id}):`);
     log(`   HP: ${originalHp} → ${newHp} (${needsHealing ? 'HEALED' : 'NO CHANGE'})`);
     log(`   Fuel: ${originalFuel} → ${newFuel} (${needsFuel ? 'RESUPPLIED' : 'NO CHANGE'})`);
     log(`   Ammunition: ${ammunitionResupplied ? 'RESUPPLIED' : 'NO CHANGE'}`);
+    if (unitIsSupplyType) {
+      log(`   SupplyStock: ${originalSupplyStock} → ${newSupplyStock} (${needsSupplyRestock ? 'RESTOCKED' : 'NO CHANGE'})`);
+    }
     
     return suppliedUnit;
   } else {
