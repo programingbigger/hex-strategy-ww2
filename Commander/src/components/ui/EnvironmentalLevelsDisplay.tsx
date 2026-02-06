@@ -2,11 +2,11 @@ import React from 'react';
 import { EnvironmentalLevels } from '../../types';
 
 interface EnvironmentalLevelsDisplayProps {
-  environmentalLevels: EnvironmentalLevels;
+  environmentalLevels?: EnvironmentalLevels;
 }
 
 const EnvironmentalLevelsDisplay: React.FC<EnvironmentalLevelsDisplayProps> = ({
-  environmentalLevels
+  environmentalLevels = { wetness: 0, snow: 0 }
 }) => {
   const { wetness, snow } = environmentalLevels;
 
