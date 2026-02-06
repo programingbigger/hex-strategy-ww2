@@ -11,7 +11,6 @@ import InformationPanel from '../components/game/InformationPanel';
 import UnitDetailsDialog from '../components/game/UnitDetailsDialog';
 import EndTurnConfirmModal from '../components/game/EndTurnConfirmModal';
 import ZoomControls from '../components/ui/ZoomControls';
-import EnvironmentalLevelsDisplay from '../components/ui/EnvironmentalLevelsDisplay';
 import TurnChangeModal from '../components/game/TurnChangeModal';
 
 import BattleReportModal from '../components/game/BattleReportModal';
@@ -386,6 +385,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           day={day}
           activeTeam={activeTeam}
           weather={weather}
+          environmentalLevels={environmentalLevels}
           blueUnits={blueUnits}
           redUnits={redUnits}
           blueFunds={armyFunds?.Blue || 0}
@@ -571,9 +571,6 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
         minZoom={0.5}
         maxZoom={3}
       />
-
-      {/* Environmental Levels Display */}
-      <EnvironmentalLevelsDisplay environmentalLevels={environmentalLevels} />
     </div>
   );
 };

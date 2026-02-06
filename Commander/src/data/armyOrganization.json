@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "version": "1.3.1",
-    "description": "Military unit organization by branch and faction. Blue=Axis, Red=Allies.",
-    "lastUpdated": "2025-09-21"
+    "version": "1.4.0",
+    "description": "Military unit organization by branch and faction. Blue=Astoria (Attacker), Red=Berga (Defender). Based on the 'Silver Spear' lore.",
+    "lastUpdated": "2026-02-07"
   },
   "factions": {
     "Blue": {
-      "name": "ドイツ国防軍",
-      "description": "German forces on the offensive.",
+      "name": "アストリア共和国",
+      "description": "「銀槍作戦」を遂行する新興国家。亡命技術者ド・ゴワンの設計したDGシリーズ戦車と、水晶同期通信による電撃戦を主軸とする。",
       "branches": {
         "陸": {
           "name": "陸軍",
@@ -17,11 +17,12 @@
               "units": [
                 {
                   "id": "blue-infantry-standard",
-                  "name": "歩兵分隊",
+                  "name": "アストリア正規歩兵分隊",
                   "type": "Infantry",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "infantry",
+                  "description": "大寒波「ホワイト・デス」を生き延びた若者たちで構成される、共和国軍の基幹戦力。彼らは単なる歩兵ではなく、水晶同期通信網（クリスタル・リンク）の末端ノードとして機能するよう訓練されている。装備する「AR-38 フロストバイト」小銃は、銃身の排熱を循環させることで極低温下でも凍結しない特殊機構を持つ。前線で敵を発見すると、直ちにその座標を後方の自走砲部隊へ送信し、数秒後には正確無比な支援砲撃を呼び寄せるその姿は、ベルガ軍から「死を呼ぶ斥候」として恐れられている。彼らにとって戦場は復讐の舞台であり、雪原こそが最大の友である。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 2,
@@ -42,7 +43,7 @@
                   "weapons": [
                     {
                       "id": "blue-infantry-rifle",
-                      "name": "Kar98k",
+                      "name": "AR-38 'Frostbite'",
                       "type": "Kar98k",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -51,27 +52,15 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
                       "id": "blue-infantry-at-rifle",
-                      "name": "PzB 39",
+                      "name": "AT-39 'Ice Pick'",
                       "type": "PzB 39",
                       "ammunition": 3,
                       "maxAmmunition": 3,
@@ -80,33 +69,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 2
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 2 },
+                        { "unitClass": "Tank", "attack": 4 },
+                        { "unitClass": "Vehicle", "attack": 5 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-infantry-motorized",
-                  "name": "自動車化歩兵",
+                  "name": "アストリア自動車化歩兵",
                   "type": "Infantry",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "infantry",
+                  "description": "DGシリーズ戦車の進撃速度に追随するために機械化された精鋭部隊。「雪原を時速40kmで移動する」というド・ゴワンのドクトリンを実現するため、高粘着履帯を装備したハーフトラックに搭乗して戦場を駆ける。彼らの役割は、戦車部隊がこじ開けた突破口を確保し、敵の退路を断つことにある。携帯する通信機は強化型であり、常に師団司令部とリンクし続けているため、混戦の中でも部隊が孤立することがない。泥濘期が来る前に決着をつけるという時間との戦いにおいて、彼らの機動力は銀槍作戦の成否を握る鍵となっている。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 1,
@@ -127,7 +105,7 @@
                   "weapons": [
                     {
                       "id": "blue-motorized-rifle",
-                      "name": "Kar98k",
+                      "name": "AR-38 'Frostbite'",
                       "type": "Kar98k",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -136,33 +114,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-infantry-mg_squad",
-                  "name": "機関銃部隊",
+                  "name": "水晶連動機関銃チーム",
                   "type": "Infantry",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "infantry",
+                  "description": "最新鋭の「CMG-40 ブリザード」機関銃を運用する火力支援部隊。この機関銃には水晶同期サイトが組み込まれており、隣接する味方部隊からの観測データを受け取ることで、射手から直接見えない敵に対しても制圧射撃を行うことができる。この「見えない機銃座」の脅威は、ベルガ軍の突撃を幾度となく粉砕してきた。また、冷却機構には不凍液循環システムが採用されており、氷点下30度の環境でも連射が可能である。防御の要として、あるいは攻撃の起点として、アストリアの歩兵戦術の中核を担う。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 3,
@@ -183,7 +150,7 @@
                   "weapons": [
                     {
                       "id": "blue-mg-squad-mg",
-                      "name": "MG34",
+                      "name": "CMG-40 'Blizzard'",
                       "type": "MG34",
                       "ammunition": 10,
                       "maxAmmunition": 10,
@@ -192,27 +159,15 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 1
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 6 },
+                        { "unitClass": "Tank", "attack": 1 },
+                        { "unitClass": "Vehicle", "attack": 5 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
                       "id": "blue-mg-squad-rifle",
-                      "name": "Kar98k",
+                      "name": "AR-38 'Frostbite'",
                       "type": "Kar98k",
                       "ammunition": 4,
                       "maxAmmunition": 4,
@@ -221,22 +176,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -248,11 +191,12 @@
               "units": [
                 {
                   "id": "blue-tank-panzer_1",
-                  "name": "I号戦車 B型",
+                  "name": "DG-1 'Iniz' (イニズ)",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "天才技術者ヴィクトル・ド・ゴワンがアストリア亡命後に初めて完成させた戦車。「始祖（イニズ）」の名が示す通り、その後のDGシリーズの基礎となった。本来は訓練用車両であったが、特許技術である「高粘着履帯」の実証実験機としての側面が強い。武装は連装機関銃のみと貧弱だが、雪原を平地のように疾走するその機動力は、当時の列強各国の常識を覆した。偵察用として割り切った運用がされており、敵の配置を通信で味方に知らせ、交戦を避けて奥地へと浸透する戦術を得意とする。アストリア機甲史の原点にして、銀槍の切っ先。",
                   "stats": {
                     "maxHp": 12,
                     "defense": 3,
@@ -273,7 +217,7 @@
                   "weapons": [
                     {
                       "id": "blue-tank-panzer1-mg",
-                      "name": "MG13",
+                      "name": "CMG-13 連装機銃",
                       "type": "MG13",
                       "ammunition": 10,
                       "maxAmmunition": 10,
@@ -282,33 +226,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 1
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 5 },
+                        { "unitClass": "Tank", "attack": 1 },
+                        { "unitClass": "Vehicle", "attack": 4 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-tank-panzer_2",
-                  "name": "II号戦車 C型",
+                  "name": "DG-2 'Varg' (ヴォルグ)",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "DG-1の機動力を維持しつつ、実戦能力を付与した偵察軽戦車。「ヴォルグ（狼）」の名は、水晶同期通信を用いて群れで敵を狩るその戦術スタイルに由来する。20mm機関砲を搭載し、ベルガ軍の装甲車や軽車両を容易に撃破する能力を持つ。ド・ゴワンの設計思想である「居住性」も向上しており、強制暖房システムによって乗員は極寒の中でもベストコンディションを維持できる。偵察部隊の主力として、主力戦車部隊の前路を啓開し、敵の対戦車砲陣地を早期に発見・無力化する任務を負う。アストリア軍の「目」であり「牙」でもある。",
                   "stats": {
                     "maxHp": 14,
                     "defense": 4,
@@ -329,7 +262,7 @@
                   "weapons": [
                     {
                       "id": "blue-tank-panzer2-gun",
-                      "name": "2cm KwK 30",
+                      "name": "20mm自動機関砲",
                       "type": "2cm KwK 30",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -338,27 +271,15 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 5 },
+                        { "unitClass": "Vehicle", "attack": 6 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
                       "id": "blue-tank-mg",
-                      "name": "MG34",
+                      "name": "CMG-34",
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -367,33 +288,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 1
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 7 },
+                        { "unitClass": "Tank", "attack": 1 },
+                        { "unitClass": "Vehicle", "attack": 6 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-tank-panzer_3",
-                  "name": "III号戦車 E型",
+                  "name": "DG-3 'Chevalier' (シュバリエ)",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "対戦車戦闘を主眼に置いて開発された主力中戦車。ド・ゴワンは、車長が指揮と通信に専念できる3人乗り大型砲塔を採用し、部隊としての連携能力を飛躍的に高めた。「シュバリエ（騎士）」の名は、その洗練されたフォルムと、味方を指揮し守る役割から名付けられた。主砲の37mm砲は高初速で、ベルガ軍のE-7軽戦車を遠距離から撃破可能。エンジン出力と重量のバランスが最適化されており、雪原での機動戦において最も扱いやすい車両とされている。銀槍作戦におけるアストリア軍の背骨を支える名機。",
                   "stats": {
                     "maxHp": 18,
                     "defense": 6,
@@ -414,7 +324,7 @@
                   "weapons": [
                     {
                       "id": "blue-tank-panzer3-gun",
-                      "name": "3.7cm KwK 36",
+                      "name": "3.7cm DG砲",
                       "type": "3.7cm KwK 36",
                       "ammunition": 10,
                       "maxAmmunition": 10,
@@ -423,27 +333,15 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 4 },
+                        { "unitClass": "Tank", "attack": 7 },
+                        { "unitClass": "Vehicle", "attack": 8 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
                       "id": "blue-tank-mg",
-                      "name": "MG34",
+                      "name": "CMG-34",
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -452,33 +350,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 1
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 7 },
+                        { "unitClass": "Tank", "attack": 1 },
+                        { "unitClass": "Vehicle", "attack": 6 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-tank-medium",
-                  "name": "IV号戦車 D型",
+                  "name": "DG-4 'Silver Lance' (銀の槍)",
                   "type": "Tank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "ヴィクトル・ド・ゴワンの最高傑作であり、アストリア共和国の技術力の頂点に立つ重戦車。75mm短砲身砲を搭載し、強固な要塞陣地や敵の重戦車を一撃で粉砕する火力を持つ。「銀槍作戦」の作戦名はこの車両に由来しており、まさにアストリアの怒りを体現する存在である。車体規模は大きいが、接地圧を分散させる幅広の履帯により、雪上でも埋没することなく進撃できる。将来的な拡張性も考慮されており、長砲身砲への換装も可能な設計となっている。ベルガ軍兵士にとって、吹雪の中から現れるこの戦車のシルエットは、敗北の決定的な予兆となる。",
                   "stats": {
                     "maxHp": 20,
                     "defense": 7,
@@ -499,7 +386,7 @@
                   "weapons": [
                     {
                       "id": "blue-tank-main-gun",
-                      "name": "7.5cm KwK 37",
+                      "name": "7.5cm DGカノン",
                       "type": "7.5cm KwK 37",
                       "ammunition": 12,
                       "maxAmmunition": 12,
@@ -508,27 +395,15 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 10
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 12
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 6 },
+                        { "unitClass": "Tank", "attack": 10 },
+                        { "unitClass": "Vehicle", "attack": 12 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
                       "id": "blue-tank-mg",
-                      "name": "MG34",
+                      "name": "CMG-34",
                       "type": "MG34",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -537,33 +412,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 1
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 7 },
+                        { "unitClass": "Tank", "attack": 1 },
+                        { "unitClass": "Vehicle", "attack": 6 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-armored-car",
-                  "name": "Sd.Kfz. 222",
+                  "name": "AC-39 'Gale' (ゲイル)",
                   "type": "ArmoredCar",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "「疾風（ゲイル）」の名を持つ、4輪駆動の高速偵察車。戦線全域に展開し、水晶同期通信機を用いて敵の位置情報を収集・送信するアストリア軍の神経細胞。20mm機関砲を装備し、敵の軽装甲車両との遭遇戦にも対応できる。特筆すべきは、タイヤに装着されたスパイクチェーンと、四輪独立懸架による雪道での走破性である。ベルガ軍の装甲車が雪に足を取られる中、AC-39は氷上を滑るように駆け抜け、常に情報の優位性を維持し続ける。",
                   "stats": {
                     "maxHp": 15,
                     "defense": 4,
@@ -584,7 +448,7 @@
                   "weapons": [
                     {
                       "id": "blue-armored-mg",
-                      "name": "2cm KwK 30",
+                      "name": "20mm自動機関砲",
                       "type": "2cm KwK 30",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -593,22 +457,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 4 },
+                        { "unitClass": "Tank", "attack": 7 },
+                        { "unitClass": "Vehicle", "attack": 8 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -620,11 +472,12 @@
               "units": [
                 {
                   "id": "blue-artillery-howitzer",
-                  "name": "10.5cm leFH 18",
+                  "name": "SPG-10 'Thunder' (サンダー)",
                   "type": "Artillery",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "artillery",
+                  "description": "DG-2の車体をベースに、10.5cm榴弾砲を搭載した自走砲。従来の牽引式砲兵とは異なり、機甲部隊と共に行動し、停止から射撃までを数分で完了させる即応性を持つ。アストリアのドクトリンにおいて、この自走砲は「通信網の拳」として位置づけられており、前線の斥候が指定した座標へ、視界外から正確な曲射弾道を叩き込む。その砲撃音は、雪原に轟く雷鳴の如く、敵軍に絶望を告げる。",
                   "stats": {
                     "maxHp": 12,
                     "defense": 2,
@@ -654,22 +507,10 @@
                         "max": 6
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 16
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 9
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 14
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 16 },
+                        { "unitClass": "Tank", "attack": 9 },
+                        { "unitClass": "Vehicle", "attack": 14 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -681,11 +522,12 @@
               "units": [
                 {
                   "id": "blue-antitank-gun_37mm",
-                  "name": "3.7cm PaK 36",
+                  "name": "ATG-37 'Hail' (ヘイル)",
                   "type": "AntiTank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "antitank",
+                  "description": "軽量で展開が容易な37mm対戦車砲。愛称の「ヘイル（雹）」は、連射性能の高さと、敵車両に降り注ぐ徹甲弾の雨に由来する。防楯には雪中迷彩が施されており、雪原での待ち伏せ攻撃において高い隠蔽性を発揮する。水晶同期通信により敵戦車の接近を事前に察知できるため、常に有利な射撃位置を確保してから交戦に入ることができる。",
                   "stats": {
                     "maxHp": 6,
                     "defense": 2,
@@ -715,33 +557,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 7 },
+                        { "unitClass": "Vehicle", "attack": 7 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-antitank-gun_pak_40",
-                  "name": "7.5cm PaK 40",
+                  "name": "ATG-75 'Glacier' (グレイシャー)",
                   "type": "AntiTank",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "antitank",
+                  "description": "ベルガ軍の重戦車に対抗するために開発された大型対戦車砲。「グレイシャー（氷河）」の名は、その巨大さと、どんな強固な装甲をも削り取る破壊力を象徴している。重量があるため移動は困難だが、重要拠点の防衛においては鉄壁の守りを提供する。DG-4の主砲と同等の貫通力を持ち、長距離から敵戦車を狙撃することが可能。",
                   "stats": {
                     "maxHp": 8,
                     "defense": 3,
@@ -771,22 +602,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 12
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 13
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 5 },
+                        { "unitClass": "Tank", "attack": 12 },
+                        { "unitClass": "Vehicle", "attack": 13 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -798,11 +617,12 @@
               "units": [
                 {
                   "id": "blue-engineer-engineer",
-                  "name": "工作車",
+                  "name": "アストリア工兵工作車",
                   "type": "Engineer",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "support",
+                  "description": "DGシリーズの車体を流用した装甲工作車。極寒の環境下でも乗員を保護する居住区を備え、迅速な橋梁建設や地雷除去を行う。アストリア軍の進撃路を切り開く「開拓者」であり、通信中継アンテナを設置する役割も担う。彼らが道を造り、その上を銀槍が駆け抜ける。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 1,
@@ -823,7 +643,7 @@
                   "weapons": [
                     {
                       "id": "blue-engineer-rifle",
-                      "name": "Kar98k",
+                      "name": "AR-38 'Frostbite'",
                       "type": "Kar98k",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -832,22 +652,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
@@ -861,33 +669,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "blue-supply-wagon",
-                  "name": "補給馬車",
+                  "name": "アストリア輜重馬車",
                   "type": "SupplyWagon",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "support",
+                  "description": "寒冷地適応種の馬を用いた補給部隊。機械化が進む軍にあって前時代的に見えるが、燃料凍結のリスクがなく、山岳地帯や深雪地帯での輸送においてはトラックよりも信頼性が高い。静音性に優れ、敵に気づかれずに前線の孤立部隊へ物資を届けることも可能。",
                   "stats": {
                     "maxHp": 8,
                     "defense": 0,
@@ -927,7 +724,7 @@
                     },
                     {
                       "id": "blue-supply-wagon-rifle",
-                      "name": "自衛用ライフル",
+                      "name": "自衛用小銃",
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
@@ -944,11 +741,12 @@
                 },
                 {
                   "id": "blue-supply-truck",
-                  "name": "補給トラック",
+                  "name": "アストリア補給トラック",
                   "type": "SupplyTruck",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "support",
+                  "description": "高粘着履帯を装備した半装軌式の補給車両。ド・ゴワンの設計により、極低温下でもエンジンの再始動が容易で、高速で進撃するDG戦車隊に燃料と弾薬を供給し続ける。通信機を搭載し、リアルタイムで部隊の消費状況を把握する効率的な物流システムの要。",
                   "stats": {
                     "maxHp": 12,
                     "defense": 1,
@@ -988,7 +786,7 @@
                     },
                     {
                       "id": "blue-supply-truck-rifle",
-                      "name": "自衛用ライフル",
+                      "name": "自衛用小銃",
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
@@ -1005,11 +803,12 @@
                 },
                 {
                   "id": "blue-transport-transport",
-                  "name": "オペル・ブリッツ",
+                  "name": "通信中継兼輸送車",
                   "type": "Transport",
                   "faction": "Blue",
                   "branch": "陸",
                   "category": "support",
+                  "description": "水晶同期通信の中継アンテナを搭載した大型車両。広大な戦域において、司令部と前線部隊、そして自走砲をつなぐ「見えない糸」の結節点である。この車両が存在する限り、アストリア軍は有機的な連携を保ち続けることができる。人員輸送能力も備え、電撃戦のペースメーカーとして機能する。",
                   "stats": {
                     "maxHp": 15,
                     "defense": 4,
@@ -1043,7 +842,7 @@
                   "weapons": [
                     {
                       "id": "blue-engineer-rifle",
-                      "name": "Kar98k",
+                      "name": "AR-38 'Frostbite'",
                       "type": "Kar98k",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -1052,22 +851,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -1079,42 +866,24 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": {
-              "name": "駆逐艦",
-              "units": []
-            },
-            "cruiser": {
-              "name": "巡洋艦",
-              "units": []
-            },
-            "battleship": {
-              "name": "戦艦",
-              "units": []
-            }
+            "destroyer": { "name": "駆逐艦", "units": [] },
+            "cruiser": { "name": "巡洋艦", "units": [] },
+            "battleship": { "name": "戦艦", "units": [] }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": {
-              "name": "戦闘機",
-              "units": []
-            },
-            "bomber": {
-              "name": "爆撃機",
-              "units": []
-            },
-            "transport": {
-              "name": "輸送機",
-              "units": []
-            }
+            "fighter": { "name": "戦闘機", "units": [] },
+            "bomber": { "name": "爆撃機", "units": [] },
+            "transport": { "name": "輸送機", "units": [] }
           }
         }
       }
     },
     "Red": {
-      "name": "ポーランド軍",
-      "description": "The Polish Army, defending their homeland.",
+      "name": "ベルガ連邦",
+      "description": "「アイゼン（鉄）」の重工業力と圧倒的物量を誇る大国。伝統的かつ堅実な兵器体系を持つが、寒冷地適応と通信技術で遅れを取っている。",
       "branches": {
         "陸": {
           "name": "陸軍",
@@ -1124,11 +893,12 @@
               "units": [
                 {
                   "id": "red-infantry-reservist",
-                  "name": "予備役兵",
+                  "name": "ベルガ予備役兵",
                   "type": "Infantry",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "infantry",
+                  "description": "急遽招集された市民兵による部隊。装備する「F-98連邦小銃」は50年前の設計だが、その堅牢さは折り紙付きである。十分な訓練を受けておらず、最新の連携戦術には疎いが、故郷を守るという士気は高い。彼らの役割は、圧倒的な数で前線を埋め尽くし、アストリア軍の進撃を肉体で食い止める「鉄のカーテン」となることである。",
                   "stats": {
                     "maxHp": 8,
                     "defense": 2,
@@ -1149,7 +919,7 @@
                   "weapons": [
                     {
                       "id": "red-infantry-old-rifle",
-                      "name": "旧式ライフル",
+                      "name": "旧式 F-98",
                       "type": "Old Service Rifle",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -1158,33 +928,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "red-infantry-standard",
-                  "name": "歩兵分隊",
+                  "name": "ベルガ正規歩兵",
                   "type": "Infantry",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "infantry",
+                  "description": "連邦陸軍の主力歩兵。重厚な装備と豊富な弾薬を持ち、拠点防御において粘り強い戦闘を展開する。アストリアのような高度な通信支援は受けられないが、分隊長を中心とした現場判断での戦闘能力は高い。しかし、アストリアの「見えない砲撃」に対しては有効な対抗手段を持たず、塹壕の中で耐えることを強いられている。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 3,
@@ -1205,7 +964,7 @@
                   "weapons": [
                     {
                       "id": "red-infantry-rifle",
-                      "name": "Karabinek wz. 29",
+                      "name": "F-98改 連邦小銃",
                       "type": "Karabinek wz. 29",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -1214,22 +973,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 4 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 4 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -1241,11 +988,12 @@
               "units": [
                 {
                   "id": "red-tankette-tks",
-                  "name": "TKS豆戦車",
+                  "name": "E-1 'Käfer' (ケーファー)",
                   "type": "Tank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "アイゼン重工が製造した豆戦車。愛称の「ケーファー（甲虫）」の通り、小さく丸みを帯びた形状が特徴。国境警備用に大量生産されたが、極寒の雪原ではエンジン出力不足により立ち往生することが多い。武装の20mm砲はアストリアの軽車両には有効だが、DGシリーズの戦車には歯が立たない。数で押し包み、敵の進撃を少しでも遅らせるための「消耗品」として運用されている。",
                   "stats": {
                     "maxHp": 8,
                     "defense": 2,
@@ -1266,7 +1014,7 @@
                   "weapons": [
                     {
                       "id": "red-tankette-tks-gun",
-                      "name": "20mm機関砲",
+                      "name": "20mm連邦機関砲",
                       "type": "20mm機関砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
@@ -1275,33 +1023,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 4 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "red-tank-7tp",
-                  "name": "7TP軽戦車",
+                  "name": "E-7 'Dachs' (ダックス)",
                   "type": "Tank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "連邦軍の主力軽戦車。「ダックス（穴熊）」の名は、その低い車高と地味ながらもしぶとい生存性から付けられた。ボフォース社製の37mm砲をライセンス生産して搭載しており、攻撃力は標準的。しかし、無線機が貧弱で部隊連携が取りにくく、アストリアのDG戦車隊に各個撃破されるケースが目立つ。カタログスペック上の性能は悪くないが、運用思想の古さが足を引っ張っている悲運の車両。",
                   "stats": {
                     "maxHp": 16,
                     "defense": 5,
@@ -1322,7 +1059,7 @@
                   "weapons": [
                     {
                       "id": "red-tank-7tp-gun",
-                      "name": "Bofors 37mm戦車砲",
+                      "name": "37mm E-7戦車砲",
                       "type": "Bofors 37mm戦車砲",
                       "ammunition": 10,
                       "maxAmmunition": 10,
@@ -1331,33 +1068,22 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 4
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 6
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 7
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 4 },
+                        { "unitClass": "Tank", "attack": 6 },
+                        { "unitClass": "Vehicle", "attack": 7 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "red-armored-car_wz34",
-                  "name": "wz.34装甲車",
+                  "name": "Ev-34 'Wächter' (ヴェヒター)",
                   "type": "ArmoredCar",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "armor",
+                  "description": "治安維持用に開発された旧式装甲車。「ヴェヒター（番人）」の名を持つが、現代戦の偵察任務には力不足が否めない。不整地走破性が低く、雪原では道路上しか移動できないため、アストリアの偵察車に容易に裏をかかれてしまう。搭載武装も対歩兵用であり、敵装甲車との戦闘は自殺行為に等しい。連邦軍の目がどれほど曇っているかを象徴するような車両。",
                   "stats": {
                     "maxHp": 12,
                     "defense": 3,
@@ -1378,7 +1104,7 @@
                   "weapons": [
                     {
                       "id": "red-armored-car-wz34-mg",
-                      "name": "Hotchkiss wz.25",
+                      "name": "HF-25 車載機銃",
                       "type": "Hotchkiss wz.25",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -1387,22 +1113,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 5
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 5 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 5 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -1414,11 +1128,12 @@
               "units": [
                 {
                   "id": "red-artillery-75mm",
-                  "name": "wz.1897/17 75mm野砲",
+                  "name": "FK-18 'Hammer' (ハンマー)",
                   "type": "Artillery",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "artillery",
+                  "description": "連邦軍の標準的な75mm野砲。信頼性が高く、大量に配備されている。強固な陣地からの一斉射撃は「鉄のハンマー」の如くアストリア軍を叩くが、移動には牽引が必要で、陣地転換に時間がかかるのが致命的弱点。アストリアの自走砲による対砲兵射撃の格好の標的となっている。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 2,
@@ -1439,7 +1154,7 @@
                   "weapons": [
                     {
                       "id": "red-artillery-gun-75mm",
-                      "name": "Armata polowa 75mm",
+                      "name": "75mm連邦野砲",
                       "type": "Armata polowa 75mm",
                       "ammunition": 5,
                       "maxAmmunition": 5,
@@ -1448,33 +1163,22 @@
                         "max": 4
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 8 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 8 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "red-artillery-howitzer",
-                  "name": "wz.1914/19A 100mm榴弾砲",
+                  "name": "sFH-19 'Anvil' (アンビル)",
                   "type": "Artillery",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "artillery",
+                  "description": "要塞防衛用の100mm重榴弾砲。「アンビル（金床）」の名は、敵の攻撃を受け止めて粉砕する役割を示す。その破壊力は絶大で、直撃すればアストリアの重戦車といえども無事では済まない。しかし、その重量ゆえに一度設置すると移動はほぼ不可能。アストリア軍は正面からの攻撃を避け、迂回浸透して通信線を切断する戦術をとるため、宝の持ち腐れになることも多い。",
                   "stats": {
                     "maxHp": 12,
                     "defense": 2,
@@ -1495,7 +1199,7 @@
                   "weapons": [
                     {
                       "id": "red-artillery-howitzer-100mm",
-                      "name": "Haubica 100mm",
+                      "name": "100mm連邦榴弾砲",
                       "type": "Haubica 100mm",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -1504,22 +1208,10 @@
                         "max": 5
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 10
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 10
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 10 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 10 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -1531,11 +1223,12 @@
               "units": [
                 {
                   "id": "red-antitank-gun_37mm",
-                  "name": "wz.36 37mm対戦車砲",
+                  "name": "Pak-36 'Needle' (ニードル)",
                   "type": "AntiTank",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "antitank",
+                  "description": "歩兵部隊に配備されている37mm対戦車砲。アストリアのDG-1や装甲車には有効だが、新型のDG-3やDG-4の正面装甲を貫くには力不足。「ニードル（針）」と揶揄されることもあるが、熟練した砲手は敵戦車の履帯や視察窓を狙い撃つことで、進撃を阻止しようと奮闘する。",
                   "stats": {
                     "maxHp": 6,
                     "defense": 2,
@@ -1556,7 +1249,7 @@
                   "weapons": [
                     {
                       "id": "red-antitank-gun-37mm",
-                      "name": "Bofors 37mm AT Gun",
+                      "name": "37mm対戦車砲",
                       "type": "Bofors 37mm AT Gun",
                       "ammunition": 8,
                       "maxAmmunition": 8,
@@ -1565,22 +1258,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 8
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 8 },
+                        { "unitClass": "Vehicle", "attack": 8 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
@@ -1592,11 +1273,12 @@
               "units": [
                 {
                   "id": "red-engineer-engineer",
-                  "name": "工兵",
+                  "name": "ベルガ工兵隊",
                   "type": "Engineer",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "support",
+                  "description": "陣地構築と障害物設置を専門とする工兵部隊。雪の中での土木作業に精通しており、彼らが築いた塹壕線は極めて強固である。アストリアの進撃を遅らせるため、橋梁の爆破や地雷原の敷設を行う「遅滞戦闘」の主役。",
                   "stats": {
                     "maxHp": 10,
                     "defense": 1,
@@ -1617,7 +1299,7 @@
                   "weapons": [
                     {
                       "id": "red-engineer-rifle",
-                      "name": "Karabinek wz. 29",
+                      "name": "F-98改 連邦小銃",
                       "type": "Karabinek wz. 29",
                       "ammunition": 6,
                       "maxAmmunition": 6,
@@ -1626,22 +1308,10 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 3
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 3 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 3 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     },
                     {
@@ -1655,29 +1325,17 @@
                         "max": 1
                       },
                       "attack": [
-                        {
-                          "unitClass": "Infantry",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Tank",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Vehicle",
-                          "attack": 0
-                        },
-                        {
-                          "unitClass": "Aircraft",
-                          "attack": 0
-                        }
+                        { "unitClass": "Infantry", "attack": 0 },
+                        { "unitClass": "Tank", "attack": 0 },
+                        { "unitClass": "Vehicle", "attack": 0 },
+                        { "unitClass": "Aircraft", "attack": 0 }
                       ]
                     }
                   ]
                 },
                 {
                   "id": "red-supply-wagon",
-                  "name": "補給馬車",
+                  "name": "ベルガ補給馬車",
                   "type": "SupplyWagon",
                   "faction": "Red",
                   "branch": "陸",
@@ -1691,6 +1349,7 @@
                     "maxFuel": 50,
                     "reconnaissance": 1
                   },
+                  "description": "連邦軍の物流を支える古き良き馬車隊。広大な穀倉地帯を持つベルガでは、馬は安価で信頼性の高い輸送手段として重宝されている。アストリアの電撃戦に対しては足が遅いが、泥濘や深雪でも確実に進むことができる。",
                   "supply": {
                     "maxSupplyStock": 30
                   },
@@ -1721,7 +1380,7 @@
                     },
                     {
                       "id": "red-supply-wagon-rifle",
-                      "name": "自衛用ライフル",
+                      "name": "自衛用小銃",
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
@@ -1738,7 +1397,7 @@
                 },
                 {
                   "id": "red-supply-truck",
-                  "name": "補給トラック",
+                  "name": "ベルガ補給トラック",
                   "type": "SupplyTruck",
                   "faction": "Red",
                   "branch": "陸",
@@ -1752,6 +1411,7 @@
                     "maxFuel": 60,
                     "reconnaissance": 2
                   },
+                  "description": "連邦軍の近代化計画によって配備された輸送トラック。主に街道や整備された道路を使用して物資を運ぶ。アストリアの半装軌車のような悪路走破性はなく、雪が積もると行動不能になることが多い。",
                   "supply": {
                     "maxSupplyStock": 50
                   },
@@ -1782,7 +1442,7 @@
                     },
                     {
                       "id": "red-supply-truck-rifle",
-                      "name": "自衛用ライフル",
+                      "name": "自衛用小銃",
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
@@ -1799,11 +1459,12 @@
                 },
                 {
                   "id": "red-transport-transport",
-                  "name": "Polski Fiat 621",
+                  "name": "兵員輸送トラック",
                   "type": "Transport",
                   "faction": "Red",
                   "branch": "陸",
                   "category": "support",
+                  "description": "歩兵を迅速に展開させるためのトラック。防御力はなく、アストリアの砲撃に対して極めて脆弱。連邦軍は数で劣勢を補うため、このトラックで次々と予備戦力を前線に投入し続けている。",
                   "stats": {
                     "maxHp": 15,
                     "defense": 4,
@@ -1843,35 +1504,17 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": {
-              "name": "駆逐艦",
-              "units": []
-            },
-            "cruiser": {
-              "name": "巡洋艦",
-              "units": []
-            },
-            "battleship": {
-              "name": "戦艦",
-              "units": []
-            }
+            "destroyer": { "name": "駆逐艦", "units": [] },
+            "cruiser": { "name": "巡洋艦", "units": [] },
+            "battleship": { "name": "戦艦", "units": [] }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": {
-              "name": "戦闘機",
-              "units": []
-            },
-            "bomber": {
-              "name": "爆撃機",
-              "units": []
-            },
-            "transport": {
-              "name": "輸送機",
-              "units": []
-            }
+            "fighter": { "name": "戦闘機", "units": [] },
+            "bomber": { "name": "爆撃機", "units": [] },
+            "transport": { "name": "輸送機", "units": [] }
           }
         }
       }
@@ -1889,14 +1532,8 @@
       "小隊"
     ],
     "bonuses": {
-      "同一師団": {
-        "attack": 0.1,
-        "defense": 0.05
-      },
-      "指揮官効果": {
-        "範囲": 2,
-        "効果": 0.15
-      }
+      "同一師団": { "attack": 0.1, "defense": 0.05 },
+      "指揮官効果": { "範囲": 2, "効果": 0.15 }
     }
   }
 }

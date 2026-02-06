@@ -1,5 +1,5 @@
 import React from 'react';
-import { Team, WeatherType } from '../../types';
+import { Team, WeatherType, EnvironmentalLevels } from '../../types';
 import '../../styles/military-museum-theme.css';
 
 interface HeaderProps {
@@ -10,6 +10,7 @@ interface HeaderProps {
   day?: number;
   activeTeam: Team;
   weather: WeatherType;
+  environmentalLevels?: EnvironmentalLevels;
   blueUnits: number;
   redUnits: number;
   blueFunds?: number;
@@ -27,6 +28,7 @@ const Header: React.FC<HeaderProps> = ({
   day,
   activeTeam,
   weather,
+  environmentalLevels,
   blueUnits,
   redUnits,
   blueFunds,
@@ -87,6 +89,12 @@ const Header: React.FC<HeaderProps> = ({
         <span className="header-item">📅 {formatDate(year, month, day)}</span>
         <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
         <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
+        {environmentalLevels && (
+          <span className="header-item environmental" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <span style={{ color: environmentalLevels.wetness > 0 ? '#4299e1' : '#718096' }}>💧{environmentalLevels.wetness}</span>
+            <span style={{ color: environmentalLevels.snow > 0 ? '#63b3ed' : '#718096' }}>❄️{environmentalLevels.snow}</span>
+          </span>
+        )}
         <span className="header-item funds">軍資金：{formatFunds(activeTeam === 'Blue' ? blueFunds : redFunds)}</span>
       </div>
 
