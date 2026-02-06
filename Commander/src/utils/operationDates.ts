@@ -88,10 +88,40 @@ export function getMonthNames(): string[] {
 
 /**
  * Get available years for operation selection
- * @returns Array of years for WW2 period
+ * @param mapId Optional map ID to determine year restrictions
+ * @returns Array of years
  */
-export function getAvailableYears(): number[] {
-  return [1942, 1943, 1944, 1945];
+export function getAvailableYears(mapId?: string): number[] {
+  // Tutorial maps: fixed to 1933
+  if (mapId?.startsWith('tutorial_')) {
+    return [1933];
+  }
+
+  // Scenario maps: 1939-1940 only
+  return [1939, 1940];
+}
+
+/**
+ * Get available months for operation selection
+ * @param year The selected year
+ * @param mapId Optional map ID to determine month restrictions
+ * @returns Array of month numbers (1-12)
+ */
+export function getAvailableMonths(year: number, mapId?: string): number[] {
+  // Tutorial maps: all months available
+  if (mapId?.startsWith('tutorial_')) {
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  }
+
+  // Scenario maps: October 1939 to July 1940
+  if (year === 1939) {
+    return [10, 11, 12]; // October, November, December
+  } else if (year === 1940) {
+    return [1, 2, 3, 4, 5, 6, 7]; // January to July
+  }
+
+  // Default: all months
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 }
 
 /**

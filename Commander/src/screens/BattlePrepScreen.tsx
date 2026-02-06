@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GameScreen, GameState, Unit, BattlePrepState } from '../types';
 import { getPlayerStartingUnits } from '../data/units';
-import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext, getAvailableYears, getAvailableDays } from '../utils/operationDates';
+import { getOperationPeriod, getMonthNames, getMonthlyStrategicContext, getAvailableYears, getAvailableMonths, getAvailableDays } from '../utils/operationDates';
 import { getUnitNameById } from '../utils/unitNames';
 import { getDeploymentLimit } from '../utils/deploymentLimits';
 
@@ -25,7 +25,8 @@ interface OperationPrepPageProps {
   setSelectedDay: (day: number) => void;
   onProceed: () => void;
   onBack: () => void;
-  isTutorialFixed?: boolean; // チュートリアルで年月日が固定される場合に true
+  isTutorialMode?: boolean; // チュートリアルモードかどうか
+  mapId?: string; // マップIDを渡して年月制限を適用
 }
 
 const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
@@ -38,12 +39,17 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
   setSelectedDay,
   onProceed,
   onBack,
-  isTutorialFixed = false
+  isTutorialMode = false,
+  mapId
 }) => {
   const operationPeriod = getOperationPeriod(selectedMonth, selectedYear, selectedDay);
   const strategicContext = getMonthlyStrategicContext(selectedMonth);
-  const availableYears = getAvailableYears();
+  const availableYears = getAvailableYears(mapId);
+  const availableMonths = getAvailableMonths(selectedYear, mapId);
   const availableDays = getAvailableDays(selectedMonth, selectedYear);
+
+  // チュートリアルモードでは年のみ固定
+  const isYearFixed = isTutorialMode;
 
   return (
     <>
@@ -96,16 +102,12 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
-                disabled={isTutorialFixed}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+                disabled={isYearFixed}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isYearFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isYearFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
               >
-                {isTutorialFixed ? (
-                  <option value={selectedYear}>{selectedYear}年</option>
-                ) : (
-                  availableYears.map((year) => (
-                    <option key={year} value={year}>{year}年</option>
-                  ))
-                )}
+                {availableYears.map((year) => (
+                  <option key={year} value={year}>{year}年</option>
+                ))}
               </select>
             </div>
 
@@ -117,16 +119,11 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                disabled={isTutorialFixed}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
               >
-                {isTutorialFixed ? (
-                  <option value={selectedMonth}>{getMonthNames()[selectedMonth - 1]}</option>
-                ) : (
-                  getMonthNames().map((monthName, index) => (
-                    <option key={index + 1} value={index + 1}>{monthName}</option>
-                  ))
-                )}
+                {availableMonths.map((month) => (
+                  <option key={month} value={month}>{getMonthNames()[month - 1]}</option>
+                ))}
               </select>
             </div>
 
@@ -138,16 +135,11 @@ const OperationPrepPage: React.FC<OperationPrepPageProps> = ({
               <select
                 value={selectedDay}
                 onChange={(e) => setSelectedDay(Number(e.target.value))}
-                disabled={isTutorialFixed}
-                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: isTutorialFixed ? 'rgba(200, 200, 200, 0.6)' : 'white', cursor: isTutorialFixed ? 'not-allowed' : 'pointer', fontWeight: 'bold' }}
+                style={{ width: '100%', padding: '12px', fontSize: '16px', borderRadius: '6px', border: '2px solid #3498db', background: 'white', cursor: 'pointer', fontWeight: 'bold' }}
               >
-                {isTutorialFixed ? (
-                  <option value={selectedDay}>{selectedDay}日</option>
-                ) : (
-                  availableDays.map((day) => (
-                    <option key={day} value={day}>{day}日</option>
-                  ))
-                )}
+                {availableDays.map((day) => (
+                  <option key={day} value={day}>{day}日</option>
+                ))}
               </select>
             </div>
 
@@ -310,12 +302,8 @@ const UnitSelectionPage: React.FC<UnitSelectionPageProps> = ({
 // チュートリアルマップの開始年月を返す。該当マップでない場合は null を返す。
 const getTutorialFixedDate = (mapId: string | undefined): { year: number; month: number; day: number } | null => {
   if (!mapId || !mapId.startsWith('tutorial_')) return null;
-  // tutorial_1 〜 tutorial_5: 1936年1月1日
-  if (mapId !== 'tutorial_6') {
-    return { year: 1936, month: 1, day: 1 };
-  }
-  // tutorial_6: 1938年4月1日
-  return { year: 1938, month: 4, day: 1 };
+  // All tutorial maps: 1933年1月1日 (年固定、月は選択可能)
+  return { year: 1933, month: 1, day: 1 };
 };
 
 const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNavigate, onUpdateBattlePrep, initialPage = 1 }) => {
@@ -326,9 +314,9 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     initialPage === 2 ? [] : (gameState.battlePrep?.selectedUnits || [])
   );
 
-  // チュートリアルの場合は年月日を固定する
+  // チュートリアルの場合は年を固定する
   const tutorialFixedDate = getTutorialFixedDate(gameState.selectedMap?.id);
-  const isTutorialFixed = tutorialFixedDate !== null;
+  const isTutorialMode = tutorialFixedDate !== null;
 
   const [selectedYear, setSelectedYear] = useState<number>(tutorialFixedDate?.year ?? gameState.year ?? 1944);
   const [selectedMonth, setSelectedMonth] = useState<number>(tutorialFixedDate?.month ?? gameState.month ?? (new Date().getMonth() + 1));
@@ -369,6 +357,15 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
     };
     loadDeploymentLimit();
   }, [gameState.selectedMap?.id]);
+
+  // Adjust selected month when year changes to ensure it's valid
+  useEffect(() => {
+    const availableMonths = getAvailableMonths(selectedYear, gameState.selectedMap?.id);
+    if (!availableMonths.includes(selectedMonth)) {
+      // Set to first available month if current month is not available
+      setSelectedMonth(availableMonths[0]);
+    }
+  }, [selectedYear, selectedMonth, gameState.selectedMap?.id]);
 
   // Adjust selected day when month or year changes to ensure it's valid
   useEffect(() => {
@@ -444,7 +441,8 @@ const BattlePrepScreen: React.FC<BattlePrepScreenProps> = ({ gameState, onNaviga
           setSelectedDay={setSelectedDay}
           onProceed={() => setPage(2)}
           onBack={() => onNavigate(getBackScreen())}
-          isTutorialFixed={isTutorialFixed}
+          isTutorialMode={isTutorialMode}
+          mapId={gameState.selectedMap?.id}
         />
       ) : isLoadingUnits ? (
         <div style={{ textAlign: 'center', padding: '50px' }}>
