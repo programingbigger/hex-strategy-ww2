@@ -74,6 +74,18 @@
       "faction": "Blue",
       "count": 1,
       "unitId": "blue-transport-transport"
+    },
+    {
+      "id": "blue-comm-vehicle",
+      "faction": "Blue",
+      "count": 2,
+      "unitId": "blue-comm-vehicle"
+    },
+    {
+      "id": "blue-comm-infantry",
+      "faction": "Blue",
+      "count": 2,
+      "unitId": "blue-comm-infantry"
     }
   ],
   "producibleUnits": {
@@ -88,7 +100,9 @@
       "blue-antitank-gun_37mm",
       "blue-antitank-gun_pak_40",
       "blue-engineer-engineer",
-      "blue-transport-transport"
+      "blue-transport-transport",
+      "blue-comm-vehicle",
+      "blue-comm-infantry"
     ],
     "Red": [
       "red-infantry-reservist",

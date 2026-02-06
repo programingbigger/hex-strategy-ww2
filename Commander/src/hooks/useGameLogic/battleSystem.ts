@@ -206,7 +206,15 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
     const attackerTerrainStats = TERRAIN_STATS[attackerTile.terrain];
     const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
 
-    const attackPower = (attacker.attackVs?.[defender.unitClass] ?? attacker.attack) + attackerTerrainStats.attackBonus;
+    let attackPower = (attacker.attackVs?.[defender.unitClass] ?? attacker.attack) + attackerTerrainStats.attackBonus;
+
+    // Crystal Link Communication System: Synced units get +10% attack bonus (legacy system)
+    if (attacker.team === 'Blue' && attacker.isSynced === true) {
+      const baseAttack = attacker.attackVs?.[defender.unitClass] ?? attacker.attack;
+      const syncBonus = Math.floor(baseAttack * 0.1);
+      attackPower += syncBonus;
+    }
+
     let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
 
     if (attacker.type === 'Artillery') {
@@ -252,7 +260,15 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
         const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
         const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
 
-        const counterAttackPower = (currentDefender.attackVs?.[attacker.unitClass] ?? currentDefender.attack) + counterAttackerTerrainStats.attackBonus;
+        let counterAttackPower = (currentDefender.attackVs?.[attacker.unitClass] ?? currentDefender.attack) + counterAttackerTerrainStats.attackBonus;
+
+        // Crystal Link Communication System: Synced units get +10% attack bonus on counter-attack (legacy system)
+        if (currentDefender.team === 'Blue' && currentDefender.isSynced === true) {
+          const baseCounterAttack = currentDefender.attackVs?.[attacker.unitClass] ?? currentDefender.attack;
+          const syncBonus = Math.floor(baseCounterAttack * 0.1);
+          counterAttackPower += syncBonus;
+        }
+
         const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
 
         const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
@@ -336,15 +352,28 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
 
     const attackerTerrainStats = TERRAIN_STATS[attackerTile.terrain];
     const defenderTerrainStats = TERRAIN_STATS[defenderTile.terrain];
-    
+
     const baseAttackPower = getWeaponAttackVsUnitClass(weapon, defender.unitClass);
-    const attackPower = baseAttackPower + attackerTerrainStats.attackBonus;
-    
+    let attackPower = baseAttackPower + attackerTerrainStats.attackBonus;
+
+    // Crystal Link Communication System: Synced units get +10% attack bonus (rounded down)
+    // This represents improved coordination and weather penalty nullification
+    if (attacker.team === 'Blue' && attacker.isSynced === true) {
+      const syncBonus = Math.floor(baseAttackPower * 0.1);
+      attackPower += syncBonus;
+      console.log('🔷 Crystal Link Sync Bonus:', {
+        unit: attacker.name || attacker.type,
+        baseAttack: baseAttackPower,
+        syncBonus,
+        totalAttack: attackPower
+      });
+    }
+
     let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
     if (attacker.type === 'Artillery') {
       defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense);
     }
-    
+
     const damage = Math.max(1, attackPower - defensePower);
     const reportText = `${attacker.type}が${weapon.name}で${defender.type}を攻撃！ ${damage}ダメージ！`;
     
@@ -440,9 +469,22 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
         if (counterAttackerTile && counterDefenderTile) {
           const counterAttackerTerrainStats = TERRAIN_STATS[counterAttackerTile.terrain];
           const counterDefenderTerrainStats = TERRAIN_STATS[counterDefenderTile.terrain];
-          
+
           const counterBaseAttackPower = getWeaponAttackVsUnitClass(counterWeapon, attacker.unitClass);
-          const counterAttackPower = counterBaseAttackPower + counterAttackerTerrainStats.attackBonus;
+          let counterAttackPower = counterBaseAttackPower + counterAttackerTerrainStats.attackBonus;
+
+          // Crystal Link Communication System: Synced units get +10% attack bonus on counter-attack
+          if (currentDefender.team === 'Blue' && currentDefender.isSynced === true) {
+            const syncBonus = Math.floor(counterBaseAttackPower * 0.1);
+            counterAttackPower += syncBonus;
+            console.log('🔷 Crystal Link Sync Bonus (Counter-Attack):', {
+              unit: currentDefender.name || currentDefender.type,
+              baseAttack: counterBaseAttackPower,
+              syncBonus,
+              totalAttack: counterAttackPower
+            });
+          }
+
           const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
           const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);
           

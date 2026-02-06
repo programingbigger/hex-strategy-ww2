@@ -123,6 +123,34 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
               </div>
             )}
 
+            {/* Crystal Link Communication Status (Astoria units only) */}
+            {selectedUnit.team === 'Blue' && (
+              <div className="communication-status" style={{ marginTop: '12px' }}>
+                <div className="stat-item">
+                  <span>🔷 通信状態</span>
+                  {selectedUnit.isSynced === true ? (
+                    <span style={{ color: '#1E90FF', fontWeight: 'bold', marginLeft: '8px' }}>
+                      同期 {selectedUnit.signalSource && '(信号源)'}
+                    </span>
+                  ) : (
+                    <span style={{ color: '#FF0000', fontWeight: 'bold', marginLeft: '8px' }}>
+                      孤立
+                    </span>
+                  )}
+                </div>
+                {selectedUnit.signalSource && selectedUnit.signalRadius && (
+                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: '4px' }}>
+                    信号範囲: {selectedUnit.signalRadius} hex
+                  </div>
+                )}
+                {selectedUnit.relayRadius && (
+                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: '4px' }}>
+                    中継範囲: {selectedUnit.relayRadius} hex
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* 輸送ユニットの搭載情報 */}
             {selectedUnit.type === 'Transport' && (
               <div className="transport-cargo">

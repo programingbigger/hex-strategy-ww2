@@ -30,7 +30,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
-                    "reconnaissance": 2
+                    "reconnaissance": 2,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 100,
@@ -52,10 +53,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -69,10 +82,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 2 },
-                        { "unitClass": "Tank", "attack": 4 },
-                        { "unitClass": "Vehicle", "attack": 5 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -92,7 +117,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
-                    "reconnaissance": 2
+                    "reconnaissance": 2,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 120,
@@ -114,10 +140,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -137,7 +175,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 150,
@@ -159,10 +198,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 6 },
-                        { "unitClass": "Tank", "attack": 1 },
-                        { "unitClass": "Vehicle", "attack": 5 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -176,10 +227,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -204,7 +267,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 70,
-                    "reconnaissance": 4
+                    "reconnaissance": 4,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 150,
@@ -226,10 +290,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 5 },
-                        { "unitClass": "Tank", "attack": 1 },
-                        { "unitClass": "Vehicle", "attack": 4 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -249,7 +325,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 50,
-                    "reconnaissance": 3
+                    "reconnaissance": 3,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 200,
@@ -271,10 +348,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 5 },
-                        { "unitClass": "Vehicle", "attack": 6 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -288,10 +377,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 7 },
-                        { "unitClass": "Tank", "attack": 1 },
-                        { "unitClass": "Vehicle", "attack": 6 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -311,7 +412,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 45,
-                    "reconnaissance": 3
+                    "reconnaissance": 3,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 250,
@@ -333,10 +435,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 4 },
-                        { "unitClass": "Tank", "attack": 7 },
-                        { "unitClass": "Vehicle", "attack": 8 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -350,10 +464,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 7 },
-                        { "unitClass": "Tank", "attack": 1 },
-                        { "unitClass": "Vehicle", "attack": 6 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -373,7 +499,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
-                    "reconnaissance": 3
+                    "reconnaissance": 3,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 300,
@@ -395,10 +522,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 6 },
-                        { "unitClass": "Tank", "attack": 10 },
-                        { "unitClass": "Vehicle", "attack": 12 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 12
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -412,10 +551,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 7 },
-                        { "unitClass": "Tank", "attack": 1 },
-                        { "unitClass": "Vehicle", "attack": 6 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 1
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -435,7 +586,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
-                    "reconnaissance": 3
+                    "reconnaissance": 3,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 180,
@@ -457,10 +609,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 4 },
-                        { "unitClass": "Tank", "attack": 7 },
-                        { "unitClass": "Vehicle", "attack": 8 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -485,7 +649,8 @@
                     "canCounterAttack": false,
                     "unitClass": "Vehicle",
                     "maxFuel": 30,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 250,
@@ -507,10 +672,22 @@
                         "max": 6
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 16 },
-                        { "unitClass": "Tank", "attack": 9 },
-                        { "unitClass": "Vehicle", "attack": 14 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 16
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 9
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 14
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -535,7 +712,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 40,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 100,
@@ -557,10 +735,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 7 },
-                        { "unitClass": "Vehicle", "attack": 7 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -580,7 +770,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 40,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 150,
@@ -602,10 +793,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 5 },
-                        { "unitClass": "Tank", "attack": 12 },
-                        { "unitClass": "Vehicle", "attack": 13 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 12
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 13
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -630,7 +833,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 40,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 120,
@@ -652,10 +856,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -669,10 +885,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -692,7 +920,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Infantry",
                     "maxFuel": 50,
-                    "reconnaissance": 1
+                    "reconnaissance": 1,
+                    "relayRadius": 2
                   },
                   "supply": {
                     "maxSupplyStock": 30
@@ -712,12 +941,27 @@
                       "type": "補給物資",
                       "ammunition": 0,
                       "maxAmmunition": 0,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "isSupplyKit": true,
                       "canInitiateAttack": false
@@ -728,12 +972,27 @@
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 2 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 2 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "canInitiateAttack": false
                     }
@@ -754,7 +1013,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
-                    "reconnaissance": 2
+                    "reconnaissance": 2,
+                    "relayRadius": 2
                   },
                   "supply": {
                     "maxSupplyStock": 50
@@ -774,12 +1034,27 @@
                       "type": "補給物資",
                       "ammunition": 0,
                       "maxAmmunition": 0,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "isSupplyKit": true,
                       "canInitiateAttack": false
@@ -790,12 +1065,27 @@
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 2 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 2 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "canInitiateAttack": false
                     }
@@ -816,7 +1106,8 @@
                     "canCounterAttack": true,
                     "unitClass": "Vehicle",
                     "maxFuel": 60,
-                    "reconnaissance": 2
+                    "reconnaissance": 2,
+                    "relayRadius": 2
                   },
                   "cost": {
                     "production": 140,
@@ -851,10 +1142,142 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "blue-comm-vehicle",
+                  "name": "水晶中継車",
+                  "type": "Vehicle",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "support",
+                  "description": "アストリア軍の通信網の中核を成す移動式信号源。車体に搭載された水晶共鳴装置が半径7hexの広範囲に通信信号を発信し、周辺の全友軍を「同期」状態に保つ。この車両が失われると、その範囲内にいた部隊は即座に孤立状態に陥り、天候の影響をもろに受けることになる。銀槍作戦の心臓部であり、敵は必ずこれを優先的に狙ってくる。",
+                  "stats": {
+                    "maxHp": 10,
+                    "defense": 2,
+                    "movement": 5,
+                    "canCounterAttack": true,
+                    "unitClass": "Vehicle",
+                    "maxFuel": 50,
+                    "reconnaissance": 2,
+                    "signalSource": true,
+                    "signalRadius": 7,
+                    "relayRadius": 7
+                  },
+                  "cost": {
+                    "production": 180,
+                    "supply": {
+                      "ammunition": 3,
+                      "fuel": 7,
+                      "repair": 12
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-comm-vehicle-mg",
+                      "name": "自衛用機銃",
+                      "type": "30cal機銃",
+                      "ammunition": 8,
+                      "maxAmmunition": 8,
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "blue-comm-infantry",
+                  "name": "水晶通信兵",
+                  "type": "Infantry",
+                  "faction": "Blue",
+                  "branch": "陸",
+                  "category": "support",
+                  "description": "携帯型水晶共鳴装置を背負う特殊通信兵。歩兵規模でありながら信号源として機能し、半径3hexに通信信号を生成する。山岳地帯や森林など、車両が進入できない場所において通信網を構築する役割を担う。中継半径は4hexと一般兵より長く、地形を活かした通信網の拡張が可能。彼らの存在により、アストリア軍は複雑な地形でも「断絶」を起こさない柔軟性を獲得している。",
+                  "stats": {
+                    "maxHp": 8,
+                    "defense": 1,
+                    "movement": 3,
+                    "canCounterAttack": true,
+                    "unitClass": "Infantry",
+                    "maxFuel": 50,
+                    "reconnaissance": 2,
+                    "signalSource": true,
+                    "signalRadius": 3,
+                    "relayRadius": 4
+                  },
+                  "cost": {
+                    "production": 110,
+                    "supply": {
+                      "ammunition": 4,
+                      "fuel": 3,
+                      "repair": 8
+                    }
+                  },
+                  "weapons": [
+                    {
+                      "id": "blue-comm-infantry-rifle",
+                      "name": "自衛用小銃",
+                      "type": "自衛用ライフル",
+                      "ammunition": 6,
+                      "maxAmmunition": 6,
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
+                      "attack": [
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -866,17 +1289,35 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": { "name": "駆逐艦", "units": [] },
-            "cruiser": { "name": "巡洋艦", "units": [] },
-            "battleship": { "name": "戦艦", "units": [] }
+            "destroyer": {
+              "name": "駆逐艦",
+              "units": []
+            },
+            "cruiser": {
+              "name": "巡洋艦",
+              "units": []
+            },
+            "battleship": {
+              "name": "戦艦",
+              "units": []
+            }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": { "name": "戦闘機", "units": [] },
-            "bomber": { "name": "爆撃機", "units": [] },
-            "transport": { "name": "輸送機", "units": [] }
+            "fighter": {
+              "name": "戦闘機",
+              "units": []
+            },
+            "bomber": {
+              "name": "爆撃機",
+              "units": []
+            },
+            "transport": {
+              "name": "輸送機",
+              "units": []
+            }
           }
         }
       }
@@ -928,10 +1369,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -973,10 +1426,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 4 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 4 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1023,10 +1488,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 4 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1068,10 +1545,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 4 },
-                        { "unitClass": "Tank", "attack": 6 },
-                        { "unitClass": "Vehicle", "attack": 7 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 4
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 6
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 7
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1113,10 +1602,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 5 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 5 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 5
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1163,10 +1664,22 @@
                         "max": 4
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 8 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 8 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1208,10 +1721,22 @@
                         "max": 5
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 10 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 10 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 10
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1258,10 +1783,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 8 },
-                        { "unitClass": "Vehicle", "attack": 8 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 8
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1308,10 +1845,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 3 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 3 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 3
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     },
                     {
@@ -1325,10 +1874,22 @@
                         "max": 1
                       },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ]
                     }
                   ]
@@ -1368,12 +1929,27 @@
                       "type": "補給物資",
                       "ammunition": 0,
                       "maxAmmunition": 0,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "isSupplyKit": true,
                       "canInitiateAttack": false
@@ -1384,12 +1960,27 @@
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 2 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 2 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "canInitiateAttack": false
                     }
@@ -1430,12 +2021,27 @@
                       "type": "補給物資",
                       "ammunition": 0,
                       "maxAmmunition": 0,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 0 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 0 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "isSupplyKit": true,
                       "canInitiateAttack": false
@@ -1446,12 +2052,27 @@
                       "type": "自衛用ライフル",
                       "ammunition": 4,
                       "maxAmmunition": 4,
-                      "range": { "min": 1, "max": 1 },
+                      "range": {
+                        "min": 1,
+                        "max": 1
+                      },
                       "attack": [
-                        { "unitClass": "Infantry", "attack": 2 },
-                        { "unitClass": "Tank", "attack": 0 },
-                        { "unitClass": "Vehicle", "attack": 2 },
-                        { "unitClass": "Aircraft", "attack": 0 }
+                        {
+                          "unitClass": "Infantry",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Tank",
+                          "attack": 0
+                        },
+                        {
+                          "unitClass": "Vehicle",
+                          "attack": 2
+                        },
+                        {
+                          "unitClass": "Aircraft",
+                          "attack": 0
+                        }
                       ],
                       "canInitiateAttack": false
                     }
@@ -1504,17 +2125,35 @@
         "海": {
           "name": "海軍",
           "unitCategories": {
-            "destroyer": { "name": "駆逐艦", "units": [] },
-            "cruiser": { "name": "巡洋艦", "units": [] },
-            "battleship": { "name": "戦艦", "units": [] }
+            "destroyer": {
+              "name": "駆逐艦",
+              "units": []
+            },
+            "cruiser": {
+              "name": "巡洋艦",
+              "units": []
+            },
+            "battleship": {
+              "name": "戦艦",
+              "units": []
+            }
           }
         },
         "空": {
           "name": "空軍",
           "unitCategories": {
-            "fighter": { "name": "戦闘機", "units": [] },
-            "bomber": { "name": "爆撃機", "units": [] },
-            "transport": { "name": "輸送機", "units": [] }
+            "fighter": {
+              "name": "戦闘機",
+              "units": []
+            },
+            "bomber": {
+              "name": "爆撃機",
+              "units": []
+            },
+            "transport": {
+              "name": "輸送機",
+              "units": []
+            }
           }
         }
       }
@@ -1532,8 +2171,14 @@
       "小隊"
     ],
     "bonuses": {
-      "同一師団": { "attack": 0.1, "defense": 0.05 },
-      "指揮官効果": { "範囲": 2, "効果": 0.15 }
+      "同一師団": {
+        "attack": 0.1,
+        "defense": 0.05
+      },
+      "指揮官効果": {
+        "範囲": 2,
+        "効果": 0.15
+      }
     }
   }
 }

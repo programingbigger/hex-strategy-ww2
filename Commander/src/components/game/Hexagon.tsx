@@ -374,6 +374,61 @@ const Hexagon: React.FC<HexagonProps> = ({
           >
             {unit.hp}
           </text>
+
+          {/* Crystal Link Communication Status Indicator */}
+          {unit.team === 'Blue' && (
+            <>
+              {/* Synced: Blue ripple/antenna mark */}
+              {unit.isSynced === true && (
+                <g>
+                  {/* Signal source (Hub) indicator */}
+                  {unit.signalSource === true && (
+                    <circle
+                      cx={size * 0.45}
+                      cy={-size * 0.25}
+                      r={size * 0.15}
+                      fill="#00BFFF"
+                      stroke="#FFF"
+                      strokeWidth={1.5}
+                    />
+                  )}
+                  {/* Synced indicator - small blue dot */}
+                  <circle
+                    cx={size * 0.45}
+                    cy={size * 0.15}
+                    r={size * 0.1}
+                    fill="#1E90FF"
+                    stroke="#FFF"
+                    strokeWidth={1}
+                  />
+                </g>
+              )}
+
+              {/* Isolated: Red X mark */}
+              {unit.isSynced === false && (
+                <g>
+                  <line
+                    x1={size * 0.35}
+                    y1={size * 0.05}
+                    x2={size * 0.55}
+                    y2={size * 0.25}
+                    stroke="#FF0000"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1={size * 0.55}
+                    y1={size * 0.05}
+                    x2={size * 0.35}
+                    y2={size * 0.25}
+                    stroke="#FF0000"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                  />
+                </g>
+              )}
+            </>
+          )}
         </g>
       )}
       

@@ -100,6 +100,12 @@ export interface Unit {
   snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
   communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
   isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
+
+  // 水晶同期通信網システム (Crystal Link Communication System)
+  isSynced?: boolean; // 同期状態フラグ: true = 通信網に接続され同期している, false/undefined = 孤立状態
+  signalSource?: boolean; // 信号源フラグ: true = このユニットは信号を生成できる（Hub）
+  signalRadius?: number; // 信号生成半径（hex単位）: 信号源がこの範囲内のユニットを同期させる
+  relayRadius?: number; // 中継半径（hex単位）: 同期状態のユニットがこの範囲内に信号を中継する
 }
 
 export interface Tile {
@@ -179,6 +185,11 @@ export interface UnitStats {
   snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
   communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
   isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
+
+  // 水晶同期通信網システム (Crystal Link Communication System)
+  signalSource?: boolean; // 信号源フラグ: true = このユニットは信号を生成できる（Hub）
+  signalRadius?: number; // 信号生成半径（hex単位）: 信号源がこの範囲内のユニットを同期させる
+  relayRadius?: number; // 中継半径（hex単位）: 同期状態のユニットがこの範囲内に信号を中継する
 }
 
 // Unit stats as they appear in armyOrganization.json (without attack and attackRange)
@@ -198,6 +209,11 @@ export interface ArmyUnitStats {
   snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
   communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
   isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
+
+  // 水晶同期通信網システム (Crystal Link Communication System)
+  signalSource?: boolean; // 信号源フラグ: true = このユニットは信号を生成できる（Hub）
+  signalRadius?: number; // 信号生成半径（hex単位）: 信号源がこの範囲内のユニットを同期させる
+  relayRadius?: number; // 中継半径（hex単位）: 同期状態のユニットがこの範囲内に信号を中継する
 }
 
 // Victory condition types

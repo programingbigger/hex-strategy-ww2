@@ -14,6 +14,7 @@ import { log } from '../../utils/logger';
 import { isSupplyUnit } from './supplyActions';
 import { calculateIncomeForAllTeams } from '../../utils/incomeManager';
 import { getDaysInMonth } from '../../utils/operationDates';
+import { updateCommunicationNetwork } from './communicationSystem';
 const isCapturableTerrain = (terrain: string): boolean => {
   return terrain === 'City' || terrain === 'Capital' || terrain === 'Airport' || terrain === 'Port';
 };
@@ -301,7 +302,12 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       return applySupplyOperations(u, boardLayout);
     });
 
-    setUnits(unitsWithHealing);
+    // Update Crystal Link Communication Network for Astoria (Blue) forces
+    // This recalculates sync status based on signal sources and relay positions
+    const unitsWithCommunication = updateCommunicationNetwork(unitsWithHealing);
+    console.log('🔷 Crystal Link Network updated at turn end');
+
+    setUnits(unitsWithCommunication);
     setActiveTeam(nextTeam);
 
     const newBoardLayout = new Map(boardLayout);
@@ -313,7 +319,7 @@ export const useTurnManagement = (deps: TurnManagementDeps): TurnManagementHook 
       }
     });
 
-    let finalUnits = unitsWithHealing;
+    let finalUnits = unitsWithCommunication;
     if (nextTeam === 'Blue') {
       const newTurn = turn + 1;
       setTurn(newTurn);
