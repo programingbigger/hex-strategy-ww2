@@ -102,6 +102,10 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     startAttackAction,
     cancelAttackMode,
 
+    // Communication range
+    showCommunicationRange,
+    toggleCommunicationRange,
+
     // Supply action
     canSupply,
 
@@ -447,6 +451,8 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
             onStartEngineerAction={startEngineerAction}
             onStartMovementAction={startMovementAction}
             onStartAttackAction={startAttackAction}
+            onToggleCommunicationRange={toggleCommunicationRange}
+            showCommunicationRange={showCommunicationRange}
             canSupply={canSupply}
             currentFunds={armyFunds}
             activeTeam={activeTeam}

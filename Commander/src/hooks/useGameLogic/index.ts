@@ -184,6 +184,11 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     unitActions.setSupplyExecutor(supplyActions.executeSupply);
   }, [supplyActions.executeSupply]);
 
+  // ユニット選択が変更されたら通信範囲表示をリセット
+  useEffect(() => {
+    uiStates.setShowCommunicationRange(false);
+  }, [gameState.selectedUnitId]);
+
   // Computed values
   const selectedUnit = useMemo(() => 
     gameState.units.find(u => u.id === gameState.selectedUnitId && !u.loaded) || null, 
@@ -262,6 +267,8 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
   }, [uiStates.transportActionState.availableTargets]);
 
   const communicationRangeTiles = useMemo(() => {
+    // Only calculate when showCommunicationRange is true
+    if (!uiStates.showCommunicationRange) return [];
     if (!selectedUnit || selectedUnit.team !== 'Blue') return [];
 
     // Check if unit has communication parameters
@@ -288,7 +295,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     }
 
     return rangeTiles;
-  }, [selectedUnit, gameState.boardLayout]);
+  }, [uiStates.showCommunicationRange, selectedUnit, gameState.boardLayout]);
 
   // Main hex click handler
   const handleHexClick = useCallback((coord: Coordinate) => {
@@ -613,6 +620,10 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     attackMode: uiStates.attackMode,
     startAttackAction: () => uiStates.setAttackMode('selecting_target'),
     cancelAttackMode: () => uiStates.setAttackMode('none'),
+
+    // Communication range toggle
+    showCommunicationRange: uiStates.showCommunicationRange,
+    toggleCommunicationRange: () => uiStates.setShowCommunicationRange(!uiStates.showCommunicationRange),
 
     // Main interaction handler
     handleHexClick,

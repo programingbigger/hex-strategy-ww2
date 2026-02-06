@@ -331,12 +331,23 @@ const Hexagon: React.FC<HexagonProps> = ({
 
       {/* Communication range overlay */}
       {isInCommunicationRange && (
-        <polygon
-          points={hexPoints}
-          fill="#4169E1"
-          opacity={0.15}
-          pointerEvents="none"
-        />
+        <>
+          <polygon
+            points={hexPoints}
+            fill="#4169E1"
+            opacity={0.08}
+            pointerEvents="none"
+          />
+          <polygon
+            points={hexPoints}
+            fill="none"
+            stroke="#1E90FF"
+            strokeWidth={2.5}
+            strokeDasharray="6 3"
+            opacity={0.9}
+            pointerEvents="none"
+          />
+        </>
       )}
 
       {/* 兵科式マッピング: 地形シンボル表示 */}

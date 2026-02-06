@@ -153,16 +153,73 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                     </span>
                   )}
                 </div>
-                {selectedUnit.signalSource && selectedUnit.signalRadius && (
-                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: '4px' }}>
-                    信号範囲: {selectedUnit.signalRadius} hex
+
+                {/* Communication Parameters Detail Section */}
+                <div style={{
+                  marginTop: '12px',
+                  padding: '10px',
+                  background: '#f8f9fa',
+                  borderRadius: '4px',
+                  border: '1px solid #dee2e6'
+                }}>
+                  <div style={{ fontSize: '0.95em', fontWeight: 'bold', marginBottom: '8px' }}>
+                    📡 通信パラメータ
                   </div>
-                )}
-                {selectedUnit.relayRadius && (
-                  <div style={{ fontSize: '0.9em', color: '#666', marginTop: '4px' }}>
-                    中継範囲: {selectedUnit.relayRadius} hex
+                  <div style={{ fontSize: '0.9em', lineHeight: '1.6' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ color: '#666' }}>ロール:</span>
+                      <span style={{ fontWeight: 'bold' }}>
+                        {selectedUnit.signalSource ? '信号源（Hub）' :
+                         selectedUnit.relayRadius && selectedUnit.relayRadius > 0 ? '中継（Relay）' : '-'}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                      <span style={{ color: '#666' }}>信号生成範囲:</span>
+                      <span style={{ fontWeight: 'bold' }}>
+                        {selectedUnit.signalRadius && selectedUnit.signalRadius > 0
+                          ? `${selectedUnit.signalRadius} hex`
+                          : '-'}
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ color: '#666' }}>中継範囲:</span>
+                      <span style={{ fontWeight: 'bold' }}>
+                        {selectedUnit.relayRadius && selectedUnit.relayRadius > 0
+                          ? `${selectedUnit.relayRadius} hex`
+                          : '-'}
+                      </span>
+                    </div>
                   </div>
-                )}
+                </div>
+              </div>
+            )}
+
+            {/* Communication Parameters for Red team (show all as "-") */}
+            {selectedUnit.team === 'Red' && (
+              <div style={{
+                marginTop: '12px',
+                padding: '10px',
+                background: '#f8f9fa',
+                borderRadius: '4px',
+                border: '1px solid #dee2e6'
+              }}>
+                <div style={{ fontSize: '0.95em', fontWeight: 'bold', marginBottom: '8px' }}>
+                  📡 通信パラメータ
+                </div>
+                <div style={{ fontSize: '0.9em', lineHeight: '1.6' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: '#666' }}>ロール:</span>
+                    <span style={{ fontWeight: 'bold' }}>-</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                    <span style={{ color: '#666' }}>信号生成範囲:</span>
+                    <span style={{ fontWeight: 'bold' }}>-</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#666' }}>中継範囲:</span>
+                    <span style={{ fontWeight: 'bold' }}>-</span>
+                  </div>
+                </div>
               </div>
             )}
 

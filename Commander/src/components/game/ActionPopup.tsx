@@ -22,6 +22,10 @@ interface ActionPopupProps {
   onStartMovementAction?: () => void;
   /** 攻撃モードを開始するコールバック */
   onStartAttackAction?: () => void;
+  /** 通信範囲表示をトグルするコールバック */
+  onToggleCommunicationRange?: () => void;
+  /** 通信範囲が表示されているか */
+  showCommunicationRange?: boolean;
   /** 補給アクション: 受給側が実行可能かどうか */
   canSupply?: (unit: Unit, allUnits: Unit[]) => boolean;
   currentFunds?: { [team: string]: number };
@@ -42,6 +46,8 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   onStartEngineerAction,
   onStartMovementAction,
   onStartAttackAction,
+  onToggleCommunicationRange,
+  showCommunicationRange = false,
   canSupply,
   currentFunds,
   camera,
@@ -238,6 +244,12 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
   // --- 補給アクション可否 ---
   const canSupplyAction = selectedUnit && canSupply ? canSupply(selectedUnit, units) : false;
 
+  // --- 通信範囲ボタン表示可否（Blue軍で通信パラメータを持つユニットのみ） ---
+  const canShowCommunicationRange =
+    selectedUnit.team === 'Blue' &&
+    ((selectedUnit.signalRadius !== undefined && selectedUnit.signalRadius > 0) ||
+     (selectedUnit.relayRadius !== undefined && selectedUnit.relayRadius > 0));
+
   // --- Determine if the unit has already acted (moved AND attacked) ---
   const hasActed = selectedUnit.moved && selectedUnit.attacked;
 
@@ -288,6 +300,19 @@ const ActionPopup: React.FC<ActionPopupProps> = ({
             onClick={() => onAction('supply')}
           >
             補給
+          </button>
+        )}
+        {canShowCommunicationRange && (
+          <button
+            className={`military-button action-popup-btn ${showCommunicationRange ? 'active' : ''}`}
+            onClick={() => onToggleCommunicationRange && onToggleCommunicationRange()}
+            style={showCommunicationRange ? {
+              background: 'linear-gradient(135deg, #1E90FF 0%, #4169E1 100%)',
+              color: 'white',
+              fontWeight: 'bold'
+            } : {}}
+          >
+            📡 通信範囲
           </button>
         )}
         {canCapture && (

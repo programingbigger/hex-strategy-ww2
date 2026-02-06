@@ -51,6 +51,8 @@ export interface UIStatesHook {
   movementMode: 'none' | 'selecting_destination';
   /** 攻撃モード: 'selecting_target' で攻撃対象の赤色ヘックス選択中 */
   attackMode: 'none' | 'selecting_target';
+  /** 通信範囲ハイライト表示状態 */
+  showCommunicationRange: boolean;
 
   setHoveredHex: (hex: Coordinate | null) => void;
   setBattleReport: (report: BattleReport | null | ((prev: BattleReport | null) => BattleReport | null)) => void;
@@ -63,6 +65,7 @@ export interface UIStatesHook {
   setBattleLog: (log: BattleLogState | ((prev: BattleLogState) => BattleLogState)) => void;
   setMovementMode: (mode: 'none' | 'selecting_destination') => void;
   setAttackMode: (mode: 'none' | 'selecting_target') => void;
+  setShowCommunicationRange: (show: boolean) => void;
 }
 
 export const useUIStates = (): UIStatesHook => {
@@ -124,6 +127,7 @@ export const useUIStates = (): UIStatesHook => {
 
   const [movementMode, setMovementMode] = useState<'none' | 'selecting_destination'>('none');
   const [attackMode, setAttackMode] = useState<'none' | 'selecting_target'>('none');
+  const [showCommunicationRange, setShowCommunicationRange] = useState<boolean>(false);
 
   return {
     hoveredHex,
@@ -135,6 +139,9 @@ export const useUIStates = (): UIStatesHook => {
     transportConfirmState,
     engineerConfirmState,
     battleLog,
+    movementMode,
+    attackMode,
+    showCommunicationRange,
     
     setHoveredHex,
     setBattleReport,
@@ -145,9 +152,8 @@ export const useUIStates = (): UIStatesHook => {
     setTransportConfirmState,
     setEngineerConfirmState,
     setBattleLog,
-    movementMode,
     setMovementMode,
-    attackMode,
     setAttackMode,
+    setShowCommunicationRange,
   };
-};
+};;
