@@ -126,6 +126,21 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
             {/* Crystal Link Communication Status (Astoria units only) */}
             {selectedUnit.team === 'Blue' && (
               <div className="communication-status" style={{ marginTop: '12px' }}>
+                {/* Communication Hub Unit Badge */}
+                {selectedUnit.signalSource && (
+                  <div style={{
+                    background: 'linear-gradient(135deg, #1E90FF 0%, #4169E1 100%)',
+                    color: 'white',
+                    padding: '6px 12px',
+                    borderRadius: '4px',
+                    marginBottom: '8px',
+                    fontSize: '0.9em',
+                    fontWeight: 'bold',
+                    textAlign: 'center'
+                  }}>
+                    📡 通信ハブユニット
+                  </div>
+                )}
                 <div className="stat-item">
                   <span>🔷 通信状態</span>
                   {selectedUnit.isSynced === true ? (
@@ -148,6 +163,22 @@ const SelectedUnitPanel: React.FC<SelectedUnitPanelProps> = ({
                     中継範囲: {selectedUnit.relayRadius} hex
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Counter-attack capability display */}
+            {selectedUnit.canCounterAttack === false && (
+              <div style={{
+                background: '#FFF3CD',
+                border: '1px solid #FFE69C',
+                color: '#664D03',
+                padding: '8px 12px',
+                borderRadius: '4px',
+                marginTop: '12px',
+                fontSize: '0.9em',
+                textAlign: 'center'
+              }}>
+                ⚠️ 反撃不可ユニット
               </div>
             )}
 

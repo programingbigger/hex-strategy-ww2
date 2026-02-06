@@ -170,6 +170,9 @@ export class ArmyManager {
       maxFuel: template.stats.maxFuel,
       xp: 0,
       weapons: weapons,
+      signalSource: template.stats.signalSource,
+      signalRadius: template.stats.signalRadius,
+      relayRadius: template.stats.relayRadius,
       ...(isSupplyUnit ? { supplyStock, maxSupplyStock } : {})
     };
   }

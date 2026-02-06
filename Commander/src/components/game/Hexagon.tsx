@@ -11,6 +11,7 @@ interface HexagonProps {
   isAttackable?: boolean;
   isEngineerTarget?: boolean;
   isTransportTarget?: boolean;
+  isInCommunicationRange?: boolean;
   onClick: (coord: Coordinate) => void;
   onMouseEnter: (coord: Coordinate) => void;
   onMouseLeave: () => void;
@@ -26,6 +27,7 @@ const Hexagon: React.FC<HexagonProps> = ({
   isAttackable = false,
   isEngineerTarget = false,
   isTransportTarget = false,
+  isInCommunicationRange = false,
   onClick,
   onMouseEnter,
   onMouseLeave,
@@ -326,7 +328,17 @@ const Hexagon: React.FC<HexagonProps> = ({
         stroke={strokeColor}
         strokeWidth={strokeWidth}
       />
-      
+
+      {/* Communication range overlay */}
+      {isInCommunicationRange && (
+        <polygon
+          points={hexPoints}
+          fill="#4169E1"
+          opacity={0.15}
+          pointerEvents="none"
+        />
+      )}
+
       {/* 兵科式マッピング: 地形シンボル表示 */}
       {renderTerrainSymbol(tile.terrain, size)}
 

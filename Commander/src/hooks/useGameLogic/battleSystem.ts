@@ -9,7 +9,8 @@ import {
   BattleLogEntry,
   BattleLogState,
   TerrainType,
-  Tile
+  Tile,
+  WeatherType
 } from '../../types';
 import { 
   coordToString,
@@ -80,6 +81,7 @@ interface BattleSystemDeps {
   units: Unit[];
   turn: number;
   activeTeam: Team;
+  weather: WeatherType;
   weaponSelectionState: {
     isOpen: boolean;
     attacker: Unit | null;
@@ -93,12 +95,39 @@ interface BattleSystemDeps {
   checkWinCondition: (units: Unit[], boardLayout: BoardLayout) => void;
 }
 
+/**
+ * Calculate weather attack penalty
+ * Snow: -20% attack power
+ * Blizzard: -40% attack power
+ * Synced Blue units are immune to weather penalties
+ */
+const calculateWeatherPenalty = (
+  attackPower: number,
+  weather: WeatherType,
+  unit: Unit
+): number => {
+  // Synced Blue units are immune to weather penalties
+  if (unit.team === 'Blue' && unit.isSynced === true) {
+    return attackPower;
+  }
+
+  // Apply weather penalties
+  if (weather === 'Snow') {
+    return Math.floor(attackPower * 0.8); // -20%
+  } else if (weather === 'Blizzard') {
+    return Math.floor(attackPower * 0.6); // -40%
+  }
+
+  return attackPower;
+};
+
 export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
   const {
     boardLayout,
     units,
     turn,
     activeTeam,
+    weather,
     weaponSelectionState,
     setUnits,
     setSelectedUnitId,
@@ -215,6 +244,9 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
       attackPower += syncBonus;
     }
 
+    // Apply weather penalty (synced Blue units are immune)
+    attackPower = calculateWeatherPenalty(attackPower, weather, attacker);
+
     let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
 
     if (attacker.type === 'Artillery') {
@@ -268,6 +300,9 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
           const syncBonus = Math.floor(baseCounterAttack * 0.1);
           counterAttackPower += syncBonus;
         }
+
+        // Apply weather penalty on counter-attack (synced Blue units are immune)
+        counterAttackPower = calculateWeatherPenalty(counterAttackPower, weather, currentDefender);
 
         const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
 
@@ -368,6 +403,9 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
         totalAttack: attackPower
       });
     }
+
+    // Apply weather penalty (synced Blue units are immune)
+    attackPower = calculateWeatherPenalty(attackPower, weather, attacker);
 
     let defensePower = (defender.defenseVs?.[attacker.unitClass] ?? defender.defense) + defenderTerrainStats.defenseBonus;
     if (attacker.type === 'Artillery') {
@@ -484,6 +522,9 @@ export const useBattleSystem = (deps: BattleSystemDeps): BattleSystemHook => {
               totalAttack: counterAttackPower
             });
           }
+
+          // Apply weather penalty on counter-attack (synced Blue units are immune)
+          counterAttackPower = calculateWeatherPenalty(counterAttackPower, weather, currentDefender);
 
           const counterDefensePower = (attacker.defenseVs?.[currentDefender.unitClass] ?? attacker.defense) + counterDefenderTerrainStats.defenseBonus;
           const counterDamage = Math.max(1, counterAttackPower - counterDefensePower);

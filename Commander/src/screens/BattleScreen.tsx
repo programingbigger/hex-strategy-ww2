@@ -54,6 +54,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
     attackableTiles,
     engineerTargetTiles,
     transportTargetTiles,
+    communicationRangeTiles,
     selectedUnitTile,
     loadGame,
     setYear,
@@ -426,6 +427,7 @@ const BattleScreen: React.FC<BattleScreenProps> = ({ gameState, setGameState, on
           attackableTiles={attackableTiles}
           engineerTargetTiles={engineerTargetTiles}
           transportTargetTiles={transportTargetTiles}
+          communicationRangeTiles={communicationRangeTiles}
           onHexClick={handleHexClick}
           onHexHover={setHoveredHex}
           onHexLeave={() => setHoveredHex(null)}

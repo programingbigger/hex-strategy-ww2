@@ -37,6 +37,7 @@ import { useEngineerActions } from './engineerActions';
 import { useTransportActions } from './transportActions';
 import { useSupplyActions } from './supplyActions';
 import { useArmyManagement } from './armyManagement';
+import { updateCommunicationNetwork } from './communicationSystem';
 
 // Helper functions
 const isCapitalTerrain = (terrain: string): boolean => {
@@ -62,6 +63,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     units: gameState.units,
     turn: gameState.turn,
     activeTeam: gameState.activeTeam,
+    weather: gameState.weather,
     weaponSelectionState: uiStates.weaponSelectionState,
     setUnits: gameState.setUnits,
     setSelectedUnitId: gameState.setSelectedUnitId,
@@ -108,6 +110,7 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     units: gameState.units,
     turn: gameState.turn,
     activeTeam: gameState.activeTeam,
+    weather: gameState.weather,
     weaponSelectionState: uiStates.weaponSelectionState,
     setUnits: gameState.setUnits,
     setSelectedUnitId: gameState.setSelectedUnitId,
@@ -258,6 +261,35 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     return uiStates.transportActionState.availableTargets;
   }, [uiStates.transportActionState.availableTargets]);
 
+  const communicationRangeTiles = useMemo(() => {
+    if (!selectedUnit || selectedUnit.team !== 'Blue') return [];
+
+    // Check if unit has communication parameters
+    const hasSignalSource = selectedUnit.signalSource === true;
+    const hasSignalRadius = (selectedUnit.signalRadius ?? 0) > 0;
+    const hasRelayRadius = (selectedUnit.relayRadius ?? 0) > 0;
+
+    if (!hasSignalSource && !hasSignalRadius && !hasRelayRadius) return [];
+
+    // Determine effective range
+    const effectiveRange = hasSignalSource
+      ? (selectedUnit.signalRadius ?? 0)
+      : (selectedUnit.relayRadius ?? 0);
+
+    if (effectiveRange <= 0) return [];
+
+    // Calculate tiles within communication range
+    const rangeTiles: Coordinate[] = [];
+    for (const [, tile] of Array.from(gameState.boardLayout.entries())) {
+      const distance = getDistance({ x: selectedUnit.x, y: selectedUnit.y }, tile);
+      if (distance > 0 && distance <= effectiveRange) {
+        rangeTiles.push(tile);
+      }
+    }
+
+    return rangeTiles;
+  }, [selectedUnit, gameState.boardLayout]);
+
   // Main hex click handler
   const handleHexClick = useCallback((coord: Coordinate) => {
     if (gameState.gameState === 'gameOver') return;
@@ -394,7 +426,10 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
           hp: destinationTile?.hp
         });
         
-        gameState.setUnits(gameState.units.map(u => u.id === selectedUnit.id ? updatedUnit : u));
+        const movedUnits = gameState.units.map(u => u.id === selectedUnit.id ? updatedUnit : u);
+        // Update communication network after unit movement
+        const unitsWithUpdatedNetwork = updateCommunicationNetwork(movedUnits);
+        gameState.setUnits(unitsWithUpdatedNetwork);
         // 移動完了後はActionPopupを再表示（移動モードリセット）
         uiStates.setMovementMode('none');
         return;
@@ -508,8 +543,9 @@ export const useGameLogic = (mapId: string = 'test_map_1') => {
     attackableTiles,
     engineerTargetTiles,
     transportTargetTiles,
-    
-    
+    communicationRangeTiles,
+
+
     // Game state methods
     loadGame: gameState.loadGame,
     saveStateToHistory: gameState.saveStateToHistory,
