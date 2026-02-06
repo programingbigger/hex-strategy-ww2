@@ -89,12 +89,10 @@ const Header: React.FC<HeaderProps> = ({
         <span className="header-item">📅 {formatDate(year, month, day)}</span>
         <span className={`header-item team-${activeTeam.toLowerCase()}`}>{activeTeam === 'Blue' ? '青軍' : '赤軍'}フェーズ</span>
         <span className="header-item weather">{getWeatherEmoji(weather)} {weather}</span>
-        {environmentalLevels && (
-          <span className="header-item environmental" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <span style={{ color: environmentalLevels.wetness > 0 ? '#4299e1' : '#718096' }}>💧{environmentalLevels.wetness}</span>
-            <span style={{ color: environmentalLevels.snow > 0 ? '#63b3ed' : '#718096' }}>❄️{environmentalLevels.snow}</span>
-          </span>
-        )}
+        <span className="header-item environmental" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span style={{ color: (environmentalLevels?.wetness || 0) > 0 ? '#4299e1' : '#718096' }}>💧{environmentalLevels?.wetness || 0}</span>
+          <span style={{ color: (environmentalLevels?.snow || 0) > 0 ? '#63b3ed' : '#718096' }}>❄️{environmentalLevels?.snow || 0}</span>
+        </span>
         <span className="header-item funds">軍資金：{formatFunds(activeTeam === 'Blue' ? blueFunds : redFunds)}</span>
       </div>
 
