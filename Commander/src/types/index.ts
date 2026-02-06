@@ -95,6 +95,11 @@ export interface Unit {
   transportId?: string; // New: for transport system - ID of transport unit
   supplyStock?: number; // 補給ユニットの現在の補給物資量
   maxSupplyStock?: number; // 補給ユニットの最大補給物資量
+
+  // 雪上電撃戦システム (Snow Blitzkrieg System)
+  snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
+  communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
+  isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
 }
 
 export interface Tile {
@@ -169,6 +174,11 @@ export interface UnitStats {
   defenseVs?: { [key in UnitClass]?: number };
   isArtillery?: boolean;
   reconnaissance: number; // 索敵能力（範囲）
+
+  // 雪上電撃戦システム (Snow Blitzkrieg System)
+  snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
+  communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
+  isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
 }
 
 // Unit stats as they appear in armyOrganization.json (without attack and attackRange)
@@ -183,6 +193,11 @@ export interface ArmyUnitStats {
   defenseVs?: { [key in UnitClass]?: number };
   isArtillery?: boolean;
   reconnaissance: number; // 索敵能力（範囲）
+
+  // 雪上電撃戦システム (Snow Blitzkrieg System)
+  snowMobility?: number; // 雪上機動フラグ: 0 = 通常ペナルティ, 1 = 雪上でも移動速度を損なわない
+  communicationRange?: number; // 通信範囲（hex単位）: このユニットの通信可能距離
+  isCommunicationHub?: boolean; // 通信中継車フラグ: true = 通信ハブとして機能し、範囲を拡張する
 }
 
 // Victory condition types
